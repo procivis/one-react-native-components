@@ -1,0 +1,233 @@
+{
+  "name": "@procivis/one-react-native-components",
+  "version": "0.1.0",
+  "description": "Common Procivis ONE UI components for react-native",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "!lib/typescript/example",
+    "!android/build",
+    "!ios/build",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "scripts": {
+    "test": "jest",
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "prepare": "npx patch-package && bob build",
+    "release": "release-it",
+    "bootstrap": "yarn",
+    "android": "react-native run-android --appId=ch.procivis.storybook",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "update-stories": "sb-rn-get-stories --config-path .ondevice",
+    "prestart": "yarn update-stories",
+    "storybook-watcher": "sb-rn-watcher --config-path .ondevice",
+    "storybook": "start-storybook -p 6006 -s ./.storybook/assets",
+    "build-storybook": "build-storybook -s ./.storybook/assets",
+    "pods": "npx pod-install"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": "https://gitlab.procivis.ch/procivis/one/one-react-native-components",
+  "author": "Pavel Zarecky <zarecky@procivis.ch> (https://procivis.ch)",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
+    "@babel/runtime": "^7.12.5",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@procivis/react-native-picker": "5.0.3",
+    "@react-native-async-storage/async-storage": "^1.17.3",
+    "@react-native-community/datetimepicker": "^6.1.2",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@react-native-community/slider": "^4.2.1",
+    "@react-native/normalize-color": "^2.0.0",
+    "@react-navigation/bottom-tabs": "^6.0.9",
+    "@react-navigation/native": "^6.0.6",
+    "@release-it/conventional-changelog": "^2.0.0",
+    "@storybook/addon-actions": "6.5",
+    "@storybook/addon-controls": "6.5",
+    "@storybook/addon-essentials": "6.5",
+    "@storybook/addon-links": "6.5",
+    "@storybook/addon-ondevice-actions": "^6.0.1-beta.12",
+    "@storybook/addon-ondevice-backgrounds": "^6.0.1-beta.12",
+    "@storybook/addon-ondevice-controls": "^6.0.1-beta.12",
+    "@storybook/addon-react-native-web": "^0.0.19",
+    "@storybook/react": "6.5",
+    "@storybook/react-native": "^6.0.1-beta.12",
+    "@types/jest": "^26.0.0",
+    "@types/react": "17.0.2",
+    "@types/react-native": "0.68.10",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "babel-loader": "^8.2.4",
+    "babel-plugin-react-native-web": "^0.18.9",
+    "commitlint": "^11.0.0",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "husky": "^6.0.0",
+    "jest": "^26.0.1",
+    "lottie-react-native": "^4.1.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "patch-package": "^6.4.7",
+    "prettier": "^2.0.5",
+    "react": "17.0.2",
+    "react-dom": "^17.0.2",
+    "react-native": "0.68.1",
+    "react-native-builder-bob": "^0.18.0",
+    "react-native-camera": "^4.2.1",
+    "react-native-draggable-flatlist": "^3.1.0",
+    "react-native-gesture-handler": "1.10.3",
+    "react-native-reanimated": "^2.7.0",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.11.0",
+    "react-native-svg": "^12.1.1",
+    "react-native-web": "^0.18.9",
+    "react-native-web-lottie": "^1.4.4",
+    "release-it": "^14.2.2",
+    "storybook-addon-designs": "^6.3.1",
+    "typescript": "^4.4.4"
+  },
+  "peerDependencies": {
+    "@procivis/react-native-picker": "*",
+    "@react-native/normalize-color": "*",
+    "@react-navigation/bottom-tabs": "*",
+    "@react-navigation/native": "*",
+    "lottie-react-native": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-camera": "*",
+    "react-native-draggable-flatlist": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-svg": "*"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/storybook/",
+      "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native-community",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "import",
+      "simple-import-sort"
+    ],
+    "rules": {
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "react-native",
+              "importNames": [
+                "SafeAreaView"
+              ],
+              "message": "Please use SafeAreaView from 'react-native-safe-area-context' instead."
+            },
+            {
+              "name": "react-native",
+              "importNames": [
+                "TouchableOpacity",
+                "TouchableHighlight",
+                "TouchableWithoutFeedback",
+                "Pressable"
+              ],
+              "message": "Please import touchables from './src/accessibility/accessibilityHistoryWrappers' instead."
+            }
+          ],
+          "patterns": [
+            {
+              "group": [
+                "/src",
+                "src/*",
+                "storybook/*"
+              ],
+              "message": "Use relative import paths"
+            }
+          ]
+        }
+      ],
+      "no-shadow": "off",
+      "no-undef": "off",
+      "react-native/sort-styles": "warn",
+      "react-native/no-unused-styles": "warn",
+      "react/display-name": "warn",
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
+      "import/newline-after-import": "warn",
+      "import/no-duplicates": "warn",
+      "import/no-absolute-path": "warn"
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "storybook-static/",
+    "lib/"
+  ],
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "resolutions": {
+    "@types/react": "17.0.53"
+  },
+  "publishConfig": {
+    "@procivis:registry": "https://gitlab.procivis.ch/api/v4/projects/45/packages/npm/"
+  }
+}
