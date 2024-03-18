@@ -1,0 +1,20 @@
+{
+  "accessibility.control.combobox.expanded": "Espanso",
+  "accessibility.control.combobox.tapToSelect": "Tocca due volte per selezionare",
+  "accessibility.control.order": "{current} di {length}",
+  "accessibility.control.progress": "{current} su {length}",
+  "accessibility.control.checked": "selezionato",
+  "accessibility.control.unchecked": "deselezionato",
+  "accessibility.control.clear": "cancellare",
+  "accessibility.control.delete": "cancellare",
+  "accessibility.control.list.moveDown": "Scendere",
+  "accessibility.control.list.moveUp": "Salire",
+  "accessibility.nav.back": "indietro",
+  "accessibility.nav.close": "chiudere",
+  "accessibility.nav.next": "prossimo",
+  "accessibility.icon.edit": "modificare",
+  "accessibility.icon.add": "addizionare",
+  "accessibility.icon.filter": "filtro",
+  "accessibility.key.faceId": "faceId",
+  "accessibility.key.fingerprint": "Impronta digitale"
+}

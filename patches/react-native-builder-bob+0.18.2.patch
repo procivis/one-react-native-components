@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-builder-bob/lib/utils/compile.js b/node_modules/react-native-builder-bob/lib/utils/compile.js
+index 6837cdc..f3e43e6 100644
+--- a/node_modules/react-native-builder-bob/lib/utils/compile.js
++++ b/node_modules/react-native-builder-bob/lib/utils/compile.js
+@@ -37,7 +37,7 @@ async function compile({
+     cwd: source,
+     absolute: true,
+     nodir: true,
+-    ignore: '**/{__tests__,__fixtures__,__mocks__}/**'
++    ignore: ['**/{__tests__,__fixtures__,__mocks__}/**', '**/*.stories.?(ts|tsx|js|jsx)', '**/*.stories.mobile.?(ts|tsx|js|jsx)']
+   });
+
+   report.info(`Compiling ${_chalk.default.blue(String(files.length))} files in ${_chalk.default.blue(_path.default.relative(root, source))} with ${_chalk.default.blue('babel')}`);

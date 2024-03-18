@@ -1,0 +1,10 @@
+node_modules
+.npm
+.npmg
+coverage
+.vscode
+.husky
+.storybook
+public
+.local
+.idea
