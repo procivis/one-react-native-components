@@ -15,8 +15,6 @@ module.exports = {
       ...(config.resolve || {}),
       alias: {
         'react-native$': 'react-native-web',
-        'lottie-react-native': 'react-native-web-lottie',
-        '@procivis/react-native-picker': 'react-native-web/src/exports/View',
         '../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '../../Utilities/Platform': 'react-native-web/src/exports/Platform',
       },
