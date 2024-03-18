@@ -1,0 +1,20 @@
+{
+  "accessibility.control.combobox.expanded": "Expanded",
+  "accessibility.control.combobox.tapToSelect": "Double-tap to select",
+  "accessibility.control.order": "{current} of {length}",
+  "accessibility.control.progress": "{current} out of {length}",
+  "accessibility.control.checked": "checked",
+  "accessibility.control.unchecked": "not checked",
+  "accessibility.control.clear": "clear",
+  "accessibility.control.delete": "delete",
+  "accessibility.control.list.moveDown": "Move down",
+  "accessibility.control.list.moveUp": "Move up",
+  "accessibility.nav.back": "back",
+  "accessibility.nav.close": "close",
+  "accessibility.nav.next": "next",
+  "accessibility.icon.edit": "edit",
+  "accessibility.icon.add": "add",
+  "accessibility.icon.filter": "filter",
+  "accessibility.key.faceId": "faceId",
+  "accessibility.key.fingerprint": "fingerprint"
+}

@@ -1,0 +1,54 @@
+replicaCount: 1
+
+image:
+  repository: registry.gitlab.procivis.ch/procivis/components/react-native/storybook
+  pullPolicy: Always
+  tag: "master-e9c055d55c1a9bad9f17912fba42c6df5e37983e"
+
+
+imagePullSecrets:
+  - name: gitlab-credentials-dev-cluster
+  - name: gitlab-credentials-demo-cluster
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
