@@ -9,9 +9,6 @@ export type BaseTextProps = TextProps & {
   color?: ColorValue;
   bold?: boolean;
   style?: StyleProp<TextStyle>;
-  numberOfLines?: number;
-  ellipsizeMode?: TextProps['ellipsizeMode'];
-  onPress?: () => void;
 
   /* accessibility automatic voice-over */
   announcementActive?: boolean;
@@ -27,9 +24,6 @@ export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>
       color = 'white',
       bold = false,
       style,
-      numberOfLines,
-      ellipsizeMode,
-      onPress,
       children,
       announcementActive,
       announcementCumulative,
@@ -53,14 +47,7 @@ export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>
     };
 
     return (
-      <Text
-        ref={ref}
-        style={[fontStyle, baseStyle, style]}
-        onPress={onPress}
-        numberOfLines={numberOfLines}
-        ellipsizeMode={numberOfLines === 1 ? ellipsizeMode ?? 'middle' : undefined}
-        maxFontSizeMultiplier={2}
-        {...props}>
+      <Text ref={ref} style={[fontStyle, baseStyle, style]} maxFontSizeMultiplier={2} {...props}>
         {children}
       </Text>
     );
