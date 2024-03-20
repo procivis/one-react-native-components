@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Common Procivis ONE UI components for react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -217,6 +217,6 @@
     "@types/react": "17.0.53"
   },
   "publishConfig": {
-    "@procivis:registry": "https://gitlab.procivis.ch/api/v4/projects/45/packages/npm/"
+    "@procivis:registry": "https://gitlab.procivis.ch/api/v4/projects/101/packages/npm/"
   }
 }
