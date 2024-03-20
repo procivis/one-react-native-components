@@ -4,6 +4,11 @@ variables:
   YARN_CACHE_FOLDER: './.yarn/cache'
   YARN_ENABLE_GLOBAL_CACHE: 'false'
 
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
 stages:
   - prepare
   - test
@@ -24,9 +29,7 @@ stages:
   cache:
     <<: *yarn-cache
   before_script:
-    - apk add --update --no-cache --virtual .build-deps alpine-sdk python3 libc6-compat gcompat bash
-    - yarn config delete https-proxy
-    - yarn config delete proxy
+    - apk add --update --no-cache --virtual .build-deps alpine-sdk libc6-compat gcompat bash
     - npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
     - npm config set -- //${CI_SERVER_HOST}/:_authToken ${CI_JOB_TOKEN}
     - npm config set -- //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
@@ -36,6 +39,33 @@ stages:
 .only_tag:
   rules:
     - if: $CI_COMMIT_TAG
+
+.only_main:
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+
+.deploy_k8s:
+  image: registry.gitlab.procivis.ch/procivis/one/one-operations/az-helm-kubectl:1.25.7
+  dependencies: []
+  variables:
+    DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    K8S_TYPE: deployment
+    HELM_APP_NAME: react-native
+    HELM_PATH: app-components-chart
+  before_script:
+    - az aks install-cli
+    - az login --service-principal -u "$AAD_SERVICE_PRINCIPAL_CLIENT_ID" -p "$AAD_SERVICE_PRINCIPAL_CLIENT_SECRET" --tenant "$AD_TENANT_ID"
+    - az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
+    - kubelogin convert-kubeconfig -l spn
+  script:
+    - cd "$HELM_PATH"
+    - >
+      helm upgrade --install $HELM_APP_NAME .
+      --values $HELM_VALUES_FILE
+      --set "image.tag=$DEPLOY_IMAGE_TAG"
+      --namespace $K8S_NAMESPACE
+    - kubectl rollout restart $K8S_TYPE $HELM_APP_NAME-$HELM_PATH --namespace=$K8S_NAMESPACE
+
 
 build_deps:
   stage: prepare
@@ -66,67 +96,51 @@ test:
   script:
     - yarn test
 
-build_storybook:
+build:storybook:
   stage: build
   needs: [build_deps]
-  only: [master]
-  extends: .modules_setup
+  extends:
+    - .modules_setup
+    - .only_main
   script:
     - yarn build-storybook
   artifacts:
     paths:
       - storybook-static
-# TODO: jobs copied from the shared components library, to be adjusted
-#
-# publish_storybook:
-#   stage: publish
-#   image: docker:20
-#   needs: [ build_storybook ]
-#   only: [ master ]
-#   variables:
-#     IMAGE_TAG: $CI_REGISTRY_IMAGE/storybook:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-#   services:
-#     - docker:20-dind
-#   dependencies:
-#     - build_storybook
-#   script:
-#     - docker build -t $IMAGE_TAG -f ./docker/Dockerfile .
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#     - docker push $IMAGE_TAG
-#
-#
-# deploy:
-#   stage: deploy
-#   only: [ master ]
-#   image: dtzar/helm-kubectl:3.7.1
-#   variables:
-#     DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-#   before_script:
-#     - kubectl config set-cluster k8s --server="${K8S_API}"
-#     - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA_DATA}
-#     - kubectl config set-credentials gitlab-service-account --token="${K8S_TOKEN}"
-#     - kubectl config set-context default --cluster=k8s --user=gitlab-service-account
-#     - kubectl config use-context default
-#   script:
-#     # Build and deploy chart
-#     - cd appcomponentschart
-#     - helm repo add bitnami https://charts.bitnami.com/bitnami
-#     - helm repo update
-#     - helm dep build
-#     - helm upgrade
-#       --install react-native-components .
-#       --values values/app-components.dev.eid-plus.yaml
-#       --namespace components
-#       --set image.tag=$DEPLOY_IMAGE_TAG
-#
-# publish-npm:
-#   stage: deploy
-#   needs: [test]
-#   script:
-#     - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
-#     - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
-#     - npm publish --verbose --access restricted --tag stable
-#   extends:
-#     - .modules_setup
-#     - .only_tag
-#
+
+publish:storybook:
+  stage: publish
+  image: docker:20
+  needs: [ build:storybook ]
+  dependencies: [ build:storybook ]
+  variables:
+   IMAGE_TAG: $CI_REGISTRY_IMAGE/storybook:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  services:
+   - docker:20-dind
+  script:
+   - docker build -t $IMAGE_TAG -f ./docker/Dockerfile .
+   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+   - docker push $IMAGE_TAG
+  extends:
+    - .only_main
+
+publish:npm:
+  stage: deploy
+  needs: [test]
+  script:
+    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
+    - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
+    - npm publish --verbose --access restricted --tag stable
+  extends:
+    - .modules_setup
+    - .only_tag
+
+deploy:storybook:
+  stage: deploy
+  needs: [ publish:storybook ]
+  extends:
+    - .deploy_k8s
+    - .only_main
+  variables:
+    HELM_VALUES_FILE: values/app-components.dev.procivis-one.yaml
+    K8S_NAMESPACE: default
