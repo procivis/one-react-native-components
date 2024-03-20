@@ -1,8 +1,0 @@
-image:
-  tag: "master-7c5ec9f4"
-
-ingress:
-  hosts:
-    - host: app-components.dev.eid-plus.com
-      paths:
-        - path: /

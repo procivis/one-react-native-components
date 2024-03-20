@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "appcomponentschart.fullname" . }}
+  name: {{ include "app-components-chart.fullname" . }}
   labels:
-    {{- include "appcomponentschart.labels" . | nindent 4 }}
+    {{- include "app-components-chart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "appcomponentschart.selectorLabels" . | nindent 4 }}
+    {{- include "app-components-chart.selectorLabels" . | nindent 4 }}
