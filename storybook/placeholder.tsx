@@ -14,7 +14,7 @@ interface Props {
 export const Placeholder: FunctionComponent<Props> = ({ style, id = 'Placeholder' }) => {
   return (
     <View style={[styles.placeholder, style]}>
-      <Typography bold={true} color="#1890FF">
+      <Typography preset="m" color="#1890FF">
         {id}
       </Typography>
     </View>

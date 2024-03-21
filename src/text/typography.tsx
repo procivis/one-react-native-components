@@ -3,51 +3,97 @@ import { StyleSheet, Text } from 'react-native';
 
 import { useAppColorScheme } from '../theme';
 import { BaseText, BaseTextProps } from './base';
+import font from './font';
 
-const sizeStyles = {
-  h1: {
+const presets = {
+  xl: {
+    ...font.regular,
     fontSize: 26,
-    letterSpacing: 0.2,
     lineHeight: 36,
-  },
-  h2: {
-    fontSize: 20,
-    letterSpacing: 0.1,
-    lineHeight: 32,
-  },
-  default: {
-    fontSize: 14,
     letterSpacing: 0.2,
+  },
+  l: {
+    ...font.medium,
+    fontSize: 24,
+    lineHeight: 22,
+    // TODO: fix cut-off
+  },
+  'l/line-height-large': {
+    ...font.medium,
+    fontSize: 24,
+    lineHeight: 28,
+  },
+  regular: {
+    ...font.regular,
+    fontSize: 17,
+    lineHeight: 24,
+  },
+  m: {
+    ...font.medium,
+    fontSize: 17,
+    lineHeight: 22,
+    letterSpacing: -0.2,
+  },
+  s: {
+    ...font.regular,
+    fontSize: 14,
     lineHeight: 22,
   },
-  sml: {
-    fontSize: 12,
-    letterSpacing: 0.3,
+  's/line-height-capped': {
+    ...font.regular,
+    fontSize: 14,
+    lineHeight: 22,
+    letterSpacing: -0.2,
+    // TODO: vertical trim: cap height
+  },
+  's/line-height-small': {
+    ...font.regular,
+    fontSize: 14,
     lineHeight: 18,
+    letterSpacing: 0.3,
+  },
+  's/code': {
+    ...font.code,
+    fontSize: 14,
+    lineHeight: 22,
+    letterSpacing: 0.2,
   },
   xs: {
-    fontSize: 10,
-    letterSpacing: 0.35,
-    lineHeight: 14,
+    ...font.regular,
+    fontSize: 12,
+    lineHeight: 22,
+    letterSpacing: -0.1,
+  },
+  'xs/line-height-small': {
+    ...font.regular,
+    fontSize: 12,
+    lineHeight: 18,
+    letterSpacing: 0.3,
+  },
+  'xs/code': {
+    ...font.code,
+    fontSize: 12,
+    lineHeight: 18,
+    letterSpacing: 0.3,
   },
 } as const;
 
 export type TypographyProps = BaseTextProps & {
-  size?: keyof typeof sizeStyles;
+  preset?: keyof typeof presets;
   caps?: boolean;
 };
 
 /**
  * General text component
- * @see https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=1%3A4
+ * @see https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1045-30326
  */
 const Typography = React.forwardRef<Text, TypographyProps>(
-  ({ size = 'default', color, caps, style, ...props }, ref) => {
+  ({ preset = 'regular', color, caps, style, ...props }, ref) => {
     const colorScheme = useAppColorScheme();
     return (
       <BaseText
         ref={ref}
-        style={[sizeStyles[size], caps && styles.caps, style]}
+        style={[presets[preset], caps && styles.caps, style]}
         color={color ?? colorScheme.text}
         {...props}
       />
