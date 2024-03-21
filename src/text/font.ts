@@ -6,8 +6,8 @@ export interface FontStyle {
 }
 
 enum FontFace {
-  OpenSans = 'OpenSans',
-  IBMPlexMono = 'IBMPlexMono',
+  OpenSans = 'Open Sans',
+  IBMPlexMono = 'IBM Plex Mono',
 }
 
 enum FontWeight {
@@ -23,9 +23,10 @@ export interface FontFactoryProps {
 // generate styles for a font with given weight and style
 export const fontFactory = ({ face, weight }: FontFactoryProps): FontStyle => {
   if (Platform.OS === 'android') {
-    const suffix = Object.keys(FontWeight)[Object.values(FontWeight).indexOf(weight)];
+    const filePrefix = Object.keys(FontFace)[Object.values(FontFace).indexOf(face)];
+    const fileSuffix = Object.keys(FontWeight)[Object.values(FontWeight).indexOf(weight)];
     return {
-      fontFamily: face + (suffix.length ? `-${suffix}` : ''),
+      fontFamily: `${filePrefix}-${fileSuffix}`,
     };
   } else {
     return {
