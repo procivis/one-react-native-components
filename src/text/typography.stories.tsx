@@ -15,9 +15,8 @@ const Basic: ComponentStory<typeof Typography> = ({ color, ...args }) => {
 
 Basic.args = {
   children: 'Text',
-  size: 'default',
+  preset: 'regular',
   caps: false,
-  bold: false,
   color: 'text',
   align: 'left',
   numberOfLines: 1,
@@ -30,8 +29,21 @@ export default {
   title: 'base/Typography',
   component: Typography,
   argTypes: {
-    size: {
-      options: ['h1', 'h2', 'default', 'sml', 'xs'],
+    preset: {
+      options: [
+        'xl',
+        'l',
+        'l/line-height-large',
+        'regular',
+        'm',
+        's',
+        's/line-height-capped',
+        's/line-height-small',
+        's/code',
+        'xs',
+        'xs/line-height-small',
+        'xs/code',
+      ],
       control: { type: 'radio' },
     },
     color: {
@@ -52,7 +64,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=1%3A4',
+      url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1045-30326',
     },
   },
 } as ComponentMeta<typeof Typography>;

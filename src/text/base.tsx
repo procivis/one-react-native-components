@@ -2,12 +2,10 @@ import React, { PropsWithChildren, useEffect } from 'react';
 import { ColorValue, StyleProp, Text, TextProps, TextStyle } from 'react-native';
 
 import { useAccessibilityAnnouncementCumulative } from '../accessibility/accessibility';
-import font from '../theme/font';
 
 export type BaseTextProps = TextProps & {
   align?: 'center' | 'left' | 'right';
-  color?: ColorValue;
-  bold?: boolean;
+  color: ColorValue;
   style?: StyleProp<TextStyle>;
 
   /* accessibility automatic voice-over */
@@ -21,8 +19,7 @@ export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>
   (
     {
       align = 'left',
-      color = 'white',
-      bold = false,
+      color,
       style,
       children,
       announcementActive,
@@ -40,14 +37,13 @@ export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>
       onAnnouncementFinished?.(announcementFinished);
     }, [announcementFinished, onAnnouncementFinished]);
 
-    const fontStyle = bold ? font.bold : font.normal;
     const baseStyle: TextStyle = {
       textAlign: align,
       color,
     };
 
     return (
-      <Text ref={ref} style={[fontStyle, baseStyle, style]} maxFontSizeMultiplier={2} {...props}>
+      <Text ref={ref} style={[baseStyle, style]} maxFontSizeMultiplier={2} {...props}>
         {children}
       </Text>
     );
