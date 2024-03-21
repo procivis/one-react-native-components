@@ -54,7 +54,7 @@ const Test: FunctionComponent<TestProps> = ({ name, Component, colorF, colorB, A
       : `X (AAA=${AAAlimit}:1, AA=${AAlimit}:1)`;
   return (
     <View style={styles.testContainer}>
-      <Typography size="h2" bold={true} color="black">
+      <Typography preset="m" color="black">
         {name}
       </Typography>
       <View style={{ backgroundColor: colorScheme.white }}>
@@ -63,7 +63,7 @@ const Test: FunctionComponent<TestProps> = ({ name, Component, colorF, colorB, A
       <View style={styles.resultContainer}>
         <Typography color="black">
           {'Contrast: '}
-          <Typography color="black" bold={true}>
+          <Typography color="black" preset="m">
             {contrast.toFixed(2).replace(/[0.]+$/, '')}
           </Typography>
           {':1'}

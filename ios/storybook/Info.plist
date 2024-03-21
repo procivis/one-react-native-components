@@ -55,10 +55,8 @@
 	<string>Camera access required</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>OpenSans-Semibold.ttf</string>
-		<string>OpenSans-Light.ttf</string>
-		<string>OpenSans-ExtraBold.ttf</string>
-		<string>OpenSans-Bold.ttf</string>
+		<string>IBMPlexMono-Regular.ttf</string>
+		<string>OpenSans-Medium.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 	</array>
 </dict>
