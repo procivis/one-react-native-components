@@ -28,6 +28,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+ios/.xcode.env.local
 
 # Android/IJ
 #
@@ -39,6 +40,9 @@ project.xcworkspace
 .settings
 local.properties
 android.iml
+.cxx/
+*.keystore
+!debug.keystore
 
 # node.js
 #
@@ -46,12 +50,6 @@ node_modules/
 npm-debug.log
 yarn-debug.log
 yarn-error.log
-
-# BUCK
-buck-out/
-\.buckd/
-android/app/libs
-android/keystores/debug.keystore
 
 # Expo
 .expo/*
@@ -69,9 +67,10 @@ storybook-static/
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
 
-*/fastlane/report.xml
-*/fastlane/Preview.html
-*/fastlane/screenshots
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
 # Bundle artifact
 *.jsbundle
@@ -79,3 +78,6 @@ storybook-static/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*

@@ -1,4 +1,7 @@
 {
   "extends": "./tsconfig",
-  "exclude": ["storybook", "**/*.stories.tsx", "**/*.stories.mobile.tsx"]
+  "exclude": ["storybook", "storybook-static", "**/*.stories.tsx", "**/*.stories.mobile.tsx"],
+  "compilerOptions": {
+    "noEmit": false,
+  }
 }

@@ -29,7 +29,6 @@ const getContrastRatio = (colorF: ColorValue, colorB: ColorValue) => {
 
 interface TestProps {
   name: string;
-  Component: React.ComponentType<{ colorF: string; colorB: string }>;
   colorF: string;
   colorB: string;
   AAlimit: number;
@@ -42,7 +41,7 @@ enum Rating {
   None,
 }
 
-const Test: FunctionComponent<TestProps> = ({ name, Component, colorF, colorB, AAlimit, AAAlimit }) => {
+const Test: FunctionComponent<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
   const colorScheme = useAppColorScheme();
   const contrast = getContrastRatio(colorF, colorB);
   const rating = contrast >= AAAlimit ? Rating.AAA : contrast >= AAlimit ? Rating.AA : Rating.None;
@@ -58,7 +57,9 @@ const Test: FunctionComponent<TestProps> = ({ name, Component, colorF, colorB, A
         {name}
       </Typography>
       <View style={{ backgroundColor: colorScheme.white }}>
-        <Component colorF={colorF} colorB={colorB} />
+        <Typography color={colorF} style={{ backgroundColor: colorB }} align="center">
+          {`TEXT ${colorF}/${colorB}`}
+        </Typography>
       </View>
       <View style={styles.resultContainer}>
         <Typography color="black">
@@ -102,11 +103,6 @@ const TextBackgroundTest: FunctionComponent<{ text: SimpleColorName; background:
       name={`${text} on ${background}`}
       colorF={colorScheme[text]}
       colorB={colorScheme[background]}
-      Component={({ colorF, colorB }) => (
-        <Typography color={colorF} style={{ backgroundColor: colorB }} align="center">
-          {`TEXT ${colorF}/${colorB}`}
-        </Typography>
-      )}
       AAlimit={4.5}
       AAAlimit={7}
     />
