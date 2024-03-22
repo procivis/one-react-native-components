@@ -60,7 +60,7 @@ export const parameters = {
   },
   backgrounds: {
     default: 'white',
-    values: Object.entries(ColorSchemes.procivisLight)
+    values: Object.entries(ColorSchemes.procivis)
       .filter(([_, value]) => typeof value === 'string')
       .map(([name, value]) => ({ name, value })),
     grid: {
@@ -78,7 +78,7 @@ export const parameters = {
 export const globalTypes = {
   colorScheme: {
     name: 'Color Scheme',
-    defaultValue: 'procivisLight',
+    defaultValue: 'procivis',
     toolbar: {
       icon: 'eye',
       items: Object.keys(ColorSchemes),

@@ -41,16 +41,29 @@ enum Rating {
   None,
 }
 
+type SimpleColorName = keyof ColorScheme;
+const RATING_COLOR: Record<Rating, SimpleColorName> = {
+  [Rating.AAA]: 'success',
+  [Rating.AA]: 'warning',
+  [Rating.None]: 'error',
+};
+
+const getRatingText = (rating: Rating, AAlimit: number, AAAlimit: number) => {
+  switch (rating) {
+    case Rating.AAA:
+      return `AAA (${AAAlimit}:1)`;
+    case Rating.AA:
+      return `AA (${AAlimit}:1, AAA=${AAAlimit}:1)`;
+    default:
+      return `X (AAA=${AAAlimit}:1, AA=${AAlimit}:1)`;
+  }
+};
+
 const Test: FunctionComponent<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
   const colorScheme = useAppColorScheme();
   const contrast = getContrastRatio(colorF, colorB);
   const rating = contrast >= AAAlimit ? Rating.AAA : contrast >= AAlimit ? Rating.AA : Rating.None;
-  const ratingText =
-    rating === Rating.AAA
-      ? `AAA (${AAAlimit}:1)`
-      : rating === Rating.AA
-      ? `AA (${AAlimit}:1, AAA=${AAAlimit}:1)`
-      : `X (AAA=${AAAlimit}:1, AA=${AAlimit}:1)`;
+  const ratingText = getRatingText(rating, AAlimit, AAAlimit);
   return (
     <View style={styles.testContainer}>
       <Typography preset="m" color="black">
@@ -69,30 +82,12 @@ const Test: FunctionComponent<TestProps> = ({ name, colorF, colorB, AAlimit, AAA
           </Typography>
           {':1'}
         </Typography>
-        <Typography
-          color={
-            rating === Rating.AAA
-              ? colorScheme.successText
-              : rating === Rating.AA
-              ? colorScheme.noticeText
-              : colorScheme.alertText
-          }
-          style={{
-            backgroundColor:
-              rating === Rating.AAA
-                ? colorScheme.success
-                : rating === Rating.AA
-                ? colorScheme.notice
-                : colorScheme.alert,
-          }}>
-          {ratingText}
-        </Typography>
+        <Typography color={colorScheme[RATING_COLOR[rating]]}>{ratingText}</Typography>
       </View>
     </View>
   );
 };
 
-type SimpleColorName = keyof Omit<ColorScheme, 'shadow' | 'lineargradient'>;
 const TextBackgroundTest: FunctionComponent<{ text: SimpleColorName; background: SimpleColorName }> = ({
   text,
   background,
@@ -114,19 +109,10 @@ export const ColorContrast: Story = () => {
     <View style={styles.container}>
       <TextBackgroundTest text="text" background="white" />
       <TextBackgroundTest text="text" background="background" />
-      <TextBackgroundTest text="textSecondary" background="white" />
-      <TextBackgroundTest text="noticeText" background="notice" />
-      <TextBackgroundTest text="alertText" background="alert" />
-      <TextBackgroundTest text="alertText" background="white" />
-      <TextBackgroundTest text="linkText" background="white" />
       <TextBackgroundTest text="accentText" background="accent" />
-      <TextBackgroundTest text="accentTextSecondary" background="accent" />
-      <TextBackgroundTest text="white" background="lightGrey" />
-      <TextBackgroundTest text="white" background="overlay" />
-      <TextBackgroundTest text="successText" background="overlay" />
-      <TextBackgroundTest text="text" background="accent" />
-      <TextBackgroundTest text="accentSecondary" background="accent" />
-      <TextBackgroundTest text="accentText" background="accentSecondary" />
+      <TextBackgroundTest text="accent" background="background" />
+      <TextBackgroundTest text="linkText" background="white" />
+      <TextBackgroundTest text="linkText" background="background" />
     </View>
   );
 };
@@ -136,7 +122,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=1%3A84&t=h6IOH7IquQkteXya-4',
+      url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=0-1',
     },
   },
 } as Meta;

@@ -9,8 +9,7 @@ import { AccessibilityLanguageProvider } from '../src/accessibility/accessibilit
 import { ColorSchemeProvider } from '../src/theme';
 import ColorSchemes from './colorScheme';
 
-const getColorScheme = (context: StoryContext) =>
-  ColorSchemes[context.globals.colorScheme] ?? ColorSchemes.procivisLight;
+const getColorScheme = (context: StoryContext) => ColorSchemes[context.globals.colorScheme] ?? ColorSchemes.procivis;
 
 export const withColorScheme = (Story: any, context: StoryContext) => {
   return (
