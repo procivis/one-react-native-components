@@ -3,31 +3,20 @@ import React, { PropsWithChildren } from 'react';
 import type { ColorScheme } from './color-scheme';
 
 const defaultColorScheme: ColorScheme = {
-  text: '#141414',
-  textSecondary: '#3B5574',
-  accent: '#F62323',
-  accentSecondary: '#FFA0A0',
-  accentText: '#FFFFFF',
-  accentTextSecondary: 'rgba(0, 0, 0, 0.8)',
+  accent: '#0F151A',
+  accentText: '#EBF2F4',
+  text: '#0D0E10',
   background: '#F1F3F5',
-  glow: 'rgba(255, 255, 255, 0.2)',
-  shadow: {
-    shadowColor: '#000000',
-    shadowOpacity: 0.05,
-  },
-  overlay: 'rgba(0, 0, 0, 0.8)',
-  alert: '#FFF1F0',
-  alertText: '#A73535',
-  success: '#F6FFED',
-  successText: '#00D066',
-  notice: '#FFFBE6',
-  noticeText: '#3E360C',
   black: '#000000',
   white: '#FFFFFF',
-  lightGrey: '#939AA4',
-  lighterGrey: '#CDD4DA',
-  lineargradient: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)'],
-  linkText: '#FF1A1A',
+  linkText: '#3F7BA6',
+  backgroundScroll: 'rgba(241, 243, 245, 0.7)',
+  greyDark: '#CDD4DA',
+  credentialHeaderBackground: 'rgba(255, 255, 255, 0.87)',
+  codeAccent: '#CFD2E7',
+  success: '#00D066',
+  error: '#D90D0D',
+  warning: '#F7BF0B',
 };
 
 const ColorSchemeContext = React.createContext<ColorScheme>(defaultColorScheme);

@@ -47,7 +47,7 @@ export default {
       control: { type: 'radio' },
     },
     color: {
-      options: Object.entries(ColorSchemes.procivisLight)
+      options: Object.entries(ColorSchemes.procivis)
         .filter(([_, value]) => typeof value === 'string')
         .map(([key]) => key),
       control: { type: 'select' },
