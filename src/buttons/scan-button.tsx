@@ -1,10 +1,10 @@
-import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import React from 'react';
-import { Insets, Platform, StyleSheet, TouchableOpacityProps, useColorScheme, View } from 'react-native';
+import { Insets, StyleSheet, TouchableOpacityProps, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TouchableOpacity, TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
 import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
+import BlurView from '../blur/blur-view';
 import { ScanIcon } from '../icons';
 import { useAppColorScheme } from '../theme';
 
@@ -14,16 +14,8 @@ const hitSlop: Insets = { top: 10, left: 10, bottom: 10, right: 10 };
 
 const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(({ style, ...props }, ref) => {
   const t = useAccessibilityTranslation();
-  const darkMode = useColorScheme() === 'dark';
   const colorScheme = useAppColorScheme();
   const insets = useSafeAreaInsets();
-
-  let blurType: BlurViewProps['blurType'];
-  if (Platform.OS === 'ios') {
-    blurType = darkMode ? 'thinMaterialDark' : 'thinMaterial';
-  } else {
-    blurType = darkMode ? 'dark' : 'light';
-  }
 
   return (
     <TouchableOpacity
@@ -33,7 +25,7 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(({ sty
       ref={ref}
       style={[styles.button, { bottom: Math.max(24, insets.bottom) }, style]}
       {...props}>
-      <BlurView blurType={blurType} reducedTransparencyFallbackColor={colorScheme.white} style={styles.blurWrapper}>
+      <BlurView blurStyle="soft" style={styles.blurWrapper}>
         <View style={[styles.iconWrapper, { backgroundColor: colorScheme.accent }]}>
           <ScanIcon color={colorScheme.white} />
         </View>
