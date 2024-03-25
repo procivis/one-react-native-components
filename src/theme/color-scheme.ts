@@ -5,16 +5,16 @@
 export interface ColorScheme {
   accent: string;
   accentText: string;
-  text: string;
   background: string;
-  black: string;
-  white: string;
-  linkText: string;
   backgroundScroll: string;
-  greyDark: string;
-  credentialHeaderBackground: string;
+  black: string;
   codeAccent: string;
-  success: string;
+  credentialHeaderBackground: string;
   error: string;
+  grayDark: string;
+  linkText: string;
+  success: string;
+  text: string;
   warning: string;
+  white: string;
 }

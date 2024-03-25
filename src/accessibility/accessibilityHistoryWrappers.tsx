@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import React, { ForwardedRef, forwardRef, FunctionComponent } from 'react';
+import React, { FC, ForwardedRef, forwardRef } from 'react';
 import {
   GestureResponderEvent,
   Pressable as RNPressable,
@@ -28,7 +28,7 @@ const WithAccessibilityFocusHistory = <ComponentProps extends OnPressProps, RefT
     forwardedRef: ForwardedRef<RefType>;
   };
 
-  const ComponentWithAccessibilityFocusHistory: FunctionComponent<ForwardedProps> = ({
+  const ComponentWithAccessibilityFocusHistory: FC<ForwardedProps> = ({
     forwardedRef,
     onPress: originalOnPress,
     ...props
