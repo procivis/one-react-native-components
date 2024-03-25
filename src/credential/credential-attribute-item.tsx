@@ -18,7 +18,7 @@ export type CredentialAttributeItemProps = {
   style?: StyleProp<ViewStyle>;
   testID?: string;
   value?: string;
-  valueWarningColor?: boolean;
+  valueErrorColor?: boolean;
 };
 
 const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
@@ -30,7 +30,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   rightAccessory,
   testID,
   value,
-  valueWarningColor,
+  valueErrorColor,
 }) => {
   const colorScheme = useAppColorScheme();
   const [imageWidth, setImageWidth] = useState<number>();
@@ -81,7 +81,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
         </Typography>
         {value ? (
           <Typography
-            color={valueWarningColor ? colorScheme.text : colorScheme.text}
+            color={valueErrorColor ? colorScheme.error : colorScheme.text}
             numberOfLines={10}
             preset="s"
             testID={concatTestID(testID, 'value')}>
