@@ -12,7 +12,7 @@ export interface CredentialHeaderProps extends AccessibilityProps {
   color?: ColorValue;
   credentialDetail: string;
   credentialDetailTestID?: string;
-  credentialDetailWarningColor?: boolean;
+  credentialDetailErrorColor?: boolean;
   credentialName: string;
   icon?: ImageOrComponentSource;
   iconLabelColor?: ColorValue;
@@ -26,7 +26,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
   color = '#5A69F3',
   credentialDetail,
   credentialDetailTestID,
-  credentialDetailWarningColor,
+  credentialDetailErrorColor,
   credentialName,
   icon,
   iconLabelColor = '#FFFFFF',
@@ -77,7 +77,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
           {credentialName}
         </Typography>
         <Typography
-          color={credentialDetailWarningColor ? colorScheme.warning : colorScheme.text}
+          color={credentialDetailErrorColor ? colorScheme.error : colorScheme.text}
           ellipsizeMode={'tail'}
           numberOfLines={1}
           preset="xs"
