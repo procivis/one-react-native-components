@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useMemo } from 'react';
+import React, { FC, ReactElement, useMemo } from 'react';
 import { Image, ImageProps, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ interface ImageSourceComponentProps {
   resizeMethod?: ImageProps['resizeMethod'];
 }
 
-const ImageSourceComponent: FunctionComponent<ImageSourceComponentProps> = ({
+const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
   source,
   style,
   resizeMode = 'cover',
@@ -64,7 +64,7 @@ interface ImageOrComponentProps {
   style: StyleProp<ImageStyle>;
 }
 
-const ImageOrComponent: FunctionComponent<ImageOrComponentProps> = ({ source, style }) => {
+const ImageOrComponent: FC<ImageOrComponentProps> = ({ source, style }) => {
   if ('imageSource' in source) {
     return (
       <ImageSourceComponent

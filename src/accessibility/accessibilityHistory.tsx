@@ -1,13 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import React, {
-  FunctionComponent,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import React, { FC, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 
 import { useForwardedRef } from '../utils/ref';
 import { focusAccessibility, useAccessibleAfterTransition } from './accessibility';
@@ -26,7 +18,7 @@ const accessibilityFocusHistoryContext = React.createContext<AccessibilityRefCon
 /**
  * Adds app support for accessibility focus history
  */
-export const AccessibilityFocusHistoryProvider: FunctionComponent<PropsWithChildren<{}>> = ({ children }) => {
+export const AccessibilityFocusHistoryProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const Provider = accessibilityFocusHistoryContext.Provider;
   const refs = useRef<Record<string, AccessibilityRefComponent>>({});
   const setRef = useCallback((route: string, ref: AccessibilityRefComponent) => {
