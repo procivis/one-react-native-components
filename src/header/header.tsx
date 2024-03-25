@@ -65,7 +65,7 @@ const Header: FC<HeaderProps> = ({
           title
         )}
 
-        {!onBack && rightButton}
+        {!onBack && <View style={styles.rightButtonWrapper}>{rightButton}</View>}
       </View>
 
       {onSearchPhraseChange && (
@@ -95,18 +95,22 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     width: '100%',
   },
+  rightButtonWrapper: {
+    paddingTop: 6,
+  },
   searchBarWrapper: {
     marginTop: 12,
     paddingHorizontal: 24,
   },
   title: {
     flex: 1,
+    paddingTop: 6,
   },
   titleWrapper: {
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingTop: 10,
     width: '100%',
   },
 });
