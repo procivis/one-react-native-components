@@ -59,7 +59,7 @@ SearchBar.displayName = 'SearchBar';
 const styles = StyleSheet.create({
   clearButton: {
     marginLeft: 6,
-    marginRight: 12,
+    marginRight: 16,
   },
   container: {
     alignItems: 'center',
