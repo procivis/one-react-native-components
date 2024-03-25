@@ -1,5 +1,7 @@
 // .storybook/main.js
 
+const path = require('path');
+
 module.exports = {
   stories: ['../src/**/*.stories.?(ts|tsx|js|jsx)', '../storybook/web/*.stories.?(ts|tsx|js|jsx)'],
   addons: [
@@ -17,6 +19,7 @@ module.exports = {
         'react-native$': 'react-native-web',
         '../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '../../Utilities/Platform': 'react-native-web/src/exports/Platform',
+        '@react-native-community/blur': '/storybook/modules/blur',
       },
     },
   }),

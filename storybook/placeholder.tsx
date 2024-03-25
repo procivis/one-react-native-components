@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { Typography } from '../src/text';
@@ -11,7 +11,7 @@ interface Props {
 /**
  * Placeholder component to use in stories for replacable generic content
  */
-export const Placeholder: FunctionComponent<Props> = ({ style, id = 'Placeholder' }) => {
+export const Placeholder: FC<Props> = ({ style, id = 'Placeholder' }) => {
   return (
     <View style={[styles.placeholder, style]}>
       <Typography preset="m" color="#1890FF">

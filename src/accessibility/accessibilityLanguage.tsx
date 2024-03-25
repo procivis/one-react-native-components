@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useContext, useMemo } from 'react';
+import React, { FC, PropsWithChildren, useContext, useMemo } from 'react';
 
 import { AccessibilityLanguageFile, getAccessibilityLanguageFile, SupportedAccessibilityLanguage } from './locale';
 
@@ -8,23 +8,25 @@ type AccessibilityLanguageTranslate = (
   params?: Record<string, string | number>,
 ) => string;
 
-const accessibilityLanguageContext = React.createContext<AccessibilityLanguageTranslate | undefined>(undefined);
+const AccessibilityLanguageContext = React.createContext<AccessibilityLanguageTranslate | undefined>(undefined);
 
 export interface AccessibilityLanguageProviderProps {
   language: SupportedAccessibilityLanguage;
   overrides?: Partial<AccessibilityLanguageFile> | AccessibilityLanguageTranslate;
 }
 
-const Provider = accessibilityLanguageContext.Provider;
+const Provider = AccessibilityLanguageContext.Provider;
 
 /**
  * Adds app support for accessibility language
  * @param {SupportedAccessibilityLanguage} language Currenty selected language of the app
  * @param {Object} overrides _(optional)_ Custom overrides for specific entries
  */
-export const AccessibilityLanguageProvider: FunctionComponent<
-  PropsWithChildren<AccessibilityLanguageProviderProps>
-> = ({ language, overrides, children }) => {
+export const AccessibilityLanguageProvider: FC<PropsWithChildren<AccessibilityLanguageProviderProps>> = ({
+  language,
+  overrides,
+  children,
+}) => {
   const translate = useMemo<AccessibilityLanguageTranslate>(() => {
     if (typeof overrides === 'function') {
       return overrides;
@@ -53,7 +55,7 @@ export const AccessibilityLanguageProvider: FunctionComponent<
  * @note This needs to be used inside {@link AccessibilityLanguageProvider} context
  */
 export const useAccessibilityTranslation = () => {
-  const translate = useContext(accessibilityLanguageContext);
+  const translate = useContext(AccessibilityLanguageContext);
 
   // check context provided
   if (!translate) {

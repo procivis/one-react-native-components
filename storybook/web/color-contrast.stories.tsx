@@ -1,5 +1,5 @@
 import type { Meta, Story } from '@storybook/react';
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { ColorValue, StyleSheet, View } from 'react-native';
 
 import { Typography } from '../../src/text';
@@ -59,7 +59,7 @@ const getRatingText = (rating: Rating, AAlimit: number, AAAlimit: number) => {
   }
 };
 
-const Test: FunctionComponent<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
+const Test: FC<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
   const colorScheme = useAppColorScheme();
   const contrast = getContrastRatio(colorF, colorB);
   const rating = contrast >= AAAlimit ? Rating.AAA : contrast >= AAlimit ? Rating.AA : Rating.None;
@@ -88,10 +88,7 @@ const Test: FunctionComponent<TestProps> = ({ name, colorF, colorB, AAlimit, AAA
   );
 };
 
-const TextBackgroundTest: FunctionComponent<{ text: SimpleColorName; background: SimpleColorName }> = ({
-  text,
-  background,
-}) => {
+const TextBackgroundTest: FC<{ text: SimpleColorName; background: SimpleColorName }> = ({ text, background }) => {
   const colorScheme = useAppColorScheme();
   return (
     <Test
