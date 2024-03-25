@@ -15,6 +15,7 @@
   "accessibility.icon.edit": "edit",
   "accessibility.icon.add": "add",
   "accessibility.icon.filter": "filter",
+  "accessibility.icon.scan": "scan",
   "accessibility.key.faceId": "faceId",
   "accessibility.key.fingerprint": "fingerprint"
 }
