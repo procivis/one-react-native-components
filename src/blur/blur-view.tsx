@@ -3,25 +3,34 @@ import React, { FC, PropsWithChildren, useMemo } from 'react';
 import { Platform, StyleProp, useColorScheme, View, ViewStyle } from 'react-native';
 
 export type BlurViewProps = {
+  blurAmount?: number;
   blurStyle: 'soft' | 'strong';
+  reversedColorScheme?: boolean;
   style: StyleProp<ViewStyle>;
   testID?: string;
 };
 
-const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({ blurStyle, children, style, testID }) => {
-  const darkMode = useColorScheme() === 'dark';
+const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
+  blurAmount = 50,
+  blurStyle,
+  children,
+  reversedColorScheme,
+  style,
+  testID,
+}) => {
+  const darkBlur = useColorScheme() === (reversedColorScheme ? 'light' : 'dark');
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'soft') {
-      return darkMode ? 'thinMaterialDark' : 'thinMaterial';
+      return darkBlur ? 'thinMaterialDark' : 'thinMaterial';
     } else {
-      return darkMode ? 'thickMaterialDark' : 'thickMaterial';
+      return darkBlur ? 'thickMaterialDark' : 'thickMaterial';
     }
-  }, [blurStyle, darkMode]);
+  }, [blurStyle, darkBlur]);
 
   if (Platform.OS === 'ios') {
     return (
-      <RNBlurView blurAmount={50} blurType={blurType} style={style} testID={testID}>
+      <RNBlurView blurAmount={blurAmount} blurType={blurType} style={style} testID={testID}>
         {children}
       </RNBlurView>
     );
