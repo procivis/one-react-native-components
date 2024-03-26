@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ComponentType, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Animated,
   Easing,
@@ -13,14 +13,14 @@ import {
 import { DownIcon, UpIcon } from '../../icons/credential';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
 import { concatTestID } from '../../utils/testID';
-import CredentialAttributeItem, { CredentialAttributeItemProps } from '../credential-attribute-item';
+import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
 import CredentialCard, { CredentialCardProps } from './credential-card';
 
 export type CredentialDetailsCardProps = {
-  attributes: Omit<CredentialAttributeItemProps, 'style' | 'onImagePreview' | 'last'>[];
+  attributes: CredentialAttribute[];
   card: CredentialCardProps;
   expanded?: boolean;
-  footer?: React.ComponentType<any> | React.ReactElement;
+  footer?: ComponentType<any> | ReactElement;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -91,8 +91,8 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
             <CredentialAttributeItem
               key={attribute.id}
               last={!footerView && index === length - 1}
-              {...attribute}
               onImagePreview={onImagePreview}
+              {...attribute}
             />
           ))}
           {footerView && <View style={styles.footer}>{footerView}</View>}

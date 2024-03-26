@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ComponentType, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
@@ -6,28 +6,49 @@ import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 import { concatTestID } from '../utils/testID';
 
-const imageHeight = 64;
+const IMAGE_HEIGHT = 64;
 
-export type CredentialAttributeItemProps = {
+export type CredentialAttributeValue =
+  | {
+      attributes: CredentialAttribute[];
+      image?: never;
+      value?: never;
+      valueErrorColor?: never;
+    }
+  | {
+      attributes?: never;
+      image: ImageSourcePropType;
+      value?: never;
+      valueErrorColor?: never;
+    }
+  | {
+      attributes?: never;
+      image?: never;
+      value: string;
+      valueErrorColor?: boolean;
+    };
+
+export type CredentialAttribute = CredentialAttributeValue & {
   id: string;
-  image?: ImageSourcePropType;
-  last: boolean | undefined;
   name: string;
-  onImagePreview?: (name: string, image: ImageSourcePropType) => void;
-  rightAccessory?: React.ComponentType<any> | React.ReactElement;
-  style?: StyleProp<ViewStyle>;
+  rightAccessory?: ComponentType<any> | ReactElement;
   testID?: string;
-  value?: string;
-  valueErrorColor?: boolean;
+};
+
+export type CredentialAttributeItemProps = CredentialAttribute & {
+  last: boolean | undefined;
+  onImagePreview?: (name: string, image: ImageSourcePropType) => void;
+  style?: StyleProp<ViewStyle>;
 };
 
 const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
-  style,
+  attributes,
   image,
   last,
   name,
   onImagePreview,
   rightAccessory,
+  style,
   testID,
   value,
   valueErrorColor,
@@ -47,7 +68,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
       return;
     }
     Image.getSize(image.uri, (width, height) => {
-      setImageWidth((width / height) * imageHeight);
+      setImageWidth((width / height) * IMAGE_HEIGHT);
     });
   }, [image]);
 
@@ -69,8 +90,29 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
 
   return (
     <View
-      style={[styles.dataItem, { borderColor: colorScheme.background }, last && styles.dataItemLast, style]}
+      style={[
+        styles.dataItem,
+        {
+          borderColor: colorScheme.background,
+        },
+        last && styles.dataItemLast,
+        attributes && styles.dataItemNested,
+        style,
+      ]}
       testID={testID}>
+      {attributes && (
+        <View style={styles.decorator}>
+          <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
+            <View
+              style={[
+                styles.decoratorCircleInner,
+                { backgroundColor: colorScheme.text, borderColor: colorScheme.background },
+              ]}
+            />
+          </View>
+          <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
+        </View>
+      )}
       <View style={styles.dataItemLeft}>
         <Typography
           color={colorScheme.text}
@@ -79,7 +121,24 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
           testID={concatTestID(testID, 'title')}>
           {name}
         </Typography>
-        {value ? (
+        {attributes &&
+          attributes.map((attribute, index, { length }) => (
+            <CredentialAttributeItem
+              key={attribute.id}
+              last={index === length - 1}
+              onImagePreview={onImagePreview}
+              {...attribute}
+            />
+          ))}
+        {image && (
+          <TouchableOpacity
+            disabled={!onImagePreview}
+            onPress={imagePreviewHandler}
+            style={styles.dataItemImageWrapper}>
+            <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
+          </TouchableOpacity>
+        )}
+        {value && (
           <Typography
             color={valueErrorColor ? colorScheme.error : colorScheme.text}
             numberOfLines={10}
@@ -87,14 +146,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
             testID={concatTestID(testID, 'value')}>
             {value}
           </Typography>
-        ) : image ? (
-          <TouchableOpacity
-            disabled={!onImagePreview}
-            onPress={imagePreviewHandler}
-            style={styles.dataItemImageWrapper}>
-            <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
-          </TouchableOpacity>
-        ) : undefined}
+        )}
       </View>
       {rightAccessoryView}
     </View>
@@ -110,10 +162,11 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   dataItemImage: {
-    height: imageHeight,
+    height: IMAGE_HEIGHT,
+    position: 'relative',
   },
   dataItemImageWrapper: {
-    height: imageHeight,
+    height: IMAGE_HEIGHT,
   },
   dataItemLabel: {
     marginBottom: 2,
@@ -124,6 +177,42 @@ const styles = StyleSheet.create({
   },
   dataItemLeft: {
     flex: 1,
+  },
+  dataItemNested: {
+    paddingBottom: 0,
+    paddingLeft: 16,
+    position: 'relative',
+  },
+  decorator: {
+    bottom: 13,
+    left: 0,
+    position: 'absolute',
+    top: 5,
+    width: 16,
+  },
+  decoratorCircle: {
+    alignItems: 'center',
+    borderRadius: 3.5,
+    borderWidth: 1,
+    height: 7,
+    justifyContent: 'center',
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: 7,
+  },
+  decoratorCircleInner: {
+    borderRadius: 2,
+    borderWidth: 1,
+    height: 4,
+    width: 4,
+  },
+  decoratorLine: {
+    bottom: 0,
+    left: 3,
+    position: 'absolute',
+    top: 7,
+    width: 1,
   },
 });
 
