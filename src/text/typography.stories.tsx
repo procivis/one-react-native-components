@@ -6,7 +6,7 @@ import ColorSchemes from '../../storybook/colorScheme';
 import { ColorScheme, useAppColorScheme } from '../theme';
 import Typography from './typography';
 
-type ColorSchemeKey = keyof ColorScheme;
+type ColorSchemeKey = keyof Omit<ColorScheme, 'darkMode'>;
 
 const Basic: ComponentStory<typeof Typography> = ({ color, ...args }) => {
   const colorScheme = useAppColorScheme();
