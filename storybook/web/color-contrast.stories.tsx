@@ -41,7 +41,7 @@ enum Rating {
   None,
 }
 
-type SimpleColorName = keyof ColorScheme;
+type SimpleColorName = keyof Omit<ColorScheme, 'darkMode'>;
 const RATING_COLOR: Record<Rating, SimpleColorName> = {
   [Rating.AAA]: 'success',
   [Rating.AA]: 'warning',
