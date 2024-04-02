@@ -15,4 +15,5 @@ export const light: ColorScheme = {
   text: '#0D0E10',
   warning: '#F7BF0B',
   white: '#FFFFFF',
+  darkMode: false,
 };

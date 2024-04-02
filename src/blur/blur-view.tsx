@@ -1,36 +1,28 @@
 import { BlurView as RNBlurView, BlurViewProps as RNBlurViewProps } from '@react-native-community/blur';
 import React, { FC, PropsWithChildren, useMemo } from 'react';
-import { Platform, StyleProp, useColorScheme, View, ViewStyle } from 'react-native';
+import { Platform, View, ViewProps } from 'react-native';
 
-export type BlurViewProps = {
+import { useAppColorScheme } from '../theme';
+
+export interface BlurViewProps extends ViewProps {
   blurAmount?: number;
   blurStyle: 'soft' | 'strong';
-  reversedColorScheme?: boolean;
-  style: StyleProp<ViewStyle>;
-  testID?: string;
-};
+}
 
-const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
-  blurAmount = 50,
-  blurStyle,
-  children,
-  reversedColorScheme,
-  style,
-  testID,
-}) => {
-  const darkBlur = useColorScheme() === (reversedColorScheme ? 'light' : 'dark');
+const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({ blurAmount = 50, blurStyle, children, style, ...props }) => {
+  const { darkMode } = useAppColorScheme();
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'soft') {
-      return darkBlur ? 'thinMaterialDark' : 'thinMaterial';
+      return darkMode ? 'thinMaterialDark' : 'thinMaterial';
     } else {
-      return darkBlur ? 'thickMaterialDark' : 'thickMaterial';
+      return darkMode ? 'thickMaterialDark' : 'thickMaterial';
     }
-  }, [blurStyle, darkBlur]);
+  }, [blurStyle, darkMode]);
 
   if (Platform.OS === 'ios') {
     return (
-      <RNBlurView blurAmount={blurAmount} blurType={blurType} style={style} testID={testID}>
+      <RNBlurView blurAmount={blurAmount} blurType={blurType} style={style} {...props}>
         {children}
       </RNBlurView>
     );
@@ -46,7 +38,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
   const backgroundColor = backgroundColors[blurType];
 
   return (
-    <View style={[{ backgroundColor }, style]} testID={testID}>
+    <View style={[{ backgroundColor }, style]} {...props}>
       {children}
     </View>
   );

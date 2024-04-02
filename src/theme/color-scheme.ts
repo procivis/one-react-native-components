@@ -17,4 +17,5 @@ export interface ColorScheme {
   text: string;
   warning: string;
   white: string;
+  darkMode: boolean;
 }
