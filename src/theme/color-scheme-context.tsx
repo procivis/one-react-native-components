@@ -17,6 +17,7 @@ const defaultColorScheme: ColorScheme = {
   text: '#0D0E10',
   warning: '#F7BF0B',
   white: '#FFFFFF',
+  darkMode: false,
 };
 
 const ColorSchemeContext = React.createContext<ColorScheme>(defaultColorScheme);
