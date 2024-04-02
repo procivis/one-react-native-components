@@ -29,7 +29,19 @@ try {
 } catch {}
 
 const getStories = () => {
-  return [require("../src/text/typography.stories.tsx")];
+  return [
+    require("../src/buttons/back-button.stories.tsx"),
+    require("../src/buttons/button.stories.tsx"),
+    require("../src/buttons/ghost-button.stories.tsx"),
+    require("../src/buttons/scan-button.stories.tsx"),
+    require("../src/credential/card/credential-card.stories.tsx"),
+    require("../src/credential/card/credential-details-card.stories.tsx"),
+    require("../src/credential/card/credential-header.stories.tsx"),
+    require("../src/credential/selector.stories.tsx"),
+    require("../src/header/header.stories.tsx"),
+    require("../src/searchbar/search-bar.stories.tsx"),
+    require("../src/text/typography.stories.tsx"),
+  ];
 };
 
 configure(getStories, module, false);
