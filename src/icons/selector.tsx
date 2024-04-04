@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
@@ -22,6 +22,20 @@ export const SelectorIcon: FC<SelectorIconProps> = ({ rejected }) => {
           fill={colorScheme.accent}
         />
       )}
+    </Svg>
+  );
+};
+
+// https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=433-28355&mode=design&t=1iRzM15ip3buTTYX-4
+export const CheckedIcon: FC<SvgProps> = (props) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+      <Rect width="24" height="24" rx="12" fill={colorScheme.accent} />
+      <Path
+        d="M16.767 8.10994C16.6031 7.96335 16.3553 7.96335 16.1914 8.10994L10.1779 14.0513L7.06945 10.9024L7.06769 10.9007C6.908 10.7442 6.65225 10.7443 6.49247 10.9007L6.117 11.2652L6.11001 11.273C5.96343 11.4369 5.96328 11.6849 6.10986 11.8488L10.1755 15.9467L17.1378 9.06948L17.1432 9.06357C17.2895 8.90283 17.2895 8.65712 17.1432 8.49638L16.7748 8.11693L16.767 8.10994Z"
+        fill={colorScheme.white}
+      />
     </Svg>
   );
 };
