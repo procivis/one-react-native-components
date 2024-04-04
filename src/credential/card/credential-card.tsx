@@ -75,9 +75,11 @@ const CredentialCard: FC<CredentialCardProps> = ({
       {notice && (
         <BlurView blurStyle="soft" style={[styles.notice, style]} testID={testID}>
           {noticeIconView}
-          <Typography color={colorScheme.text} preset="xs/line-height-small" style={styles.noticeText}>
-            {notice}
-          </Typography>
+          <View style={styles.noticeTextWrapper}>
+            <Typography color={colorScheme.text} preset="xs/line-height-small" style={styles.noticeText}>
+              {notice}
+            </Typography>
+          </View>
         </BlurView>
       )}
     </View>
@@ -114,6 +116,9 @@ const styles = StyleSheet.create({
   },
   noticeText: {
     marginVertical: 5,
+  },
+  noticeTextWrapper: {
+    flex: 1,
   },
 });
 
