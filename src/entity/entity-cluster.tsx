@@ -18,7 +18,6 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({ avatar, entityNa
   const avatarProps = useMemo<AvatarProps>(() => {
     const initials = entityName.split(' ', 3).map((word: string) => word[0]);
     const placeholderText = initials.length > 0 ? initials.join('') : '';
-    console.log('aaa', placeholderText, 'aaa');
     return {
       ...avatar,
       placeholderText: avatar?.placeholderText ?? placeholderText,
