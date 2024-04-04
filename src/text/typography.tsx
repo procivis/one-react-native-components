@@ -15,8 +15,7 @@ const presets = {
   l: {
     ...font.medium,
     fontSize: 24,
-    lineHeight: 22,
-    // TODO: fix cut-off
+    // TODO: figure out how to support line-height 22
   },
   'l/line-height-large': {
     ...font.medium,

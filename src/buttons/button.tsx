@@ -74,7 +74,7 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
         ]}
         disabled={disabled}
         {...props}>
-        <View style={[styles.content, disabled && styles.disabled]}>
+        <View style={disabled && styles.disabled}>
           <Typography
             preset={type === ButtonType.SmallTech ? 's' : 'regular'}
             color={textColor}
@@ -107,10 +107,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
   },
-  content: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   disabled: {
     opacity: 0.4,
   },
@@ -120,7 +116,6 @@ const styles = StyleSheet.create({
   },
   techSmall: {
     borderRadius: 4,
-    borderWidth: 1,
     paddingVertical: 12,
   },
   withSubtitle: {
