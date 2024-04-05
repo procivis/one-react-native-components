@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Common Procivis ONE UI components for react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
