@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Insets, StyleSheet, TouchableOpacityProps, View } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { GestureResponderEvent, Insets, StyleSheet, TouchableOpacityProps, View } from 'react-native';
 
 import { TouchableOpacity, TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
 import { Typography } from '../text';
@@ -26,6 +26,12 @@ const hitSlop: Insets = {
   right: SLOP_VALUE,
 };
 
+const ACTIVE_OPACITY: Record<ButtonType, number> = {
+  [ButtonType.Primary]: 0.8,
+  [ButtonType.Secondary]: 1,
+  [ButtonType.SmallTech]: 0.5,
+};
+
 /**
  * Common button component
  *
@@ -34,8 +40,9 @@ const hitSlop: Insets = {
  * for bordered style just override `borderColor` in style
  */
 export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
-  ({ style, type = ButtonType.Primary, disabled, title, subtitle, ...props }, ref) => {
+  ({ style, type = ButtonType.Primary, disabled, title, subtitle, onPressIn, onPressOut, ...props }, ref) => {
     const colorScheme = useAppColorScheme();
+    const [secondaryPressed, setSecondaryPressed] = useState(false);
 
     const textColor = useMemo(() => {
       switch (type) {
@@ -53,16 +60,32 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
         case ButtonType.Primary:
           return colorScheme.accent;
         case ButtonType.Secondary:
-          return colorScheme.white;
+          return secondaryPressed ? colorScheme.background : colorScheme.white;
         case ButtonType.SmallTech:
           return 'rgba(255, 255, 255, 0.05)';
       }
-    }, [type, colorScheme]);
+    }, [type, colorScheme, secondaryPressed]);
+
+    const secondaryPressIn = useCallback(
+      (event: GestureResponderEvent) => {
+        setSecondaryPressed(true);
+        onPressIn?.(event);
+      },
+      [onPressIn],
+    );
+
+    const secondaryPressOut = useCallback(
+      (event: GestureResponderEvent) => {
+        setSecondaryPressed(false);
+        onPressOut?.(event);
+      },
+      [onPressOut],
+    );
 
     return (
       <TouchableOpacity
         accessibilityRole="button"
-        activeOpacity={0.8}
+        activeOpacity={ACTIVE_OPACITY[type]}
         hitSlop={hitSlop}
         ref={ref}
         style={[
@@ -73,8 +96,10 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
           style,
         ]}
         disabled={disabled}
+        onPressIn={type === ButtonType.Secondary ? secondaryPressIn : onPressIn}
+        onPressOut={type === ButtonType.Secondary ? secondaryPressOut : onPressOut}
         {...props}>
-        <View style={disabled && styles.disabled}>
+        <View style={[secondaryPressed && styles.secondaryPressedLabel, disabled && styles.disabled]}>
           <Typography
             preset={type === ButtonType.SmallTech ? 's' : 'regular'}
             color={textColor}
@@ -109,6 +134,9 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.4,
+  },
+  secondaryPressedLabel: {
+    opacity: 0.5,
   },
   subtitle: {
     opacity: 0.8,
