@@ -29,6 +29,7 @@ const Basic: Story<Args> = ({ state, withButton1, withButton2, withButton3, with
           : undefined
       }
       loader={{
+        animate: true,
         state,
         label: 'Loading...',
       }}
