@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Animated, Easing, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, Easing, InteractionManager, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
 
@@ -10,11 +10,14 @@ export enum LoaderViewState {
 }
 
 export type LoaderViewProps = {
+  animate: boolean;
   state?: LoaderViewState;
 };
 
-const LoaderView: FC<LoaderViewProps> = ({ state }) => {
+const LoaderView: FC<LoaderViewProps> = ({ animate, state }) => {
   const [initialDelayPassed, setInitialDelayPassed] = useState(false);
+  const [rotationAnimation, setRotationAnimation] = useState<Animated.CompositeAnimation>();
+  const rotationIsAnimating = useRef(false);
   const [rotation] = useState(() => new Animated.Value(0));
   const [opacity] = useState(() => new Animated.Value(0));
 
@@ -22,35 +25,72 @@ const LoaderView: FC<LoaderViewProps> = ({ state }) => {
   const success = state === LoaderViewState.Success;
 
   useEffect(() => {
-    Animated.loop(
-      Animated.timing(rotation, {
-        duration: 1000,
-        easing: Easing.linear,
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-    ).start();
-
-    const timetout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       setInitialDelayPassed(true);
     }, 1000);
 
     return () => {
-      clearTimeout(timetout);
+      clearTimeout(timeout);
     };
-  }, [rotation]);
+  }, []);
+
+  useEffect(() => {
+    if (!rotationAnimation) {
+      return;
+    }
+    const animation = Animated.loop(
+      Animated.timing(rotation, {
+        duration: 1000,
+        easing: Easing.linear,
+        toValue: 1,
+        useNativeDriver: false,
+      }),
+    );
+    if (animate) {
+      animation.start();
+      rotationIsAnimating.current = true;
+    }
+    setRotationAnimation(animation);
+
+    return () => {
+      animation.stop();
+    };
+  }, [animate, rotation, rotationAnimation]);
+
+  const handleRotationAnimation = useCallback(() => {
+    if (finished || !animate) {
+      InteractionManager.runAfterInteractions(() => {
+        rotationIsAnimating.current = false;
+        rotationAnimation?.stop();
+      });
+    } else if (!rotationIsAnimating.current) {
+      rotationIsAnimating.current = true;
+      rotationAnimation?.start();
+    }
+  }, [finished, animate, rotationAnimation]);
+
+  useEffect(() => {
+    handleRotationAnimation();
+  }, [animate, handleRotationAnimation]);
 
   useEffect(() => {
     if (!initialDelayPassed) {
       return;
     }
-    Animated.timing(opacity, {
-      duration: 300,
-      easing: Easing.ease,
-      toValue: finished ? 1 : 0,
-      useNativeDriver: true,
-    }).start();
-  }, [opacity, finished, initialDelayPassed]);
+    if (animate) {
+      Animated.timing(opacity, {
+        duration: 300,
+        easing: Easing.ease,
+        toValue: finished ? 1 : 0,
+        useNativeDriver: false,
+      }).start(() => {
+        handleRotationAnimation();
+      });
+    } else {
+      opacity.setValue(finished ? 1 : 0);
+      handleRotationAnimation();
+    }
+  }, [opacity, finished, initialDelayPassed, animate, handleRotationAnimation]);
 
   const spinnerAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
     opacity: opacity.interpolate({
