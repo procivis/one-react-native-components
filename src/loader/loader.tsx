@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, InteractionManager, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
+import { concatTestID } from '../utils';
 
 export enum LoaderViewState {
   InProgress = 'inProgress',
@@ -12,9 +13,10 @@ export enum LoaderViewState {
 export type LoaderViewProps = {
   animate: boolean;
   state?: LoaderViewState;
+  testID?: string;
 };
 
-const LoaderView: FC<LoaderViewProps> = ({ animate, state }) => {
+const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
   const [initialDelayPassed, setInitialDelayPassed] = useState(false);
   const [rotationAnimation, setRotationAnimation] = useState<Animated.CompositeAnimation>();
   const rotationIsAnimating = useRef(false);
@@ -115,7 +117,7 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state }) => {
   };
 
   return (
-    <View style={styles.loader}>
+    <View style={styles.loader} testID={concatTestID(testID, state)}>
       <Animated.View style={[styles.loaderElement, spinnerAnimatedStyle]}>
         <LoaderProgressSpinner />
       </Animated.View>
