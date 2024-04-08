@@ -3,6 +3,7 @@ import { StyleSheet, View, ViewProps } from 'react-native';
 
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
+import { concatTestID } from '../utils';
 
 export type NavigationHeaderProps = ViewProps & {
   leftItem?: React.ComponentType<any> | React.ReactElement;
@@ -16,6 +17,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   modalHandleVisible,
   rightItem,
   style,
+  testID,
   title,
   ...props
 }) => {
@@ -45,11 +47,14 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   }, [rightItem]);
 
   return (
-    <View {...props} style={[styles.headerContainer, { backgroundColor: colorScheme.background }, style]}>
+    <View
+      {...props}
+      style={[styles.headerContainer, { backgroundColor: colorScheme.background }, style]}
+      testID={testID}>
       {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
       <View style={styles.header}>
         <View style={styles.sideItem}>{leftItemView}</View>
-        <Typography color={colorScheme.text} preset="m">
+        <Typography color={colorScheme.text} preset="m" testID={concatTestID(testID, 'title')}>
           {title}
         </Typography>
         <View style={[styles.sideItem, styles.rightSideItem]}>{rightItemView}</View>
