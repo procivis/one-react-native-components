@@ -17,18 +17,18 @@ const CameraOverlay: FunctionComponent<CameraMaskProps> = ({ scannerSize }) => {
 
   return (
     <Svg height="100%" width="100%" style={StyleSheet.absoluteFill}>
-      <View style={{height: '100%'}}>
+      <View style={{ height: '100%' }}>
         <Svg
           style={{
             width: scannerSize,
             height: scannerSize,
-            top: "50%",
-            left: "50%",
+            top: '50%',
+            left: '50%',
             transform: [{ translateX: -transformSize }, { translateY: -transformSize }],
           }}
           viewBox="0 0 245 245"
           fill="none"
-          strokeWidth={"4px"}
+          strokeWidth={'4px'}
           strokeLinecap="round"
           stroke={colorScheme.white}>
           <Path d="M44.9348 2.5H40.9C27.4587 2.5 20.7381 2.5 15.6042 5.11584C11.0883 7.4168 7.4168 11.0883 5.11584 15.6042C2.5 20.7381 2.5 27.4587 2.5 40.9V44.9348" />
