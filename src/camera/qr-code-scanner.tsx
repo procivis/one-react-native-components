@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera, Code, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 
+import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
 import BlurView from '../blur/blur-view';
 import { GhostButton } from '../buttons';
 import { CloseIcon } from '../icons';
@@ -11,23 +12,24 @@ import { useAppColorScheme } from '../theme';
 import CameraOverlay from './camera-overlay';
 
 export interface QRCodeScannerProps {
-  onBarCodeRead: (code: Code[]) => void;
+  onQRCodeRead: (code: Code[]) => void;
   onClose: () => void;
   notAuthorizedView?: JSX.Element;
   title: ReactElement | string;
 }
 
 const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
-  onBarCodeRead,
+  onQRCodeRead,
   notAuthorizedView,
   onClose,
   title,
 }) => {
   const colorScheme = useAppColorScheme();
+  const t = useAccessibilityTranslation();
 
   const qrCodeScanner = useCodeScanner({
     codeTypes: ['qr'],
-    onCodeScanned: onBarCodeRead,
+    onCodeScanned: onQRCodeRead,
   });
 
   const device = useCameraDevice('back');
@@ -37,7 +39,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <Camera codeScanner={qrCodeScanner} style={StyleSheet.absoluteFill} device={device!} isActive={true}>
         <BlurView blurStyle="soft" style={styles.topBlurView} />
         <CameraOverlay />
@@ -49,7 +51,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
       </Camera>
       <SafeAreaView>
         <View style={styles.headerSection}>
-          <GhostButton icon={CloseIcon} onPress={onClose} accessibilityLabel={'Close'} />
+          <GhostButton icon={CloseIcon} onPress={onClose} accessibilityLabel={t('accessibility.nav.close')} />
         </View>
       </SafeAreaView>
     </View>
@@ -62,6 +64,9 @@ const styles = StyleSheet.create({
     height: '15%',
     position: 'absolute',
     width: '100%',
+  },
+  container: {
+    flex: 1,
   },
   headerSection: {
     paddingHorizontal: 22,
