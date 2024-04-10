@@ -7,6 +7,8 @@ const Basic: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
 Basic.args = {
   title: 'Title',
+  subtitle: '',
+  disabled: false,
   style: { margin: 24 },
 };
 
