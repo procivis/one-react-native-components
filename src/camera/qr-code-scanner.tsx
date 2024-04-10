@@ -8,7 +8,6 @@ import BlurView from '../blur/blur-view';
 import { GhostButton } from '../buttons';
 import { CloseIcon } from '../icons';
 import { Typography } from '../text';
-import { useAppColorScheme } from '../theme';
 import CameraOverlay from './camera-overlay';
 
 export interface QRCodeScannerProps {
@@ -24,7 +23,6 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
   onClose,
   title,
 }) => {
-  const colorScheme = useAppColorScheme();
   const t = useAccessibilityTranslation();
 
   const qrCodeScanner = useCodeScanner({
@@ -44,14 +42,18 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
         <BlurView blurStyle="soft" style={styles.topBlurView} />
         <CameraOverlay />
         <BlurView blurStyle="soft" style={styles.bottomBlurView}>
-          <Typography align="center" style={styles.title} color={colorScheme.white}>
+          <Typography align="center" style={styles.title} color={'#FFFFFF'}>
             {title}
           </Typography>
         </BlurView>
       </Camera>
       <SafeAreaView>
         <View style={styles.headerSection}>
-          <GhostButton icon={CloseIcon} onPress={onClose} accessibilityLabel={t('accessibility.nav.close')} />
+          <GhostButton
+            icon={<CloseIcon color={'#FFFFFF'} />}
+            onPress={onClose}
+            accessibilityLabel={t('accessibility.nav.close')}
+          />
         </View>
       </SafeAreaView>
     </View>

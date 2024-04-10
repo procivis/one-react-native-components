@@ -2,14 +2,11 @@ import React, { FunctionComponent } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-import { useAppColorScheme } from '../theme';
-
 export interface CameraMaskProps {
   scannerSize?: number;
 }
 
 const CameraOverlay: FunctionComponent<CameraMaskProps> = ({ scannerSize }) => {
-  const colorScheme = useAppColorScheme();
   const windowWidth = Dimensions.get('window').width;
 
   scannerSize = scannerSize ?? windowWidth * 0.6;
@@ -30,7 +27,7 @@ const CameraOverlay: FunctionComponent<CameraMaskProps> = ({ scannerSize }) => {
         fill="none"
         strokeWidth={4}
         strokeLinecap="round"
-        stroke={colorScheme.white}>
+        stroke={'#FFFFFF'}>
         <Path d="M44.9348 2.5H40.9C27.4587 2.5 20.7381 2.5 15.6042 5.11584C11.0883 7.4168 7.4168 11.0883 5.11584 15.6042C2.5 20.7381 2.5 27.4587 2.5 40.9V44.9348" />
         <Path d="M242.5 44.9348L242.5 26.5C242.5 13.2452 231.755 2.5 218.5 2.5L200.065 2.5" />
         <Path d="M242.5 44.9348L242.5 40.9C242.5 27.4587 242.5 20.7381 239.884 15.6042C237.583 11.0883 233.912 7.4168 229.396 5.11584C224.262 2.5 217.541 2.5 204.1 2.5L200.065 2.5" />
