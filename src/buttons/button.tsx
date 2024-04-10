@@ -4,6 +4,7 @@ import { GestureResponderEvent, Insets, StyleSheet, TouchableOpacityProps, View 
 import { TouchableOpacity, TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
+import { concatTestID } from '../utils';
 
 export enum ButtonType {
   Primary = 'primary',
@@ -40,7 +41,7 @@ const ACTIVE_OPACITY: Record<ButtonType, number> = {
  * for bordered style just override `borderColor` in style
  */
 export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
-  ({ style, type = ButtonType.Primary, disabled, title, subtitle, onPressIn, onPressOut, ...props }, ref) => {
+  ({ style, type = ButtonType.Primary, disabled, title, subtitle, onPressIn, onPressOut, testID, ...props }, ref) => {
     const colorScheme = useAppColorScheme();
     const [secondaryPressed, setSecondaryPressed] = useState(false);
 
@@ -98,8 +99,11 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
         disabled={disabled}
         onPressIn={type === ButtonType.Secondary ? secondaryPressIn : onPressIn}
         onPressOut={type === ButtonType.Secondary ? secondaryPressOut : onPressOut}
+        testID={testID}
         {...props}>
-        <View style={[secondaryPressed && styles.secondaryPressedLabel, disabled && styles.disabled]}>
+        <View
+          style={[secondaryPressed && styles.secondaryPressedLabel, disabled && styles.disabled]}
+          testID={concatTestID(testID, disabled ? 'disabled' : 'enabled')}>
           <Typography
             preset={type === ButtonType.SmallTech ? 's' : 'regular'}
             color={textColor}
