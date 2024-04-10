@@ -34,6 +34,7 @@ const getStories = () => {
     require("../src/buttons/button.stories.tsx"),
     require("../src/buttons/ghost-button.stories.tsx"),
     require("../src/buttons/scan-button.stories.tsx"),
+    require("../src/camera/qr-code-scanner.stories.tsx"),
     require("../src/control/checkbox.stories.tsx"),
     require("../src/control/switch.stories.tsx"),
     require("../src/credential/card/credential-card.stories.tsx"),
