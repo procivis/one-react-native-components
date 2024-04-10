@@ -1,6 +1,7 @@
 export * from './accessibility';
 export * from './blur';
 export * from './buttons';
+export * from './camera';
 export * from './control';
 export * from './credential';
 export * from './entity';

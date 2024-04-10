@@ -97,6 +97,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.11.0",
     "react-native-svg": "^15.1.0",
+    "react-native-vision-camera": "^3.9.2",
     "react-native-web": "^0.18.9",
     "release-it": "^14.2.2",
     "storybook-addon-designs": "^6.3.1",
@@ -109,7 +110,8 @@
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*",
-    "react-native-svg": "*"
+    "react-native-svg": "*",
+    "react-native-vision-camera": "*"
   },
   "jest": {
     "preset": "react-native",
