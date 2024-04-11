@@ -83,6 +83,7 @@ Basic.args = {
     notice: 'Notice related to the credential',
     noticeIcon: AlertOutlineIcon,
   },
+  showAllButtonLabel: 'See all',
   expanded: true,
   footer: (
     <View
