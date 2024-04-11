@@ -41,7 +41,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   onImagePreview,
   style,
   testID,
-  showAllButtonLabel = 'See all',
+  showAllButtonLabel,
 }) => {
   const colorScheme = useAppColorScheme();
   const [expandCardAnimation] = useState(() => new Animated.Value(expanded ? 1 : 0));
@@ -52,7 +52,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const [buttonViewHeight, setButtonViewHeight] = useState<number>();
   const [cardSize, setCardSize] = useState({ width: 0, height: 0 });
 
-  const [showAllAttributes, setShowAllAttributes] = useState<boolean>(false);
+  const [allAttributesRendered, setAllAttributesRendered] = useState<boolean>(
+    attributes.length <= PREVIEW_ATTRIBUTES_COUNT || !showAllButtonLabel,
+  );
 
   const CaretIcon = expanded ? UpIcon : DownIcon;
 
@@ -69,10 +71,10 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     Animated.timing(showAllAttributesAnimation, {
       duration: 200,
       easing: Easing.quad,
-      toValue: expanded && showAllAttributes ? 1 : 0,
+      toValue: expanded && allAttributesRendered ? 1 : 0,
       useNativeDriver: false,
     }).start();
-  }, [showAllAttributes, showAllAttributesAnimation, expanded]);
+  }, [allAttributesRendered, showAllAttributesAnimation, expanded]);
 
   const attributesWrapperStyle: Animated.WithAnimatedObject<ViewStyle> = {
     height:
@@ -166,10 +168,10 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
             <Animated.View style={[styles.attributesAnimatedWrapper, buttonWrapperStyle]}>
               <View onLayout={onButtonViewLayout}>
                 <Button
-                  onPress={() => setShowAllAttributes(true)}
+                  onPress={() => setAllAttributesRendered(true)}
                   type={ButtonType.Secondary}
-                  testID={concatTestID(testID, 'show-all-attributes-button')}
-                  title={showAllButtonLabel}
+                  testID={concatTestID(testID, 'showAllAttributesButton')}
+                  title={showAllButtonLabel!}
                 />
               </View>
             </Animated.View>
