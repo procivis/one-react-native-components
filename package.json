@@ -108,6 +108,7 @@
     "@react-native-community/blur": "*",
     "@react-native/normalize-color": "*",
     "@react-navigation/native": "*",
+    "react-native-reanimated-carousel": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*",
