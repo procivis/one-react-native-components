@@ -16,10 +16,12 @@ import { useAppColorScheme } from '../../theme/color-scheme-context';
 import { concatTestID } from '../../utils/testID';
 import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
 import CredentialCard, { CredentialCardProps } from './credential-card';
+import CarouselComponent, { CarouselImage } from './credential-image-carousel';
 
 export type CredentialDetailsCardProps = {
   attributes: CredentialAttribute[];
   card: CredentialCardProps;
+  cardCarouselImages: CarouselImage[];
   expanded?: boolean;
   footer?: ComponentType<any> | ReactElement;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
@@ -33,6 +35,7 @@ const PREVIEW_ATTRIBUTES_COUNT = 3;
 const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   attributes,
   card,
+  cardCarouselImages,
   expanded,
   footer,
   onImagePreview,
@@ -47,6 +50,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const [previewAttributesHeight, setPreviewAttributesHeight] = useState<number>(0);
   const [fullAttributesHeight, setFullAttributesHeight] = useState<number>(0);
   const [buttonViewHeight, setButtonViewHeight] = useState<number>();
+  const [cardSize, setCardSize] = useState({ width: 0, height: 0 });
 
   const [showAllAttributes, setShowAllAttributes] = useState<boolean>(false);
 
@@ -112,6 +116,13 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     setButtonViewHeight(event.nativeEvent.layout.height);
   }, []);
 
+  const onCardLayoutChange = useCallback((event: LayoutChangeEvent) => {
+    setCardSize({
+      width: event.nativeEvent.layout.width,
+      height: event.nativeEvent.layout.height,
+    });
+  }, []);
+
   const footerView: ReactElement | undefined = useMemo(() => {
     if (!footer) {
       return undefined;
@@ -131,27 +142,38 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   return (
     <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} testID={testID}>
-      <CredentialCard
-        {...cardProps}
-        header={{ ...header, accessory: header.accessory ?? CaretIcon }}
-        style={[styles.card, cardProps.style]}
-        testID={concatTestID(testID, 'card')}
+      <View onLayout={onCardLayoutChange}>
+        <CredentialCard
+          {...cardProps}
+          header={{ ...header, accessory: header.accessory ?? CaretIcon }}
+          style={[styles.card, cardProps.style]}
+          testID={concatTestID(testID, 'card')}
+        />
+      </View>
+      <CarouselComponent
+        imagesToRender={cardCarouselImages ?? []}
+        carouselSize={{
+          width: cardSize.width,
+          height: cardSize.height,
+        }}
       />
       <Animated.View style={[styles.attributesAnimatedWrapper, attributesWrapperStyle]}>
         <View onLayout={onPreviewAttrContentLayout} style={styles.attributesWrapper}>
           {previewAttributes.map((attribute) => (
             <CredentialAttributeItem key={attribute.id} last={false} onImagePreview={onImagePreview} {...attribute} />
           ))}
-          <Animated.View style={[styles.attributesAnimatedWrapper, buttonWrapperStyle]}>
-            <View onLayout={onButtonViewLayout}>
-              <Button
-                onPress={() => setShowAllAttributes(true)}
-                type={ButtonType.Secondary}
-                testID={concatTestID(testID, 'show-all-attributes-button')}
-                title={showAllButtonLabel}
-              />
-            </View>
-          </Animated.View>
+          {extraAttributes.length > 0 && (
+            <Animated.View style={[styles.attributesAnimatedWrapper, buttonWrapperStyle]}>
+              <View onLayout={onButtonViewLayout}>
+                <Button
+                  onPress={() => setShowAllAttributes(true)}
+                  type={ButtonType.Secondary}
+                  testID={concatTestID(testID, 'show-all-attributes-button')}
+                  title={showAllButtonLabel}
+                />
+              </View>
+            </Animated.View>
+          )}
         </View>
       </Animated.View>
       <Animated.View style={[styles.attributesAnimatedWrapper, fullAttributesWrapperStyle]}>
@@ -165,9 +187,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               {...attribute}
             />
           ))}
-          {footerView && <View style={styles.footer}>{footerView}</View>}
         </View>
       </Animated.View>
+      {expanded && footerView && <View style={styles.footer}>{footerView}</View>}
     </View>
   );
 };
