@@ -1,6 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
+import { Text } from 'react-native-svg';
 
 import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { AlertOutlineIcon, CredentialWarningIcon } from '../../icons/credential';
@@ -43,13 +44,28 @@ Basic.args = {
       id: 'attribute-2',
       name: 'Attribute 2',
       image: {
-        uri: 'https://s3-alpha-sig.figma.com/img/ac5f/5ece/9cbfda349b80d4a06724b8486281b688?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=jjkjqOL~2ly-PP0SeYb63BcWW~5KLrGSEUjWxWRIBrQhzYmkBMEXD1yIXzyBT5Dt7QHvAggXK0EtlrngV7CTtsoJ1p0Apk01I2qumkFz7s0eZkU0OHq1X2dRyzjU40eUorAjzgMrjD8XVIjFLBb7wKW-U-lMAu1Q3Fzq~WlHu7CuY~nEPX7EtnScxQeU6-mqVTzeZbp5Y8frhwnY6~0Pew53f7qIB6DH7CC2xguLG94nPmKm0-Esu-AGfp2~hGiU1h~yvtrdhGAjR3vH7yTL~jSPkOdkzHRrizS0oO568lq-QeVgueZS3Srqr1EKj5xIw65J7Ms9FuaX2~xiRrSJLg__',
+        uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
       },
     },
     {
       id: 'attribute-3',
       name: 'Attribute 3',
       value: 'Value 3',
+    },
+    {
+      id: 'attribute-4',
+      name: 'Attribute 4',
+      value: 'Value 4',
+    },
+    {
+      id: 'attribute-5',
+      name: 'Attribute 5',
+      value: 'Value 5',
+    },
+    {
+      id: 'attribute-6',
+      name: 'Attribute 5',
+      value: 'Value 5',
     },
   ],
   card: {
@@ -67,6 +83,7 @@ Basic.args = {
     notice: 'Notice related to the credential',
     noticeIcon: AlertOutlineIcon,
   },
+  showAllButtonLabel: 'See all',
   expanded: true,
   footer: (
     <View
@@ -75,7 +92,7 @@ Basic.args = {
         backgroundColor: 'lightgray',
         padding: 12,
       }}>
-      Footer view
+      <Text>Footer view</Text>
     </View>
   ),
 };
