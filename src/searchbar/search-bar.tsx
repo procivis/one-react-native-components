@@ -4,6 +4,7 @@ import { Insets, StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewSty
 import { TouchableOpacity } from '../accessibility';
 import { CloseIcon, SearchIcon } from '../icons';
 import { useAppColorScheme } from '../theme';
+import { concatTestID } from '../utils';
 
 export interface SearchBarProps extends TextInputProps {
   style?: StyleProp<ViewStyle>;
@@ -16,7 +17,7 @@ const hitSlop: Insets = { top: 10, left: 10, bottom: 10, right: 10 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1143-40433&t=HY1KvobxOReLeC8Z-4
 const SearchBar = forwardRef<TextInput, SearchBarProps>(
-  ({ style, placeholder, searchPhrase, onSearchPhraseChange, ...textInputProps }, ref) => {
+  ({ style, placeholder, searchPhrase, onSearchPhraseChange, testID, ...textInputProps }, ref) => {
     const colorScheme = useAppColorScheme();
 
     const onClear = useCallback(() => {
@@ -42,10 +43,16 @@ const SearchBar = forwardRef<TextInput, SearchBarProps>(
           returnKeyType="search"
           style={[styles.textInput, { color: colorScheme.text }]}
           value={searchPhrase}
+          testID={testID}
           {...textInputProps}
         />
         {searchPhrase && (
-          <TouchableOpacity accessibilityRole="button" hitSlop={hitSlop} onPress={onClear} style={styles.clearButton}>
+          <TouchableOpacity
+            testID={concatTestID(testID, 'clear')}
+            accessibilityRole="button"
+            hitSlop={hitSlop}
+            onPress={onClear}
+            style={styles.clearButton}>
             <CloseIcon color={colorScheme.text} height={12} width={12} />
           </TouchableOpacity>
         )}
