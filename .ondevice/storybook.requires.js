@@ -41,6 +41,7 @@ const getStories = () => {
     require("../src/credential/card/credential-details-card.stories.tsx"),
     require("../src/credential/card/credential-header.stories.tsx"),
     require("../src/credential/selector.stories.tsx"),
+    require("../src/detail/detail.stories.tsx"),
     require("../src/entity/avatar.stories.tsx"),
     require("../src/entity/entity-cluster.stories.tsx"),
     require("../src/header/header.stories.tsx"),
