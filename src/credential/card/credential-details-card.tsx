@@ -161,8 +161,13 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
       />
       <Animated.View style={[styles.attributesAnimatedWrapper, attributesWrapperStyle]}>
         <View onLayout={onPreviewAttrContentLayout} style={styles.attributesWrapper}>
-          {previewAttributes.map((attribute) => (
-            <CredentialAttributeItem key={attribute.id} last={false} onImagePreview={onImagePreview} {...attribute} />
+          {previewAttributes.map((attribute, idx) => (
+            <CredentialAttributeItem
+              key={attribute.id}
+              last={!extraAttributes.length && idx === previewAttributes.length - 1}
+              onImagePreview={onImagePreview}
+              {...attribute}
+            />
           ))}
           {extraAttributes.length > 0 && (
             <Animated.View style={[styles.attributesAnimatedWrapper, buttonWrapperStyle]}>
