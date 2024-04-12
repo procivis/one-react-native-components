@@ -4,6 +4,7 @@ export * from './buttons';
 export * from './camera';
 export * from './control';
 export * from './credential';
+export * from './detail';
 export * from './entity';
 export * from './header';
 export * from './icons';
