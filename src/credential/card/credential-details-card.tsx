@@ -21,7 +21,7 @@ import CarouselComponent, { CarouselImage } from './credential-image-carousel';
 export type CredentialDetailsCardProps = {
   attributes: CredentialAttribute[];
   card: CredentialCardProps;
-  cardCarouselImages: CarouselImage[];
+  cardCarouselImages?: CarouselImage[];
   expanded?: boolean;
   footer?: ComponentType<any> | ReactElement;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
