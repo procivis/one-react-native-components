@@ -12,6 +12,7 @@ const Basic: ComponentStory<typeof CredentialCard> = ({ ...args }) => {
 
 Basic.args = {
   cardImage: { imageSource: CredentialCardBackground },
+  onHeaderPress: () => {},
   color: undefined,
   header: {
     accessory: RequiredAttributeIcon,
@@ -33,6 +34,7 @@ export default {
   title: 'credential/card/CredentialCard',
   component: CredentialCard,
   argTypes: {
+    onHeaderPress: { action: 'onPress' },
     color: {
       options: Object.entries(ColorSchemes.procivis)
         .filter(([_, value]) => typeof value === 'string')

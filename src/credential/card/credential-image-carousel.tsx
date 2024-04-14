@@ -49,11 +49,13 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
         )}
       />
       <View style={styles.pageDotContainer}>
-        {numberOfSlides >= 2 ? imagesToRender.map((_, index) => (
-          <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.3} />
-          </Svg>
-        )) : null}
+        {numberOfSlides >= 2
+          ? imagesToRender.map((_, index) => (
+              <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
+                <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.3} />
+              </Svg>
+            ))
+          : null}
       </View>
     </View>
   );
@@ -68,7 +70,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  Photo: { aspectRatio: 1, borderRadius: 100, height: '50%', borderWidth: 2, borderColor: '#FFFFFF', overflow: 'hidden' },
+  Photo: {
+    aspectRatio: 1,
+    borderColor: '#FFFFFF',
+    borderRadius: 100,
+    borderWidth: 2,
+    height: '50%',
+    overflow: 'hidden',
+  },
   // eslint-disable-next-line react-native/no-unused-styles
   QrCode: { aspectRatio: 1, borderRadius: 4, height: '50%' },
   carouselItem: {
@@ -78,7 +87,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    zIndex: 1,
     position: 'absolute',
     width: '100%',
   },

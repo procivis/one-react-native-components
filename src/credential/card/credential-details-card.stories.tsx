@@ -1,17 +1,23 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-svg';
 
 import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
+import { Placeholder } from '../../../storybook/placeholder';
 import { AlertOutlineIcon, CredentialWarningIcon } from '../../icons/credential';
 import CredentialDetailsCard from './credential-details-card';
 import { CarouselImageType } from './credential-image-carousel';
-import { Placeholder } from '../../../storybook/placeholder';
 
 const Basic: ComponentStory<typeof CredentialDetailsCard> = ({ ...args }) => {
   return <CredentialDetailsCard {...args} />;
 };
+
+const style = StyleSheet.create({
+  carouselItem: {
+    flex: 1,
+  },
+});
 
 Basic.args = {
   attributes: [
@@ -73,24 +79,25 @@ Basic.args = {
   card: {
     cardImage: { imageSource: CredentialDetailsCardBackground },
     cardCarouselImages: [
-    {
-      type: CarouselImageType.Photo,
-      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
-    },
-    {
-      type: CarouselImageType.Barcode,
-      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
-    },
-    {
-      type: CarouselImageType.MRZ,
-      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
-    },
-    {
-      type: CarouselImageType.QrCode,
-      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
-    }
+      {
+        type: CarouselImageType.Photo,
+        element: <Placeholder id="R" style={style.carouselItem} />,
+      },
+      {
+        type: CarouselImageType.Barcode,
+        element: <Placeholder id="R" style={style.carouselItem} />,
+      },
+      {
+        type: CarouselImageType.MRZ,
+        element: <Placeholder id="R" style={style.carouselItem} />,
+      },
+      {
+        type: CarouselImageType.QrCode,
+        element: <Placeholder id="R" style={style.carouselItem} />,
+      },
     ],
     color: undefined,
+    onHeaderPress: () => {},
     header: {
       credentialDetail: 'Credential detail',
       credentialDetailTestID: undefined,

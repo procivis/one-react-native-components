@@ -38,14 +38,14 @@ const CredentialCard: FC<CredentialCardProps> = ({
   testID,
 }) => {
   const colorScheme = useAppColorScheme();
-  const [tappableHeaderHeight, setTappableHeaderHeight] = useState<number>()
-  const [noticeHeight, setNoticeHeight] = useState<number>()
-  const [cardSize, setCardSize] = useState<{ height: number, width: number }>();
+  const [tappableHeaderHeight, setTappableHeaderHeight] = useState<number>();
+  const [noticeHeight, setNoticeHeight] = useState<number>();
+  const [cardSize, setCardSize] = useState<{ height: number; width: number }>();
 
   const onCardLayoutChange = useCallback((event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     setCardSize({ width, height });
-  }, [])
+  }, []);
 
   const onHeaderLayoutChange = useCallback((event: LayoutChangeEvent) => {
     setTappableHeaderHeight(event.nativeEvent.layout.height);
@@ -74,16 +74,6 @@ const CredentialCard: FC<CredentialCardProps> = ({
   const shouldShowCarousel = cardSize?.width && cardSize.height;
   return (
     <View onLayout={onCardLayoutChange} style={[styles.card, style]} testID={testID}>
-      {
-        shouldShowCarousel ? <CarouselComponent
-        style={{marginTop: tappableHeaderHeight ?? 0}}
-          imagesToRender={cardCarouselImages ?? []}
-          carouselSize={{
-            width: cardSize.width,
-            height: cardSize.height - (tappableHeaderHeight ?? 0) - (noticeHeight ?? 0),
-          }}
-        /> : null
-      }
       {cardImage ? (
         'imageSource' in cardImage ? (
           <View style={styles.cardImage}>
@@ -95,6 +85,16 @@ const CredentialCard: FC<CredentialCardProps> = ({
       ) : (
         <View style={[styles.cardImage, { backgroundColor: color }]} />
       )}
+      {shouldShowCarousel ? (
+        <CarouselComponent
+          style={{ marginTop: tappableHeaderHeight ?? 0 }}
+          imagesToRender={cardCarouselImages ?? []}
+          carouselSize={{
+            width: cardSize.width,
+            height: cardSize.height - (tappableHeaderHeight ?? 0) - (noticeHeight ?? 0),
+          }}
+        />
+      ) : null}
       <TouchableOpacity
         onLayout={onHeaderLayoutChange}
         activeOpacity={0.9}
