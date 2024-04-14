@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useMemo } from 'react';
-import { ColorValue, Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { ColorValue, Image, LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { TouchableOpacity } from '../../accessibility/accessibilityHistoryWrappers';
 import BlurView from '../../blur/blur-view';
@@ -8,10 +8,12 @@ import Typography from '../../text/typography';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
 import { concatTestID } from '../../utils/testID';
 import CredentialHeader, { CredentialHeaderProps } from './credential-header';
+import CarouselComponent, { CarouselImage } from './credential-image-carousel';
 
 export const CredentialCardRatio = 18 / 11;
 
 export type CredentialCardProps = {
+  cardCarouselImages?: CarouselImage[];
   cardImage?: ImageOrComponentSource;
   color?: ColorValue;
   credentialId?: string;
@@ -24,6 +26,7 @@ export type CredentialCardProps = {
 };
 
 const CredentialCard: FC<CredentialCardProps> = ({
+  cardCarouselImages = [],
   cardImage,
   color = '#5A69F3',
   credentialId,
@@ -35,6 +38,22 @@ const CredentialCard: FC<CredentialCardProps> = ({
   testID,
 }) => {
   const colorScheme = useAppColorScheme();
+  const [tappableHeaderHeight, setTappableHeaderHeight] = useState<number>()
+  const [noticeHeight, setNoticeHeight] = useState<number>()
+  const [cardSize, setCardSize] = useState<{ height: number, width: number }>();
+
+  const onCardLayoutChange = useCallback((event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    setCardSize({ width, height });
+  }, [])
+
+  const onHeaderLayoutChange = useCallback((event: LayoutChangeEvent) => {
+    setTappableHeaderHeight(event.nativeEvent.layout.height);
+  }, []);
+
+  const onNoticeLayoutChange = useCallback((event: LayoutChangeEvent) => {
+    setNoticeHeight(event.nativeEvent.layout.height);
+  }, []);
 
   const headerPressHandler = useCallback(() => {
     onHeaderPress?.(credentialId);
@@ -52,8 +71,19 @@ const CredentialCard: FC<CredentialCardProps> = ({
     }
   }, [noticeIcon]);
 
+  const shouldShowCarousel = cardSize?.width && cardSize.height;
   return (
-    <View style={[styles.card, style]} testID={testID}>
+    <View onLayout={onCardLayoutChange} style={[styles.card, style]} testID={testID}>
+      {
+        shouldShowCarousel ? <CarouselComponent
+        style={{marginTop: tappableHeaderHeight ?? 0}}
+          imagesToRender={cardCarouselImages ?? []}
+          carouselSize={{
+            width: cardSize.width,
+            height: cardSize.height - (tappableHeaderHeight ?? 0) - (noticeHeight ?? 0),
+          }}
+        /> : null
+      }
       {cardImage ? (
         'imageSource' in cardImage ? (
           <View style={styles.cardImage}>
@@ -66,6 +96,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
         <View style={[styles.cardImage, { backgroundColor: color }]} />
       )}
       <TouchableOpacity
+        onLayout={onHeaderLayoutChange}
         activeOpacity={0.9}
         disabled={!onHeaderPress}
         onPress={headerPressHandler}
@@ -73,7 +104,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
         <CredentialHeader {...header} color={color} testID={concatTestID(testID, 'header')} />
       </TouchableOpacity>
       {notice && (
-        <BlurView blurStyle="soft" style={[styles.notice, style]} testID={testID}>
+        <BlurView onLayout={onNoticeLayoutChange} blurStyle="soft" style={[styles.notice, style]} testID={testID}>
           {noticeIconView}
           <View style={styles.noticeTextWrapper}>
             <Typography color={colorScheme.text} preset="xs/line-height-small" style={styles.noticeText}>
