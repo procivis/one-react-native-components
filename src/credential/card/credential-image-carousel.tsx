@@ -48,15 +48,15 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
           </View>
         )}
       />
-      <View style={styles.pageDotContainer}>
-        {numberOfSlides >= 2
-          ? imagesToRender.map((_, index) => (
-              <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
-                <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.3} />
-              </Svg>
-            ))
-          : null}
-      </View>
+      {numberOfSlides >= 2 ? <View style={styles.pageDotContainer}>
+        {imagesToRender.map((_, index) => (
+          <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
+            <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.2} />
+          </Svg>
+        ))
+        }
+      </View> : null
+      }
     </View>
   );
 };
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   Barcode: { borderRadius: 4, height: '50%', width: '80%' },
   // eslint-disable-next-line react-native/no-unused-styles
   MRZ: {
-    height: '40%',
+    height: '50%',
     width: '100%',
   },
   // eslint-disable-next-line react-native/no-unused-styles
@@ -75,14 +75,15 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     borderRadius: 100,
     borderWidth: 2,
-    height: '50%',
+    height: '70%',
     overflow: 'hidden',
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  QrCode: { aspectRatio: 1, borderRadius: 4, height: '50%' },
+  QrCode: { aspectRatio: 1, borderRadius: 4, height: '70%' },
   carouselItem: {
     alignItems: 'center',
-    flex: 1,
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
   },
   container: {
@@ -91,13 +92,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   pageDotContainer: {
-    alignSelf: 'center',
-    bottom: 10,
     columnGap: 8,
-    flexDirection: 'row',
-    flex: 1,
+    bottom: 15,
     justifyContent: 'center',
-    position: 'absolute',
+    flexDirection: 'row'
   },
 });
 
