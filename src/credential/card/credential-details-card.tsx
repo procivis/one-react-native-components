@@ -128,7 +128,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
           ))}
         </View>
         {!allAttributesRendered && extraAttributes.length > 0 && (
-          <View style={styles.attributesWrapper}onLayout={onButtonViewLayout}>
+          <View style={styles.attributesWrapper} onLayout={onButtonViewLayout}>
             <Button
               onPress={() => setAllAttributesRendered(true)}
               type={ButtonType.Secondary}
@@ -148,8 +148,8 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
             />
           ))}
         </View>
-        {expanded && footerView && <View style={styles.footer}>{footerView}</View>}
       </Animated.View>
+      {(expanded && <View style={styles.footer}>{footerView}</View>) ?? null}
     </View>
   );
 };
