@@ -6,6 +6,8 @@ import { Text } from 'react-native-svg';
 import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { AlertOutlineIcon, CredentialWarningIcon } from '../../icons/credential';
 import CredentialDetailsCard from './credential-details-card';
+import { CarouselImageType } from './credential-image-carousel';
+import { Placeholder } from '../../../storybook/placeholder';
 
 const Basic: ComponentStory<typeof CredentialDetailsCard> = ({ ...args }) => {
   return <CredentialDetailsCard {...args} />;
@@ -70,6 +72,24 @@ Basic.args = {
   ],
   card: {
     cardImage: { imageSource: CredentialDetailsCardBackground },
+    cardCarouselImages: [
+    {
+      type: CarouselImageType.Photo,
+      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
+    },
+    {
+      type: CarouselImageType.Barcode,
+      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
+    },
+    {
+      type: CarouselImageType.MRZ,
+      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
+    },
+    {
+      type: CarouselImageType.QrCode,
+      element: <Placeholder id="R" style={{width: '100%', height: '100%'}} />
+    }
+    ],
     color: undefined,
     header: {
       credentialDetail: 'Credential detail',
