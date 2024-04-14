@@ -136,7 +136,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
       <CredentialCard
         {...cardProps}
         header={{ ...header, accessory: header.accessory ?? CaretIcon }}
-        onHeaderPress={() => { }}
         style={[styles.card, cardProps.style]}
         testID={concatTestID(testID, 'card')}
       />
