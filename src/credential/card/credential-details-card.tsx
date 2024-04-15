@@ -1,13 +1,6 @@
 import React, { ComponentType, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  Easing,
-  ImageSourcePropType,
-  LayoutChangeEvent,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { ImageSourcePropType, LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { Button, ButtonType } from '../../buttons';
 import { DownIcon, UpIcon } from '../../icons/credential';
@@ -15,7 +8,6 @@ import { useAppColorScheme } from '../../theme/color-scheme-context';
 import { concatTestID } from '../../utils/testID';
 import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
 import CredentialCard, { CredentialCardProps } from './credential-card';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 export type CredentialDetailsCardProps = {
   attributes: CredentialAttribute[];
@@ -54,30 +46,42 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const currentHeight = useSharedValue(0);
 
+  const previewAttributes = attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT);
+  const extraAttributes = attributes.slice(PREVIEW_ATTRIBUTES_COUNT);
+
   useEffect(() => {
     if (!expanded) {
       currentHeight.value = withTiming(0, {
-        duration: 250
-      })
+        duration: 250,
+      });
     } else if (allAttributesRendered) {
       const duration = previewAttributes.length * 50;
 
       currentHeight.value = withTiming(previewAttributesHeight + fullAttributesHeight, {
-        duration
+        duration,
       });
     } else {
       const duration = extraAttributes.length * 50;
       currentHeight.value = withTiming(previewAttributesHeight + buttonViewHeight, {
-        duration
+        duration,
       });
     }
-  }, [expanded, previewAttributesHeight, buttonViewHeight, fullAttributesHeight, allAttributesRendered]);
+  }, [
+    allAttributesRendered,
+    buttonViewHeight,
+    currentHeight,
+    expanded,
+    extraAttributes.length,
+    fullAttributesHeight,
+    previewAttributes.length,
+    previewAttributesHeight,
+  ]);
 
   const credentilAttributesStyle = useAnimatedStyle(() => {
     return {
-      height: currentHeight.value
+      height: currentHeight.value,
     };
-  })
+  });
 
   const onPreviewAttrContentLayout = useCallback((event: LayoutChangeEvent) => {
     setPreviewAttributesHeight(event.nativeEvent.layout.height);
@@ -104,9 +108,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   }, [footer]);
 
   const { header, ...cardProps } = card;
-
-  const previewAttributes = attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT);
-  const extraAttributes = attributes.slice(PREVIEW_ATTRIBUTES_COUNT);
 
   return (
     <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} testID={testID}>
@@ -141,7 +142,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
           {extraAttributes.map((attribute, index, { length }) => (
             <CredentialAttributeItem
               key={attribute.id}
-              last={!footerView && (index === length - 1)}
+              last={!footerView && index === length - 1}
               testID={concatTestID(testID, 'attribute', attribute.id)}
               onImagePreview={onImagePreview}
               {...attribute}
@@ -158,10 +159,6 @@ const styles = StyleSheet.create({
   attributesAnimatedWrapper: {
     overflow: 'hidden',
   },
-  previewAttributesWrapper: {
-    paddingHorizontal: 12,
-    width: '100%',
-  },
   attributesWrapper: {
     paddingBottom: 12,
     paddingHorizontal: 12,
@@ -176,6 +173,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginTop: 12,
+  },
+  previewAttributesWrapper: {
+    paddingHorizontal: 12,
+    width: '100%',
   },
 });
 

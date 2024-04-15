@@ -48,15 +48,15 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
           </View>
         )}
       />
-      {numberOfSlides >= 2 ? <View style={styles.pageDotContainer}>
-        {imagesToRender.map((_, index) => (
-          <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.2} />
-          </Svg>
-        ))
-        }
-      </View> : null
-      }
+      {numberOfSlides >= 2 ? (
+        <View style={styles.pageDotContainer}>
+          {imagesToRender.map((_, index) => (
+            <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
+              <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.2} />
+            </Svg>
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
   QrCode: { aspectRatio: 1, borderRadius: 4, height: '70%' },
   carouselItem: {
     alignItems: 'center',
-    width: '100%',
     height: '100%',
     justifyContent: 'center',
+    width: '100%',
   },
   container: {
     flex: 1,
@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   pageDotContainer: {
-    columnGap: 8,
     bottom: 15,
+    columnGap: 8,
+    flexDirection: 'row',
     justifyContent: 'center',
-    flexDirection: 'row'
   },
 });
 
