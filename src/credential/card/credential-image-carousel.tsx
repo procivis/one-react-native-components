@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import Svg, { Circle } from 'react-native-svg';
 
@@ -18,25 +18,29 @@ export type CarouselImage = {
 type CarouselProps = {
   carouselSize: { width: number; height: number };
   imagesToRender: CarouselImage[];
+  style?: StyleProp<ViewStyle>;
 };
 
-const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender }) => {
+const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, style }) => {
   const [selectedDot, setSelectedDot] = useState(0);
 
   if (!carouselSize.width || !carouselSize.height) {
     return null;
   }
 
-  if (!imagesToRender.length) {
+  const numberOfSlides = imagesToRender.length;
+
+  if (!numberOfSlides) {
     return null;
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Carousel
         width={carouselSize.width}
         onSnapToItem={setSelectedDot}
         height={carouselSize.height}
+        enabled={numberOfSlides >= 2}
         data={imagesToRender}
         renderItem={({ item: { type, element } }) => (
           <View style={styles.carouselItem}>
@@ -45,11 +49,13 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender }) 
         )}
       />
       <View style={styles.pageDotContainer}>
-        {imagesToRender.map((_, index) => (
-          <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.3} />
-          </Svg>
-        ))}
+        {numberOfSlides >= 2
+          ? imagesToRender.map((_, index) => (
+              <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
+                <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.3} />
+              </Svg>
+            ))
+          : null}
       </View>
     </View>
   );
@@ -64,20 +70,25 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  Photo: { aspectRatio: 1, borderRadius: 100, height: '50%', overflow: 'hidden' },
+  Photo: {
+    aspectRatio: 1,
+    borderColor: '#FFFFFF',
+    borderRadius: 100,
+    borderWidth: 2,
+    height: '50%',
+    overflow: 'hidden',
+  },
   // eslint-disable-next-line react-native/no-unused-styles
   QrCode: { aspectRatio: 1, borderRadius: 4, height: '50%' },
   carouselItem: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 30,
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
     position: 'absolute',
     width: '100%',
-    zIndex: 1,
   },
   pageDotContainer: {
     alignSelf: 'center',
@@ -87,7 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     position: 'absolute',
-    zIndex: 1,
   },
 });
 
