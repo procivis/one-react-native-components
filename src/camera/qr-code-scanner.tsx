@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, Code, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Camera, Code, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera';
 
 import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
 import BlurView from '../blur/blur-view';
@@ -24,6 +24,13 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
   title,
 }) => {
   const t = useAccessibilityTranslation();
+  const insets = useSafeAreaInsets();
+
+  const { hasPermission, requestPermission } = useCameraPermission();
+
+  if (!hasPermission) {
+    requestPermission();
+  }
 
   const qrCodeScanner = useCodeScanner({
     codeTypes: ['qr'],
@@ -32,30 +39,32 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
 
   const device = useCameraDevice('back');
 
+  if (!hasPermission) {
+    return notAuthorizedView ?? null;
+  }
+
   if (!device) {
     return notAuthorizedView ?? null;
   }
 
   return (
     <View style={styles.container}>
-      <Camera codeScanner={qrCodeScanner} style={StyleSheet.absoluteFill} device={device!} isActive={true}>
-        <BlurView blurStyle="soft" style={styles.topBlurView} />
-        <CameraOverlay />
-        <BlurView blurStyle="soft" style={styles.bottomBlurView}>
-          <Typography align="center" style={styles.title} color={'#FFFFFF'}>
-            {title}
-          </Typography>
-        </BlurView>
-      </Camera>
-      <SafeAreaView>
-        <View style={styles.headerSection}>
+      <Camera codeScanner={qrCodeScanner} style={StyleSheet.absoluteFill} device={device!} isActive={true} />
+      <CameraOverlay />
+      <BlurView darkMode={true} blurStyle="soft" style={styles.topBlurView}>
+        <View style={[styles.headerSection, { top: insets.top }]}>
           <GhostButton
             icon={<CloseIcon color={'#FFFFFF'} />}
             onPress={onClose}
             accessibilityLabel={t('accessibility.nav.close')}
           />
         </View>
-      </SafeAreaView>
+      </BlurView>
+      <BlurView darkMode={true} blurStyle="soft" style={styles.bottomBlurView}>
+        <Typography align="center" style={styles.title} color={'#FFFFFF'}>
+          {title}
+        </Typography>
+      </BlurView>
     </View>
   );
 };
@@ -73,6 +82,7 @@ const styles = StyleSheet.create({
   headerSection: {
     paddingHorizontal: 22,
     paddingTop: 16,
+    position: 'absolute',
   },
   title: {
     marginTop: 32,

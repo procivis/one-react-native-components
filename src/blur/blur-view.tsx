@@ -6,19 +6,28 @@ import { useAppColorScheme } from '../theme';
 
 export interface BlurViewProps extends ViewProps {
   blurAmount?: number;
+  darkMode?: boolean;
   blurStyle: 'soft' | 'strong';
 }
 
-const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({ blurAmount = 50, blurStyle, children, style, ...props }) => {
-  const { darkMode } = useAppColorScheme();
+const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
+  blurAmount = 50,
+  blurStyle,
+  darkMode,
+  children,
+  style,
+  ...props
+}) => {
+  const themeDarkMode = useAppColorScheme().darkMode;
+  const dark = darkMode ?? themeDarkMode;
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'soft') {
-      return darkMode ? 'thinMaterialDark' : 'thinMaterial';
+      return dark ? 'thinMaterialDark' : 'thinMaterial';
     } else {
-      return darkMode ? 'thickMaterialDark' : 'thickMaterial';
+      return dark ? 'thickMaterialDark' : 'thickMaterial';
     }
-  }, [blurStyle, darkMode]);
+  }, [blurStyle, dark]);
 
   if (Platform.OS === 'ios') {
     return (
