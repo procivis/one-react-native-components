@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Camera, Code, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera';
 
 import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
@@ -29,7 +29,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
   const { hasPermission, requestPermission } = useCameraPermission();
 
   if (!hasPermission) {
-    requestPermission()
+    requestPermission();
   }
 
   const qrCodeScanner = useCodeScanner({
@@ -42,7 +42,6 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
   if (!hasPermission) {
     return notAuthorizedView ?? null;
   }
-
 
   if (!device) {
     return notAuthorizedView ?? null;
@@ -81,9 +80,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerSection: {
-    position: 'absolute',
     paddingHorizontal: 22,
     paddingTop: 16,
+    position: 'absolute',
   },
   title: {
     marginTop: 32,
