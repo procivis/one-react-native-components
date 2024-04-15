@@ -10,8 +10,16 @@ export interface BlurViewProps extends ViewProps {
   blurStyle: 'soft' | 'strong';
 }
 
-const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({ blurAmount = 50, blurStyle, darkMode, children, style, ...props }) => {
-  const dark = darkMode ?? useAppColorScheme().darkMode;
+const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
+  blurAmount = 50,
+  blurStyle,
+  darkMode,
+  children,
+  style,
+  ...props
+}) => {
+  const themeDarkMode = useAppColorScheme().darkMode;
+  const dark = darkMode ?? themeDarkMode;
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'soft') {
@@ -19,7 +27,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({ blurAmount = 50, blurS
     } else {
       return dark ? 'thickMaterialDark' : 'thickMaterial';
     }
-  }, [blurStyle, darkMode]);
+  }, [blurStyle, dark]);
 
   if (Platform.OS === 'ios') {
     return (
