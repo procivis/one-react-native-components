@@ -23,9 +23,9 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'soft') {
-      return dark ? 'thinMaterialDark' : 'thinMaterial';
+      return dark ? 'thinMaterialDark' : 'thinMaterialLight';
     } else {
-      return dark ? 'thickMaterialDark' : 'thickMaterial';
+      return dark ? 'thickMaterialDark' : 'thickMaterialLight';
     }
   }, [blurStyle, dark]);
 
@@ -38,9 +38,9 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
   }
 
   const backgroundColors = {
-    thickMaterial: 'rgba(255, 255, 255, 0.95)',
+    thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
     thickMaterialDark: 'rgba(16, 12, 12, 0.95)',
-    thinMaterial: 'rgba(255, 255, 255, 0.8)',
+    thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
     thinMaterialDark: 'rgba(16, 12, 12, 0.8)',
   };
 
