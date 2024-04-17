@@ -21,7 +21,7 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
   const [rotationAnimation, setRotationAnimation] = useState<Animated.CompositeAnimation>();
   const rotationIsAnimating = useRef(false);
   const [rotation] = useState(() => new Animated.Value(0));
-  const [opacity] = useState(() => new Animated.Value(0));
+  const [opacity] = useState(() => new Animated.Value(state === LoaderViewState.InProgress ? 0 : 1));
 
   const finished = state !== LoaderViewState.InProgress;
   const success = state === LoaderViewState.Success;
