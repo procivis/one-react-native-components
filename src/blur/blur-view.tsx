@@ -7,7 +7,7 @@ import { useAppColorScheme } from '../theme';
 export interface BlurViewProps extends ViewProps {
   blurAmount?: number;
   darkMode?: boolean;
-  blurStyle: 'soft' | 'strong';
+  blurStyle: 'soft' | 'strong' | 'header';
 }
 
 const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
@@ -22,7 +22,9 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
   const dark = darkMode ?? themeDarkMode;
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
-    if (blurStyle === 'soft') {
+    if (blurStyle === 'header') {
+      return dark ? 'dark' : 'light';
+    } else if (blurStyle === 'soft') {
       return dark ? 'thinMaterialDark' : 'thinMaterialLight';
     } else {
       return dark ? 'thickMaterialDark' : 'thickMaterialLight';
@@ -38,6 +40,8 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
   }
 
   const backgroundColors = {
+    dark: 'rgba(16, 12, 12, 0.8)',
+    light: 'rgba(255, 255, 255, 0.8)',
     thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
     thickMaterialDark: 'rgba(16, 12, 12, 0.95)',
     thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
