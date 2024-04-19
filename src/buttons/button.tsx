@@ -7,6 +7,7 @@ import { useAppColorScheme } from '../theme';
 import { concatTestID } from '../utils';
 
 export enum ButtonType {
+  Border = 'border',
   Primary = 'primary',
   Secondary = 'secondary',
   SmallTech = 'small-tech',
@@ -29,6 +30,7 @@ const hitSlop: Insets = {
 
 const ACTIVE_OPACITY: Record<ButtonType, number> = {
   [ButtonType.Primary]: 0.8,
+  [ButtonType.Border]: 1,
   [ButtonType.Secondary]: 1,
   [ButtonType.SmallTech]: 0.5,
 };
@@ -49,6 +51,7 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
       switch (type) {
         case ButtonType.Primary:
           return colorScheme.accentText;
+        case ButtonType.Border:
         case ButtonType.Secondary:
           return colorScheme.text;
         case ButtonType.SmallTech:
@@ -56,16 +59,26 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
       }
     }, [type, colorScheme]);
 
-    const bgColor = useMemo(() => {
+    const backgroundColor = useMemo(() => {
       switch (type) {
         case ButtonType.Primary:
           return colorScheme.accent;
+        case ButtonType.Border:
         case ButtonType.Secondary:
           return secondaryPressed ? colorScheme.background : colorScheme.white;
         case ButtonType.SmallTech:
           return 'rgba(255, 255, 255, 0.05)';
       }
     }, [type, colorScheme, secondaryPressed]);
+
+    const borderColor = useMemo(() => {
+      switch (type) {
+        case ButtonType.Border:
+          return colorScheme.background;
+        default:
+          return backgroundColor;
+      }
+    }, [type, colorScheme.background, backgroundColor]);
 
     const secondaryPressIn = useCallback(
       (event: GestureResponderEvent) => {
@@ -92,7 +105,7 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
         style={[
           styles.button,
           subtitle ? styles.withSubtitle : undefined,
-          { backgroundColor: bgColor, borderColor: bgColor },
+          { backgroundColor, borderColor },
           type === ButtonType.SmallTech && styles.techSmall,
           style,
         ]}
@@ -144,14 +157,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     opacity: 0.8,
-    paddingTop: 6,
   },
   techSmall: {
     borderRadius: 4,
     paddingVertical: 12,
   },
   withSubtitle: {
-    paddingBottom: 16,
-    paddingTop: 12,
+    paddingBottom: 12,
+    paddingTop: 8,
   },
 });
