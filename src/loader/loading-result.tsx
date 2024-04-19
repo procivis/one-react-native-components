@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, ButtonProps } from '../buttons/button';
 import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
@@ -28,9 +28,18 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
   ...viewProps
 }) => {
   const colorScheme = useAppColorScheme();
+  const { top } = useSafeAreaInsets();
+
+  const safeAreaPaddingStyle: ViewStyle | undefined =
+    Platform.OS === 'android'
+      ? {
+          paddingTop: top,
+        }
+      : undefined;
+
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
-      <View style={styles.headerWrapper}>
+      <View style={[styles.headerWrapper, safeAreaPaddingStyle]}>
         <NavigationHeader {...header} />
       </View>
       <View style={styles.loaderWrapper}>
