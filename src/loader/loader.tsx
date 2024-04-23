@@ -1,5 +1,13 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Easing, InteractionManager, StyleSheet, View, ViewStyle } from 'react-native';
+import { InteractionManager, StyleSheet, View } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
 import { concatTestID } from '../utils';
@@ -18,10 +26,9 @@ export type LoaderViewProps = {
 
 const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
   const [initialDelayPassed, setInitialDelayPassed] = useState(false);
-  const [rotationAnimation, setRotationAnimation] = useState<Animated.CompositeAnimation>();
   const rotationIsAnimating = useRef(false);
-  const [rotation] = useState(() => new Animated.Value(0));
-  const [opacity] = useState(() => new Animated.Value(state === LoaderViewState.InProgress ? 0 : 1));
+  const rotation = useSharedValue(0);
+  const opacity = useSharedValue(state === LoaderViewState.InProgress ? 0 : 1);
 
   const finished = state !== LoaderViewState.InProgress;
   const success = state === LoaderViewState.Success;
@@ -37,84 +44,89 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
   }, []);
 
   useEffect(() => {
-    if (!rotationAnimation) {
+    return () => {
+      cancelAnimation(rotation);
+    };
+  }, [rotation]);
+
+  const startRotationAnimation = useCallback(() => {
+    if (rotationIsAnimating.current) {
       return;
     }
-    const animation = Animated.loop(
-      Animated.timing(rotation, {
+    rotationIsAnimating.current = true;
+    rotation.value = withRepeat(
+      withTiming(360, {
         duration: 1000,
         easing: Easing.linear,
-        toValue: 1,
-        useNativeDriver: false,
       }),
+      -1,
     );
-    if (animate) {
-      animation.start();
-      rotationIsAnimating.current = true;
-    }
-    setRotationAnimation(animation);
+  }, [rotationIsAnimating, rotation]);
 
-    return () => {
-      animation.stop();
-    };
-  }, [animate, rotation, rotationAnimation]);
-
-  const handleRotationAnimation = useCallback(() => {
-    if (finished || !animate) {
-      InteractionManager.runAfterInteractions(() => {
-        rotationIsAnimating.current = false;
-        rotationAnimation?.stop();
-      });
-    } else if (!rotationIsAnimating.current) {
-      rotationIsAnimating.current = true;
-      rotationAnimation?.start();
-    }
-  }, [finished, animate, rotationAnimation]);
+  const stopRotationAnimation = useCallback(() => {
+    InteractionManager.runAfterInteractions(() => {
+      rotationIsAnimating.current = false;
+      cancelAnimation(rotation);
+      rotation.value = 0;
+    });
+  }, [rotationIsAnimating, rotation]);
 
   useEffect(() => {
-    handleRotationAnimation();
-  }, [animate, handleRotationAnimation]);
+    if (animate) {
+      startRotationAnimation();
+    } else {
+      stopRotationAnimation();
+    }
+  }, [animate, startRotationAnimation, stopRotationAnimation]);
 
   useEffect(() => {
     if (!initialDelayPassed) {
       return;
     }
-    if (animate) {
-      Animated.timing(opacity, {
-        duration: 300,
-        easing: Easing.ease,
-        toValue: finished ? 1 : 0,
-        useNativeDriver: false,
-      }).start(() => {
-        handleRotationAnimation();
-      });
-    } else {
-      opacity.setValue(finished ? 1 : 0);
-      handleRotationAnimation();
+    const toValue = finished ? 1 : 0;
+    if (opacity.value === toValue) {
+      return;
     }
-  }, [opacity, finished, initialDelayPassed, animate, handleRotationAnimation]);
+    if (animate) {
+      if (!finished) {
+        startRotationAnimation();
+      }
+      opacity.value = withTiming(
+        toValue,
+        {
+          duration: 300,
+          easing: Easing.ease,
+        },
+        () => {
+          if (finished) {
+            stopRotationAnimation();
+          }
+        },
+      );
+    } else {
+      opacity.value = toValue;
+      stopRotationAnimation();
+    }
+  }, [opacity, finished, initialDelayPassed, animate, stopRotationAnimation, startRotationAnimation]);
 
-  const spinnerAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
-    opacity: opacity.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, 0],
+  const spinnerAnimatedStyle = useAnimatedStyle(
+    () => ({
+      opacity: 1 - opacity.value,
+      transform: [
+        {
+          rotateZ: `${rotation.value}deg`,
+        },
+      ],
     }),
-    transform: [
-      {
-        rotate: rotation.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '360deg'],
-        }),
-      },
-    ],
-  };
+    [opacity, rotation],
+  );
 
-  const resultAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
-    opacity: opacity.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 1],
+  const resultAnimatedStyle = useAnimatedStyle(
+    () => ({
+      opacity: opacity.value,
     }),
-  };
+    [opacity],
+  );
 
   return (
     <View style={styles.loader} testID={concatTestID(testID, state)}>
