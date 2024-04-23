@@ -16,4 +16,13 @@ export const light: ColorScheme = {
   warning: '#F7BF0B',
   white: '#FFFFFF',
   darkMode: false,
+  nerdView: {
+    background: 'rgba(2, 4, 21, 0.95)',
+    attributeLabel: '#929497',
+    attributeValueBackground: 'rgba(255, 255, 255, 0.02)',
+    attributeValueBorder: 'rgba(255, 255, 255, 0.2)',
+    attributeSectionBackground: 'rgba(2, 4, 21, 0.8)',
+    button: 'rgba(255, 255, 255, 0.05)',
+    codeHighlightText: 'rgba(232, 135, 114, 1)',
+  },
 };
