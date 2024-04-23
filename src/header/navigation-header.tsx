@@ -13,6 +13,7 @@ export type NavigationHeaderProps = ViewProps & {
   modalHandleVisible?: boolean;
   rightItem?: React.ComponentType<any> | React.ReactElement;
   title?: string;
+  titleColor?: string;
   titleVisible?: boolean;
 };
 
@@ -26,6 +27,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   testID,
   title,
   titleVisible = true,
+  titleColor,
   ...props
 }) => {
   const colorScheme = useAppColorScheme();
@@ -85,7 +87,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
       <View style={styles.header}>
         <View style={styles.sideItem}>{leftItemView}</View>
         <Animated.View style={titleAnimatedStyle}>
-          <Typography color={colorScheme.text} preset="m" testID={concatTestID(testID, 'title')}>
+          <Typography color={titleColor ?? colorScheme.text} preset="m" testID={concatTestID(testID, 'title')}>
             {title}
           </Typography>
         </Animated.View>

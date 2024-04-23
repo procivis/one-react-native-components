@@ -9,10 +9,18 @@ export type EntityClusterProps = ViewProps & {
   avatar?: AvatarProps;
   entityName: string;
   subline?: string;
+  textColor?: string;
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25595&mode=design&t=YI1oD2BfBie5HcvJ-0
-const EntityCluster: FunctionComponent<EntityClusterProps> = ({ avatar, entityName, subline, style, ...viewProps }) => {
+const EntityCluster: FunctionComponent<EntityClusterProps> = ({
+  avatar,
+  entityName,
+  subline,
+  textColor,
+  style,
+  ...viewProps
+}) => {
   const colorScheme = useAppColorScheme();
 
   const avatarProps = useMemo<AvatarProps>(() => {
@@ -28,12 +36,12 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({ avatar, entityNa
     <View style={[styles.entity, style]} {...viewProps}>
       <Avatar {...avatarProps} />
       <View style={styles.labels}>
-        <Typography color={colorScheme.text} numberOfLines={2} preset="m">
+        <Typography color={textColor ?? colorScheme.text} numberOfLines={2} preset="m">
           {entityName}
         </Typography>
         {subline && (
           <View>
-            <Typography color={colorScheme.text} preset="xs">
+            <Typography color={textColor ?? colorScheme.text} preset="xs">
               {subline}
             </Typography>
           </View>
