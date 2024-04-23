@@ -18,4 +18,13 @@ export interface ColorScheme {
   warning: string;
   white: string;
   darkMode: boolean;
+  nerdView: {
+    background: string;
+    attributeLabel: string;
+    attributeSectionBackground: string;
+    attributeValueBackground: string;
+    attributeValueBorder: string;
+    button: string;
+    codeHighlightText: string;
+  };
 }
