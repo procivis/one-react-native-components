@@ -66,7 +66,11 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
         {icon ? (
           <ImageOrComponent source={icon} style={styles.image} />
         ) : (
-          <Typography color={iconLabelColor} preset="m" style={styles.imagePlaceholder}>
+          <Typography
+            testID={concatTestID(testID, 'name')}
+            color={iconLabelColor}
+            preset="m"
+            style={styles.imagePlaceholder}>
             {credentialName.substring(0, 1)}
           </Typography>
         )}
