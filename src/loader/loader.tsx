@@ -3,6 +3,7 @@ import { InteractionManager, StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
   Easing,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -99,7 +100,7 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
         },
         () => {
           if (finished) {
-            stopRotationAnimation();
+            runOnJS(stopRotationAnimation)();
           }
         },
       );
