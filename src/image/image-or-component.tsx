@@ -12,6 +12,7 @@ interface ImageSourceComponentProps {
   style: StyleProp<ImageStyle>;
   resizeMode?: ImageProps['resizeMode'];
   resizeMethod?: ImageProps['resizeMethod'];
+  testID?: string;
 }
 
 const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
@@ -19,6 +20,7 @@ const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
   style,
   resizeMode = 'cover',
   resizeMethod = 'resize',
+  testID,
 }) => {
   const imageStyle = useMemo<ImageStyle>(() => {
     const {
@@ -46,7 +48,7 @@ const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
 
   return (
     <View style={[styles.imageWrapper, style]}>
-      <Image style={imageStyle} source={source} resizeMode={resizeMode} resizeMethod={resizeMethod} />
+      <Image testID={testID} style={imageStyle} source={source} resizeMode={resizeMode} resizeMethod={resizeMethod} />
     </View>
   );
 };
@@ -62,9 +64,10 @@ export type ImageOrComponentSource =
 interface ImageOrComponentProps {
   source: ImageOrComponentSource;
   style: StyleProp<ImageStyle>;
+  testID?: string;
 }
 
-const ImageOrComponent: FC<ImageOrComponentProps> = ({ source, style }) => {
+const ImageOrComponent: FC<ImageOrComponentProps> = ({ source, style, testID }) => {
   if ('imageSource' in source) {
     return (
       <ImageSourceComponent
@@ -72,11 +75,16 @@ const ImageOrComponent: FC<ImageOrComponentProps> = ({ source, style }) => {
         source={source.imageSource}
         resizeMode={source.resizeMode}
         resizeMethod={source.resizeMethod}
+        testID={testID}
       />
     );
   }
   if ('component' in source) {
-    return <View style={style}>{source.component}</View>;
+    return (
+      <View testID={testID} style={style}>
+        {source.component}
+      </View>
+    );
   }
   return null;
 };
