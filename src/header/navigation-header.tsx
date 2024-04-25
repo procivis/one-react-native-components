@@ -82,8 +82,8 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
       {...props}
       style={[styles.headerContainer, !blurred ? { backgroundColor: colorScheme.background } : undefined, style]}
       testID={testID}>
-      {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
       {blurred && <BlurView blurAmount={20} blurStyle="header" style={styles.blur} />}
+      {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
       <View style={styles.header}>
         <View style={styles.sideItem}>{leftItemView}</View>
         <Animated.View style={titleAnimatedStyle}>
