@@ -77,13 +77,13 @@ const CredentialCard: FC<CredentialCardProps> = ({
       {cardImage ? (
         'imageSource' in cardImage ? (
           <View style={styles.cardImage}>
-            <Image source={cardImage.imageSource} style={styles.image} />
+            <Image testID={concatTestID(testID, 'logo')} source={cardImage.imageSource} style={styles.image} />
           </View>
         ) : (
-          <ImageOrComponent source={cardImage} style={styles.cardImage} />
+          <ImageOrComponent testID={concatTestID(testID, 'logo')} source={cardImage} style={styles.cardImage} />
         )
       ) : (
-        <View style={[styles.cardImage, { backgroundColor: color }]} />
+        <View testID={concatTestID(testID, 'logo')} style={[styles.cardImage, { backgroundColor: color }]} />
       )}
       {shouldShowCarousel ? (
         <CarouselComponent
