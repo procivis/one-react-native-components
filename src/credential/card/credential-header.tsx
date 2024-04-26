@@ -64,10 +64,10 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
     <BlurView blurStyle="strong" style={[styles.container, style]} testID={testID}>
       <View style={[styles.imageContainer, { backgroundColor: color }]}>
         {icon ? (
-          <ImageOrComponent source={icon} style={styles.image} />
+          <ImageOrComponent testID={concatTestID(testID, 'logoIcon')} source={icon} style={styles.image} />
         ) : (
           <Typography
-            testID={concatTestID(testID, 'name')}
+            testID={concatTestID(testID, 'logoName')}
             color={iconLabelColor}
             preset="m"
             style={styles.imagePlaceholder}>
@@ -77,7 +77,12 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
       </View>
       {statusIconView && <View style={styles.statusIconWrapper}>{statusIconView}</View>}
       <View style={styles.text}>
-        <Typography color={colorScheme.text} ellipsizeMode={'tail'} numberOfLines={1} preset="regular">
+        <Typography
+          testID={concatTestID(testID, 'name')}
+          color={colorScheme.text}
+          ellipsizeMode={'tail'}
+          numberOfLines={1}
+          preset="regular">
           {credentialName}
         </Typography>
         <Typography
