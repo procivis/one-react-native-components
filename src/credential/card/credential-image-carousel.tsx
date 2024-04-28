@@ -3,6 +3,8 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import Svg, { Circle } from 'react-native-svg';
 
+import { concatTestID } from '../../utils';
+
 export enum CarouselImageType {
   Barcode = 'Barcode',
   QrCode = 'QrCode',
@@ -19,9 +21,10 @@ type CarouselProps = {
   carouselSize: { width: number; height: number };
   imagesToRender: CarouselImage[];
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
-const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, style }) => {
+const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, style, testID }) => {
   const [selectedDot, setSelectedDot] = useState(0);
 
   if (!carouselSize.width || !carouselSize.height) {
@@ -42,6 +45,7 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
         height={carouselSize.height}
         enabled={numberOfSlides >= 2}
         data={imagesToRender}
+        testID={testID}
         renderItem={({ item: { type, element } }) => (
           <View style={styles.carouselItem}>
             <View style={[styles[type]]}>{element}</View>
@@ -52,7 +56,14 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
         <View style={styles.pageDotContainer}>
           {imagesToRender.map((_, index) => (
             <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
-              <Circle cx="4.5" cy="4" r="4" fill="white" fillOpacity={selectedDot === index ? 0.8 : 0.2} />
+              <Circle
+                testID={concatTestID(testID, 'dot', index.toString())}
+                cx="4.5"
+                cy="4"
+                r="4"
+                fill="white"
+                fillOpacity={selectedDot === index ? 0.8 : 0.2}
+              />
             </Svg>
           ))}
         </View>

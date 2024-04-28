@@ -93,6 +93,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
             width: cardSize.width,
             height: cardSize.height - (tappableHeaderHeight ?? 0) - (noticeHeight ?? 0),
           }}
+          testID={concatTestID(testID, 'carousel')}
         />
       ) : null}
       <TouchableOpacity
