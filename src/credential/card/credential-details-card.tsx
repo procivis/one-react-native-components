@@ -110,7 +110,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const { header, ...cardProps } = card;
 
   return (
-    <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} testID={testID}>
+    <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]}>
       <CredentialCard
         {...cardProps}
         header={{ ...header, accessory: header.accessory ?? CaretIcon }}
