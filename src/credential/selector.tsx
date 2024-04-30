@@ -46,7 +46,7 @@ const Selector: FC<SelectorProps> = ({ status, style }) => {
 
   return (
     <View style={[styles.wrapper, statusStyle, style]}>
-      {(checked || rejected) && <SelectorIcon rejected={rejected} />}
+      {(checked || rejected) && <SelectorIcon status={status} />}
     </View>
   );
 };
