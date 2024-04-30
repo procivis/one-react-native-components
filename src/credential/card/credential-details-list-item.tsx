@@ -1,14 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Animated, Easing, LayoutChangeEvent, StyleSheet, View, ViewStyle } from 'react-native';
+import { Animated, Easing, LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { CredentialCardRatio } from './credential-card';
 import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
 
 export type CredentialDetailsCardListItemProps = CredentialDetailsCardProps & {
+  detailsCardStyle?: StyleProp<ViewStyle>;
   lastItem?: boolean;
 };
 
 const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
+  detailsCardStyle,
   expanded,
   lastItem,
   style,
@@ -44,7 +46,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
       if (!minHeight) {
         setMinHeight(lastItem ? width / CredentialCardRatio : 60);
       }
-      const borderWidth = StyleSheet.flatten(style).borderWidth ?? 0;
+      const borderWidth = StyleSheet.flatten(style)?.borderWidth ?? 0;
       setDetailsCardHeight(height + 2 * borderWidth);
     },
     [lastItem, minHeight, style],
@@ -53,7 +55,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
   return (
     <Animated.View style={[cardWrapperStyle, style]}>
       <View onLayout={onContentLayout} style={styles.cardWrapper}>
-        <CredentialDetailsCard expanded={expanded} {...props} />
+        <CredentialDetailsCard expanded={expanded} style={detailsCardStyle} {...props} />
       </View>
     </Animated.View>
   );

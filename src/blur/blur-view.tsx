@@ -33,7 +33,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
 
   if (Platform.OS === 'ios') {
     return (
-      <View style={style} {...props}>
+      <View style={[styles.wrapper, style]} {...props}>
         <RNBlurView blurAmount={blurAmount} blurType={blurType} style={styles.blur} />
         {children}
       </View>
@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 0,
+  },
+  wrapper: {
+    overflow: 'hidden',
   },
 });
 
