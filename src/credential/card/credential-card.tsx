@@ -17,7 +17,7 @@ export type CredentialCardProps = {
   cardImage?: ImageOrComponentSource;
   color?: ColorValue;
   credentialId?: string;
-  header: Omit<CredentialHeaderProps, 'color'>;
+  header: CredentialHeaderProps;
   notice?: string;
   noticeIcon?: React.ComponentType<any> | React.ReactElement;
   onCardPress?: (credentialId?: string) => void;
@@ -109,7 +109,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
         disabled={!onHeaderPress}
         onPress={headerPressHandler}
         style={styles.header}>
-        <CredentialHeader {...header} color={color} testID={concatTestID(testID, 'header')} />
+        <CredentialHeader {...header} color={header.color ?? color} testID={concatTestID(testID, 'header')} />
       </TouchableOpacity>
       {notice && (
         <BlurView onLayout={onNoticeLayoutChange} blurStyle="soft" style={[styles.notice, style]} testID={testID}>
