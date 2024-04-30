@@ -1,6 +1,6 @@
 import { BlurView as RNBlurView, BlurViewProps as RNBlurViewProps } from '@react-native-community/blur';
 import React, { FC, PropsWithChildren, useMemo } from 'react';
-import { Platform, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 
 import { useAppColorScheme } from '../theme';
 
@@ -33,9 +33,10 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
 
   if (Platform.OS === 'ios') {
     return (
-      <RNBlurView blurAmount={blurAmount} blurType={blurType} style={style} {...props}>
+      <View style={style} {...props}>
+        <RNBlurView blurAmount={blurAmount} blurType={blurType} style={styles.blur} />
         {children}
-      </RNBlurView>
+      </View>
     );
   }
 
@@ -56,5 +57,15 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  blur: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+});
 
 export default BlurView;
