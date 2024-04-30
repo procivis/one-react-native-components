@@ -20,6 +20,7 @@ export type CredentialCardProps = {
   header: Omit<CredentialHeaderProps, 'color'>;
   notice?: string;
   noticeIcon?: React.ComponentType<any> | React.ReactElement;
+  onCardPress?: (credentialId?: string) => void;
   onHeaderPress?: (credentialId?: string) => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -33,6 +34,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
   header,
   notice,
   noticeIcon,
+  onCardPress,
   onHeaderPress,
   style,
   testID,
@@ -58,6 +60,10 @@ const CredentialCard: FC<CredentialCardProps> = ({
   const headerPressHandler = useCallback(() => {
     onHeaderPress?.(credentialId);
   }, [credentialId, onHeaderPress]);
+
+  const cardPressHandler = useCallback(() => {
+    onCardPress?.(credentialId);
+  }, [credentialId, onCardPress]);
 
   const noticeIconView: React.ReactElement | undefined = useMemo(() => {
     if (!noticeIcon) {
@@ -85,6 +91,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
       ) : (
         <View testID={concatTestID(testID, 'logo')} style={[styles.cardImage, { backgroundColor: color }]} />
       )}
+      {onCardPress && <TouchableOpacity style={styles.cardButton} onPress={cardPressHandler} />}
       {shouldShowCarousel ? (
         <CarouselComponent
           style={{ marginTop: tappableHeaderHeight ?? 0 }}
@@ -122,6 +129,11 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     overflow: 'hidden',
+  },
+  cardButton: {
+    height: '100%',
+    position: 'absolute',
+    width: '100%',
   },
   cardImage: {
     aspectRatio: CredentialCardRatio,
