@@ -13,6 +13,20 @@ export const colorArray = (color: ColorValue) => {
   return [r / 255, g / 255, b / 255, a / 255];
 };
 
+export const colorWithAlphaComponent = (color: ColorValue, alpha: number): ColorValue => {
+  alpha = Math.min(1, Math.max(0, alpha));
+  const colorValues = colorArray(color);
+  colorValues[3] = alpha;
+  const colorHexString = colorValues
+    .map((value) =>
+      Math.round(255 * value)
+        .toString(16)
+        .padStart(2, '0'),
+    )
+    .join('');
+  return `#${colorHexString}`;
+};
+
 export const getBrightness = (color: ColorValue) => {
   const rgb = colorArray(color);
   // https://en.wikipedia.org/wiki/Relative_luminance

@@ -1,10 +1,70 @@
-import React, { ComponentType, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  ComponentType,
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
+import { TouchableHighlight, TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
+import { colorWithAlphaComponent } from '../utils/color';
 import { concatTestID } from '../utils/testID';
+
+type CredentialAttributeItemButtonProps = {
+  disabled?: boolean;
+  id: string;
+  onPress?: (id: string, selected: boolean) => void;
+  selected?: boolean;
+};
+
+const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeItemButtonProps>> = ({
+  children,
+  disabled,
+  id,
+  onPress,
+  selected,
+}) => {
+  const colorScheme = useAppColorScheme();
+
+  const pressHandler = useCallback(() => {
+    if (!onPress) {
+      return;
+    }
+    onPress(id, !selected);
+  }, [onPress, id, selected]);
+
+  if (!onPress) {
+    return <View style={[styles.dataItemButton, styles.dataItemButtonChildren]}>{children}</View>;
+  }
+
+  if (selected) {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        disabled={disabled}
+        onPress={pressHandler}
+        style={[styles.dataItemButton, { backgroundColor: colorScheme.background }]}>
+        <View style={styles.dataItemButtonChildren}>{children}</View>
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <TouchableHighlight
+      disabled={disabled}
+      onPress={pressHandler}
+      underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}
+      style={styles.dataItemButton}>
+      <View style={styles.dataItemButtonChildren}>{children}</View>
+    </TouchableHighlight>
+  );
+};
 
 const IMAGE_HEIGHT = 64;
 
@@ -29,6 +89,8 @@ export type CredentialAttributeValue =
     };
 
 export type CredentialAttribute = CredentialAttributeValue & {
+  disabled?: boolean;
+  selected?: boolean;
   id: string;
   name: string;
   rightAccessory?: ComponentType<any> | ReactElement;
@@ -38,16 +100,21 @@ export type CredentialAttribute = CredentialAttributeValue & {
 export type CredentialAttributeItemProps = CredentialAttribute & {
   last: boolean | undefined;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
+  onPress?: (id: string, selected: boolean) => void;
   style?: StyleProp<ViewStyle>;
 };
 
 const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   attributes,
+  disabled,
+  id,
   image,
   last,
   name,
   onImagePreview,
+  onPress,
   rightAccessory,
+  selected,
   style,
   testID,
   value,
@@ -89,17 +156,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   }, [rightAccessory]);
 
   return (
-    <View
-      style={[
-        styles.dataItem,
-        {
-          borderColor: colorScheme.background,
-        },
-        last && styles.dataItemLast,
-        attributes && styles.dataItemNested,
-        style,
-      ]}
-      testID={testID}>
+    <View style={[styles.dataItem, style]} testID={testID}>
       {attributes && (
         <View style={styles.decorator}>
           <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
@@ -113,53 +170,85 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
           <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
         </View>
       )}
-      <View style={styles.dataItemLeft}>
-        <Typography
-          color={colorScheme.text}
-          preset="xs/line-height-small"
-          style={styles.dataItemLabel}
-          testID={concatTestID(testID, 'title')}>
-          {name}
-        </Typography>
-        {attributes &&
-          attributes.map((attribute, index, { length }) => (
-            <CredentialAttributeItem
-              key={attribute.id}
-              last={index === length - 1}
-              onImagePreview={onImagePreview}
-              {...attribute}
-            />
-          ))}
-        {image && (
-          <TouchableOpacity
-            disabled={!onImagePreview}
-            onPress={imagePreviewHandler}
-            style={styles.dataItemImageWrapper}>
-            <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
-          </TouchableOpacity>
-        )}
-        {value && (
+      {attributes && (
+        <View style={styles.dataAttributes}>
           <Typography
-            color={valueErrorColor ? colorScheme.error : colorScheme.text}
-            numberOfLines={10}
-            preset="s"
-            testID={concatTestID(testID, 'value')}>
-            {value}
+            color={colorScheme.text}
+            preset="xs/line-height-small"
+            style={[styles.dataItemLabel, attributes && styles.dataAttributesLabel]}
+            testID={concatTestID(testID, 'title')}>
+            {name}
           </Typography>
-        )}
-      </View>
-      {rightAccessoryView}
+          {attributes &&
+            attributes.map((attribute, index, { length }) => (
+              <CredentialAttributeItem
+                key={attribute.id}
+                last={index === length - 1 || true}
+                onImagePreview={onImagePreview}
+                {...attribute}
+              />
+            ))}
+        </View>
+      )}
+      {!attributes && (
+        <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
+          <View style={styles.dataItemLeft}>
+            <Typography
+              color={colorScheme.text}
+              preset="xs/line-height-small"
+              style={[styles.dataItemLabel, attributes && styles.dataAttributesLabel]}
+              testID={concatTestID(testID, 'title')}>
+              {name}
+            </Typography>
+            {image && (
+              <TouchableOpacity
+                disabled={!onImagePreview}
+                onPress={imagePreviewHandler}
+                style={styles.dataItemImageWrapper}>
+                <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
+              </TouchableOpacity>
+            )}
+            {value && (
+              <Typography
+                color={valueErrorColor ? colorScheme.error : colorScheme.text}
+                numberOfLines={10}
+                preset="s"
+                testID={concatTestID(testID, 'value')}>
+                {value}
+              </Typography>
+            )}
+          </View>
+          {rightAccessoryView}
+        </CredentialAttributeItemButton>
+      )}
+      {!last && <View style={[styles.separator, { backgroundColor: colorScheme.background }]} />}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  dataAttributes: {
+    flex: 1,
+    marginLeft: 16,
+    marginTop: 8,
+  },
+  dataAttributesLabel: {
+    marginLeft: 8,
+  },
   dataItem: {
+    alignItems: 'stretch',
+    marginTop: 4,
+  },
+  dataItemButton: {
+    borderRadius: 8,
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  dataItemButtonChildren: {
     alignItems: 'center',
-    borderBottomWidth: 1,
+    flex: 1,
     flexDirection: 'row',
-    marginTop: 12,
-    paddingBottom: 8,
   },
   dataItemImage: {
     height: IMAGE_HEIGHT,
@@ -172,16 +261,8 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     opacity: 0.7,
   },
-  dataItemLast: {
-    borderBottomWidth: 0,
-  },
   dataItemLeft: {
     flex: 1,
-  },
-  dataItemNested: {
-    paddingBottom: 0,
-    paddingLeft: 16,
-    position: 'relative',
   },
   decorator: {
     bottom: 13,
@@ -196,7 +277,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 7,
     justifyContent: 'center',
-    left: 0,
+    left: 4,
     position: 'absolute',
     top: 0,
     width: 7,
@@ -209,10 +290,15 @@ const styles = StyleSheet.create({
   },
   decoratorLine: {
     bottom: 0,
-    left: 3,
+    left: 7,
     position: 'absolute',
     top: 7,
     width: 1,
+  },
+  separator: {
+    height: 1,
+    marginHorizontal: 8,
+    marginTop: -1,
   },
 });
 
