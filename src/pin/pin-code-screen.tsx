@@ -97,7 +97,9 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
     return (
       <SafeAreaView testID={testID} style={[styles.container, { backgroundColor: colorScheme.white }]}>
         <ContrastingStatusBar backgroundColor={colorScheme.white} />
-        <View style={styles.backButton}>{onBack && <BackButton onPress={onBack} />}</View>
+        <View style={styles.backButton}>
+          {onBack && <BackButton testID={concatTestID(testID, 'back')} onPress={onBack} />}
+        </View>
         <View style={styles.content}>
           <View style={styles.upperContent}>
             <Typography
