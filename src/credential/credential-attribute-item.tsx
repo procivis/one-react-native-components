@@ -237,6 +237,7 @@ const styles = StyleSheet.create({
   },
   dataItem: {
     alignItems: 'stretch',
+    flexDirection: 'row',
     marginTop: 4,
   },
   dataItemButton: {
