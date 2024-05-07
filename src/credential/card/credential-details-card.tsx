@@ -15,6 +15,7 @@ export type CredentialDetailsCardProps = {
   expanded?: boolean;
   footer?: ComponentType<any> | ReactElement;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
+  onAttributeSelected?: (id: string, selected: boolean) => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
   showAllButtonLabel?: string;
@@ -28,6 +29,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   expanded,
   footer,
   onImagePreview,
+  onAttributeSelected,
   style,
   testID,
   showAllButtonLabel,
@@ -124,7 +126,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               <CredentialAttributeItem
                 key={attribute.id}
                 last={!extraAttributes.length && idx === previewAttributes.length - 1}
+                testID={concatTestID(testID, 'attribute', attribute.id)}
                 onImagePreview={onImagePreview}
+                onPress={onAttributeSelected}
                 {...attribute}
               />
             ))}
@@ -146,6 +150,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                 last={!footerView && index === length - 1}
                 testID={concatTestID(testID, 'attribute', attribute.id)}
                 onImagePreview={onImagePreview}
+                onPress={onAttributeSelected}
                 {...attribute}
               />
             ))}
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
   },
   attributesWrapper: {
     paddingBottom: 12,
-    paddingHorizontal: 12,
+    paddingHorizontal: 4,
     width: '100%',
   },
   card: {
@@ -177,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   previewAttributesWrapper: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 4,
     width: '100%',
   },
 });
