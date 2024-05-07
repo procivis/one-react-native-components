@@ -175,7 +175,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
           <Typography
             color={colorScheme.text}
             preset="xs/line-height-small"
-            style={[styles.dataItemLabel, attributes && styles.dataAttributesLabel]}
+            style={[styles.dataItemLabel, styles.dataAttributesLabel]}
             testID={concatTestID(testID, 'title')}>
             {name}
           </Typography>
@@ -196,7 +196,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
             <Typography
               color={colorScheme.text}
               preset="xs/line-height-small"
-              style={[styles.dataItemLabel, attributes && styles.dataAttributesLabel]}
+              style={styles.dataItemLabel}
               testID={concatTestID(testID, 'title')}>
               {name}
             </Typography>
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     bottom: 13,
     left: 0,
     position: 'absolute',
-    top: 5,
+    top: 13,
     width: 16,
   },
   decoratorCircle: {
