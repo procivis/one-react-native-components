@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Animated, Easing, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Animated, Easing, LayoutChangeEvent, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import BlurView from '../blur/blur-view';
 import Typography from '../text/typography';
@@ -33,6 +33,12 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   const colorScheme = useAppColorScheme();
   const [titleOpacity] = useState(() => new Animated.Value(titleVisible ? 1 : 0));
 
+  const [sideItemWidth, setSideItemWidth] = useState<number>();
+  const onSideItemLayout = useCallback(
+    ({ nativeEvent: { layout } }: LayoutChangeEvent) => setSideItemWidth((prev) => Math.max(layout.width, prev ?? 0)),
+    [],
+  );
+
   const leftItemView: React.ReactElement | undefined = useMemo(() => {
     if (!leftItem) {
       return undefined;
@@ -51,7 +57,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
         duration: 150,
         easing: Easing.ease,
         toValue: titleVisible ? 1 : 0,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     } else {
       titleOpacity.setValue(titleVisible ? 1 : 0);
@@ -71,10 +77,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   }, [rightItem]);
 
   const titleAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
-    opacity: titleOpacity.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 1],
-    }),
+    opacity: titleOpacity,
   };
 
   return (
@@ -85,13 +88,22 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
       {blurred && <BlurView blurAmount={20} blurStyle="header" style={styles.blur} />}
       {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
       <View style={styles.header}>
-        <View style={styles.sideItem}>{leftItemView}</View>
-        <Animated.View style={titleAnimatedStyle}>
-          <Typography color={titleColor ?? colorScheme.text} preset="m" testID={concatTestID(testID, 'title')}>
+        <View onLayout={onSideItemLayout} style={[styles.sideItem, { minWidth: sideItemWidth }]}>
+          {leftItemView}
+        </View>
+        <Animated.View style={[styles.title, titleAnimatedStyle]}>
+          <Typography
+            color={titleColor ?? colorScheme.text}
+            preset="m"
+            align="center"
+            numberOfLines={1}
+            testID={concatTestID(testID, 'title')}>
             {title}
           </Typography>
         </Animated.View>
-        <View style={[styles.sideItem, styles.rightSideItem]}>{rightItemView}</View>
+        <View onLayout={onSideItemLayout} style={[styles.sideItem, styles.rightSideItem, { minWidth: sideItemWidth }]}>
+          {rightItemView}
+        </View>
       </View>
     </View>
   );
@@ -126,8 +138,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   sideItem: {
-    flex: 1,
     padding: 12,
+  },
+  title: {
+    flex: 1,
   },
 });
 
