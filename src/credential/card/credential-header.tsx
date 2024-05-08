@@ -66,13 +66,17 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
         {icon ? (
           <ImageOrComponent testID={concatTestID(testID, 'logoIcon')} source={icon} style={styles.image} />
         ) : (
-          <Typography
-            testID={concatTestID(testID, 'logoName')}
-            color={iconLabelColor}
-            preset="m"
-            style={styles.imagePlaceholder}>
-            {credentialName.substring(0, 1)}
-          </Typography>
+          <View testID={concatTestID(testID, 'logoBackgroundColor', String(color))}>
+            <View testID={concatTestID(testID, 'logoTextColor', String(iconLabelColor))}>
+              <Typography
+                testID={concatTestID(testID, 'logoName')}
+                color={iconLabelColor}
+                preset="m"
+                style={styles.imagePlaceholder}>
+                {credentialName.substring(0, 1)}
+              </Typography>
+            </View>
+          </View>
         )}
       </View>
       {statusIconView && <View style={styles.statusIconWrapper}>{statusIconView}</View>}
