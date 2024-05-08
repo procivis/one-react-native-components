@@ -249,7 +249,6 @@ const styles = StyleSheet.create({
   },
   dataItemButtonChildren: {
     alignItems: 'center',
-    flex: 1,
     flexDirection: 'row',
   },
   dataItemImage: {
