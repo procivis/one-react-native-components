@@ -83,13 +83,16 @@ const CredentialCard: FC<CredentialCardProps> = ({
       {cardImage ? (
         'imageSource' in cardImage ? (
           <View style={styles.cardImage}>
-            <Image testID={concatTestID(testID, 'logo')} source={cardImage.imageSource} style={styles.image} />
+            <Image testID={concatTestID(testID, 'imageSource')} source={cardImage.imageSource} style={styles.image} />
           </View>
         ) : (
-          <ImageOrComponent testID={concatTestID(testID, 'logo')} source={cardImage} style={styles.cardImage} />
+          <ImageOrComponent testID={concatTestID(testID, 'cardImage')} source={cardImage} style={styles.cardImage} />
         )
       ) : (
-        <View testID={concatTestID(testID, 'logo')} style={[styles.cardImage, { backgroundColor: color }]} />
+        <View
+          testID={concatTestID(testID, 'cardBackgroundColor', String(color))}
+          style={[styles.cardImage, { backgroundColor: color }]}
+        />
       )}
       {onCardPress && <TouchableOpacity style={styles.cardButton} onPress={cardPressHandler} />}
       {shouldShowCarousel ? (
