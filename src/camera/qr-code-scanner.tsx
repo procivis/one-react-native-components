@@ -8,6 +8,9 @@ import BlurView from '../blur/blur-view';
 import { GhostButton } from '../buttons';
 import { CloseIcon } from '../icons';
 import { Typography } from '../text';
+import { useAppColorScheme } from '../theme';
+import { ContrastingStatusBar } from '../utils';
+import { colorWithAlphaComponent } from '../utils/color';
 import CameraOverlay from './camera-overlay';
 
 export interface QRCodeScannerProps {
@@ -25,6 +28,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
 }) => {
   const t = useAccessibilityTranslation();
   const insets = useSafeAreaInsets();
+  const colorScheme = useAppColorScheme();
 
   const { hasPermission, requestPermission } = useCameraPermission();
 
@@ -51,17 +55,24 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
     <View style={styles.container}>
       <Camera codeScanner={qrCodeScanner} style={StyleSheet.absoluteFill} device={device!} isActive={true} />
       <CameraOverlay />
-      <BlurView darkMode={true} blurStyle="soft" style={styles.topBlurView}>
+      <ContrastingStatusBar backgroundColor={colorScheme.black} />
+      <BlurView
+        darkMode={true}
+        blurStyle="soft"
+        style={[styles.topBlurView, { backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5) }]}>
         <View style={[styles.headerSection, { top: insets.top }]}>
           <GhostButton
-            icon={<CloseIcon color={'#FFFFFF'} />}
+            icon={<CloseIcon color={colorScheme.white} />}
             onPress={onClose}
             accessibilityLabel={t('accessibility.nav.close')}
           />
         </View>
       </BlurView>
-      <BlurView darkMode={true} blurStyle="soft" style={styles.bottomBlurView}>
-        <Typography align="center" style={styles.title} color={'#FFFFFF'}>
+      <BlurView
+        darkMode={true}
+        blurStyle="soft"
+        style={[styles.bottomBlurView, { backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5) }]}>
+        <Typography align="center" style={styles.title} color={colorScheme.white}>
           {title}
         </Typography>
       </BlurView>
@@ -70,7 +81,6 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerProps> = ({
 };
 const styles = StyleSheet.create({
   bottomBlurView: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     bottom: 0,
     height: '15%',
     position: 'absolute',
@@ -88,7 +98,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   topBlurView: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     height: '15%',
     position: 'absolute',
     top: 0,
