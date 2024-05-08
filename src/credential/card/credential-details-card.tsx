@@ -143,7 +143,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               />
             </View>
           )}
-          <View style={styles.attributesWrapper} onLayout={onFullAttrContentLayout}>
+          <View
+            style={[styles.attributesWrapper, footerView && styles.attributesWrapperWithFooter]}
+            onLayout={onFullAttrContentLayout}>
             {extraAttributes.map((attribute, index, { length }) => (
               <CredentialAttributeItem
                 key={attribute.id}
@@ -170,6 +172,9 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     paddingHorizontal: 4,
     width: '100%',
+  },
+  attributesWrapperWithFooter: {
+    paddingBottom: 0,
   },
   card: {
     borderRadius: 0,
