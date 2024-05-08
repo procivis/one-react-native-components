@@ -157,70 +157,72 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
 
   return (
     <View style={[styles.dataItem, style]} testID={testID}>
-      {attributes && (
-        <View style={styles.decorator}>
-          <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
-            <View
-              style={[
-                styles.decoratorCircleInner,
-                { backgroundColor: colorScheme.text, borderColor: colorScheme.background },
-              ]}
-            />
-          </View>
-          <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
-        </View>
-      )}
-      {attributes && (
-        <View style={styles.dataAttributes}>
-          <Typography
-            color={colorScheme.text}
-            preset="xs/line-height-small"
-            style={[styles.dataItemLabel, styles.dataAttributesLabel]}
-            testID={concatTestID(testID, 'title')}>
-            {name}
-          </Typography>
-          {attributes &&
-            attributes.map((attribute, index, { length }) => (
-              <CredentialAttributeItem
-                key={attribute.id}
-                last={index === length - 1 || true}
-                onImagePreview={onImagePreview}
-                {...attribute}
-              />
-            ))}
-        </View>
-      )}
-      {!attributes && (
-        <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
-          <View style={styles.dataItemLeft}>
-            <Typography
-              color={colorScheme.text}
-              preset="xs/line-height-small"
-              style={styles.dataItemLabel}
-              testID={concatTestID(testID, 'title')}>
-              {name}
-            </Typography>
-            {image && (
-              <TouchableOpacity
-                disabled={!onImagePreview}
-                onPress={imagePreviewHandler}
-                style={styles.dataItemImageWrapper}>
-                <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
-              </TouchableOpacity>
-            )}
-            {value && (
+      <View style={styles.dataItemRow}>
+        {attributes && (
+          <>
+            <View style={styles.decorator}>
+              <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
+                <View
+                  style={[
+                    styles.decoratorCircleInner,
+                    { backgroundColor: colorScheme.text, borderColor: colorScheme.background },
+                  ]}
+                />
+              </View>
+              <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
+            </View>
+            <View style={styles.dataAttributes}>
               <Typography
-                color={valueErrorColor ? colorScheme.error : colorScheme.text}
-                numberOfLines={10}
-                preset="s"
-                testID={concatTestID(testID, 'value')}>
-                {value}
+                color={colorScheme.text}
+                preset="xs/line-height-small"
+                style={[styles.dataItemLabel, styles.dataAttributesLabel]}
+                testID={concatTestID(testID, 'title')}>
+                {name}
               </Typography>
-            )}
-          </View>
-          {rightAccessoryView}
-        </CredentialAttributeItemButton>
-      )}
+              {attributes &&
+                attributes.map((attribute, index, { length }) => (
+                  <CredentialAttributeItem
+                    key={attribute.id}
+                    last={index === length - 1 || true}
+                    onImagePreview={onImagePreview}
+                    {...attribute}
+                  />
+                ))}
+            </View>
+          </>
+        )}
+        {!attributes && (
+          <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
+            <View style={styles.dataItemLeft}>
+              <Typography
+                color={colorScheme.text}
+                preset="xs/line-height-small"
+                style={styles.dataItemLabel}
+                testID={concatTestID(testID, 'title')}>
+                {name}
+              </Typography>
+              {image && (
+                <TouchableOpacity
+                  disabled={!onImagePreview}
+                  onPress={imagePreviewHandler}
+                  style={styles.dataItemImageWrapper}>
+                  <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
+                </TouchableOpacity>
+              )}
+              {value && (
+                <Typography
+                  color={valueErrorColor ? colorScheme.error : colorScheme.text}
+                  numberOfLines={10}
+                  preset="s"
+                  testID={concatTestID(testID, 'value')}>
+                  {value}
+                </Typography>
+              )}
+            </View>
+            {rightAccessoryView}
+          </CredentialAttributeItemButton>
+        )}
+      </View>
       {!last && <View style={[styles.separator, { backgroundColor: colorScheme.background }]} />}
     </View>
   );
@@ -228,8 +230,8 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
 
 const styles = StyleSheet.create({
   dataAttributes: {
+    alignItems: 'stretch',
     flex: 1,
-    marginLeft: 16,
     marginTop: 8,
   },
   dataAttributesLabel: {
@@ -237,14 +239,13 @@ const styles = StyleSheet.create({
   },
   dataItem: {
     alignItems: 'stretch',
-    flexDirection: 'row',
-    marginTop: 4,
+    marginTop: 2,
   },
   dataItemButton: {
     borderRadius: 8,
     flex: 1,
     paddingHorizontal: 8,
-    paddingVertical: 8,
+    paddingVertical: 11,
   },
   dataItemButtonChildren: {
     alignItems: 'center',
@@ -265,11 +266,10 @@ const styles = StyleSheet.create({
   dataItemLeft: {
     flex: 1,
   },
+  dataItemRow: {
+    flexDirection: 'row',
+  },
   decorator: {
-    bottom: 13,
-    left: 0,
-    position: 'absolute',
-    top: 13,
     width: 16,
   },
   decoratorCircle: {
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     left: 4,
     position: 'absolute',
-    top: 0,
+    top: 13,
     width: 7,
   },
   decoratorCircleInner: {
@@ -290,10 +290,10 @@ const styles = StyleSheet.create({
     width: 4,
   },
   decoratorLine: {
-    bottom: 0,
+    bottom: 12,
     left: 7,
     position: 'absolute',
-    top: 7,
+    top: 20,
     width: 1,
   },
   separator: {
