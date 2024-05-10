@@ -1,5 +1,5 @@
 import React, { ComponentType, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
-import { ImageSourcePropType, LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { ImageSourcePropType, LayoutChangeEvent, StyleSheet, View, ViewProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { Button, ButtonType } from '../../buttons';
@@ -9,15 +9,13 @@ import { concatTestID } from '../../utils/testID';
 import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
 import CredentialCard, { CredentialCardProps } from './credential-card';
 
-export type CredentialDetailsCardProps = {
+export type CredentialDetailsCardProps = ViewProps & {
   attributes: CredentialAttribute[] | false;
   card: CredentialCardProps;
   expanded?: boolean;
   footer?: ComponentType<any> | ReactElement;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   onAttributeSelected?: (id: string, selected: boolean) => void;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
   showAllButtonLabel?: string;
 };
 
@@ -33,12 +31,13 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   style,
   testID,
   showAllButtonLabel,
+  ...viewProps
 }) => {
   const colorScheme = useAppColorScheme();
-  const [previewAttributesHeight, setPreviewAttributesHeight] = useState<number>(0);
-  const [fullAttributesHeight, setFullAttributesHeight] = useState<number>(0);
-
-  const [buttonViewHeight, setButtonViewHeight] = useState<number>(0);
+  const [previewAttributesHeight, setPreviewAttributesHeight] = useState<number>();
+  const [fullAttributesHeight, setFullAttributesHeight] = useState<number>();
+  const [buttonViewHeight, setButtonViewHeight] = useState<number>();
+  const [footerViewHeight, setFooterViewHeight] = useState<number>();
 
   const [allAttributesRendered, setAllAttributesRendered] = useState<boolean>(
     (attributes && attributes.length <= PREVIEW_ATTRIBUTES_COUNT) || !showAllButtonLabel,
@@ -46,28 +45,54 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const CaretIcon = expanded ? UpIcon : DownIcon;
 
-  const currentHeight = useSharedValue(0);
+  const currentHeight = useSharedValue<number | undefined>(undefined);
 
   const previewAttributes = attributes ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT) : [];
-  const extraAttributes = attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : [];
+  const extraAttributes = useMemo(() => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []), [attributes]);
 
   useEffect(() => {
-    if (!expanded) {
-      currentHeight.value = withTiming(0, {
-        duration: 250,
-      });
-    } else if (allAttributesRendered) {
-      const duration = previewAttributes.length * 50;
-
-      currentHeight.value = withTiming(previewAttributesHeight + fullAttributesHeight, {
-        duration,
-      });
-    } else {
-      const duration = extraAttributes.length * 50;
-      currentHeight.value = withTiming(previewAttributesHeight + buttonViewHeight, {
-        duration,
-      });
+    if (!extraAttributes || allAttributesRendered) {
+      setButtonViewHeight(0);
     }
+  }, [extraAttributes, allAttributesRendered]);
+
+  useEffect(() => {
+    if (!footer) {
+      setFooterViewHeight(0);
+    }
+  }, [footer]);
+
+  useEffect(() => {
+    if (extraAttributes.length === 0) {
+      setFullAttributesHeight(0);
+    }
+  }, [extraAttributes]);
+
+  useEffect(() => {
+    if (previewAttributesHeight === undefined || buttonViewHeight === undefined || footerViewHeight === undefined) {
+      return;
+    }
+    if (allAttributesRendered && fullAttributesHeight === undefined) {
+      return;
+    }
+
+    const additionalAttributesHeight = fullAttributesHeight ?? 0;
+    const additionalHeight = allAttributesRendered ? additionalAttributesHeight + footerViewHeight : buttonViewHeight;
+    const newHeight = expanded ? previewAttributesHeight + additionalHeight : 0;
+
+    if (currentHeight.value === undefined) {
+      currentHeight.value = newHeight;
+      return;
+    }
+
+    const duration = !expanded
+      ? 250
+      : allAttributesRendered
+      ? previewAttributes.length * 50
+      : extraAttributes.length * 50;
+    currentHeight.value = withTiming(newHeight, {
+      duration,
+    });
   }, [
     allAttributesRendered,
     buttonViewHeight,
@@ -77,9 +102,18 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     fullAttributesHeight,
     previewAttributes.length,
     previewAttributesHeight,
+    footerViewHeight,
   ]);
 
-  const credentilAttributesStyle = useAnimatedStyle(() => {
+  const credentialAttributesStyle = useAnimatedStyle(() => {
+    if (currentHeight.value === undefined) {
+      if (expanded) {
+        return {};
+      }
+      return {
+        height: 0,
+      };
+    }
     return {
       height: currentHeight.value,
     };
@@ -97,6 +131,10 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     setButtonViewHeight(event.nativeEvent.layout.height);
   }, []);
 
+  const onFooterViewLayout = useCallback((event: LayoutChangeEvent) => {
+    setFooterViewHeight(event.nativeEvent.layout.height + styles.footer.marginTop);
+  }, []);
+
   const footerView: ReactElement | undefined = useMemo(() => {
     if (!footer) {
       return undefined;
@@ -111,8 +149,10 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const { header, ...cardProps } = card;
 
+  const renderExtraAttributes =
+    allAttributesRendered || (previewAttributesHeight !== undefined && currentHeight.value !== undefined);
   return (
-    <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]}>
+    <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} {...viewProps}>
       <CredentialCard
         {...cardProps}
         header={{ ...header, accessory: header.accessory ?? CaretIcon }}
@@ -120,61 +160,74 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
         testID={concatTestID(testID, 'card')}
       />
       {previewAttributes.length > 0 && (
-        <Animated.View style={[styles.attributesAnimatedWrapper, credentilAttributesStyle]}>
-          <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
-            {previewAttributes.map((attribute, idx) => (
-              <CredentialAttributeItem
-                key={attribute.id}
-                last={!extraAttributes.length && idx === previewAttributes.length - 1}
-                testID={concatTestID(testID, 'attribute', attribute.id)}
-                onImagePreview={onImagePreview}
-                onPress={onAttributeSelected}
-                {...attribute}
-              />
-            ))}
-          </View>
-          {!allAttributesRendered && extraAttributes.length > 0 && (
-            <View style={styles.attributesWrapper} onLayout={onButtonViewLayout}>
-              <Button
-                onPress={() => setAllAttributesRendered(true)}
-                type={ButtonType.Secondary}
-                testID={concatTestID(testID, 'showAllAttributesButton')}
-                title={showAllButtonLabel!}
-              />
+        <Animated.View style={[styles.attributesAnimatedWrapper, credentialAttributesStyle]}>
+          <View style={styles.attributesWrapper}>
+            <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
+              {previewAttributes.map((attribute, idx) => (
+                <CredentialAttributeItem
+                  key={attribute.id}
+                  last={!extraAttributes.length && idx === previewAttributes.length - 1}
+                  testID={concatTestID(testID, 'attribute', attribute.id)}
+                  onImagePreview={onImagePreview}
+                  onPress={onAttributeSelected}
+                  {...attribute}
+                />
+              ))}
             </View>
-          )}
-          <View
-            style={[styles.attributesWrapper, footerView && styles.attributesWrapperWithFooter]}
-            onLayout={onFullAttrContentLayout}>
-            {extraAttributes.map((attribute, index, { length }) => (
-              <CredentialAttributeItem
-                key={attribute.id}
-                last={!footerView && index === length - 1}
-                testID={concatTestID(testID, 'attribute', attribute.id)}
-                onImagePreview={onImagePreview}
-                onPress={onAttributeSelected}
-                {...attribute}
-              />
-            ))}
+            {!allAttributesRendered && extraAttributes.length > 0 && (
+              <View style={styles.allAttributesWrapper} onLayout={onButtonViewLayout}>
+                <Button
+                  onPress={() => setAllAttributesRendered(true)}
+                  type={ButtonType.Secondary}
+                  testID={concatTestID(testID, 'showAllAttributesButton')}
+                  title={showAllButtonLabel!}
+                />
+              </View>
+            )}
+            {renderExtraAttributes && (
+              <View
+                style={[styles.allAttributesWrapper, footerView && styles.allAttributesWrapperWithFooter]}
+                onLayout={onFullAttrContentLayout}>
+                {extraAttributes.map((attribute, index, { length }) => (
+                  <CredentialAttributeItem
+                    key={attribute.id}
+                    last={!footerView && index === length - 1}
+                    testID={concatTestID(testID, 'attribute', attribute.id)}
+                    onImagePreview={onImagePreview}
+                    onPress={onAttributeSelected}
+                    {...attribute}
+                  />
+                ))}
+              </View>
+            )}
+            {(footerView && (
+              <View onLayout={onFooterViewLayout} style={styles.footer}>
+                {footerView}
+              </View>
+            )) ??
+              null}
           </View>
         </Animated.View>
       )}
-      {(footerView && expanded && <View style={styles.footer}>{footerView}</View>) ?? null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  attributesAnimatedWrapper: {
-    overflow: 'hidden',
-  },
-  attributesWrapper: {
+  allAttributesWrapper: {
     paddingBottom: 12,
     paddingHorizontal: 4,
     width: '100%',
   },
-  attributesWrapperWithFooter: {
+  allAttributesWrapperWithFooter: {
     paddingBottom: 0,
+  },
+  attributesAnimatedWrapper: {
+    overflow: 'hidden',
+  },
+  attributesWrapper: {
+    flex: 1,
+    overflow: 'visible',
   },
   card: {
     borderRadius: 0,
