@@ -6,12 +6,12 @@ import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 import { concatTestID } from '../utils';
 
-export type HeaderProps = ViewProps & {
+export interface HeaderProps extends ViewProps {
   onBack?: () => void;
   rightButton?: ReactNode;
   style?: StyleProp<ViewStyle>;
   title: ReactNode;
-};
+}
 
 const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
 

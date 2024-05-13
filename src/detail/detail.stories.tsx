@@ -13,7 +13,7 @@ type Args = DetailScreenProps & {
 
 const hitSlop: Insets = { top: 8, bottom: 12, left: 24, right: 24 };
 
-const Basic: Story<Args> = ({ onRightAction, contentHeight = 0, headerProps }) => {
+const Basic: Story<Args> = ({ onRightAction, contentHeight, headerProps }) => {
   return (
     <DetailScreen
       headerProps={{
@@ -33,9 +33,8 @@ Basic.args = {
   headerProps: {
     title: 'Title',
     onBack: () => {},
-    onSearchPhraseChange: () => {},
-    text: {},
   },
+  contentHeight: 0,
 };
 
 export { Basic as DetailScreen };
@@ -47,11 +46,10 @@ export default {
     noSafeArea: true,
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=466%3A138689&mode=design&t=czk2mSWI4Dlg1qYp-1',
+      url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=466-138689',
     },
   },
   argTypes: {
-    onBack: { action: 'onBack' },
     onRightAction: { action: 'onRightAction' },
   },
 } as ComponentMeta<typeof DetailScreen>;
