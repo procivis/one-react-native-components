@@ -46,7 +46,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624&t=KAAJ0oKY3xb6VNtA-4',
+      url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624',
     },
   },
 } as ComponentMeta<typeof Header>;
