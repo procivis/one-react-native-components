@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     minHeight: 38,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingTop: 16,
     width: '100%',
   },
   container: {
-    marginBottom: 24,
+    marginBottom: 22,
     width: '100%',
   },
   rightButtonWrapper: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   searchBarWrapper: {
     marginTop: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
   },
   title: {
     flex: 1,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   titleWrapper: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingTop: 10,
     width: '100%',
   },
