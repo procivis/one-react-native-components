@@ -64,9 +64,14 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   useEffect(() => {
     if (extraAttributes.length === 0) {
-      setFullAttributesHeight(0);
+      const viewStyle = StyleSheet.flatten([
+        styles.allAttributesWrapper,
+        footer && styles.allAttributesWrapperWithFooter,
+      ]);
+      const padding = viewStyle.paddingBottom;
+      setFullAttributesHeight(padding);
     }
-  }, [extraAttributes]);
+  }, [extraAttributes, footer]);
 
   useEffect(() => {
     if (previewAttributesHeight === undefined || buttonViewHeight === undefined || footerViewHeight === undefined) {
@@ -227,6 +232,7 @@ const styles = StyleSheet.create({
   },
   attributesWrapper: {
     flex: 1,
+    flexGrow: 1,
     overflow: 'visible',
   },
   card: {
