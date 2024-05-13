@@ -1,117 +1,100 @@
 import React, { FC, ReactNode } from 'react';
-import { ColorValue, Insets, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { Insets, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import { BackButton } from '../buttons';
-import { SearchBar, SearchBarProps } from '../searchbar';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 import { concatTestID } from '../utils';
 
 export type HeaderProps = ViewProps & {
   onBack?: () => void;
-  onSearchPhraseChange?: SearchBarProps['onSearchPhraseChange'];
   rightButton?: ReactNode;
-  searchPhrase?: SearchBarProps['searchPhrase'];
   style?: StyleProp<ViewStyle>;
-  text: {
-    searchPlaceholder?: string;
-  };
-  textColor?: ColorValue;
   title: ReactNode;
 };
 
-const backButtonHitSlop: Insets = { top: 8, bottom: 12, left: 24, right: 24 };
+const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
 
 /**
  * Unified screen header
  *
- * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624&t=HY1KvobxOReLeC8Z-4
+ * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624
+ * states (Default + Dashboard)
  */
-const Header: FC<HeaderProps> = ({
-  onBack,
-  onSearchPhraseChange,
-  rightButton,
-  searchPhrase,
-  style,
-  testID,
-  text,
-  textColor,
-  title,
-  ...viewProps
-}) => {
+const Header: FC<HeaderProps> = ({ onBack, rightButton, style, testID, title, ...viewProps }) => {
   const colorScheme = useAppColorScheme();
 
   return (
     <View style={[styles.container, style]} testID={testID} {...viewProps}>
       {onBack && (
-        <View style={styles.backButtonWrapper}>
-          {onBack && <BackButton hitSlop={backButtonHitSlop} onPress={onBack} testID={concatTestID(testID, 'back')} />}
+        <View style={styles.backButtonRow}>
+          <BackButton hitSlop={backButtonHitSlop} onPress={onBack} testID={concatTestID(testID, 'back')} />
           <View />
           {rightButton}
         </View>
       )}
 
-      <View style={styles.titleWrapper}>
+      <View
+        style={[
+          styles.titleRow,
+          onBack ? styles.titleRow2nd : styles.titleRowNoBackButton,
+          (onBack || !rightButton) && styles.titleRowNoRightButton,
+        ]}>
         {typeof title === 'string' ? (
           <Typography
             accessibilityRole="header"
-            color={textColor ?? colorScheme.text}
+            color={colorScheme.text}
             preset="l"
             style={styles.title}
             testID={concatTestID(testID, 'title')}>
             {title}
           </Typography>
         ) : (
-          title
+          <View style={styles.title}>{title}</View>
         )}
 
-        {!onBack && <View style={styles.rightButtonWrapper}>{rightButton}</View>}
+        {!onBack && rightButton && <View style={styles.rightButtonWrapper}>{rightButton}</View>}
       </View>
-
-      {onSearchPhraseChange && (
-        <View style={styles.searchBarWrapper}>
-          <SearchBar
-            onSearchPhraseChange={onSearchPhraseChange}
-            placeholder={text?.searchPlaceholder}
-            searchPhrase={searchPhrase ?? ''}
-            testID={concatTestID(testID, 'search')}
-          />
-        </View>
-      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backButtonWrapper: {
+  backButtonRow: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    minHeight: 38,
+    minHeight: 48,
     paddingHorizontal: 20,
-    paddingTop: 16,
     width: '100%',
   },
   container: {
-    marginBottom: 22,
     width: '100%',
   },
   rightButtonWrapper: {
-    paddingTop: 6,
-  },
-  searchBarWrapper: {
-    marginTop: 24,
-    paddingHorizontal: 20,
+    height: 48,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
   },
   title: {
     flex: 1,
-    paddingTop: 6,
+    paddingBottom: 10, // to compensate "l" font line-height difference
+    paddingTop: 12,
   },
-  titleWrapper: {
-    alignItems: 'center',
+  titleRow: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 8,
     width: '100%',
+  },
+  titleRow2nd: {
+    marginBottom: 12,
+  },
+  titleRowNoBackButton: {
+    marginTop: 12,
+  },
+  titleRowNoRightButton: {
+    paddingRight: 20,
   },
 });
 
