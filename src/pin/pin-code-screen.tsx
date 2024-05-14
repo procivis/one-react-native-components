@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
   },
   instruction: {
     marginVertical: 24,
+    opacity: 0.7,
   },
   keyboard: {
     alignItems: 'center',
