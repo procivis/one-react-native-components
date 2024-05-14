@@ -116,7 +116,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
       </TouchableOpacity>
       {notice && (
         <BlurView onLayout={onNoticeLayoutChange} blurStyle="soft" style={[styles.notice, style]} testID={testID}>
-          {noticeIconView}
+          {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
           <View style={styles.noticeTextWrapper}>
             <Typography color={colorScheme.text} preset="xs/line-height-small" style={styles.noticeText}>
               {notice}
@@ -153,13 +153,17 @@ const styles = StyleSheet.create({
   },
   notice: {
     bottom: 0,
-    columnGap: 8,
+    columnGap: 6,
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    paddingBottom: 6,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingTop: 2,
     position: 'absolute',
     width: '100%',
+  },
+  noticeIcon: {
+    marginTop: 4,
   },
   noticeText: {
     marginVertical: 5,

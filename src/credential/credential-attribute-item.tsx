@@ -1,14 +1,5 @@
-import React, {
-  ComponentType,
-  FC,
-  PropsWithChildren,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { ComponentType, FC, PropsWithChildren, ReactElement, useCallback, useMemo } from 'react';
+import { Image, ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { TouchableHighlight, TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import Typography from '../text/typography';
@@ -66,7 +57,7 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
   );
 };
 
-const IMAGE_HEIGHT = 64;
+const IMAGE_SIZE = 64;
 
 export type CredentialAttributeValue =
   | {
@@ -121,7 +112,6 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   valueErrorColor,
 }) => {
   const colorScheme = useAppColorScheme();
-  const [imageWidth, setImageWidth] = useState<number>();
 
   const imagePreviewHandler = useCallback(() => {
     if (!onImagePreview || !image) {
@@ -129,19 +119,6 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
     }
     onImagePreview(name, image);
   }, [image, name, onImagePreview]);
-
-  useEffect(() => {
-    if (!image || typeof image !== 'object' || !('uri' in image) || !image.uri) {
-      return;
-    }
-    Image.getSize(image.uri, (width, height) => {
-      setImageWidth((width / height) * IMAGE_HEIGHT);
-    });
-  }, [image]);
-
-  const imageStyle: ImageStyle = {
-    width: imageWidth ?? 'auto',
-  };
 
   const rightAccessoryView: React.ReactElement | undefined = useMemo(() => {
     if (!rightAccessory) {
@@ -206,7 +183,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   disabled={!onImagePreview}
                   onPress={imagePreviewHandler}
                   style={styles.dataItemImageWrapper}>
-                  <Image resizeMode="contain" source={image} style={[styles.dataItemImage, imageStyle]} />
+                  <Image resizeMode="cover" source={image} style={styles.dataItemImage} />
                 </TouchableOpacity>
               )}
               {value && (
@@ -252,12 +229,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dataItemImage: {
-    height: IMAGE_HEIGHT,
-    position: 'relative',
+    height: IMAGE_SIZE,
+    width: IMAGE_SIZE,
   },
   dataItemImageWrapper: {
-    height: IMAGE_HEIGHT,
+    borderColor: '#0004',
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: IMAGE_SIZE,
     marginTop: 5,
+    overflow: 'hidden',
+    width: IMAGE_SIZE,
   },
   dataItemLabel: {
     marginBottom: 4,
