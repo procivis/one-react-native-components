@@ -171,7 +171,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               {previewAttributes.map((attribute, idx) => (
                 <CredentialAttributeItem
                   key={attribute.id}
-                  last={!extraAttributes.length && idx === previewAttributes.length - 1}
+                  last={!footerView && !extraAttributes.length && idx === previewAttributes.length - 1}
                   testID={concatTestID(testID, 'attribute', attribute.id)}
                   onImagePreview={onImagePreview}
                   onPress={onAttributeSelected}
