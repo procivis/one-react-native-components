@@ -86,7 +86,8 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
           color={colorScheme.text}
           ellipsizeMode={'tail'}
           numberOfLines={1}
-          preset="regular">
+          preset="regular"
+          style={styles.nameText}>
           {credentialName}
         </Typography>
         <Typography
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   detailText: {
+    marginTop: -1,
     opacity: 0.7,
   },
   image: {
@@ -134,9 +136,12 @@ const styles = StyleSheet.create({
     width: 44,
   },
   imagePlaceholder: {
-    paddingBottom: 2,
     paddingLeft: 1,
+    paddingTop: 3,
     textTransform: 'uppercase',
+  },
+  nameText: {
+    marginTop: 2,
   },
   statusIconWrapper: {
     bottom: 3,
