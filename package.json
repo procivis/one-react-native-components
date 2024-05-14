@@ -36,7 +36,11 @@
     "build-storybook": "build-storybook -s ./.storybook/assets",
     "pods": "npx pod-install"
   },
-  "keywords": ["react-native", "ios", "android"],
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
   "repository": "https://gitlab.procivis.ch/procivis/one/one-react-native-components",
   "author": "Pavel Zarecky <zarecky@procivis.ch> (https://procivis.ch)",
   "license": "UNLICENSED",
@@ -113,10 +117,15 @@
   },
   "jest": {
     "preset": "react-native",
-    "modulePathIgnorePatterns": ["<rootDir>/storybook/", "<rootDir>/lib/"]
+    "modulePathIgnorePatterns": [
+      "<rootDir>/storybook/",
+      "<rootDir>/lib/"
+    ]
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "release-it": {
     "git": {
@@ -137,9 +146,17 @@
   },
   "eslintConfig": {
     "root": true,
-    "extends": ["@react-native-community", "prettier"],
+    "extends": [
+      "@react-native-community",
+      "prettier"
+    ],
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "import", "simple-import-sort", "jest"],
+    "plugins": [
+      "@typescript-eslint",
+      "import",
+      "simple-import-sort",
+      "jest"
+    ],
     "rules": {
       "no-restricted-imports": [
         "error",
@@ -147,18 +164,29 @@
           "paths": [
             {
               "name": "react-native",
-              "importNames": ["SafeAreaView"],
+              "importNames": [
+                "SafeAreaView"
+              ],
               "message": "Please use SafeAreaView from 'react-native-safe-area-context' instead."
             },
             {
               "name": "react-native",
-              "importNames": ["TouchableOpacity", "TouchableHighlight", "TouchableWithoutFeedback", "Pressable"],
+              "importNames": [
+                "TouchableOpacity",
+                "TouchableHighlight",
+                "TouchableWithoutFeedback",
+                "Pressable"
+              ],
               "message": "Please import touchables from './src/accessibility/accessibilityHistoryWrappers' instead."
             }
           ],
           "patterns": [
             {
-              "group": ["/src", "src/*", "storybook/*"],
+              "group": [
+                "/src",
+                "src/*",
+                "storybook/*"
+              ],
               "message": "Use relative import paths"
             }
           ]
@@ -176,7 +204,11 @@
       "import/no-absolute-path": "warn"
     }
   },
-  "eslintIgnore": ["node_modules/", "storybook-static/", "lib/"],
+  "eslintIgnore": [
+    "node_modules/",
+    "storybook-static/",
+    "lib/"
+  ],
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
