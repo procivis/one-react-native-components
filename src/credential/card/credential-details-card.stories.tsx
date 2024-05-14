@@ -5,7 +5,7 @@ import { Text } from 'react-native-svg';
 
 import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { Placeholder } from '../../../storybook/placeholder';
-import { AlertOutlineIcon, CredentialWarningIcon } from '../../icons/credential';
+import { CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../icons/credential';
 import Selector, { SelectorStatus } from '../selector';
 import CredentialDetailsCard from './credential-details-card';
 import { CarouselImageType } from './credential-image-carousel';
@@ -70,20 +70,28 @@ Basic.args = {
     {
       id: 'attribute-4',
       name: 'Attribute 4',
-      value: 'Value 4',
+      image: {
+        uri: 'https://cdn.pixabay.com/photo/2016/02/17/16/09/vertical-1205295_960_720.jpg',
+      },
+      rightAccessory: <Selector status={SelectorStatus.Required} />,
+    },
+    {
+      id: 'attribute-5',
+      name: 'Attribute 5',
+      value: 'Value 5',
       rightAccessory: <Selector status={false ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
     },
     {
       selected: true,
-      id: 'attribute-5',
-      name: 'Attribute 5',
-      value: 'Value 5',
+      id: 'attribute-6',
+      name: 'Attribute 6',
+      value: 'Value 6',
       rightAccessory: <Selector status={true ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
     },
     {
-      id: 'attribute-6',
-      name: 'Attribute 5',
-      value: 'Value 5',
+      id: 'attribute-7',
+      name: 'Attribute 7',
+      value: 'Value 7',
       rightAccessory: <Selector status={false ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
     },
   ],
@@ -119,7 +127,7 @@ Basic.args = {
       statusIcon: CredentialWarningIcon,
     },
     notice: 'Notice related to the credential',
-    noticeIcon: AlertOutlineIcon,
+    noticeIcon: CredentialNoticeWarningIcon,
   },
   showAllButtonLabel: 'See all',
   expanded: true,
