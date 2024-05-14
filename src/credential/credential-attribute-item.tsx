@@ -257,9 +257,10 @@ const styles = StyleSheet.create({
   },
   dataItemImageWrapper: {
     height: IMAGE_HEIGHT,
+    marginTop: 5,
   },
   dataItemLabel: {
-    marginBottom: 2,
+    marginBottom: 4,
     opacity: 0.7,
   },
   dataItemLeft: {

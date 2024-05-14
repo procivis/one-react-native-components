@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
   },
   attributesAnimatedWrapper: {
     overflow: 'hidden',
+    paddingTop: 7,
   },
   attributesWrapper: {
     flex: 1,
