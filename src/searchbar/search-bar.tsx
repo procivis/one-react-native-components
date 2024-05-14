@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    borderRadius: 23,
+    borderRadius: 20,
     borderWidth: 0,
     flexDirection: 'row',
-    height: 46,
+    height: 40,
   },
   searchIcon: {
     marginLeft: 8,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 14,
-    height: 46,
+    height: 40,
     letterSpacing: 0.2,
     lineHeight: 18,
     paddingBottom: 2,
