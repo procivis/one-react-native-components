@@ -3,7 +3,7 @@ import React from 'react';
 
 import CredentialCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import ColorSchemes from '../../../storybook/colorScheme';
-import { AlertOutlineIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../icons/credential';
+import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../icons/credential';
 import CredentialCard from './credential-card';
 
 const Basic: ComponentStory<typeof CredentialCard> = ({ ...args }) => {
@@ -25,7 +25,7 @@ Basic.args = {
     statusIcon: CredentialWarningIcon,
   },
   notice: 'Notice related to the credential',
-  noticeIcon: AlertOutlineIcon,
+  noticeIcon: CredentialNoticeWarningIcon,
 };
 
 export { Basic as CredentialCard };

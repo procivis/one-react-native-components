@@ -1,23 +1,9 @@
 import React, { FC } from 'react';
-import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
-export const AlertOutlineIcon: FC<SvgProps> = ({ ...props }) => {
-  const colorScheme = useAppColorScheme();
-  return (
-    <Svg fill="none" height={24} viewBox="0 0 24 24" width={24} {...props}>
-      <Path
-        d="M10.6198 5.76789C11.4007 4.49881 13.2454 4.49882 14.0264 5.76789L21.7703 18.3518C22.5904 19.6843 21.6317 21.4 20.067 21.4H4.57912C3.01448 21.4 2.05579 19.6843 2.87581 18.3518L10.6198 5.76789Z"
-        fillRule="evenodd"
-        stroke={colorScheme.text}
-      />
-      <Rect fill={colorScheme.text} height="1" width="1" x="12" y="18" />
-      <Rect fill={colorScheme.text} height="5.75" width="1" x="12" y="10" />
-    </Svg>
-  );
-};
-
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=426-27862&m=dev
 export const CredentialErrorIcon: FC<SvgProps> = ({ ...props }) => (
   <Svg fill="none" height={22} viewBox="0 0 22 22" width={22} {...props}>
     <Path
@@ -37,6 +23,7 @@ export const CredentialErrorIcon: FC<SvgProps> = ({ ...props }) => (
   </Svg>
 );
 
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=415-5641&m=dev
 export const CredentialWarningIcon: FC<SvgProps> = ({ ...props }) => (
   <Svg fill="none" height={20} viewBox="0 0 22 20" width={22} {...props}>
     <Path
@@ -55,6 +42,42 @@ export const CredentialWarningIcon: FC<SvgProps> = ({ ...props }) => (
     />
   </Svg>
 );
+
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=542-90920&m=dev
+export const CredentialNoticInfoIcon: FC<SvgProps> = ({ ...props }) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path
+        d="M12.36 10.732c.111 0 .2.09.2.2V15.8a.2.2 0 01-.2.2h-.66a.2.2 0 01-.2-.2v-4.868c0-.11.09-.2.2-.2h.66zM11.5 8.2c0-.11.09-.2.2-.2h.66c.111 0 .2.09.2.2v.699a.2.2 0 01-.2.2h-.66a.2.2 0 01-.2-.2V8.2z"
+        fill={colorScheme.text}
+      />
+      <Path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 19a7 7 0 100-14 7 7 0 000 14zm0 1a8 8 0 100-16 8 8 0 000 16z"
+        fill={colorScheme.text}
+      />
+    </Svg>
+  );
+};
+
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=542-93002&m=dev
+export const CredentialNoticeWarningIcon: FC<SvgProps> = ({ ...props }) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path
+        d="M12.36 13.268a.2.2 0 00.2-.2V8.2a.2.2 0 00-.2-.2h-.66a.2.2 0 00-.2.2v4.868c0 .11.09.2.2.2h.66zM11.5 15.8c0 .11.09.2.2.2h.66a.2.2 0 00.2-.2v-.699a.2.2 0 00-.2-.2h-.66a.2.2 0 00-.2.2v.699z"
+        fill={colorScheme.text}
+      />
+      <Path
+        d="M9.835 6.75c.962-1.667 3.368-1.667 4.33 0l4.33 7.5c.962 1.667-.24 3.75-2.165 3.75H7.67c-1.925 0-3.127-2.083-2.165-3.75l4.33-7.5z"
+        stroke={colorScheme.text}
+      />
+    </Svg>
+  );
+};
 
 // https://www.figma.com/file/S3WwgTMHuqxAsfu5zElCzq/App-Icon-Library-(Design)?type=design&node-id=41-478&t=yVRMjIPtDiBwq5Ax-4
 export const UpIcon: FC<SvgProps> = ({ color, ...props }) => {
