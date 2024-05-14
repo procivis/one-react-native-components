@@ -5,7 +5,7 @@ import { Text } from 'react-native-svg';
 
 import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { Placeholder } from '../../../storybook/placeholder';
-import { AlertOutlineIcon, CredentialWarningIcon } from '../../icons/credential';
+import { CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../icons/credential';
 import Selector, { SelectorStatus } from '../selector';
 import CredentialDetailsCard from './credential-details-card';
 import { CarouselImageType } from './credential-image-carousel';
@@ -119,7 +119,7 @@ Basic.args = {
       statusIcon: CredentialWarningIcon,
     },
     notice: 'Notice related to the credential',
-    noticeIcon: AlertOutlineIcon,
+    noticeIcon: CredentialNoticeWarningIcon,
   },
   showAllButtonLabel: 'See all',
   expanded: true,
