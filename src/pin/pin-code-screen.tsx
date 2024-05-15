@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     marginVertical: 24,
   },
   pins: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
   },
   title: {
     marginBottom: 24,
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 3,
     marginTop: 12,
+    paddingHorizontal: 20,
   },
 });
 
