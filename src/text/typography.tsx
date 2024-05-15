@@ -7,18 +7,18 @@ import font from './font';
 
 const presets = {
   xl: {
-    ...font.regular,
+    ...font.heading,
     fontSize: 26,
     lineHeight: 36,
     letterSpacing: 0.2,
   },
   l: {
-    ...font.medium,
+    ...font.heading,
     fontSize: 24,
-    // TODO: figure out how to support line-height 22
+    lineHeight: 33,
   },
   'l/line-height-large': {
-    ...font.medium,
+    ...font.heading,
     fontSize: 24,
     lineHeight: 28,
   },
@@ -29,6 +29,12 @@ const presets = {
   },
   m: {
     ...font.medium,
+    fontSize: 17,
+    lineHeight: 22,
+    letterSpacing: -0.2,
+  },
+  'm/heading': {
+    ...font.heading,
     fontSize: 17,
     lineHeight: 22,
     letterSpacing: -0.2,
