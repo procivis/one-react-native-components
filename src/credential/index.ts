@@ -3,7 +3,8 @@ import CredentialAttributeItem, {
   CredentialAttributeItemProps,
   CredentialAttributeValue,
 } from './credential-attribute-item';
-import Selector, { SelectorStatus } from './selector';
+import Selector from './selector';
+import { SelectorStatus } from './selector-status';
 
 export { CredentialAttribute, CredentialAttributeItem, CredentialAttributeItemProps, CredentialAttributeValue };
 export { Selector, SelectorStatus };
