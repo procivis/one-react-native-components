@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
 
-import { SelectorStatus } from '../credential/selector';
+import { SelectorStatus } from '../credential/selector-status';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 interface SelectorIconProps {
