@@ -16,7 +16,8 @@ Basic.args = {
   color: undefined,
   header: {
     accessory: RequiredAttributeIcon,
-    credentialDetail: 'Credential detail',
+    credentialDetailPrimary: 'Primary detail',
+    credentialDetailSecondary: 'Secondary detail',
     credentialDetailTestID: undefined,
     credentialDetailErrorColor: false,
     credentialName: 'Credential Name',

@@ -3,14 +3,15 @@ import { AccessibilityProps, ColorValue, StyleProp, StyleSheet, View, ViewStyle 
 
 import BlurView from '../../blur/blur-view';
 import ImageOrComponent, { ImageOrComponentSource } from '../../image/image-or-component';
-import Typography from '../../text/typography';
+import Typography, { TypographyProps } from '../../text/typography';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
 import { concatTestID } from '../../utils/testID';
 
 export interface CredentialHeaderProps extends AccessibilityProps {
   accessory?: React.ComponentType<any> | React.ReactElement;
   color?: ColorValue;
-  credentialDetail: string;
+  credentialDetailPrimary: string;
+  credentialDetailSecondary?: string;
   credentialDetailTestID?: string;
   credentialDetailErrorColor?: boolean;
   credentialName: string;
@@ -24,7 +25,8 @@ export interface CredentialHeaderProps extends AccessibilityProps {
 const CredentialHeader: FC<CredentialHeaderProps> = ({
   accessory,
   color = '#5A69F3',
-  credentialDetail,
+  credentialDetailPrimary,
+  credentialDetailSecondary,
   credentialDetailTestID,
   credentialDetailErrorColor,
   credentialName,
@@ -60,6 +62,40 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
     }
   }, [accessory]);
 
+  const DetailText = useMemo(() => {
+    const commonProps: TypographyProps = {
+      color: credentialDetailErrorColor ? colorScheme.error : colorScheme.text,
+      ellipsizeMode: 'tail',
+      numberOfLines: 1,
+      preset: 'xs',
+      style: styles.detailText,
+    };
+    return (
+      <View style={styles.detailTextContainer}>
+        <Typography {...commonProps} testID={credentialDetailTestID ?? concatTestID(testID, 'primaryDetail')}>
+          {credentialDetailPrimary}
+        </Typography>
+        {credentialDetailSecondary ? (
+          <>
+            <Typography {...commonProps} style={styles.interpunct}>
+              {'·'}
+            </Typography>
+            <Typography {...commonProps} testID={credentialDetailTestID ?? concatTestID(testID, 'secondaryDetail')}>
+              {credentialDetailSecondary}
+            </Typography>
+          </>
+        ) : null}
+      </View>
+    );
+  }, [
+    credentialDetailPrimary,
+    credentialDetailSecondary,
+    colorScheme,
+    testID,
+    credentialDetailErrorColor,
+    credentialDetailTestID,
+  ]);
+
   return (
     <BlurView blurStyle="strong" style={[styles.container, style]} testID={testID}>
       <View style={[styles.imageContainer, { backgroundColor: color }]}>
@@ -90,15 +126,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
           style={styles.nameText}>
           {credentialName}
         </Typography>
-        <Typography
-          color={credentialDetailErrorColor ? colorScheme.error : colorScheme.text}
-          ellipsizeMode={'tail'}
-          numberOfLines={1}
-          preset="xs"
-          style={styles.detailText}
-          testID={credentialDetailTestID ?? concatTestID(testID, 'detail')}>
-          {credentialDetail}
-        </Typography>
+        {DetailText}
       </View>
       {accessoryView && <View style={styles.accessory}>{accessoryView}</View>}
     </BlurView>
@@ -118,8 +146,11 @@ const styles = StyleSheet.create({
     height: 60,
     padding: 8,
   },
-  detailText: {
+  detailTextContainer: {
+    flexDirection: 'row',
     marginTop: -1,
+  },
+  detailText: {
     opacity: 0.7,
   },
   image: {
@@ -142,6 +173,10 @@ const styles = StyleSheet.create({
   },
   nameText: {
     marginTop: 2,
+  },
+  interpunct: {
+    marginHorizontal: 12,
+    opacity: 0.5,
   },
   statusIconWrapper: {
     bottom: 3,
