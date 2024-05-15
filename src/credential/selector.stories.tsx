@@ -1,7 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
-import CredentialAttributeSelector, { SelectorStatus } from './selector';
+import CredentialAttributeSelector from './selector';
+import { SelectorStatus } from './selector-status';
 
 const Basic: ComponentStory<typeof CredentialAttributeSelector> = (args) => <CredentialAttributeSelector {...args} />;
 Basic.args = {

@@ -3,15 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { SelectorIcon } from '../icons/selector';
 import { useAppColorScheme } from '../theme';
-
-export enum SelectorStatus {
-  Empty = 'empty',
-  SelectedRadio = 'selectedRadio',
-  SelectedCheckmark = 'selectedCheckmark',
-  Required = 'required',
-  Disabled = 'disabled',
-  Rejected = 'rejected',
-}
+import { SelectorStatus } from './selector-status';
 
 interface SelectorProps {
   status: SelectorStatus;

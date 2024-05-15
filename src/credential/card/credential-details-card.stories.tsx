@@ -6,7 +6,8 @@ import { Text } from 'react-native-svg';
 import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { Placeholder } from '../../../storybook/placeholder';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../icons/credential';
-import Selector, { SelectorStatus } from '../selector';
+import Selector from '../selector';
+import { SelectorStatus } from '../selector-status';
 import CredentialDetailsCard from './credential-details-card';
 import { CarouselImageType } from './credential-image-carousel';
 
