@@ -94,7 +94,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
         <Animated.View style={[styles.title, titleAnimatedStyle]}>
           <Typography
             color={titleColor ?? colorScheme.text}
-            preset="m"
+            preset="m/heading"
             align="center"
             numberOfLines={1}
             testID={concatTestID(testID, 'title')}>
