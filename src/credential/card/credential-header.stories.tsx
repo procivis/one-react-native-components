@@ -12,7 +12,8 @@ const Basic: ComponentStory<typeof CredentialHeader> = ({ ...args }) => {
 Basic.args = {
   accessory: RequiredAttributeIcon,
   color: undefined,
-  credentialDetail: 'Credential detail',
+  credentialDetailPrimary: 'Primary detail',
+  credentialDetailSecondary: 'Secondary detail',
   credentialDetailTestID: undefined,
   credentialDetailErrorColor: false,
   credentialName: 'Credential Name',

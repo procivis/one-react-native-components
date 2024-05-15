@@ -119,7 +119,8 @@ Basic.args = {
     color: undefined,
     onHeaderPress: () => {},
     header: {
-      credentialDetail: 'Credential detail',
+      credentialDetailPrimary: 'Primary Detail',
+      credentialDetailSecondary: 'Secondary Detail',
       credentialDetailTestID: undefined,
       credentialDetailErrorColor: false,
       credentialName: 'Credential Name',
