@@ -3,7 +3,10 @@
 import { NativeModules } from 'react-native';
 
 // OS locale
-const systemLocale: string = NativeModules.I18nManager?.localeIdentifier?.replace('_', '-');
+const systemLocale: string = NativeModules.I18nManager?.localeIdentifier
+  ?.replace(/_/g, '-')
+  .split('#')[0]
+  .replace(/-$/, '');
 
 /**
  * Date only format
