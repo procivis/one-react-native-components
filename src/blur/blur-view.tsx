@@ -1,11 +1,13 @@
 import { BlurView as RNBlurView, BlurViewProps as RNBlurViewProps } from '@react-native-community/blur';
 import React, { FC, PropsWithChildren, useMemo } from 'react';
-import { Platform, StyleSheet, View, ViewProps } from 'react-native';
+import { ColorValue, Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import { useAppColorScheme } from '../theme';
+import { colorWithAlphaComponent } from '../utils/color';
 
 export interface BlurViewProps extends ViewProps {
   blurAmount?: number;
+  color?: ColorValue;
   darkMode?: boolean;
   blurStyle: 'soft' | 'strong' | 'header';
 }
@@ -13,17 +15,19 @@ export interface BlurViewProps extends ViewProps {
 const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
   blurAmount = 50,
   blurStyle,
+  color,
   darkMode,
   children,
   style,
   ...props
 }) => {
-  const themeDarkMode = useAppColorScheme().darkMode;
+  const colorScheme = useAppColorScheme();
+  const themeDarkMode = colorScheme.darkMode;
   const dark = darkMode ?? themeDarkMode;
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'header') {
-      return dark ? 'dark' : 'light';
+      return 'regular';
     } else if (blurStyle === 'soft') {
       return dark ? 'thinMaterialDark' : 'thinMaterialLight';
     } else {
@@ -31,25 +35,35 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
     }
   }, [blurStyle, dark]);
 
+  const backgroundStyle: ViewStyle | undefined = useMemo(() => {
+    if (blurStyle === 'header' && color === colorScheme.background) {
+      return { backgroundColor: '#00000005' };
+    }
+  }, [blurStyle, color, colorScheme.background]);
+
   if (Platform.OS === 'ios') {
     return (
-      <View style={[styles.wrapper, style]} {...props}>
-        <RNBlurView blurAmount={blurAmount} blurType={blurType} style={styles.blur} />
+      <View style={[styles.wrapper, backgroundStyle, style]} {...props}>
+        <RNBlurView
+          blurAmount={blurAmount}
+          blurType={'regular'}
+          reducedTransparencyFallbackColor={color as string}
+          style={styles.blur}
+        />
         {children}
       </View>
     );
   }
 
   const backgroundColors = {
-    dark: 'rgba(16, 12, 12, 0.8)',
-    light: 'rgba(255, 255, 255, 0.8)',
+    regular: 'rgba(255, 255, 255, 0.8)',
     thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
     thickMaterialDark: 'rgba(16, 12, 12, 0.95)',
     thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
     thinMaterialDark: 'rgba(16, 12, 12, 0.8)',
   };
 
-  const backgroundColor = backgroundColors[blurType];
+  const backgroundColor = color ? colorWithAlphaComponent(color, 0.9) : backgroundColors[blurType];
 
   return (
     <View style={[{ backgroundColor }, style]} {...props}>

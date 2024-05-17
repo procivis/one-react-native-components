@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Animated, Easing, LayoutChangeEvent, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { Animated, ColorValue, Easing, LayoutChangeEvent, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import BlurView from '../blur/blur-view';
 import Typography from '../text/typography';
@@ -8,6 +8,7 @@ import { concatTestID } from '../utils';
 
 export type NavigationHeaderProps = ViewProps & {
   animate?: boolean;
+  backgroundColor?: ColorValue;
   blurred?: boolean;
   leftItem?: React.ComponentType<any> | React.ReactElement;
   modalHandleVisible?: boolean;
@@ -19,6 +20,7 @@ export type NavigationHeaderProps = ViewProps & {
 
 const NavigationHeader: FC<NavigationHeaderProps> = ({
   animate = false,
+  backgroundColor,
   blurred = false,
   leftItem,
   modalHandleVisible,
@@ -38,6 +40,8 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
     ({ nativeEvent: { layout } }: LayoutChangeEvent) => setSideItemWidth((prev) => Math.max(layout.width, prev ?? 0)),
     [],
   );
+
+  backgroundColor = backgroundColor ?? colorScheme.background;
 
   const leftItemView: React.ReactElement | undefined = useMemo(() => {
     if (!leftItem) {
@@ -83,9 +87,9 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   return (
     <View
       {...props}
-      style={[styles.headerContainer, !blurred ? { backgroundColor: colorScheme.background } : undefined, style]}
+      style={[styles.headerContainer, !blurred ? { backgroundColor } : undefined, style]}
       testID={testID}>
-      {blurred && <BlurView blurAmount={20} blurStyle="header" style={styles.blur} />}
+      {blurred && <BlurView blurAmount={10} blurStyle="header" color={backgroundColor} style={styles.blur} />}
       {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
       <View style={styles.header}>
         <View onLayout={onSideItemLayout} style={[styles.sideItem, { minWidth: sideItemWidth }]}>
