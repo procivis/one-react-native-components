@@ -68,7 +68,13 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
       style={[cardWrapperStyle, style]}
       testID={concatTestID(props.testID, expanded ? 'expanded' : 'collapsed')}>
       <View style={styles.cardWrapper}>
-        <CredentialDetailsCard expanded={expanded} onLayout={onContentLayout} style={detailsCardStyle} {...props} />
+        <CredentialDetailsCard
+          animate={false}
+          expanded={expanded}
+          onLayout={onContentLayout}
+          style={detailsCardStyle}
+          {...props}
+        />
       </View>
     </Animated.View>
   );
