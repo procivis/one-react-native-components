@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   },
   rightButtonWrapper: {
     height: 48,
+    paddingTop: 10,
     justifyContent: 'center',
     paddingHorizontal: 12,
   },
