@@ -1,8 +1,9 @@
 import React, { forwardRef, useCallback } from 'react';
-import { Insets, StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
+import { Insets, Platform, StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
 
 import { TouchableOpacity } from '../accessibility';
 import { CloseIcon, SearchIcon } from '../icons';
+import font from '../text/font';
 import { useAppColorScheme } from '../theme';
 import { concatTestID } from '../utils';
 
@@ -80,12 +81,13 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   textInput: {
+    ...font.regular,
     flex: 1,
     fontSize: 14,
     height: 40,
     letterSpacing: 0.2,
     lineHeight: 18,
-    paddingBottom: 2,
+    paddingBottom: Platform.OS === 'ios' ? 2 : undefined,
   },
 });
 
