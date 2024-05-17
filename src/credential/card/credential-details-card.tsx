@@ -157,7 +157,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const renderExtraAttributes =
     allAttributesRendered || (previewAttributesHeight !== undefined && currentHeight.value !== undefined);
   return (
-    <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} {...viewProps}>
+    <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} testID={testID} {...viewProps}>
       <CredentialCard
         {...cardProps}
         header={{ ...header, accessory: header.accessory ?? CaretIcon }}
