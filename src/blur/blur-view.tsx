@@ -46,7 +46,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
       <View style={[styles.wrapper, backgroundStyle, style]} {...props}>
         <RNBlurView
           blurAmount={blurAmount}
-          blurType={'regular'}
+          blurType={blurType}
           reducedTransparencyFallbackColor={color as string}
           style={styles.blur}
         />
