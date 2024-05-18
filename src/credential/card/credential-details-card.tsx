@@ -10,6 +10,7 @@ import CredentialAttributeItem, { CredentialAttribute } from '../credential-attr
 import CredentialCard, { CredentialCardProps } from './credential-card';
 
 export type CredentialDetailsCardProps = ViewProps & {
+  animate?: boolean;
   attributes: CredentialAttribute[] | false;
   card: CredentialCardProps;
   expanded?: boolean;
@@ -22,6 +23,7 @@ export type CredentialDetailsCardProps = ViewProps & {
 const PREVIEW_ATTRIBUTES_COUNT = 3;
 
 const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
+  animate = true,
   attributes,
   card,
   expanded,
@@ -85,7 +87,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     const additionalHeight = allAttributesRendered ? additionalAttributesHeight + footerViewHeight : buttonViewHeight;
     const newHeight = expanded ? previewAttributesHeight + additionalHeight : 0;
 
-    if (currentHeight.value === undefined) {
+    if (currentHeight.value === undefined || !animate) {
       currentHeight.value = newHeight;
       return;
     }
@@ -102,6 +104,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     allAttributesRendered,
     buttonViewHeight,
     currentHeight,
+    animate,
     expanded,
     extraAttributes.length,
     fullAttributesHeight,
@@ -229,12 +232,12 @@ const styles = StyleSheet.create({
   },
   attributesAnimatedWrapper: {
     overflow: 'hidden',
-    paddingTop: 7,
   },
   attributesWrapper: {
     flex: 1,
     flexGrow: 1,
     overflow: 'visible',
+    paddingTop: 7,
   },
   card: {
     borderRadius: 0,
