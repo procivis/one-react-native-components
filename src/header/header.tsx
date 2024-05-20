@@ -10,6 +10,7 @@ export interface HeaderProps extends ViewProps {
   onBack?: () => void;
   rightButton?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  titleRowStyle?: StyleProp<ViewStyle>;
   title: ReactNode;
 }
 
@@ -21,7 +22,7 @@ const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
  * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624
  * states (Default + Dashboard)
  */
-const Header: FC<HeaderProps> = ({ onBack, rightButton, style, testID, title, ...viewProps }) => {
+const Header: FC<HeaderProps> = ({ onBack, rightButton, style, titleRowStyle, testID, title, ...viewProps }) => {
   const colorScheme = useAppColorScheme();
 
   return (
@@ -39,6 +40,7 @@ const Header: FC<HeaderProps> = ({ onBack, rightButton, style, testID, title, ..
           styles.titleRow,
           onBack ? styles.titleRow2nd : styles.titleRowNoBackButton,
           (onBack || !rightButton) && styles.titleRowNoRightButton,
+          titleRowStyle,
         ]}>
         {typeof title === 'string' ? (
           <Typography
@@ -72,15 +74,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   rightButtonWrapper: {
-    height: 48,
-    paddingTop: 10,
     justifyContent: 'center',
     paddingHorizontal: 12,
   },
   title: {
     flex: 1,
-    paddingBottom: 10, // to compensate "l" font line-height difference
-    paddingTop: 12,
+    paddingBottom: 8, // to compensate "l" font line-height difference
+    paddingTop: 9,
   },
   titleRow: {
     flexDirection: 'row',
