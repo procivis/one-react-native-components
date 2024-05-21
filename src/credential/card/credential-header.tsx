@@ -80,7 +80,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
             <Typography {...commonProps} style={styles.interpunct}>
               {'·'}
             </Typography>
-            <Typography {...commonProps} testID={credentialDetailTestID ?? concatTestID(testID, 'secondaryDetail')}>
+            <Typography {...commonProps} testID={concatTestID(testID, 'secondaryDetail')}>
               {credentialDetailSecondary}
             </Typography>
           </>
@@ -146,12 +146,12 @@ const styles = StyleSheet.create({
     height: 60,
     padding: 8,
   },
+  detailText: {
+    opacity: 0.7,
+  },
   detailTextContainer: {
     flexDirection: 'row',
     marginTop: -1,
-  },
-  detailText: {
-    opacity: 0.7,
   },
   image: {
     height: 44,
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
     paddingTop: 3,
     textTransform: 'uppercase',
   },
-  nameText: {
-    marginTop: 2,
-  },
   interpunct: {
     marginHorizontal: 12,
     opacity: 0.5,
+  },
+  nameText: {
+    marginTop: 2,
   },
   statusIconWrapper: {
     bottom: 3,
