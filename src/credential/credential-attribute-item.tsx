@@ -183,7 +183,12 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   disabled={!onImagePreview}
                   onPress={imagePreviewHandler}
                   style={styles.dataItemImageWrapper}>
-                  <Image resizeMode="cover" source={image} style={styles.dataItemImage} />
+                  <Image
+                    testID={concatTestID(testID, 'image')}
+                    resizeMode="cover"
+                    source={image}
+                    style={styles.dataItemImage}
+                  />
                 </TouchableOpacity>
               )}
               {value && (
