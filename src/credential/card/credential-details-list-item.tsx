@@ -3,7 +3,7 @@ import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { concatTestID } from '../../utils';
-import { CredentialCardRatio } from './credential-card';
+import { CredentialCardRatio, CredentialCardShadow } from './credential-card';
 import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
 
 export type CredentialDetailsCardListItemProps = CredentialDetailsCardProps & {
@@ -82,6 +82,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
 
 const styles = StyleSheet.create({
   cardWrapper: {
+    ...CredentialCardShadow,
     overflow: 'visible',
   },
 });
