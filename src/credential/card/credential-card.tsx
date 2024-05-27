@@ -10,6 +10,17 @@ import { concatTestID } from '../../utils/testID';
 import CredentialHeader, { CredentialHeaderProps } from './credential-header';
 import CarouselComponent, { CarouselImage } from './credential-image-carousel';
 
+export const CredentialCardShadow: Pick<ViewStyle, 'shadowColor' | 'shadowOffset' | 'shadowOpacity' | 'shadowRadius'> =
+  {
+    shadowColor: '#10274226',
+    shadowOffset: {
+      height: 5,
+      width: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 7,
+  };
+
 export const CredentialCardRatio = 18 / 11;
 
 export type CredentialCardProps = {
