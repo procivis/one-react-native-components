@@ -44,7 +44,7 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
       </View>
       <View style={styles.loaderWrapper}>
         <LoaderView {...loaderProps} />
-        <Typography color={colorScheme.text} preset="regular" style={styles.label}>
+        <Typography align="center" color={colorScheme.text} preset="regular" style={styles.label}>
           {label}
         </Typography>
       </View>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     height: 215,
   },
   label: {
+    marginHorizontal: 20,
     marginTop: 20,
   },
   loaderWrapper: {

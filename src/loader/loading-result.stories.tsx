@@ -7,6 +7,7 @@ import { LoaderViewState } from './loader';
 import LoadingResultScreen from './loading-result';
 
 type Args = {
+  label: string;
   state: LoaderViewState;
   withButton1: boolean;
   withButton2: boolean;
@@ -14,7 +15,7 @@ type Args = {
   withHeader: boolean;
 };
 
-const Basic: Story<Args> = ({ state, withButton1, withButton2, withButton3, withHeader }) => {
+const Basic: Story<Args> = ({ label, state, withButton1, withButton2, withButton3, withHeader }) => {
   return (
     <LoadingResultScreen
       button={withButton1 ? { title: 'Button 1' } : undefined}
@@ -31,13 +32,14 @@ const Basic: Story<Args> = ({ state, withButton1, withButton2, withButton3, with
       loader={{
         animate: true,
         state,
-        label: 'Loading...',
+        label,
       }}
     />
   );
 };
 
 Basic.args = {
+  label: 'Loading...',
   state: LoaderViewState.InProgress,
   withButton1: true,
   withButton2: false,
