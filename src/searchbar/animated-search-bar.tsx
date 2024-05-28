@@ -39,15 +39,9 @@ const AnimatedSearchBar = ({
 
     Animated.timing(rightIconFadeAnimation, {
       duration: 250,
-      toValue: collapsed && rightButton ? 1 : 0,
+      toValue: collapsed && rightButton ? 1.5 : 0,
       useNativeDriver: false,
-    }).start(() => {
-      Animated.timing(rightIconFadeAnimation, {
-        duration: 200,
-        toValue: collapsed && rightButton ? 1.5 : 0,
-        useNativeDriver: false,
-      }).start();
-    });
+    }).start();
   }, [rightButtonAlwaysVisible, rightIconFadeAnimation, rightButton, collapsed]);
 
   const searchBarContainerAnimatedStyle = {
