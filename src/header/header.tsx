@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   rightButtonWrapper: {
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 2,
     height: 48,
+    justifyContent: 'center',
     paddingHorizontal: 12,
+    paddingTop: 2,
   },
   title: {
     flex: 1,
