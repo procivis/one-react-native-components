@@ -31,7 +31,7 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
   }, [onPress, id, selected]);
 
   if (!onPress) {
-    return <View style={[styles.dataItemButton, styles.dataItemButtonChildren]}>{children}</View>;
+    return <View style={styles.touchableAttribute}>{children}</View>;
   }
 
   if (selected) {
@@ -40,8 +40,8 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
         activeOpacity={0.8}
         disabled={disabled}
         onPress={pressHandler}
-        style={[styles.dataItemButton, { backgroundColor: colorScheme.background }]}>
-        <View style={styles.dataItemButtonChildren}>{children}</View>
+        style={[styles.touchableAttribute, { backgroundColor: colorScheme.background }]}>
+        {children}
       </TouchableOpacity>
     );
   }
@@ -51,8 +51,8 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
       disabled={disabled}
       onPress={pressHandler}
       underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}
-      style={styles.dataItemButton}>
-      <View style={styles.dataItemButtonChildren}>{children}</View>
+      style={styles.touchableAttribute}>
+      {children}
     </TouchableHighlight>
   );
 };
@@ -82,6 +82,7 @@ export type CredentialAttributeValue =
 export type CredentialAttribute = CredentialAttributeValue & {
   disabled?: boolean;
   selected?: boolean;
+  nested?: boolean;
   id: string;
   name: string;
   rightAccessory?: ComponentType<any> | ReactElement;
@@ -105,6 +106,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   onImagePreview,
   onPress,
   rightAccessory,
+  nested = false,
   selected,
   style,
   testID,
@@ -132,49 +134,35 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
     }
   }, [rightAccessory]);
 
+  const isObject = attributes && attributes.length > 0;
+
   return (
-    <View style={[styles.dataItem, style]} testID={testID}>
-      <View style={styles.dataItemRow}>
-        {attributes && (
-          <>
-            <View style={styles.decorator}>
-              <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
-                <View
-                  style={[
-                    styles.decoratorCircleInner,
-                    { backgroundColor: colorScheme.text, borderColor: colorScheme.background },
-                  ]}
-                />
-              </View>
-              <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
-            </View>
-            <View style={styles.dataAttributes}>
-              <Typography
-                color={colorScheme.text}
-                preset="xs/line-height-small"
-                style={[styles.dataItemLabel, styles.dataAttributesLabel]}
-                testID={concatTestID(testID, 'title')}>
-                {name}
-              </Typography>
-              {attributes &&
-                attributes.map((attribute, index, { length }) => (
-                  <CredentialAttributeItem
-                    key={attribute.id}
-                    last={index === length - 1 || true}
-                    onImagePreview={onImagePreview}
-                    {...attribute}
+    <View style={[!nested && styles.attributeItemContainer, style]} testID={testID}>
+      <View style={styles.attributeItemRow}>
+        <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
+          <View style={[styles.dataItemButtonChildren]}>
+            {isObject && (
+              <View style={styles.decorator}>
+                <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
+                  <View
+                    style={[
+                      styles.decoratorCircleInner,
+                      { backgroundColor: colorScheme.text, borderColor: colorScheme.background },
+                    ]}
                   />
-                ))}
-            </View>
-          </>
-        )}
-        {!attributes && (
-          <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
-            <View style={styles.dataItemLeft}>
+                </View>
+                <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
+              </View>
+            )}
+            <View
+              style={[
+                isObject ? styles.objectAttributeItem : styles.attributeItem,
+                nested && styles.nestedAttributeItem,
+              ]}>
               <Typography
                 color={colorScheme.text}
-                preset="xs/line-height-small"
-                style={styles.dataItemLabel}
+                preset={image ? 'xs' : 'xs/line-height-small'}
+                style={isObject ? styles.nestedObjectLabel : styles.dataItemLabel}
                 testID={concatTestID(testID, 'title')}>
                 {name}
               </Typography>
@@ -183,12 +171,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   disabled={!onImagePreview}
                   onPress={imagePreviewHandler}
                   style={styles.dataItemImageWrapper}>
-                  <Image
-                    testID={concatTestID(testID, 'image')}
-                    resizeMode="cover"
-                    source={image}
-                    style={styles.dataItemImage}
-                  />
+                  <Image resizeMode="cover" source={image} style={styles.dataItemImage} />
                 </TouchableOpacity>
               )}
               {value && (
@@ -200,34 +183,38 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   {value}
                 </Typography>
               )}
+              {isObject &&
+                attributes.map((attribute, index, { length }) => (
+                  <CredentialAttributeItem
+                    nested={true}
+                    key={attribute.id}
+                    onPress={onPress}
+                    last={index === length - 1}
+                    onImagePreview={onImagePreview}
+                    {...attribute}
+                  />
+                ))}
+              <View />
             </View>
-            {rightAccessoryView}
-          </CredentialAttributeItemButton>
-        )}
+            <View style={[styles.rightAccessory, isObject && styles.objectAccessory]}>{rightAccessoryView}</View>
+          </View>
+        </CredentialAttributeItemButton>
       </View>
-      {!last && <View style={[styles.separator, { backgroundColor: colorScheme.background }]} />}
+      {!last && !nested && <View style={[styles.separator, { backgroundColor: colorScheme.background }]} />}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  dataAttributes: {
-    alignItems: 'stretch',
+  attributeItem: {
     flex: 1,
-    marginTop: 8,
+    paddingLeft: 8,
   },
-  dataAttributesLabel: {
-    marginLeft: 8,
-  },
-  dataItem: {
-    alignItems: 'stretch',
+  attributeItemContainer: {
     marginTop: 2,
   },
-  dataItemButton: {
-    borderRadius: 8,
-    flex: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 11,
+  attributeItemRow: {
+    flexDirection: 'row',
   },
   dataItemButtonChildren: {
     alignItems: 'center',
@@ -242,7 +229,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 0.5,
     height: IMAGE_SIZE,
-    marginTop: 5,
+    marginTop: 4,
     overflow: 'hidden',
     width: IMAGE_SIZE,
   },
@@ -250,14 +237,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     opacity: 0.7,
   },
-  dataItemLeft: {
-    flex: 1,
-  },
-  dataItemRow: {
-    flexDirection: 'row',
-  },
   decorator: {
-    width: 16,
+    height: '100%',
+    left: 8,
+    position: 'absolute',
   },
   decoratorCircle: {
     alignItems: 'center',
@@ -265,9 +248,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 7,
     justifyContent: 'center',
-    left: 4,
     position: 'absolute',
-    top: 13,
+    top: 6,
     width: 7,
   },
   decoratorCircleInner: {
@@ -278,15 +260,39 @@ const styles = StyleSheet.create({
   },
   decoratorLine: {
     bottom: 12,
-    left: 7,
+    left: 3,
     position: 'absolute',
-    top: 20,
+    top: 13,
     width: 1,
+  },
+  nestedAttributeItem: {
+    paddingLeft: 12,
+  },
+  nestedObjectLabel: {
+    opacity: 0.7,
+    paddingLeft: 13,
+  },
+  objectAccessory: {
+    top: 0,
+  },
+  objectAttributeItem: {
+    alignItems: 'stretch',
+    flex: 1,
+    paddingLeft: 12,
+  },
+  rightAccessory: {
+    position: 'absolute',
+    right: 8,
   },
   separator: {
     height: 1,
     marginHorizontal: 8,
     marginTop: -1,
+  },
+  touchableAttribute: {
+    borderRadius: 8,
+    flex: 1,
+    paddingVertical: 11,
   },
 });
 
