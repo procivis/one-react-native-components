@@ -4356,6 +4356,11 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
+"@types/qrcode-svg@^1":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@types/qrcode-svg/-/qrcode-svg-1.1.4.tgz#6ff6cb321c21f30ed8620709ed6ef6c929efe916"
+  integrity sha512-gh+atEBHXpU5iO72Tg4q03YdGKoY0zH1Yr4mGl+NSzFpyPuJcgurs8F3aRpH0Gs93GFuB1rDoQj6U4Xshn72PA==
+
 "@types/qs@^6.9.5":
   version "6.9.7"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
@@ -13714,10 +13719,20 @@ pure-rand@^6.0.0:
   resolved "https://registry.yarnpkg.com/pure-rand/-/pure-rand-6.1.0.tgz#d173cf23258231976ccbdb05247c9787957604f2"
   integrity sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==
 
+pure-svg-code@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/pure-svg-code/-/pure-svg-code-1.0.6.tgz#b0a4da22685b9ba2412244ae8b22a1d663461edb"
+  integrity sha512-uxq2BMTdnKW7jDghpLJrczCd9KDOdyghFtEEpfomqMJkUM83/N+W7sFJPJ3AxBf0mJ3xtxAycl6NW8p6F53jEw==
+
 q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==
+
+qrcode-svg@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/qrcode-svg/-/qrcode-svg-1.1.0.tgz#2087549843dc5d0a3f8e8aa046cd9bcf23708cc3"
+  integrity sha512-XyQCIXux1zEIA3NPb0AeR8UMYvXZzWEhgdBgBjH9gO7M48H9uoHzviNz8pXw3UzrAcxRRRn9gxHewAVK7bn9qw==
 
 qs@6.11.0:
   version "6.11.0"
