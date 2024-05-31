@@ -48,7 +48,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
           blurAmount={blurAmount}
           blurType={blurType}
           reducedTransparencyFallbackColor={color as string}
-          style={styles.blur}
+          style={StyleSheet.absoluteFill}
         />
         {children}
       </View>
@@ -73,13 +73,6 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
 };
 
 const styles = StyleSheet.create({
-  blur: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
   wrapper: {
     overflow: 'hidden',
   },
