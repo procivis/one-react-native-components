@@ -126,10 +126,18 @@ const CredentialCard: FC<CredentialCardProps> = ({
         <CredentialHeader {...header} color={header.color ?? color} testID={concatTestID(testID, 'header')} />
       </TouchableOpacity>
       {notice && (
-        <BlurView onLayout={onNoticeLayoutChange} blurStyle="soft" style={[styles.notice, style]} testID={testID}>
+        <BlurView
+          onLayout={onNoticeLayoutChange}
+          blurStyle="soft"
+          style={[styles.notice, style]}
+          testID={concatTestID(testID, 'notice')}>
           {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
           <View style={styles.noticeTextWrapper}>
-            <Typography color={colorScheme.text} preset="xs/line-height-small" style={styles.noticeText}>
+            <Typography
+              color={colorScheme.text}
+              preset="xs/line-height-small"
+              style={styles.noticeText}
+              testID={concatTestID(testID, 'notice.text')}>
               {notice}
             </Typography>
           </View>
