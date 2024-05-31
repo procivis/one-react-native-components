@@ -9,6 +9,7 @@ import { concatTestID } from '../../utils/testID';
 
 export interface CredentialHeaderProps extends AccessibilityProps {
   accessory?: React.ComponentType<any> | React.ReactElement;
+  blur?: boolean;
   color?: ColorValue;
   credentialDetailPrimary: string;
   credentialDetailSecondary?: string;
@@ -24,6 +25,7 @@ export interface CredentialHeaderProps extends AccessibilityProps {
 
 const CredentialHeader: FC<CredentialHeaderProps> = ({
   accessory,
+  blur = true,
   color = '#5A69F3',
   credentialDetailPrimary,
   credentialDetailSecondary,
@@ -97,7 +99,8 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
   ]);
 
   return (
-    <BlurView blurStyle="strong" style={[styles.container, style]} testID={testID}>
+    <View style={[styles.container, { backgroundColor: blur ? undefined : colorScheme.white }, style]} testID={testID}>
+      {blur && <BlurView blurStyle="strong" style={StyleSheet.absoluteFill} />}
       <View style={[styles.imageContainer, { backgroundColor: color }]}>
         {icon ? (
           <ImageOrComponent testID={concatTestID(testID, 'logoIcon')} source={icon} style={styles.image} />
@@ -129,7 +132,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
         {DetailText}
       </View>
       {accessoryView && <View style={styles.accessory}>{accessoryView}</View>}
-    </BlurView>
+    </View>
   );
 };
 

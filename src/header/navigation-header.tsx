@@ -89,7 +89,9 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
       {...props}
       style={[styles.headerContainer, !blurred ? { backgroundColor } : undefined, style]}
       testID={testID}>
-      {blurred && <BlurView blurAmount={10} blurStyle="header" color={backgroundColor} style={styles.blur} />}
+      {blurred && (
+        <BlurView blurAmount={10} blurStyle="header" color={backgroundColor} style={StyleSheet.absoluteFill} />
+      )}
       {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
       <View style={styles.header}>
         <View onLayout={onSideItemLayout} style={[styles.sideItem, { minWidth: sideItemWidth }]}>
@@ -114,13 +116,6 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
 };
 
 const styles = StyleSheet.create({
-  blur: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
   header: {
     alignItems: 'center',
     flexDirection: 'row',
