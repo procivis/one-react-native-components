@@ -2,6 +2,7 @@ export * from './credential';
 export * from './entity';
 export * from './history';
 export * from './icons';
+export * from './input';
 export * from './keypad';
 export * from './loader';
 export * from './nerd-view';
