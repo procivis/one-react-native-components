@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Image, ImageSourcePropType, ImageStyle, LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { Image, ImageSourcePropType, ImageStyle, LayoutChangeEvent, StyleSheet, View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import { NavigationHeader } from '../header';
@@ -9,7 +8,7 @@ import { CloseIcon } from '../icons';
 import { useAppColorScheme } from '../theme';
 import { concatTestID, ContrastingStatusBar } from '../utils';
 
-type ImagePreviewScreenProps = ViewProps & {
+export type ImagePreviewScreenProps = ViewProps & {
   image: ImageSourcePropType;
   onClose: () => void;
   title: string;
