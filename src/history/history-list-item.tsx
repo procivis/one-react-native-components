@@ -7,8 +7,8 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 import { concatTestID } from '../utils/testID';
 
 export type HistoryListItemProps = {
-  did: string;
   icon: ComponentType<any> | ReactElement;
+  info: string;
   label: string;
   last?: boolean;
   onPress?: () => void;
@@ -17,7 +17,7 @@ export type HistoryListItemProps = {
   time: string;
 };
 
-const HistoryListItem: FC<HistoryListItemProps> = ({ did, icon, label, last, style, time, onPress, testID }) => {
+const HistoryListItem: FC<HistoryListItemProps> = ({ icon, label, info, last, style, time, onPress, testID }) => {
   const colorScheme = useAppColorScheme();
 
   const iconView: ReactElement | undefined = useMemo(() => {
@@ -44,7 +44,7 @@ const HistoryListItem: FC<HistoryListItemProps> = ({ did, icon, label, last, sty
       ]}
       testID={testID}>
       {iconView}
-      <View style={styles.labelAndDid}>
+      <View style={styles.labelAndInfo}>
         <Typography color={colorScheme.text} preset="s" style={styles.label} testID={concatTestID(testID, 'label')}>
           {label}
         </Typography>
@@ -53,8 +53,8 @@ const HistoryListItem: FC<HistoryListItemProps> = ({ did, icon, label, last, sty
           numberOfLines={1}
           preset="s/line-height-small"
           style={styles.shaded}
-          testID={concatTestID(testID, 'did')}>
-          {did}
+          testID={concatTestID(testID, 'info')}>
+          {info}
         </Typography>
       </View>
       <Typography
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 2,
   },
-  labelAndDid: {
+  labelAndInfo: {
     flex: 1,
     marginHorizontal: 12,
   },
