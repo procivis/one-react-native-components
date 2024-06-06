@@ -8,7 +8,7 @@ import { concatTestID } from '../utils/testID';
 
 export type HistoryListItemProps = {
   icon: ComponentType<any> | ReactElement;
-  info: string;
+  info?: string;
   label: string;
   last?: boolean;
   onPress?: () => void;
