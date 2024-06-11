@@ -64,18 +64,28 @@ export type CredentialAttributeValue =
       attributes: CredentialAttribute[];
       image?: never;
       value?: never;
+      values?: never;
       valueErrorColor?: never;
     }
   | {
       attributes?: never;
       image: ImageSourcePropType;
       value?: never;
+      values?: never;
       valueErrorColor?: never;
     }
   | {
       attributes?: never;
       image?: never;
       value: string;
+      values?: never;
+      valueErrorColor?: boolean;
+    }
+  | {
+      attributes?: never;
+      image?: never;
+      value?: never;
+      values: CredentialAttribute[];
       valueErrorColor?: boolean;
     };
 
@@ -83,8 +93,9 @@ export type CredentialAttribute = CredentialAttributeValue & {
   disabled?: boolean;
   selected?: boolean;
   nested?: boolean;
+  listValue?: boolean;
   id: string;
-  name: string;
+  name?: string;
   rightAccessory?: ComponentType<any> | ReactElement;
   testID?: string;
 };
@@ -107,10 +118,12 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   onPress,
   rightAccessory,
   nested = false,
+  listValue = false,
   selected,
   style,
   testID,
   value,
+  values,
   valueErrorColor,
 }) => {
   const colorScheme = useAppColorScheme();
@@ -119,7 +132,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
     if (!onImagePreview || !image) {
       return;
     }
-    onImagePreview(name, image);
+    onImagePreview(name ?? '', image);
   }, [image, name, onImagePreview]);
 
   const rightAccessoryView: React.ReactElement | undefined = useMemo(() => {
@@ -135,15 +148,22 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   }, [rightAccessory]);
 
   const isObject = attributes && attributes.length > 0;
+  const isArray = values && values.length > 0;
 
   return (
     <View style={[!nested && styles.attributeItemContainer, style]} testID={testID}>
       <View style={styles.attributeItemRow}>
         <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
           <View style={[styles.dataItemButtonChildren]}>
-            {isObject && (
+            {(isObject || isArray || listValue) && (
               <View style={styles.decorator}>
-                <View style={[styles.decoratorCircle, { backgroundColor: colorScheme.text }]}>
+                <View
+                  style={[
+                    styles.decoratorCircle,
+                    listValue ? styles.listDecoratorCircle : undefined,
+                    listValue && image ? styles.listImageDecoratorCircle : undefined,
+                    { backgroundColor: colorScheme.text },
+                  ]}>
                   <View
                     style={[
                       styles.decoratorCircleInner,
@@ -151,26 +171,36 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                     ]}
                   />
                 </View>
-                <View style={[styles.decoratorLine, { backgroundColor: colorScheme.text }]} />
+                <View
+                  style={[
+                    styles.decoratorLine,
+                    listValue ? styles.listDecoratorLine : undefined,
+                    listValue && value ? styles.listStringValueDecoratorLine : undefined,
+                    listValue && image ? styles.listImageDecoratorLine : undefined,
+                    { backgroundColor: colorScheme.text },
+                  ]}
+                />
               </View>
             )}
             <View
               style={[
-                isObject ? styles.objectAttributeItem : styles.attributeItem,
+                isObject || isArray || listValue ? styles.objectAttributeItem : styles.attributeItem,
                 nested && styles.nestedAttributeItem,
               ]}>
-              <Typography
-                color={colorScheme.text}
-                preset={image ? 'xs' : 'xs/line-height-small'}
-                style={isObject ? styles.nestedObjectLabel : styles.dataItemLabel}
-                testID={concatTestID(testID, 'title')}>
-                {name}
-              </Typography>
+              {name && (
+                <Typography
+                  color={colorScheme.text}
+                  preset={image ? 'xs' : 'xs/line-height-small'}
+                  style={isObject || isArray ? styles.nestedObjectLabel : styles.dataItemLabel}
+                  testID={concatTestID(testID, 'title')}>
+                  {name}
+                </Typography>
+              )}
               {image && (
                 <TouchableOpacity
                   disabled={!onImagePreview}
                   onPress={imagePreviewHandler}
-                  style={styles.dataItemImageWrapper}>
+                  style={[styles.dataItemImageWrapper, listValue ? styles.listValue : undefined]}>
                   <Image
                     resizeMode="cover"
                     testID={concatTestID(testID, 'image')}
@@ -184,6 +214,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   color={valueErrorColor ? colorScheme.error : colorScheme.text}
                   numberOfLines={10}
                   preset="s"
+                  style={listValue ? styles.listValue : undefined}
                   testID={concatTestID(testID, 'value')}>
                   {value}
                 </Typography>
@@ -197,6 +228,18 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                     last={index === length - 1}
                     onImagePreview={onImagePreview}
                     {...attribute}
+                  />
+                ))}
+              {isArray &&
+                values.map((arrayValue, index, { length }) => (
+                  <CredentialAttributeItem
+                    key={arrayValue.id}
+                    onPress={onPress}
+                    last={index === length - 1}
+                    onImagePreview={onImagePreview}
+                    listValue={true}
+                    {...arrayValue}
+                    name={undefined}
                   />
                 ))}
               <View />
@@ -244,6 +287,7 @@ const styles = StyleSheet.create({
   },
   decorator: {
     height: '100%',
+    justifyContent: 'center',
     left: 8,
     position: 'absolute',
   },
@@ -269,6 +313,26 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 13,
     width: 1,
+  },
+  listDecoratorCircle: {
+    top: 18,
+  },
+  listDecoratorLine: {
+    top: 25,
+  },
+  listImageDecoratorCircle: {
+    top: 32,
+  },
+  listImageDecoratorLine: {
+    bottom: 40,
+    top: 39,
+  },
+  listStringValueDecoratorLine: {
+    bottom: 24,
+  },
+  listValue: {
+    marginLeft: 13,
+    marginVertical: 10,
   },
   nestedAttributeItem: {
     paddingLeft: 12,
