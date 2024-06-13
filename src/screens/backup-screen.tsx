@@ -42,6 +42,9 @@ const BackupScreen: FC<BackupScreenProps> = ({
         leftItem: <BackButton onPress={onBack} testID={concatTestID(testID, 'back')} />,
         title,
       }}
+      scrollView={{
+        testID: concatTestID(testID, 'scroll'),
+      }}
       style={{ backgroundColor: colorScheme.white }}
       testID={testID}>
       <View style={styles.contentWrapper}>
