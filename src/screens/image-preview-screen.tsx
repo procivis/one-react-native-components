@@ -34,7 +34,7 @@ const ImagePreviewScreen: FC<ImagePreviewScreenProps> = ({ image, onClose, title
         backgroundColor="transparent"
         blurred={false}
         leftItem={
-          <TouchableOpacity onPress={onClose} testID={concatTestID(testID, 'closeIcon')}>
+          <TouchableOpacity onPress={onClose} testID={concatTestID(testID, 'close')}>
             <CloseIcon color={colorScheme.white} />
           </TouchableOpacity>
         }
@@ -43,6 +43,7 @@ const ImagePreviewScreen: FC<ImagePreviewScreenProps> = ({ image, onClose, title
         }}
         title={title}
         titleColor={colorScheme.white}
+        testID={concatTestID(testID, 'header')}
       />
 
       <View onLayout={layoutHandler} style={styles.imageContainer}>
