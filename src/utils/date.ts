@@ -24,7 +24,7 @@ export const formatDate = (date: Date, locale?: string, options?: Intl.DateTimeF
  */
 export const formatTime = (date: Date, locale?: string) => {
   try {
-    return date.toLocaleDateString(locale || systemLocale, { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString(locale || systemLocale, { hour: '2-digit', minute: '2-digit' });
   } catch {
     return undefined;
   }
