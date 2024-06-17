@@ -54,8 +54,32 @@ Basic.args = {
       name: 'Attribute 1',
     },
     {
+      values: [
+        {
+          id: 'attribute-2-1',
+          name: 'Attribute 2-1',
+          value: 'Value 2.1',
+          rightAccessory: <Selector status={SelectorStatus.Required} />,
+        },
+        {
+          id: 'attribute-2-2',
+          name: 'Attribute 2-2',
+          value: 'Value 2.2',
+          rightAccessory: <Selector status={SelectorStatus.Required} />,
+        },
+        {
+          id: 'attribute-2-3',
+          name: 'Attribute 2-3',
+          value: 'Value 2.3',
+          rightAccessory: <Selector status={SelectorStatus.Required} />,
+        },
+      ],
       id: 'attribute-2',
       name: 'Attribute 2',
+    },
+    {
+      id: 'attribute-3',
+      name: 'Attribute 3',
       image: {
         uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
       },
@@ -63,37 +87,118 @@ Basic.args = {
     },
     {
       selected: true,
-      id: 'attribute-3',
-      name: 'Attribute 3',
-      value: 'Value 3',
+      id: 'attribute-4',
+      name: 'Attribute 4',
+      value: 'Value 4',
       rightAccessory: <Selector status={true ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
     },
     {
-      id: 'attribute-4',
-      name: 'Attribute 4',
+      id: 'attribute-5',
+      name: 'Attribute 5',
       image: {
         uri: 'https://cdn.pixabay.com/photo/2016/02/17/16/09/vertical-1205295_960_720.jpg',
       },
       rightAccessory: <Selector status={SelectorStatus.Required} />,
     },
     {
-      id: 'attribute-5',
-      name: 'Attribute 5',
-      value: 'Value 5',
+      id: 'attribute-6',
+      name: 'Attribute 6',
+      value: 'Value 6',
       rightAccessory: <Selector status={false ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
     },
     {
       selected: true,
-      id: 'attribute-6',
-      name: 'Attribute 6',
-      value: 'Value 6',
-      rightAccessory: <Selector status={true ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
-    },
-    {
       id: 'attribute-7',
       name: 'Attribute 7',
       value: 'Value 7',
+      rightAccessory: <Selector status={true ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
+    },
+    {
+      id: 'attribute-8',
+      name: 'Attribute 8',
+      value: 'Value 8',
       rightAccessory: <Selector status={false ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
+    },
+    {
+      values: [
+        {
+          attributes: [
+            {
+              id: 'attribute-9-1-1',
+              name: 'Attribute 9.1.1',
+              value: 'Value 9.1.1',
+            },
+            {
+              id: 'attribute-9-1-2',
+              name: 'Attribute 9.1.2',
+              value: 'Value 9.1.2',
+            },
+          ],
+          id: 'attribute-9-1',
+          name: 'Attribute 9-1',
+        },
+        {
+          attributes: [
+            {
+              id: 'attribute-9-2-1',
+              name: 'Attribute 9.2.1',
+              value: 'Value 9.2.1',
+            },
+            {
+              id: 'attribute-9-2-2',
+              name: 'Attribute 9.2.2',
+              value: 'Value 9.2.2',
+            },
+          ],
+          id: 'attribute-9-2',
+          name: 'Attribute 9-2',
+        },
+        {
+          attributes: [
+            {
+              id: 'attribute-9-3-1',
+              name: 'Attribute 9.3.1',
+              value: 'Value 9.3.1',
+            },
+            {
+              id: 'attribute-9-3-2',
+              name: 'Attribute 9.3.2',
+              value: 'Value 9.3.2',
+            },
+          ],
+          id: 'attribute-9-3',
+          name: 'Attribute 9-3',
+        },
+      ],
+      id: 'attribute-9',
+      name: 'Attribute 9',
+    },
+    {
+      values: [
+        {
+          id: 'attribute-10-1',
+          name: 'Attribute 10-1',
+          image: {
+            uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
+          },
+        },
+        {
+          id: 'attribute-10-2',
+          name: 'Attribute 10-2',
+          image: {
+            uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
+          },
+        },
+        {
+          id: 'attribute-10-3',
+          name: 'Attribute 10-3',
+          image: {
+            uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
+          },
+        },
+      ],
+      id: 'attribute-10',
+      name: 'Attribute 10',
     },
   ],
   card: {
