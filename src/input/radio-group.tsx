@@ -11,6 +11,7 @@ export type RadioGroupItem = {
   key: React.Key;
   label: string;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
 export type RadioGroupProps = {
@@ -23,6 +24,7 @@ export type RadioGroupProps = {
   onSelected: (item: RadioGroupItem, index: number) => void;
   selectedItem?: React.Key;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
 const RadioGroup: FunctionComponent<RadioGroupProps> = ({
@@ -35,6 +37,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
   listFooterStyle,
   onEndReached,
   onGetItemAccessibilityLabel,
+  testID,
 }) => {
   const colorScheme = useAppColorScheme();
 
@@ -64,7 +67,8 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
               onPress={() => {
                 onSelected(item, index);
               }}
-              style={[styles.item, item.style]}>
+              style={[styles.item, item.style]}
+              testID={item.testID}>
               <Typography color={colorScheme.text}>{item.label}</Typography>
               <Selector
                 status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty}
@@ -77,6 +81,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
       }}
       showsVerticalScrollIndicator={false}
       style={style}
+      testID={testID}
     />
   );
 };
