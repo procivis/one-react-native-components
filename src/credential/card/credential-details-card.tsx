@@ -208,15 +208,15 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                 ))}
               </View>
             )}
-            {(footerView && (
-              <View onLayout={onFooterViewLayout} style={styles.footer}>
-                {footerView}
-              </View>
-            )) ??
-              null}
           </View>
         </Animated.View>
       )}
+      {(footerView && (
+        <View onLayout={onFooterViewLayout} style={styles.footer}>
+          {footerView}
+        </View>
+      )) ??
+        null}
     </View>
   );
 };
