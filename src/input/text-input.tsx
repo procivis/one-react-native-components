@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
-import { ClearInputIcon } from '../icons/input';
+import { ClearInputIcon, DropdownInputIcon } from '../icons/input';
 import font from '../text/font';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
@@ -28,6 +28,7 @@ import { concatTestID } from '../utils/testID';
 const LABEL_SCALE_RATIO = 14 / 12;
 
 export enum TextInputAccessory {
+  Dropdown = 'dropdown',
   Clear = 'clear',
 }
 
@@ -93,6 +94,8 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
 
     const accessoryIcon = useMemo(() => {
       switch (accessory) {
+        case TextInputAccessory.Dropdown:
+          return <DropdownInputIcon />;
         case TextInputAccessory.Clear:
           return value && !disabled ? <ClearInputIcon /> : undefined;
       }
