@@ -6,7 +6,7 @@ import { concatTestID } from '../../utils';
 import { CredentialCardRatio, CredentialCardShadow } from './credential-card';
 import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
 
-export type CredentialDetailsCardListItemProps = CredentialDetailsCardProps & {
+export type CredentialDetailsCardListItemProps = Omit<CredentialDetailsCardProps, 'animate'> & {
   detailsCardStyle?: StyleProp<ViewStyle>;
   lastItem?: boolean;
 };
