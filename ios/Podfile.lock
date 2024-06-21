@@ -269,6 +269,8 @@ PODS:
   - react-native-blur (4.4.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
+  - react-native-picker (5.0.3):
+    - React-Core
   - react-native-safe-area-context (3.4.1):
     - React-Core
   - react-native-slider (4.5.0):
@@ -403,6 +405,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
+  - "react-native-picker (from `../node_modules/@procivis/react-native-picker`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -475,6 +478,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
+  react-native-picker:
+    :path: "../node_modules/@procivis/react-native-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -546,6 +551,7 @@ SPEC CHECKSUMS:
   React-jsinspector: aadc7a5f156f047800ab3d51f6a10ce5b009109d
   React-logger: a41d4cad677e9726b71a45a4012431d2fb1edd80
   react-native-blur: 69ecfe61d81b32ee7baae10f5d17aeb4e2594b10
+  react-native-picker: 208cd4d747bb5088aac73c7412b07f8a1fc45902
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   react-native-slider: cc89964e1432fa31aa9db7a0fa9b21e26b5d5152
   React-perflogger: 2588b59d386dbbc1df392da9493a8baa690bc89c

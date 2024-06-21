@@ -46,9 +46,11 @@ const getStories = () => {
     require("../src/entity/entity-cluster.stories.tsx"),
     require("../src/header/header.stories.tsx"),
     require("../src/header/navigation-header.stories.tsx"),
+    require("../src/input/selection-input.stories.tsx"),
     require("../src/loader/loader.stories.tsx"),
     require("../src/loader/loading-result.stories.tsx"),
     require("../src/pin/pin-code-screen.stories.tsx"),
+    require("../src/screens/image-preview-screen.stories.tsx"),
     require("../src/searchbar/search-bar.stories.tsx"),
     require("../src/text/typography.stories.tsx"),
   ];
