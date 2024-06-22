@@ -20,6 +20,7 @@ module.exports = {
         '../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '../../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '@react-native-community/blur': '/storybook/modules/blur',
+        '@procivis/react-native-picker': 'react-native-web/src/exports/View',
       },
     },
   }),
