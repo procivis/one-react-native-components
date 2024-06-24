@@ -161,45 +161,21 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     allAttributesRendered || (previewAttributesHeight !== undefined && currentHeight.value !== undefined);
   return (
     <View style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]} testID={testID} {...viewProps}>
-      <CredentialCard
-        {...cardProps}
-        header={{ ...header, accessory: header.accessory ?? CaretIcon }}
-        style={[styles.card, cardProps.style]}
-        testID={concatTestID(testID, 'card')}
-      />
-      {previewAttributes.length > 0 && (
-        <Animated.View style={[styles.attributesAnimatedWrapper, credentialAttributesStyle]}>
-          <View style={styles.attributesWrapper}>
-            <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
-              {previewAttributes.map((attribute, idx) => (
-                <CredentialAttributeItem
-                  key={attribute.id}
-                  last={!footerView && !extraAttributes.length && idx === previewAttributes.length - 1}
-                  testID={concatTestID(testID, 'attribute', attribute.id)}
-                  onImagePreview={onImagePreview}
-                  onPress={onAttributeSelected}
-                  {...attribute}
-                />
-              ))}
-            </View>
-            {!allAttributesRendered && extraAttributes.length > 0 && (
-              <View style={styles.allAttributesWrapper} onLayout={onButtonViewLayout}>
-                <Button
-                  onPress={() => setAllAttributesRendered(true)}
-                  type={ButtonType.Secondary}
-                  testID={concatTestID(testID, 'showAllAttributesButton')}
-                  title={showAllButtonLabel!}
-                />
-              </View>
-            )}
-            {renderExtraAttributes && (
-              <View
-                style={[styles.allAttributesWrapper, footerView && styles.allAttributesWrapperWithFooter]}
-                onLayout={onFullAttrContentLayout}>
-                {extraAttributes.map((attribute, index, { length }) => (
+      <View testID={concatTestID(testID, expanded ? 'expanded' : 'collapsed')}>
+        <CredentialCard
+          {...cardProps}
+          header={{ ...header, accessory: header.accessory ?? CaretIcon }}
+          style={[styles.card, cardProps.style]}
+          testID={concatTestID(testID, 'card')}
+        />
+        {previewAttributes.length > 0 && (
+          <Animated.View style={[styles.attributesAnimatedWrapper, credentialAttributesStyle]}>
+            <View style={styles.attributesWrapper}>
+              <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
+                {previewAttributes.map((attribute, idx) => (
                   <CredentialAttributeItem
                     key={attribute.id}
-                    last={!footerView && index === length - 1}
+                    last={!footerView && !extraAttributes.length && idx === previewAttributes.length - 1}
                     testID={concatTestID(testID, 'attribute', attribute.id)}
                     onImagePreview={onImagePreview}
                     onPress={onAttributeSelected}
@@ -207,16 +183,42 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                   />
                 ))}
               </View>
-            )}
+              {!allAttributesRendered && extraAttributes.length > 0 && (
+                <View style={styles.allAttributesWrapper} onLayout={onButtonViewLayout}>
+                  <Button
+                    onPress={() => setAllAttributesRendered(true)}
+                    type={ButtonType.Secondary}
+                    testID={concatTestID(testID, 'showAllAttributesButton')}
+                    title={showAllButtonLabel!}
+                  />
+                </View>
+              )}
+              {renderExtraAttributes && (
+                <View
+                  style={[styles.allAttributesWrapper, footerView && styles.allAttributesWrapperWithFooter]}
+                  onLayout={onFullAttrContentLayout}>
+                  {extraAttributes.map((attribute, index, { length }) => (
+                    <CredentialAttributeItem
+                      key={attribute.id}
+                      last={!footerView && index === length - 1}
+                      testID={concatTestID(testID, 'attribute', attribute.id)}
+                      onImagePreview={onImagePreview}
+                      onPress={onAttributeSelected}
+                      {...attribute}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          </Animated.View>
+        )}
+        {(footerView && (
+          <View onLayout={onFooterViewLayout} style={styles.footer}>
+            {footerView}
           </View>
-        </Animated.View>
-      )}
-      {(footerView && (
-        <View onLayout={onFooterViewLayout} style={styles.footer}>
-          {footerView}
-        </View>
-      )) ??
-        null}
+        )) ??
+          null}
+      </View>
     </View>
   );
 };

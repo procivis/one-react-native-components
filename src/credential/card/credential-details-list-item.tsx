@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { concatTestID } from '../../utils';
 import { CredentialCardRatio, CredentialCardShadow } from './credential-card';
 import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
 
@@ -64,9 +63,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
   );
 
   return (
-    <Animated.View
-      style={[cardWrapperStyle, style]}
-      testID={concatTestID(props.testID, expanded ? 'expanded' : 'collapsed')}>
+    <Animated.View style={[cardWrapperStyle, style]}>
       <View style={styles.cardWrapper}>
         <CredentialDetailsCard
           animate={false}

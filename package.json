@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.1.16",
+  "version": "0.1.18",
   "description": "Common Procivis ONE UI components for react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -22,7 +22,11 @@
   "scripts": {
     "test": "jest",
     "typescript": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint:eslint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint:eslint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
+    "lint:ts": "tsc --noEmit",
+    "lint": "yarn lint:eslint",
+    "lint:fix": "yarn lint:eslint:fix",
     "prepare": "npx patch-package && bob build",
     "release": "release-it",
     "bootstrap": "yarn",
