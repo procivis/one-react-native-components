@@ -52,7 +52,7 @@ const ScrollViewScreen: FC<PropsWithChildren<ScrollViewScreenProps>> = ({
         scrollEventThrottle={100}
         {...scrollViewProps}>
         <View style={styles.content} testID={concatTestID(testID, 'content')}>
-          {!header.static && <ListTitleHeader title={header.title} />}
+          {!header.static && <ListTitleHeader testID={concatTestID(testID, 'title')} title={header.title} />}
           {children}
         </View>
       </ScrollView>
