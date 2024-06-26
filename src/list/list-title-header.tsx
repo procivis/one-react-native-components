@@ -6,13 +6,14 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export type ListTitleHeaderProps = {
   title: string;
+  testID?: string;
 };
 
-const ListTitleHeader: FC<ListTitleHeaderProps> = ({ title }) => {
+const ListTitleHeader: FC<ListTitleHeaderProps> = ({ title, testID }) => {
   const colorScheme = useAppColorScheme();
 
   return (
-    <Typography accessibilityRole="header" color={colorScheme.text} preset="l" style={styles.listTitle}>
+    <Typography testID={testID} accessibilityRole="header" color={colorScheme.text} preset="l" style={styles.listTitle}>
       {title}
     </Typography>
   );
