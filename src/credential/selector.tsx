@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { concatTestID } from '../../lib/module';
 import { SelectorIcon } from '../icons/selector';
 import { useAppColorScheme } from '../theme';
+import { concatTestID } from '../utils/testID';
 import { SelectorStatus } from './selector-status';
 
 interface SelectorProps {
