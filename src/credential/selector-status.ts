@@ -1,8 +1,8 @@
 export enum SelectorStatus {
-  Empty = 'empty',
-  SelectedRadio = 'selectedRadio',
-  SelectedCheckmark = 'selectedCheckmark',
-  Required = 'required',
   Disabled = 'disabled',
+  Empty = 'empty',
   Rejected = 'rejected',
+  Required = 'required',
+  SelectedCheckmark = 'selectedCheckmark',
+  SelectedRadio = 'selectedRadio',
 }
