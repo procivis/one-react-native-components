@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
+import { concatTestID } from '../../lib/module';
 import { SelectorIcon } from '../icons/selector';
 import { useAppColorScheme } from '../theme';
 import { SelectorStatus } from './selector-status';
@@ -8,6 +9,7 @@ import { SelectorStatus } from './selector-status';
 interface SelectorProps {
   status: SelectorStatus;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 /**
@@ -15,7 +17,7 @@ interface SelectorProps {
  *
  * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=433-28352&mode=design&t=91K8am4RSNRB8qgZ-0
  */
-const Selector: FC<SelectorProps> = ({ status, style }) => {
+const Selector: FC<SelectorProps> = ({ status, style, testID }) => {
   const colorScheme = useAppColorScheme();
 
   const statusStyle = useMemo<StyleProp<ViewStyle>>(() => {
@@ -37,8 +39,8 @@ const Selector: FC<SelectorProps> = ({ status, style }) => {
   const rejected = status === SelectorStatus.Rejected;
 
   return (
-    <View style={[styles.wrapper, statusStyle, style]}>
-      {(checked || rejected) && <SelectorIcon status={status} />}
+    <View testID={testID} style={[styles.wrapper, statusStyle, style]}>
+      {(checked || rejected) && <SelectorIcon testID={concatTestID(testID, 'status', status)} status={status} />}
     </View>
   );
 };
