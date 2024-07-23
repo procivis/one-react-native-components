@@ -37,12 +37,14 @@ const ScrollViewScreen: FC<PropsWithChildren<ScrollViewScreenProps>> = ({
   const { titleVisible, onScroll } = useOnScrollHeaderState();
   const { contentContainerStyle, ...scrollViewProps } = scrollView ?? {};
 
-  const safeAreaPaddingStyle: ViewStyle | undefined =
-    !modalPresentation || Platform.OS === 'android'
-      ? {
-          paddingTop: top,
-        }
-      : undefined;
+  let headerPaddingStyle: ViewStyle | undefined;
+  if (!modalPresentation || Platform.OS === 'android') {
+    headerPaddingStyle = {
+      paddingTop: top,
+    };
+  } else if (modalPresentation && !header.modalHandleVisible && Platform.OS === 'ios') {
+    headerPaddingStyle = styles.modalHeaderWithoutHandle;
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} testID={testID} {...viewProps}>
@@ -52,14 +54,14 @@ const ScrollViewScreen: FC<PropsWithChildren<ScrollViewScreenProps>> = ({
         scrollEventThrottle={100}
         {...scrollViewProps}>
         <View style={styles.content} testID={concatTestID(testID, 'content')}>
-          {!header.static && <ListTitleHeader testID={concatTestID(testID, 'title')} title={header.title} />}
+          {!header.static && <ListTitleHeader title={header.title} />}
           {children}
         </View>
       </ScrollView>
       <NavigationHeader
         animate
         blurred
-        style={[styles.header, safeAreaPaddingStyle]}
+        style={[styles.header, headerPaddingStyle]}
         titleVisible={header.static || titleVisible}
         {...header}
       />
@@ -80,6 +82,9 @@ const styles = StyleSheet.create({
   header: {
     position: 'absolute',
     width: '100%',
+  },
+  modalHeaderWithoutHandle: {
+    paddingTop: 15,
   },
 });
 

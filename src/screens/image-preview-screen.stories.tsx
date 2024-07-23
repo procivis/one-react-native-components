@@ -16,7 +16,7 @@ Basic.args = {
 export { Basic as ImagePreviewScreen };
 
 export default {
-  title: 'feature/Image Preview Screen',
+  title: 'screen/Image Preview Screen',
   component: ImagePreviewScreen,
   parameters: {
     noSafeArea: true,
