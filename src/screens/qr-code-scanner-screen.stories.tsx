@@ -1,21 +1,21 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
-import QRCodeScanner from './qr-code-scanner';
+import QRCodeScannerScreen from './qr-code-scanner-screen';
 
-const Basic: ComponentStory<typeof QRCodeScanner> = (args) => {
-  return <QRCodeScanner {...args} />;
+const Basic: ComponentStory<typeof QRCodeScannerScreen> = (args) => {
+  return <QRCodeScannerScreen {...args} />;
 };
 
 Basic.args = {
   title: 'Scan QR Code to connect.',
 };
 
-export { Basic as QRCodeScanner };
+export { Basic as QRCodeScannerScreen };
 
 export default {
-  title: 'view/camera/QR Code Scanner',
-  component: QRCodeScanner,
+  title: 'screen/QR Code Scanner Screen',
+  component: QRCodeScannerScreen,
   parameters: {
     noSafeArea: true,
     design: {
@@ -26,4 +26,4 @@ export default {
   argTypes: {
     onBarCodeRead: { action: 'onBarCodeRead' },
   },
-} as ComponentMeta<typeof QRCodeScanner>;
+} as ComponentMeta<typeof QRCodeScannerScreen>;
