@@ -46,7 +46,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
 
   return (
     <View style={styles.container}>
-      <QRCodeScanner codeTypes={codeTypes} onQRCodeRead={onQRCodeRead} />
+      <QRCodeScanner codeTypes={codeTypes} onQRCodeRead={onQRCodeRead} style={StyleSheet.absoluteFill} />
       <ContrastingStatusBar backgroundColor={colorScheme.black} />
       <BlurView
         darkMode={true}
