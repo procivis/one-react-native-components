@@ -30,16 +30,18 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
   const colorScheme = useAppColorScheme();
   const { top } = useSafeAreaInsets();
 
-  const safeAreaPaddingStyle: ViewStyle | undefined =
-    Platform.OS === 'android'
-      ? {
-          paddingTop: top,
-        }
-      : undefined;
+  let headerPaddingStyle: ViewStyle | undefined;
+  if (Platform.OS === 'android') {
+    headerPaddingStyle = {
+      paddingTop: top,
+    };
+  } else if (!header?.modalHandleVisible && Platform.OS === 'ios') {
+    headerPaddingStyle = styles.modalHeaderWithoutHandle;
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
-      <View style={[styles.headerWrapper, safeAreaPaddingStyle]}>
+      <View style={[styles.headerWrapper, headerPaddingStyle]}>
         <NavigationHeader {...header} />
       </View>
       <View style={styles.loaderWrapper}>
@@ -82,6 +84,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: 108,
     justifyContent: 'space-between',
+  },
+  modalHeaderWithoutHandle: {
+    paddingTop: 15,
   },
 });
 
