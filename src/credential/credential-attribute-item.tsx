@@ -66,6 +66,7 @@ export type CredentialAttributeValue =
       value?: never;
       values?: never;
       valueErrorColor?: never;
+      testID?: string;
     }
   | {
       attributes?: never;
@@ -73,6 +74,7 @@ export type CredentialAttributeValue =
       value?: never;
       values?: never;
       valueErrorColor?: never;
+      testID?: string;
     }
   | {
       attributes?: never;
@@ -80,6 +82,7 @@ export type CredentialAttributeValue =
       value: string;
       values?: never;
       valueErrorColor?: boolean;
+      testID?: string;
     }
   | {
       attributes?: never;
@@ -87,6 +90,7 @@ export type CredentialAttributeValue =
       value?: never;
       values: CredentialAttribute[];
       valueErrorColor?: boolean;
+      testID?: string;
     };
 
 export type CredentialAttribute = CredentialAttributeValue & {
@@ -97,7 +101,6 @@ export type CredentialAttribute = CredentialAttributeValue & {
   id: string;
   name?: string;
   rightAccessory?: ComponentType<any> | ReactElement;
-  testID?: string;
 };
 
 export type CredentialAttributeItemProps = CredentialAttribute & {
