@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   },
   listValue: {
     marginLeft: 13,
-    marginVertical: 10,
+    paddingVertical: 10,
   },
   nestedAttributeItem: {
     paddingLeft: 12,
