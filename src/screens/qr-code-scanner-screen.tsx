@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent, memo, ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QRCodeScannerScreen;
+export default memo(QRCodeScannerScreen);
