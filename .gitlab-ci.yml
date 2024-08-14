@@ -1,4 +1,4 @@
-image: node:16-alpine
+image: node:18.16.0-alpine
 
 variables:
   YARN_CACHE_FOLDER: './.yarn/cache'
@@ -16,25 +16,36 @@ stages:
   - publish
   - deploy
 
-.yarn-cache: &yarn-cache
+.build-cache: &build-cache
   key:
     files:
       - yarn.lock
+      - package.json
   paths:
     - node_modules/
+    - lib/
     - ${YARN_CACHE_FOLDER}
   policy: pull
 
+.install-node-modules: &install-node-modules
+  - >
+    if [ -d ./node_modules ] && [ "$(ls -A ./node_modules)" ]; then
+      echo "node_modules exists and seems valid, not re-installing deps."
+    else
+      echo "node_modules does not exist or is not valid, re-installing deps."
+      apk add --update --no-cache --virtual .build-deps alpine-sdk libc6-compat gcompat bash
+      npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
+      npm config set -- //${CI_SERVER_HOST}/:_authToken ${CI_JOB_TOKEN}
+      npm config set -- //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
+      yarn global add node-gyp @mapbox/node-pre-gyp
+      yarn install --frozen-lockfile --network-concurrency 1
+    fi
+
 .modules_setup:
   cache:
-    <<: *yarn-cache
+    <<: *build-cache
   before_script:
-    - apk add --update --no-cache --virtual .build-deps alpine-sdk libc6-compat gcompat bash
-    - npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
-    - npm config set -- //${CI_SERVER_HOST}/:_authToken ${CI_JOB_TOKEN}
-    - npm config set -- //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
-    - yarn global add node-gyp @mapbox/node-pre-gyp
-    - yarn install --frozen-lockfile --network-concurrency 1
+    - *install-node-modules
 
 .only_tag:
   rules:
@@ -66,14 +77,13 @@ stages:
       --namespace $K8S_NAMESPACE
     - kubectl rollout restart $K8S_TYPE $HELM_APP_NAME-$HELM_PATH --namespace=$K8S_NAMESPACE
 
-
 build_deps:
   stage: prepare
   extends: .modules_setup
   script:
     - ''
   cache:
-    policy: pull-push
+    policy: push
 
 lint:
   stage: test
@@ -98,6 +108,7 @@ test:
 
 build:storybook:
   stage: build
+  image: node:16-alpine
   needs: [build_deps]
   extends:
     - .modules_setup
@@ -111,16 +122,16 @@ build:storybook:
 publish:storybook:
   stage: publish
   image: docker:20
-  needs: [ build:storybook ]
-  dependencies: [ build:storybook ]
+  needs: [build:storybook]
+  dependencies: [build:storybook]
   variables:
-   IMAGE_TAG: $CI_REGISTRY_IMAGE/storybook:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/storybook:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
   services:
-   - docker:20-dind
+    - docker:20-dind
   script:
-   - docker build -t $IMAGE_TAG -f ./docker/Dockerfile .
-   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-   - docker push $IMAGE_TAG
+    - docker build -t $IMAGE_TAG -f ./docker/Dockerfile .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_TAG
   extends:
     - .only_main
 
@@ -137,7 +148,7 @@ publish:npm:
 
 deploy:storybook:
   stage: deploy
-  needs: [ publish:storybook ]
+  needs: [publish:storybook]
   extends:
     - .deploy_k8s
     - .only_main
