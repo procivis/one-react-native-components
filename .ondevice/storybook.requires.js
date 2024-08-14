@@ -34,7 +34,6 @@ const getStories = () => {
     require("../src/buttons/button.stories.tsx"),
     require("../src/buttons/ghost-button.stories.tsx"),
     require("../src/buttons/scan-button.stories.tsx"),
-    require("../src/camera/qr-code-scanner.stories.tsx"),
     require("../src/control/checkbox.stories.tsx"),
     require("../src/control/switch.stories.tsx"),
     require("../src/credential/card/credential-card.stories.tsx"),
@@ -51,6 +50,7 @@ const getStories = () => {
     require("../src/loader/loading-result.stories.tsx"),
     require("../src/pin/pin-code-screen.stories.tsx"),
     require("../src/screens/image-preview-screen.stories.tsx"),
+    require("../src/screens/qr-code-scanner-screen.stories.tsx"),
     require("../src/searchbar/search-bar.stories.tsx"),
     require("../src/text/typography.stories.tsx"),
   ];

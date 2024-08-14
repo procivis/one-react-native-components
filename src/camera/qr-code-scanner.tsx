@@ -56,7 +56,7 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
 
   return (
     <View {...viewProps}>
-      <Camera codeScanner={qrCodeScanner} device={device!} isActive={true} style={StyleSheet.absoluteFill} />
+      <Camera codeScanner={qrCodeScanner} device={device} isActive={true} style={StyleSheet.absoluteFill} />
       {cameraOverlayView}
     </View>
   );
