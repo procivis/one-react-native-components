@@ -39,7 +39,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const [previewAttributesHeight, setPreviewAttributesHeight] = useState<number>();
   const [fullAttributesHeight, setFullAttributesHeight] = useState<number>();
   const [buttonViewHeight, setButtonViewHeight] = useState<number>();
-  const [footerViewHeight, setFooterViewHeight] = useState<number>();
 
   const [allAttributesRendered, setAllAttributesRendered] = useState<boolean>(
     (attributes && attributes.length <= PREVIEW_ATTRIBUTES_COUNT) || !showAllButtonLabel,
@@ -59,12 +58,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   }, [extraAttributes, allAttributesRendered]);
 
   useEffect(() => {
-    if (!footer) {
-      setFooterViewHeight(0);
-    }
-  }, [footer]);
-
-  useEffect(() => {
     if (extraAttributes.length === 0) {
       const viewStyle = StyleSheet.flatten([
         styles.allAttributesWrapper,
@@ -76,7 +69,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   }, [extraAttributes, footer]);
 
   useEffect(() => {
-    if (previewAttributesHeight === undefined || buttonViewHeight === undefined || footerViewHeight === undefined) {
+    if (previewAttributesHeight === undefined || buttonViewHeight === undefined) {
       return;
     }
     if (allAttributesRendered && fullAttributesHeight === undefined) {
@@ -84,7 +77,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     }
 
     const additionalAttributesHeight = fullAttributesHeight ?? 0;
-    const additionalHeight = allAttributesRendered ? additionalAttributesHeight + footerViewHeight : buttonViewHeight;
+    const additionalHeight = allAttributesRendered ? additionalAttributesHeight : buttonViewHeight;
     const newHeight = expanded ? previewAttributesHeight + additionalHeight : 0;
 
     if (currentHeight.value === undefined || !animate) {
@@ -110,7 +103,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     fullAttributesHeight,
     previewAttributes.length,
     previewAttributesHeight,
-    footerViewHeight,
   ]);
 
   const credentialAttributesStyle = useAnimatedStyle(() => {
@@ -137,10 +129,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const onButtonViewLayout = useCallback((event: LayoutChangeEvent) => {
     setButtonViewHeight(event.nativeEvent.layout.height);
-  }, []);
-
-  const onFooterViewLayout = useCallback((event: LayoutChangeEvent) => {
-    setFooterViewHeight(event.nativeEvent.layout.height + styles.footer.marginTop);
   }, []);
 
   const footerView: ReactElement | undefined = useMemo(() => {
@@ -212,12 +200,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
             </View>
           </Animated.View>
         )}
-        {(footerView && (
-          <View onLayout={onFooterViewLayout} style={styles.footer}>
-            {footerView}
-          </View>
-        )) ??
-          null}
+        {footerView ? <View style={styles.footer}>{footerView}</View> : null}
       </View>
     </View>
   );
@@ -236,10 +219,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   attributesWrapper: {
-    flex: 1,
-    flexGrow: 1,
-    overflow: 'visible',
     paddingTop: 7,
+    position: 'absolute',
+    width: '100%',
   },
   card: {
     borderRadius: 0,
