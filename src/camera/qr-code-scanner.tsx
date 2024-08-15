@@ -1,20 +1,13 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
-import {
-  Camera,
-  Code,
-  CodeType,
-  useCameraDevice,
-  useCameraPermission,
-  useCodeScanner,
-} from 'react-native-vision-camera';
+import { Camera, Code, CodeType, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 
 import CameraOverlay from './camera-overlay';
 
 export type QRCodeScannerProps = ViewProps & {
   cameraOverlay?: React.ComponentType<any> | React.ReactElement;
   codeTypes?: CodeType[];
-  notAuthorizedView?: JSX.Element;
+  noCameraView?: JSX.Element;
   onQRCodeRead: (code: Code[]) => void;
 };
 
@@ -22,15 +15,9 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
   cameraOverlay,
   codeTypes = ['qr'],
   onQRCodeRead,
-  notAuthorizedView,
+  noCameraView = null,
   ...viewProps
 }) => {
-  const { hasPermission, requestPermission } = useCameraPermission();
-
-  if (!hasPermission) {
-    requestPermission();
-  }
-
   const qrCodeScanner = useCodeScanner({
     codeTypes,
     onCodeScanned: onQRCodeRead,
@@ -50,8 +37,8 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
     }
   }, [cameraOverlay]);
 
-  if (!hasPermission || !device) {
-    return notAuthorizedView ?? null;
+  if (!device) {
+    return noCameraView;
   }
 
   return (

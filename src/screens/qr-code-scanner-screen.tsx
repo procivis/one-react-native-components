@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo, ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
+import { useCameraDevice } from 'react-native-vision-camera';
 
 import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
 import BlurView from '../blur/blur-view';
@@ -17,14 +17,14 @@ export interface QRCodeScannerScreenProps {
   codeTypes?: QRCodeScannerProps['codeTypes'];
   onQRCodeRead: QRCodeScannerProps['onQRCodeRead'];
   onClose: () => void;
-  notAuthorizedView?: JSX.Element;
+  noCameraView?: JSX.Element;
   title: ReactElement | string;
 }
 
 const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
   codeTypes,
   onQRCodeRead,
-  notAuthorizedView,
+  noCameraView = null,
   onClose,
   title,
 }) => {
@@ -32,16 +32,9 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
   const insets = useSafeAreaInsets();
   const colorScheme = useAppColorScheme();
 
-  const { hasPermission, requestPermission } = useCameraPermission();
-
-  if (!hasPermission) {
-    requestPermission();
-  }
-
   const device = useCameraDevice('back');
-
-  if (!hasPermission || !device) {
-    return notAuthorizedView ?? null;
+  if (!device) {
+    return noCameraView;
   }
 
   return (
