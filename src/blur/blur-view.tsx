@@ -12,6 +12,15 @@ export interface BlurViewProps extends ViewProps {
   blurStyle: 'soft' | 'strong' | 'header';
 }
 
+const BACKGROUND_COLOR = {
+  light: 'rgba(255, 255, 255, 0.8)',
+  dark: 'rgba(16, 12, 12, 0.8)',
+  thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
+  thickMaterialDark: 'rgba(16, 12, 12, 0.95)',
+  thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
+  thinMaterialDark: 'rgba(16, 12, 12, 0.8)',
+};
+
 const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
   blurAmount = 50,
   blurStyle,
@@ -27,7 +36,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
 
   const blurType: RNBlurViewProps['blurType'] = useMemo(() => {
     if (blurStyle === 'header') {
-      return 'regular';
+      return dark ? 'dark' : 'light';
     } else if (blurStyle === 'soft') {
       return dark ? 'thinMaterialDark' : 'thinMaterialLight';
     } else {
@@ -55,15 +64,7 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
     );
   }
 
-  const backgroundColors = {
-    regular: 'rgba(255, 255, 255, 0.8)',
-    thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
-    thickMaterialDark: 'rgba(16, 12, 12, 0.95)',
-    thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
-    thinMaterialDark: 'rgba(16, 12, 12, 0.8)',
-  };
-
-  const backgroundColor = color ? colorWithAlphaComponent(color, 0.9) : backgroundColors[blurType];
+  const backgroundColor = color ? colorWithAlphaComponent(color, 0.9) : BACKGROUND_COLOR[blurType];
 
   return (
     <View style={[{ backgroundColor }, style]} {...props}>
