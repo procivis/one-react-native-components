@@ -41,6 +41,7 @@ export const formatDateTime = (date: Date, locale?: string) => {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
+      hour12: locale === 'en-US',
     });
   } catch {
     return undefined;
