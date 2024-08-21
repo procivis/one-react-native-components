@@ -46,7 +46,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
     }
     if (React.isValidElement(statusIcon)) {
       return statusIcon;
-    } else if (statusIcon) {
+    } else {
       const StatusIconComponent = statusIcon as React.ComponentType<any>;
       return <StatusIconComponent />;
     }
@@ -58,7 +58,7 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
     }
     if (React.isValidElement(accessory)) {
       return accessory;
-    } else if (accessory) {
+    } else {
       const AccessoryComponent = accessory as React.ComponentType<any>;
       return <AccessoryComponent />;
     }

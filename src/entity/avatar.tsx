@@ -21,7 +21,7 @@ const Avatar: FunctionComponent<AvatarProps> = ({ avatar, placeholderText, statu
     }
     if (React.isValidElement(statusIcon)) {
       return statusIcon;
-    } else if (statusIcon) {
+    } else {
       const StatusIconComponent = statusIcon as React.ComponentType<any>;
       return <StatusIconComponent />;
     }

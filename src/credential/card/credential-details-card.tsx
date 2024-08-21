@@ -137,7 +137,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     }
     if (React.isValidElement(footer)) {
       return footer;
-    } else if (footer) {
+    } else {
       const FooterComponent = footer as React.ComponentType<any>;
       return <FooterComponent />;
     }
