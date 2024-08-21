@@ -31,7 +31,7 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
     }
     if (React.isValidElement(cameraOverlay)) {
       return cameraOverlay;
-    } else if (cameraOverlay) {
+    } else {
       const CameraOverlayComponent = cameraOverlay as React.ComponentType<any>;
       return <CameraOverlayComponent />;
     }

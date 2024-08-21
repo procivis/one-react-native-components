@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo, ReactElement } from 'react';
+import React, { FunctionComponent, memo, ReactElement, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCameraDevice } from 'react-native-vision-camera';
@@ -15,6 +15,7 @@ import { colorWithAlphaComponent } from '../utils/color';
 
 export interface QRCodeScannerScreenProps {
   codeTypes?: QRCodeScannerProps['codeTypes'];
+  footer?: React.ComponentType<any> | React.ReactElement;
   onQRCodeRead: QRCodeScannerProps['onQRCodeRead'];
   onClose: () => void;
   noCameraView?: JSX.Element;
@@ -23,6 +24,7 @@ export interface QRCodeScannerScreenProps {
 
 const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
   codeTypes,
+  footer,
   onQRCodeRead,
   noCameraView = null,
   onClose,
@@ -31,6 +33,18 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
   const t = useAccessibilityTranslation();
   const insets = useSafeAreaInsets();
   const colorScheme = useAppColorScheme();
+
+  const footerView: React.ReactElement | undefined = useMemo(() => {
+    if (!footer) {
+      return undefined;
+    }
+    if (React.isValidElement(footer)) {
+      return footer;
+    } else {
+      const FooterComponent = footer as React.ComponentType<any>;
+      return <FooterComponent />;
+    }
+  }, [footer]);
 
   const device = useCameraDevice('back');
   if (!device) {
@@ -56,10 +70,17 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
       <BlurView
         darkMode={true}
         blurStyle="soft"
-        style={[styles.bottomBlurView, { backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5) }]}>
+        style={[
+          styles.bottomBlurView,
+          {
+            backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5),
+            paddingBottom: Math.max(insets.bottom, 32),
+          },
+        ]}>
         <Typography align="center" style={styles.title} color={colorScheme.white}>
           {title}
         </Typography>
+        {footerView}
       </BlurView>
     </View>
   );
@@ -67,7 +88,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
 const styles = StyleSheet.create({
   bottomBlurView: {
     bottom: 0,
-    height: '15%',
+    minHeight: '15%',
     position: 'absolute',
     width: '100%',
   },
