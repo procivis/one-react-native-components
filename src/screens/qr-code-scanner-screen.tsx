@@ -1,11 +1,12 @@
 import React, { FunctionComponent, memo, ReactElement, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCameraDevice } from 'react-native-vision-camera';
 
 import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
 import BlurView from '../blur/blur-view';
 import { GhostButton } from '../buttons';
+import CameraOverlay from '../camera/camera-overlay';
 import QRCodeScanner, { QRCodeScannerProps } from '../camera/qr-code-scanner';
 import { CloseIcon } from '../icons';
 import { Typography } from '../text';
@@ -18,6 +19,7 @@ export interface QRCodeScannerScreenProps {
   footer?: React.ComponentType<any> | React.ReactElement;
   onQRCodeRead: QRCodeScannerProps['onQRCodeRead'];
   onClose: () => void;
+  overlayStyle?: StyleProp<ViewStyle>;
   noCameraView?: JSX.Element;
   title: ReactElement | string;
 }
@@ -26,8 +28,9 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
   codeTypes,
   footer,
   onQRCodeRead,
-  noCameraView = null,
   onClose,
+  overlayStyle,
+  noCameraView = null,
   title,
 }) => {
   const t = useAccessibilityTranslation();
@@ -46,6 +49,8 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
     }
   }, [footer]);
 
+  const minBottomBlurViewHeight = Dimensions.get('window').height * 0.15;
+
   const device = useCameraDevice('back');
   if (!device) {
     return noCameraView;
@@ -53,7 +58,12 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
 
   return (
     <View style={styles.container}>
-      <QRCodeScanner codeTypes={codeTypes} onQRCodeRead={onQRCodeRead} style={StyleSheet.absoluteFill} />
+      <QRCodeScanner
+        cameraOverlay={<CameraOverlay style={overlayStyle} />}
+        codeTypes={codeTypes}
+        onQRCodeRead={onQRCodeRead}
+        style={StyleSheet.absoluteFill}
+      />
       <ContrastingStatusBar backgroundColor={colorScheme.black} />
       <BlurView
         darkMode={true}
@@ -74,6 +84,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
           styles.bottomBlurView,
           {
             backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5),
+            minHeight: minBottomBlurViewHeight,
             paddingBottom: Math.max(insets.bottom, 32),
           },
         ]}>
@@ -88,7 +99,6 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
 const styles = StyleSheet.create({
   bottomBlurView: {
     bottom: 0,
-    minHeight: '15%',
     position: 'absolute',
     width: '100%',
   },

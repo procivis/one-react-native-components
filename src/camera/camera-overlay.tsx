@@ -1,19 +1,19 @@
 import React, { FunctionComponent } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, ViewProps } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-export interface CameraMaskProps {
+export type CameraMaskProps = ViewProps & {
   scannerSize?: number;
-}
+};
 
-const CameraOverlay: FunctionComponent<CameraMaskProps> = ({ scannerSize }) => {
+const CameraOverlay: FunctionComponent<CameraMaskProps> = ({ scannerSize, style, ...viewProps }) => {
   const windowWidth = Dimensions.get('window').width;
 
   scannerSize = scannerSize ?? windowWidth * 0.6;
   const transformSize = scannerSize / 2;
 
   return (
-    <View style={StyleSheet.absoluteFill}>
+    <View style={[StyleSheet.absoluteFill, style]} {...viewProps}>
       <Svg
         style={[
           styles.scannerOutline,
