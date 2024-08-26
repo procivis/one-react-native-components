@@ -81,3 +81,37 @@ export const LoaderWarning: FC<SvgProps> = (props) => {
     </Svg>
   );
 };
+
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=2942-29465&t=CZt3ManJltJXW5nT-0
+export const LoaderError: FC<SvgProps> = (props) => {
+  return (
+    <Svg width={65} height={64} viewBox="0 0 65 64" fill="none" {...props}>
+      <Path
+        d="M58.5 32c0-14.36-11.64-26-26-26s-26 11.64-26 26 11.64 26 26 26 26-11.64 26-26z"
+        fill="url(#paint0_angular_2140_7619)"
+      />
+      <Circle cx={32.5} cy={32} r={32} fill="url(#paint1_linear_2140_7619)" />
+      <Path
+        d="M28.21 38.552c-.319.299-.704.448-1.156.448-.43 0-.8-.15-1.108-.448a1.548 1.548 0 01-.446-1.111c0-.431.154-.797.463-1.095L30.277 32l-4.314-4.313c-.309-.32-.463-.685-.463-1.095 0-.453.149-.823.446-1.111a1.537 1.537 0 011.108-.448c.43 0 .799.144 1.107.431l4.33 4.33 4.348-4.33c.308-.31.678-.464 1.107-.464.43 0 .794.155 1.091.465.309.298.463.663.463 1.094 0 .42-.154.79-.463 1.112L34.707 32l4.314 4.33c.308.287.462.657.462 1.11 0 .432-.154.803-.462 1.112a1.501 1.501 0 01-1.108.448c-.452 0-.826-.15-1.124-.448l-4.297-4.33-4.281 4.33z"
+        fill="#fff"
+      />
+      <Defs>
+        <RadialGradient
+          id="paint0_angular_2140_7619"
+          cx={0}
+          cy={0}
+          r={1}
+          gradientUnits="userSpaceOnUse"
+          gradientTransform="matrix(0 -26 26 0 32.5 32)">
+          <Stop stopColor="#0F151A" />
+          <Stop offset={0.715} stopColor="#3F7BA6" stopOpacity={0.11} />
+          <Stop offset={1} stopColor="#3F7BA6" stopOpacity={0} />
+        </RadialGradient>
+        <LinearGradient id="paint1_linear_2140_7619" x1={32.5} y1={0} x2={32.5} y2={64} gradientUnits="userSpaceOnUse">
+          <Stop stopColor="red" />
+          <Stop offset={1} stopColor="#C60505" />
+        </LinearGradient>
+      </Defs>
+    </Svg>
+  );
+};
