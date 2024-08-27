@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { InteractionManager, StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
@@ -10,10 +10,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
+import { LoaderError, LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
 import { concatTestID } from '../utils';
 
 export enum LoaderViewState {
+  Error = 'error',
   InProgress = 'inProgress',
   Success = 'success',
   Warning = 'warning',
@@ -32,7 +33,6 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
   const opacity = useSharedValue(state === LoaderViewState.InProgress ? 0 : 1);
 
   const finished = state !== LoaderViewState.InProgress;
-  const success = state === LoaderViewState.Success;
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -129,14 +129,25 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
     [opacity],
   );
 
+  const finishedIcon = useMemo(() => {
+    switch (state) {
+      case LoaderViewState.Success:
+        return <LoaderSuccess />;
+      case LoaderViewState.Warning:
+        return <LoaderWarning />;
+      case LoaderViewState.Error:
+        return <LoaderError />;
+      default:
+        return null;
+    }
+  }, [state]);
+
   return (
     <View style={styles.loader} testID={concatTestID(testID, state)}>
       <Animated.View style={[styles.loaderElement, spinnerAnimatedStyle]}>
         <LoaderProgressSpinner />
       </Animated.View>
-      <Animated.View style={[styles.loaderElement, resultAnimatedStyle]}>
-        {success ? <LoaderSuccess /> : <LoaderWarning />}
-      </Animated.View>
+      <Animated.View style={[styles.loaderElement, resultAnimatedStyle]}>{finishedIcon}</Animated.View>
     </View>
   );
 };
