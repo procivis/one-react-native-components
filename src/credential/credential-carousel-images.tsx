@@ -62,18 +62,19 @@ export const Barcode: FC<BarcodeProps> = ({ content, width = 220, height = 80, t
 
 type QrCodeProps = {
   content: string;
+  padding?: number;
   testID?: string;
 };
 
-export const QrCode: FC<QrCodeProps> = ({ content, testID }) => {
+export const QrCode: FC<QrCodeProps> = ({ content, padding, testID }) => {
   const qrCodeXml = useMemo(() => {
     return new QRCode({
       container: 'svg-viewbox',
       content,
       join: true,
-      padding: 1,
+      padding: padding ?? 1,
     }).svg();
-  }, [content]);
+  }, [content, padding]);
   return <SvgXml height={'100%'} testID={testID} width={'100%'} xml={qrCodeXml} />;
 };
 
