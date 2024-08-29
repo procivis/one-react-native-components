@@ -247,7 +247,9 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                 ))}
               <View />
             </View>
-            <View style={[styles.rightAccessory, isObject && styles.objectAccessory]}>{rightAccessoryView}</View>
+            {rightAccessoryView && (
+              <View style={[styles.rightAccessory, isObject && styles.objectAccessory]}>{rightAccessoryView}</View>
+            )}
           </View>
         </CredentialAttributeItemButton>
       </View>
@@ -345,7 +347,7 @@ const styles = StyleSheet.create({
     paddingLeft: 13,
   },
   objectAccessory: {
-    top: 0,
+    alignSelf: 'flex-start',
   },
   objectAttributeItem: {
     alignItems: 'stretch',
@@ -353,8 +355,7 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   rightAccessory: {
-    position: 'absolute',
-    right: 8,
+    paddingHorizontal: 8,
   },
   separator: {
     height: 1,
