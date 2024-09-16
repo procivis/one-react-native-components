@@ -25,6 +25,7 @@ export type RadioGroupProps = {
   selectedItem?: React.Key;
   style?: StyleProp<ViewStyle>;
   testID?: string;
+  scrollEnabled?: boolean;
 };
 
 const RadioGroup: FunctionComponent<RadioGroupProps> = ({
@@ -38,11 +39,13 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
   onEndReached,
   onGetItemAccessibilityLabel,
   testID,
+  scrollEnabled = true,
 }) => {
   const colorScheme = useAppColorScheme();
 
   return (
     <FlatList<RadioGroupItem>
+      scrollEnabled={scrollEnabled}
       ListFooterComponent={listFooter}
       ListFooterComponentStyle={listFooterStyle}
       contentContainerStyle={containerStyle}
