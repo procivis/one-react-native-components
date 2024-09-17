@@ -134,7 +134,7 @@ deploy:storybook:
     HELM_VALUES_FILE: values/app-components.dev.procivis-one.yaml
     K8S_NAMESPACE: default
     HELM_APP_NAME: react-native
-    HELM_PATH: app-components-chart
+    HELM_PATH: charts/one-rn-components-chart
     DEPLOY_IMAGE_TAG: $APP_VERSION
   trigger:
     project: procivis/one/one-operations
