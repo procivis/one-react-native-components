@@ -1,6 +1,0 @@
-ingress:
-  hosts:
-    - host: app-components.dev.procivis-one.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
