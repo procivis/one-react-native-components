@@ -58,7 +58,7 @@ stages:
 
 .only_main:
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "one-3416-move-helm-charts"
 
 
 build_deps:
@@ -138,5 +138,5 @@ deploy:storybook:
     DEPLOY_IMAGE_TAG: $APP_VERSION
   trigger:
     project: procivis/one/one-operations
-    branch: one-3416-charts-from-projects
+    branch: main
     strategy: depend
