@@ -8,6 +8,7 @@ import SettingItem from './setting-item';
 
 export type ButtonSettingProps = {
   accessory?: ComponentType<any> | ReactElement;
+  disabled?: boolean;
   icon?: ComponentType<any> | ReactElement;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
@@ -15,7 +16,15 @@ export type ButtonSettingProps = {
   title: string;
 };
 
-const ButtonSetting: FunctionComponent<ButtonSettingProps> = ({ accessory, title, onPress, icon, style, testID }) => {
+const ButtonSetting: FunctionComponent<ButtonSettingProps> = ({
+  accessory,
+  disabled,
+  title,
+  onPress,
+  icon,
+  style,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
 
   const accessoryView: React.ReactElement | undefined = useMemo(() => {
@@ -35,7 +44,12 @@ const ButtonSetting: FunctionComponent<ButtonSettingProps> = ({ accessory, title
   }, [accessory, colorScheme.text]);
 
   return (
-    <TouchableOpacity accessibilityRole="button" onPress={onPress} style={styles.container} testID={testID}>
+    <TouchableOpacity
+      disabled={disabled}
+      accessibilityRole="button"
+      onPress={onPress}
+      style={styles.container}
+      testID={testID}>
       <SettingItem icon={icon} style={style} title={title}>
         {accessoryView}
       </SettingItem>
