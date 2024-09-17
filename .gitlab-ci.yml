@@ -58,7 +58,7 @@ stages:
 
 .only_main:
   rules:
-    - if: $CI_COMMIT_REF_NAME == "one-3416-move-helm-charts"
+    - if: $CI_COMMIT_REF_NAME == "main"
 
 
 build_deps:
