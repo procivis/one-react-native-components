@@ -1,5 +1,10 @@
 image: node:18.16.0-alpine
 
+include:
+  - project: "procivis/one/one-operations"
+    file:
+      - "gitlab/docker.gitlab-ci.yml"
+
 variables:
   YARN_CACHE_FOLDER: './.yarn/cache'
   YARN_ENABLE_GLOBAL_CACHE: 'false'
@@ -55,27 +60,6 @@ stages:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
 
-.deploy_k8s:
-  image: registry.gitlab.procivis.ch/procivis/one/one-operations/az-helm-kubectl:1.25.7
-  dependencies: []
-  variables:
-    DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-    K8S_TYPE: deployment
-    HELM_APP_NAME: react-native
-    HELM_PATH: app-components-chart
-  before_script:
-    - az aks install-cli
-    - az login --service-principal -u "$AAD_SERVICE_PRINCIPAL_CLIENT_ID" -p "$AAD_SERVICE_PRINCIPAL_CLIENT_SECRET" --tenant "$AD_TENANT_ID"
-    - az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
-    - kubelogin convert-kubeconfig -l spn
-  script:
-    - cd "$HELM_PATH"
-    - >
-      helm upgrade --install $HELM_APP_NAME .
-      --values $HELM_VALUES_FILE
-      --set "image.tag=$DEPLOY_IMAGE_TAG"
-      --namespace $K8S_NAMESPACE
-    - kubectl rollout restart $K8S_TYPE $HELM_APP_NAME-$HELM_PATH --namespace=$K8S_NAMESPACE
 
 build_deps:
   stage: prepare
@@ -121,23 +105,17 @@ build:storybook:
 
 publish:storybook:
   stage: publish
-  image: docker:20
-  needs: [build:storybook]
-  dependencies: [build:storybook]
+  needs:
+    - job: build:storybook
+      artifacts: true
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE/storybook:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-  services:
-    - docker:20-dind
-  script:
-    - docker build -t $IMAGE_TAG -f ./docker/Dockerfile .
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push $IMAGE_TAG
   extends:
+    - .docker_publish
     - .only_main
 
 publish:npm:
   stage: deploy
-  needs: [test]
   script:
     - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
     - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
@@ -148,10 +126,17 @@ publish:npm:
 
 deploy:storybook:
   stage: deploy
-  needs: [publish:storybook]
+  needs:
+    - publish:storybook
   extends:
-    - .deploy_k8s
     - .only_main
   variables:
     HELM_VALUES_FILE: values/app-components.dev.procivis-one.yaml
     K8S_NAMESPACE: default
+    HELM_APP_NAME: react-native
+    HELM_PATH: charts/one-rn-components-chart
+    DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  trigger:
+    project: procivis/one/one-operations
+    branch: main
+    strategy: depend
