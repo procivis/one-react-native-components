@@ -129,7 +129,6 @@ deploy:storybook:
   needs:
     - publish:storybook
   extends:
-    - .deploy_k8s
     - .only_main
   variables:
     HELM_VALUES_FILE: values/app-components.dev.procivis-one.yaml
