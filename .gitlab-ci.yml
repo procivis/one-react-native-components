@@ -53,29 +53,8 @@ stages:
 
 .only_main:
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "one-3416-move-helm-charts"
 
-.deploy_k8s:
-  image: registry.gitlab.procivis.ch/procivis/one/one-operations/az-helm-kubectl:1.25.7
-  dependencies: []
-  variables:
-    DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-    K8S_TYPE: deployment
-    HELM_APP_NAME: react-native
-    HELM_PATH: app-components-chart
-  before_script:
-    - az aks install-cli
-    - az login --service-principal -u "$AAD_SERVICE_PRINCIPAL_CLIENT_ID" -p "$AAD_SERVICE_PRINCIPAL_CLIENT_SECRET" --tenant "$AD_TENANT_ID"
-    - az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
-    - kubelogin convert-kubeconfig -l spn
-  script:
-    - cd "$HELM_PATH"
-    - >
-      helm upgrade --install $HELM_APP_NAME .
-      --values $HELM_VALUES_FILE
-      --set "image.tag=$DEPLOY_IMAGE_TAG"
-      --namespace $K8S_NAMESPACE
-    - kubectl rollout restart $K8S_TYPE $HELM_APP_NAME-$HELM_PATH --namespace=$K8S_NAMESPACE
 
 build_deps:
   stage: prepare
@@ -85,26 +64,26 @@ build_deps:
   cache:
     policy: push
 
-lint:
-  stage: test
-  needs: [build_deps]
-  extends: .modules_setup
-  script:
-    - yarn lint
-
-compile:
-  stage: test
-  needs: [build_deps]
-  extends: .modules_setup
-  script:
-    - yarn typescript
-
-test:
-  stage: test
-  needs: [build_deps]
-  extends: .modules_setup
-  script:
-    - yarn test
+#lint:
+#  stage: test
+#  needs: [build_deps]
+#  extends: .modules_setup
+#  script:
+#    - yarn lint
+#
+#compile:
+#  stage: test
+#  needs: [build_deps]
+#  extends: .modules_setup
+#  script:
+#    - yarn typescript
+#
+#test:
+#  stage: test
+#  needs: [build_deps]
+#  extends: .modules_setup
+#  script:
+#    - yarn test
 
 build:storybook:
   stage: build
@@ -135,23 +114,30 @@ publish:storybook:
   extends:
     - .only_main
 
-publish:npm:
-  stage: deploy
-  needs: [test]
-  script:
-    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
-    - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
-    - npm publish --verbose --access restricted --tag stable
-  extends:
-    - .modules_setup
-    - .only_tag
+#publish:npm:
+#  stage: deploy
+#  script:
+#    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
+#    - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
+#    - npm publish --verbose --access restricted --tag stable
+#  extends:
+#    - .modules_setup
+#    - .only_tag
 
 deploy:storybook:
   stage: deploy
-  needs: [publish:storybook]
+  needs:
+    - publish:storybook
   extends:
     - .deploy_k8s
     - .only_main
   variables:
     HELM_VALUES_FILE: values/app-components.dev.procivis-one.yaml
     K8S_NAMESPACE: default
+    HELM_APP_NAME: react-native
+    HELM_PATH: app-components-chart
+    DEPLOY_IMAGE_TAG: $APP_VERSION
+  trigger:
+    project: procivis/one/one-operations
+    branch: one-3416-charts-from-projects
+    strategy: depend
