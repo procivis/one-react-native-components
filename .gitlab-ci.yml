@@ -56,6 +56,11 @@ stages:
   rules:
     - if: $CI_COMMIT_TAG
 
+.only_manual_tag:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+
 .only_main:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
@@ -114,15 +119,24 @@ publish:storybook:
     - .docker_publish
     - .only_main
 
-publish:npm:
+publish:npm:private:
   stage: deploy
   script:
-    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
+    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
     - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
     - npm publish --verbose --access restricted --tag stable
   extends:
     - .modules_setup
     - .only_tag
+
+publish:npm:public:
+  stage: deploy
+  script:
+    - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
+    - npm publish --verbose --access public 
+  extends:
+    - .modules_setup
+    - .only_manual_tag
 
 deploy:storybook:
   stage: deploy

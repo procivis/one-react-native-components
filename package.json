@@ -233,9 +233,6 @@
       ]
     ]
   },
-  "publishConfig": {
-    "@procivis:registry": "https://gitlab.procivis.ch/api/v4/projects/101/packages/npm/"
-  },
   "resolutions": {
     "@storybook/react-docgen-typescript-plugin": "1.0.6--canary.9.cd77847.0"
   }
