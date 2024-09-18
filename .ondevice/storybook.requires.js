@@ -30,6 +30,7 @@ try {
 
 const getStories = () => {
   return [
+    require("../src/action-modal/ActionModal.stories.tsx"),
     require("../src/buttons/back-button.stories.tsx"),
     require("../src/buttons/button.stories.tsx"),
     require("../src/buttons/ghost-button.stories.tsx"),
@@ -52,6 +53,8 @@ const getStories = () => {
     require("../src/screens/image-preview-screen.stories.tsx"),
     require("../src/screens/qr-code-scanner-screen.stories.tsx"),
     require("../src/searchbar/search-bar.stories.tsx"),
+    require("../src/state/activity-indicator.stories.tsx"),
+    require("../src/state/error-screen.stories.tsx"),
     require("../src/text/typography.stories.tsx"),
   ];
 };

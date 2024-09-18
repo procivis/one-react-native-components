@@ -4,8 +4,10 @@
  */
 export interface ColorScheme {
   accent: string;
+  accentSecondary: string;
   accentText: string;
   background: string;
+  overlay: string;
   backgroundScroll: string;
   black: string;
   codeAccent: string;
@@ -16,6 +18,8 @@ export interface ColorScheme {
   success: string;
   text: string;
   warning: string;
+  notice: string;
+  noticeText: string;
   white: string;
   darkMode: boolean;
   nerdView: {
@@ -27,4 +31,5 @@ export interface ColorScheme {
     button: string;
     codeHighlightText: string;
   };
+  lineargradient: readonly [string, string];
 }

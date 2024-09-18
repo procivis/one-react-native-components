@@ -5,6 +5,7 @@ export const light: ColorScheme = {
   accentText: '#EBF2F4',
   background: '#F1F3F5',
   backgroundScroll: 'rgba(241, 243, 245, 0.7)',
+  overlay: 'rgba(0, 0, 0, 0.8)',
   black: '#000000',
   codeAccent: '#CFD2E7',
   credentialHeaderBackground: 'rgba(255, 255, 255, 0.87)',
