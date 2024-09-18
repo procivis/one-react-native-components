@@ -32,6 +32,12 @@ stages:
     - ${YARN_CACHE_FOLDER}
   policy: pull
 
+.app_settings: &app_settings
+  - APP_VERSION=${APP_VERSION:-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA}
+  - IMAGE_NAME=$CI_REGISTRY_IMAGE/storybook
+  - IMAGE_TAG=$IMAGE_NAME:$APP_VERSION
+
+
 .install-node-modules: &install-node-modules
   - >
     if [ -d ./node_modules ] && [ "$(ls -A ./node_modules)" ]; then
@@ -51,6 +57,7 @@ stages:
     <<: *build-cache
   before_script:
     - *install-node-modules
+    - *app_settings
 
 .only_tag:
   rules:
@@ -64,6 +71,10 @@ stages:
 .only_main:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
+
+
+before_script:
+  - *app_settings
 
 
 build_deps:
@@ -113,8 +124,6 @@ publish:storybook:
   needs:
     - job: build:storybook
       artifacts: true
-  variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE/storybook:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
   extends:
     - .docker_publish
     - .only_main
