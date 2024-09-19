@@ -2,7 +2,6 @@ import React, { FunctionComponent, useMemo } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop, SvgProps } from 'react-native-svg';
 
-import { useAppColorScheme } from '../theme';
 import { colorArray } from '../utils/color';
 
 export interface GradientBackgroundProps extends SvgProps {
@@ -23,6 +22,8 @@ export interface GradientBackgroundProps extends SvgProps {
   absoluteFill?: boolean;
 }
 
+const linearGradient = ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)'];
+
 const GradientBackground: FunctionComponent<GradientBackgroundProps> = ({
   style,
   colors,
@@ -30,7 +31,6 @@ const GradientBackground: FunctionComponent<GradientBackgroundProps> = ({
   absoluteFill = true,
   ...props
 }) => {
-  const colorScheme = useAppColorScheme();
   const sceenDimensions = useWindowDimensions();
 
   const width = props.width ?? sceenDimensions.width;
@@ -38,11 +38,11 @@ const GradientBackground: FunctionComponent<GradientBackgroundProps> = ({
 
   const svgColors = useMemo(
     () =>
-      (colors ?? colorScheme.lineargradient).map(colorArray).map(([r, g, b, a]) => ({
+      (colors ?? linearGradient).map(colorArray).map(([r, g, b, a]) => ({
         stopColor: `rgb(${r * 255},${g * 255},${b * 255})`,
         stopOpacity: a,
       })),
-    [colorScheme, colors],
+    [colors],
   );
 
   let gradientDirectionProps;

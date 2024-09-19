@@ -4,11 +4,9 @@ import type { ColorScheme } from './color-scheme';
 
 const defaultColorScheme: ColorScheme = {
   accent: '#0F151A',
-  accentSecondary: '#FFA0A0',
   accentText: '#EBF2F4',
   background: '#F1F3F5',
   backgroundScroll: 'rgba(241, 243, 245, 0.7)',
-  overlay: 'rgba(0, 0, 0, 0.8)',
   black: '#000000',
   codeAccent: '#CFD2E7',
   credentialHeaderBackground: 'rgba(255, 255, 255, 0.87)',
@@ -29,7 +27,6 @@ const defaultColorScheme: ColorScheme = {
     button: 'rgba(255, 255, 255, 0.05)',
     codeHighlightText: 'rgba(232, 135, 114, 1)',
   },
-  lineargradient: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)'],
 };
 
 const ColorSchemeContext = React.createContext<ColorScheme>(defaultColorScheme);

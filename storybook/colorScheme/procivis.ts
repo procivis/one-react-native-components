@@ -3,10 +3,8 @@ import type { ColorScheme } from '../../src/theme';
 export const light: ColorScheme = {
   accent: '#0F151A',
   accentText: '#EBF2F4',
-  accentSecondary: '#FFA0A0',
   background: '#F1F3F5',
   backgroundScroll: 'rgba(241, 243, 245, 0.7)',
-  overlay: 'rgba(0, 0, 0, 0.8)',
   black: '#000000',
   codeAccent: '#CFD2E7',
   credentialHeaderBackground: 'rgba(255, 255, 255, 0.87)',
@@ -27,5 +25,4 @@ export const light: ColorScheme = {
     button: 'rgba(255, 255, 255, 0.05)',
     codeHighlightText: 'rgba(232, 135, 114, 1)',
   },
-  lineargradient: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)'],
 };

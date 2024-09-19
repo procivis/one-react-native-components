@@ -31,9 +31,11 @@ const ActionModal: FunctionComponent<PropsWithChildren<Props>> = ({
   testID,
 }) => {
   const colorScheme = useAppColorScheme();
+  const overlay = 'rgba(0, 0, 0, 0.5)';
+
   return (
     <Modal animationType="fade" statusBarTranslucent style={style} transparent visible={visible}>
-      <View testID={testID} style={[styles.background, { backgroundColor: colorScheme.overlay }]}>
+      <View testID={testID} style={[styles.background, { backgroundColor: overlay }]}>
         <View style={[styles.contentContainer, { backgroundColor: colorScheme.white }, contentStyle]}>{children}</View>
       </View>
     </Modal>

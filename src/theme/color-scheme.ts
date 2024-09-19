@@ -4,10 +4,8 @@
  */
 export interface ColorScheme {
   accent: string;
-  accentSecondary: string;
   accentText: string;
   background: string;
-  overlay: string;
   backgroundScroll: string;
   black: string;
   codeAccent: string;
@@ -29,5 +27,4 @@ export interface ColorScheme {
     button: string;
     codeHighlightText: string;
   };
-  lineargradient: readonly [string, string];
 }

@@ -141,7 +141,7 @@ export const ErrorStateIcon: React.FunctionComponent<IconProps> = ({ accent = tr
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" viewBox="0 0 160 161" width={150} height={150}>
-      <Rect width={160} height={160} y={0.5} fill={accent ? colorScheme.accentSecondary : colorScheme.accent} rx={80} />
+      <Rect width={160} height={160} y={0.5} fill={accent ? '#FFA0A0' : colorScheme.accent} rx={80} />
       <Rect width={136} height={136} x={12} y={12.5} fill={accent ? colorScheme.accent : colorScheme.white} rx={68} />
       <Path
         fill={accent ? colorScheme.white : colorScheme.black}
