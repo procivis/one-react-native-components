@@ -18,8 +18,6 @@ export interface ColorScheme {
   success: string;
   text: string;
   warning: string;
-  notice: string;
-  noticeText: string;
   white: string;
   darkMode: boolean;
   nerdView: {

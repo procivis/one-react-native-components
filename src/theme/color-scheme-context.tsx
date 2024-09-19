@@ -15,8 +15,6 @@ const defaultColorScheme: ColorScheme = {
   error: '#D90D0D',
   grayDark: '#CDD4DA',
   linkText: '#3F7BA6',
-  notice: '#FFFBE6',
-  noticeText: '#3E360C',
   success: '#00D066',
   text: '#0D0E10',
   warning: '#F7BF0B',
