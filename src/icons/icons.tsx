@@ -3,6 +3,10 @@ import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
+interface IconProps {
+  accent?: boolean;
+}
+
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=415-10315&t=S6UEbGflD2ZT95eA-4
 export const ScanIcon: FC<SvgProps> = ({ color, ...props }) => {
   return (
@@ -129,6 +133,22 @@ export const FilterIcon: FC<SvgProps> = ({ color, ...props }) => {
       <Rect fill={iconColor} height={1} stroke={iconColor} strokeWidth={0.5} width={14} x={5} y={6} />
       <Rect fill={iconColor} height={1} stroke={iconColor} strokeWidth={0.5} width={10} x={7} y={11} />
       <Rect fill={iconColor} height={1} stroke={iconColor} strokeWidth={0.5} width={4} x={10} y={16} />
+    </Svg>
+  );
+};
+
+export const ErrorStateIcon: React.FunctionComponent<IconProps> = ({ accent = true }) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg fill="none" viewBox="0 0 160 161" width={150} height={150}>
+      <Rect width={160} height={160} y={0.5} fill={accent ? '#FFA0A0' : colorScheme.accent} rx={80} />
+      <Rect width={136} height={136} x={12} y={12.5} fill={accent ? colorScheme.accent : colorScheme.white} rx={68} />
+      <Path
+        fill={accent ? colorScheme.white : colorScheme.black}
+        fillRule="evenodd"
+        d="m80.298 53.684 30.874 50.17H49.424l30.874-50.17ZM77.162 91.31h6.271v6.272h-6.271V91.31Zm6.271-21.949h-6.271V85.04h6.271V69.362Z"
+        clipRule="evenodd"
+      />
     </Svg>
   );
 };
