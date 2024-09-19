@@ -6,6 +6,8 @@ import { Typography } from '../../src/text';
 import { ColorScheme, useAppColorScheme } from '../../src/theme';
 import { colorArray } from '../../src/utils/color';
 
+type ColorSchemeKey = keyof ColorScheme;
+
 // https://stackoverflow.com/a/9733420
 const getLuminanace = (color: number[]) => {
   const rgb = color.map((val) => (val <= 0.03928 ? val / 12.92 : ((val + 0.055) / 1.055) ** 2.4));
@@ -82,7 +84,7 @@ const Test: FC<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
           </Typography>
           {':1'}
         </Typography>
-        <Typography color={colorScheme[RATING_COLOR[rating]]}>{ratingText}</Typography>
+        <Typography color={colorScheme[RATING_COLOR[rating]] as ColorSchemeKey}>{ratingText}</Typography>
       </View>
     </View>
   );
@@ -93,8 +95,8 @@ const TextBackgroundTest: FC<{ text: SimpleColorName; background: SimpleColorNam
   return (
     <Test
       name={`${text} on ${background}`}
-      colorF={colorScheme[text]}
-      colorB={colorScheme[background]}
+      colorF={colorScheme[text] as ColorSchemeKey}
+      colorB={colorScheme[background] as ColorSchemeKey}
       AAlimit={4.5}
       AAAlimit={7}
     />

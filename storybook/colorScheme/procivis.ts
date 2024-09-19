@@ -3,6 +3,7 @@ import type { ColorScheme } from '../../src/theme';
 export const light: ColorScheme = {
   accent: '#0F151A',
   accentText: '#EBF2F4',
+  accentSecondary: '#FFA0A0',
   background: '#F1F3F5',
   backgroundScroll: 'rgba(241, 243, 245, 0.7)',
   overlay: 'rgba(0, 0, 0, 0.8)',
@@ -12,6 +13,8 @@ export const light: ColorScheme = {
   error: '#D90D0D',
   grayDark: '#CDD4DA',
   linkText: '#3F7BA6',
+  notice: '#FFFBE6',
+  noticeText: '#3E360C',
   success: '#00D066',
   text: '#0D0E10',
   warning: '#F7BF0B',
@@ -26,4 +29,5 @@ export const light: ColorScheme = {
     button: 'rgba(255, 255, 255, 0.05)',
     codeHighlightText: 'rgba(232, 135, 114, 1)',
   },
+  lineargradient: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)'],
 };
