@@ -12,6 +12,7 @@ export const light: ColorScheme = {
   grayDark: '#CDD4DA',
   linkText: '#3F7BA6',
   success: '#00D066',
+  successText: '#006B34',
   text: '#0D0E10',
   warning: '#F7BF0B',
   white: '#FFFFFF',
