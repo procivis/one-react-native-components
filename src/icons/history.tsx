@@ -83,6 +83,30 @@ export const HistoryStatusAcceptedIcon: FC<SvgProps> = (props) => {
   );
 };
 
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=415-5402&node-type=frame&t=MNBdPiFol0J4XsBR-0
+const HistoryStatusDeleteIcon: FC<SvgProps> = (props) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg fill="none" height="22" viewBox="0 0 22 22" width="22" {...props}>
+      <Path
+        d="M10.575 20a8.241 8.241 0 01-3.312-.672 8.649 8.649 0 01-2.74-1.851 8.837 8.837 0 01-1.85-2.74A8.242 8.242 0 012 11.425c0-1.173.224-2.277.672-3.312a8.793 8.793 0 014.582-4.59 8.243 8.243 0 013.312-.672c1.18 0 2.286.224 3.32.672a8.766 8.766 0 012.74 1.86 8.667 8.667 0 011.86 2.73 8.243 8.243 0 01.672 3.312 8.243 8.243 0 01-.673 3.312 8.768 8.768 0 01-4.598 4.59 8.241 8.241 0 01-3.312.673z"
+        fill={colorScheme.error}
+      />
+      <Path
+        d="M3.814 18.181l.002.003c.882.881 1.9 1.57 3.051 2.062a9.242 9.242 0 003.708.754c1.303 0 2.542-.25 3.707-.754a9.766 9.766 0 005.12-5.111 9.244 9.244 0 00.756-3.71c0-1.304-.25-2.544-.755-3.71a9.666 9.666 0 00-2.071-3.041 9.765 9.765 0 00-3.048-2.069 9.263 9.263 0 00-3.718-.754c-1.304 0-2.544.25-3.71.754v.001a9.793 9.793 0 00-5.101 5.11A9.242 9.242 0 001 11.426c0 1.304.25 2.543.755 3.709a9.836 9.836 0 002.059 3.046z"
+        stroke={colorScheme.white}
+        strokeOpacity={0.2}
+        strokeWidth={2}
+      />
+      <Path fill={colorScheme.white} d="M7.28577 8.42859H13.71434V16.142879999999998H7.28577z" />
+      <Path fill={colorScheme.white} d="M6 7.14294H15V8.428650000000001H6z" />
+      <Path fill={colorScheme.white} d="M9.85718 5.85718H11.14289V7.1428899999999995H9.85718z" />
+      <Path fill={colorScheme.error} d="M8.57141 9.71436H9.85712V14.857219999999998H8.57141z" />
+      <Path fill={colorScheme.error} d="M11.1428 9.71436H12.42851V14.857219999999998H11.1428z" />
+    </Svg>
+  );
+};
+
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=426-27862
 const HistoryStatusErrorIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
@@ -94,13 +118,13 @@ const HistoryStatusErrorIcon: FC<SvgProps> = (props) => {
       />
       <Path
         d="M3.81385 18.1812L3.81633 18.1837C4.69776 19.0651 5.71679 19.7536 6.86722 20.2461C8.032 20.7503 9.27117 21 10.5747 21C11.8782 21 13.1174 20.7503 14.2821 20.2461C15.4326 19.7537 16.4516 19.0651 17.3331 18.1837C18.2142 17.3026 18.9051 16.2842 19.403 15.1348C19.9077 13.9694 20.1577 12.7296 20.1577 11.4253C20.1577 10.121 19.9077 8.88117 19.403 7.71581C18.905 6.56624 18.2138 5.55009 17.3318 4.67398C16.451 3.79349 15.4331 3.103 14.2842 2.60533C13.1182 2.10029 11.8755 1.85059 10.5664 1.85059C9.26213 1.85059 8.02228 2.10055 6.85692 2.60533L6.85513 2.60611C5.71136 3.10421 4.69653 3.79502 3.81633 4.67522C2.94015 5.5514 2.25228 6.56718 1.75475 7.71581C1.24997 8.88117 1 10.121 1 11.4253C1 12.7296 1.24997 13.9694 1.75475 15.1348C2.252 16.2828 2.93915 17.3003 3.81385 18.1812Z"
-        stroke="white"
+        stroke={colorScheme.white}
         strokeOpacity="0.2"
         strokeWidth="2"
       />
       <Path
         d="M8.43311 14.7124C8.27262 14.8618 8.07894 14.9365 7.85205 14.9365C7.63623 14.9365 7.45085 14.8618 7.2959 14.7124C7.14648 14.5575 7.07178 14.3721 7.07178 14.1562C7.07178 13.9404 7.14925 13.7578 7.3042 13.6084L9.4707 11.4336L7.3042 9.27539C7.14925 9.11491 7.07178 8.93229 7.07178 8.72754C7.07178 8.50065 7.14648 8.31527 7.2959 8.17139C7.45085 8.02197 7.63623 7.94727 7.85205 7.94727C8.06787 7.94727 8.25326 8.01921 8.4082 8.16309L10.583 10.3296L12.7661 8.16309C12.9211 8.00814 13.1064 7.93066 13.3223 7.93066C13.5381 7.93066 13.7207 8.00814 13.8701 8.16309C14.0251 8.3125 14.1025 8.49512 14.1025 8.71094C14.1025 8.92122 14.0251 9.10661 13.8701 9.26709L11.6953 11.4336L13.8618 13.6001C14.0168 13.744 14.0942 13.9294 14.0942 14.1562C14.0942 14.3721 14.0168 14.5575 13.8618 14.7124C13.7124 14.8618 13.527 14.9365 13.3057 14.9365C13.0788 14.9365 12.8906 14.8618 12.7412 14.7124L10.583 12.5459L8.43311 14.7124Z"
-        fill="white"
+        fill={colorScheme.white}
       />
     </Svg>
   );
@@ -206,6 +230,7 @@ const HistoryStatusIndicatorIcon: FC<SvgProps> = (props) => {
 export enum HistoryStatusIconType {
   Success,
   Error,
+  Delete,
   Suspend,
   SuspendTemporary,
   Indicator,
@@ -224,6 +249,9 @@ export const HistoryStatusIcon: FC<HistoryStatusIconProps> = ({ type, ...props }
     case HistoryStatusIconType.Error:
       StatusIcon = HistoryStatusErrorIcon;
       break;
+    case HistoryStatusIconType.Delete:
+      StatusIcon = HistoryStatusDeleteIcon;
+      break;
     case HistoryStatusIconType.Suspend:
       StatusIcon = HistoryStatusSuspendIcon;
       break;
@@ -241,6 +269,9 @@ export const HistoryStatusIcon: FC<HistoryStatusIconProps> = ({ type, ...props }
 export enum HistoryActionIconType {
   Issue,
   IssueReject,
+  Request,
+  RequestDeleted,
+  RequestReject,
   Revalidate,
   Revoke,
   Share,
@@ -279,12 +310,9 @@ export const HistoryActionIcon: FC<HistoryActionIconProps> = ({ type, style, ...
       statusIcon = HistoryStatusIconType.Error;
       break;
     case HistoryActionIconType.ShareReject:
-      statusIcon = HistoryStatusIconType.Error;
-      break;
     case HistoryActionIconType.Error:
-      statusIcon = HistoryStatusIconType.Error;
-      break;
     case HistoryActionIconType.Revoke:
+    case HistoryActionIconType.RequestReject:
       statusIcon = HistoryStatusIconType.Error;
       break;
     case HistoryActionIconType.Suspend:
@@ -292,6 +320,9 @@ export const HistoryActionIcon: FC<HistoryActionIconProps> = ({ type, style, ...
       break;
     case HistoryActionIconType.SuspendTemporary:
       statusIcon = HistoryStatusIconType.SuspendTemporary;
+      break;
+    case HistoryActionIconType.RequestDeleted:
+      statusIcon = HistoryStatusIconType.Delete;
       break;
   }
 
