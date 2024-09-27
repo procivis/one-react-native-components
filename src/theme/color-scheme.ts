@@ -14,6 +14,7 @@ export interface ColorScheme {
   grayDark: string;
   linkText: string;
   success: string;
+  successText: string;
   text: string;
   warning: string;
   white: string;
