@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dimensions, Linking, StyleSheet, View, ViewStyle } from 'react-native';
+import { Dimensions, LayoutChangeEvent, Linking, StyleSheet, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, {
   clamp,
@@ -16,6 +16,8 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 import { concatTestID } from '../utils/testID';
 
 const VALUE_PREVIEW_LENGTH = 80;
+const ICON_HEIGHT = 48;
+const CONTAINER_PADDING = 8;
 
 // The onExpand and expandedAttributes props are used to notify other expanded fields
 // that the layout (and thus the scrollOffset / icon position) has changed. This
@@ -44,8 +46,11 @@ const styles = StyleSheet.create({
   actionIcon: {
     alignItems: 'center',
     flex: 0.15,
-    height: 48,
+    height: ICON_HEIGHT,
     justifyContent: 'center',
+  },
+  actionIconSingleLine: {
+    height: 24,
   },
   attributeLabel: {
     marginBottom: 4,
@@ -59,7 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 0.2,
     flexDirection: 'row',
-    padding: 8,
+    padding: CONTAINER_PADDING,
   },
   container: {
     paddingHorizontal: 20,
@@ -74,8 +79,6 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
 });
-
-const ICON_HEIGHT = 48;
 
 export const ActionIcon: FunctionComponent<{
   copy?: boolean;
@@ -116,12 +119,18 @@ export const ActionIcon: FunctionComponent<{
 
 const TextWithHighlight: FunctionComponent<{
   highlightedText: string;
+  onLayout?: (event: LayoutChangeEvent) => void;
   testID: string;
   text: string;
-}> = ({ highlightedText, testID, text }) => {
+}> = ({ highlightedText, onLayout, testID, text }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Typography color={colorScheme.white} preset="s/code" style={styles.attributeValue} testID={testID}>
+    <Typography
+      color={colorScheme.white}
+      onLayout={onLayout}
+      preset="s/code"
+      style={styles.attributeValue}
+      testID={testID}>
       <Typography color={colorScheme.nerdView.codeHighlightText} preset="s/code">
         {highlightedText}
       </Typography>
@@ -147,6 +156,7 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
 }) => {
   const colorScheme = useAppColorScheme();
   const valueViewRef = React.useRef<View>(null);
+  const [isSingleLine, setIsSingleLine] = useState<boolean>();
 
   const expandedView = useSharedValue({
     expandedAtOffset: 0,
@@ -160,8 +170,12 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
   const screenMiddle = useMemo(() => Dimensions.get('screen').height / 2, []);
 
   const iconTopPosition = useDerivedValue(() => {
-    if (!expanded || !expandable || !scrollOffset) {
-      return expandedView.value.viewHeight / 2 - ICON_HEIGHT / 2;
+    if (isSingleLine === undefined) {
+      return 0;
+    }
+    if (!expanded || !expandable || !scrollOffset || isSingleLine) {
+      const iconHeight = isSingleLine ? 0 : ICON_HEIGHT;
+      return expandedView.value.viewHeight / 2 - iconHeight / 2;
     }
 
     const viewEnd = expandedView.value.viewStart + expandedView.value.viewHeight;
@@ -193,22 +207,28 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
   const previewText = expanded ? attributeText : attributeText.slice(0, VALUE_PREVIEW_LENGTH) + '...';
 
   useEffect(() => {
-    if (!scrollOffset) {
+    if (!scrollOffset || isSingleLine === undefined) {
       return;
     }
 
     setTimeout(() => {
       valueViewRef.current?.measure((x, y, w, h, px, py) => {
+        console.log(h, py, scrollOffset.value);
         expandedView.value = {
-          expandedAtOffset: scrollOffset.value,
-          viewHeight: h,
+          expandedAtOffset: isSingleLine ? 0 : scrollOffset.value,
+          viewHeight: isSingleLine ? 0 : h - 2 * CONTAINER_PADDING,
           viewStart: py,
         };
       });
     }, 0);
     // We only recompute when any attribute is expanded
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expandedAttributes]);
+  }, [expandedAttributes, isSingleLine]);
+
+  const onTextLayout = useCallback((event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    setIsSingleLine(height <= 24);
+  }, []);
 
   return (
     <View
@@ -239,12 +259,13 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
         ) : (
           <TextWithHighlight
             highlightedText={highlightedText}
+            onLayout={onTextLayout}
             testID={concatTestID(testID, 'attributeValue')!}
             text={previewText}
           />
         )}
-        {canBeCopied || link ? (
-          <Animated.View style={[styles.actionIcon, iconStyle]}>
+        {(canBeCopied || link) && isSingleLine !== undefined ? (
+          <Animated.View style={[styles.actionIcon, isSingleLine ? styles.actionIconSingleLine : undefined, iconStyle]}>
             {
               <ActionIcon
                 copy={canBeCopied}
