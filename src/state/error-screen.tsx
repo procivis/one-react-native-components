@@ -1,116 +1,70 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAccessibilityFocus } from '../accessibility/accessibility';
-import type { TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
-import { Button, ButtonProps, ButtonType } from '../buttons';
-import { GradientBackground } from '../gradient';
-import { ErrorStateIcon } from '../icons';
+import { ScrollViewScreen } from '..';
+import { Button } from '../buttons';
+import { CredentialWarningIcon } from '../icons';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
-import { ContrastingStatusBar } from '../utils';
-
-export enum ErrorScreenVariation {
-  Neutral = 'neutral',
-  Accent = 'accent',
-}
 
 export interface ErrorScreenButton {
   testID?: string;
   label: string;
-
-  /** if `undefined`, the button is displayed disabled */
+  disabled?: boolean;
   onPress?: () => void;
-
-  /** if `undefined`, the first button is primary, the others secondary */
-  type?: ButtonProps['type'];
 }
 
 export interface ErrorScreenProps {
   testID?: string;
-  variation: ErrorScreenVariation;
   title: string;
   subtitle: string;
-  buttons: ErrorScreenButton[];
+  button: ErrorScreenButton;
 }
 
-const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({ testID, variation, title, subtitle, buttons }) => {
+const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({ testID, title, subtitle, button }) => {
   const colorScheme = useAppColorScheme();
 
-  const accentVariation = variation === ErrorScreenVariation.Accent;
-
-  const [announcementFinished, setAnnouncementFinished] = useState(false);
-  const accessibilityFocus = useAccessibilityFocus<TouchableOpacityRef>(announcementFinished);
-
-  const backgroundColor = accentVariation ? colorScheme.accent : colorScheme.background;
   return (
-    <>
-      {!accentVariation && <GradientBackground />}
-      <ContrastingStatusBar backgroundColor={backgroundColor} />
-      <SafeAreaView testID={testID} style={[styles.content, { backgroundColor }]}>
-        <View style={styles.top}>
-          <Typography
-            accessibilityRole="header"
-            align="center"
-            preset="xl"
-            allowFontScaling={false}
-            color={accentVariation ? colorScheme.accentText : colorScheme.text}>
-            {title}
-          </Typography>
-          <Typography
-            announcementActive={true}
-            announcementCumulative={true}
-            onAnnouncementFinished={setAnnouncementFinished}
-            style={styles.subtitle}
-            align="center"
-            color={accentVariation ? colorScheme.accentText : colorScheme.text}>
+    <ScrollViewScreen
+      header={{
+        static: true,
+        title: title,
+      }}
+      modalPresentation
+      scrollView={{
+        testID,
+      }}>
+      <View style={[styles.wrapper, { backgroundColor: colorScheme.background }]}>
+        <View style={styles.warning}>
+          <CredentialWarningIcon height={42} width={42} />
+          <Typography color={colorScheme.text} preset="regular" style={styles.message}>
             {subtitle}
           </Typography>
         </View>
-        <View style={styles.statusWrapper}>
-          <ErrorStateIcon accent={accentVariation} />
-        </View>
-        <View style={styles.bottom}>
-          {buttons.map((button, index) => (
-            <Button
-              key={index}
-              testID={button.testID}
-              ref={index === 0 ? accessibilityFocus : undefined}
-              type={button.type ?? accentVariation === !index ? ButtonType.SmallTech : ButtonType.Primary}
-              disabled={!button.onPress}
-              onPress={button.onPress}
-              title={button.label}
-            />
-          ))}
-        </View>
-      </SafeAreaView>
-    </>
+
+        {button ? (
+          <Button disabled={button.disabled} onPress={button.onPress} testID={button.testID} title={button.label} />
+        ) : undefined}
+      </View>
+    </ScrollViewScreen>
   );
 };
 
 const styles = StyleSheet.create({
-  bottom: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'flex-end',
+  message: {
+    textAlign: 'center',
   },
-  content: {
-    flex: 1,
-    paddingBottom: 12,
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  statusWrapper: {
+  warning: {
     alignItems: 'center',
+    display: 'flex',
+    flexGrow: 1,
     justifyContent: 'center',
   },
-  subtitle: {
-    paddingTop: 12,
-  },
-  top: {
-    alignItems: 'center',
-    flex: 1,
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    paddingHorizontal: 16,
   },
 });
 

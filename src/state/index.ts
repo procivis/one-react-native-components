@@ -1,3 +1,3 @@
-import ErrorScreen, { ErrorScreenButton, ErrorScreenProps, ErrorScreenVariation } from './error-screen';
+import ErrorScreen, { ErrorScreenButton, ErrorScreenProps } from './error-screen';
 
-export { ErrorScreen, ErrorScreenButton, ErrorScreenProps, ErrorScreenVariation };
+export { ErrorScreen, ErrorScreenButton, ErrorScreenProps };
