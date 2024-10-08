@@ -1,5 +1,6 @@
 export * from './accessibility';
 export * from './action-modal';
+export * from './activity-indicator';
 export * from './blur';
 export * from './buttons';
 export * from './camera';
