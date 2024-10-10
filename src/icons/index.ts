@@ -1,3 +1,4 @@
+export * from './connectivity';
 export * from './credential';
 export * from './entity';
 export * from './history';
