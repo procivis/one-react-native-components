@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import Svg, { G, Path, Rect, SvgProps } from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
+import { CredentialWarningIcon } from './credential';
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-99608
 const HistoryShareIcon: FC<SvgProps> = (props) => {
@@ -229,6 +230,7 @@ const HistoryStatusIndicatorIcon: FC<SvgProps> = (props) => {
 
 export enum HistoryStatusIconType {
   Success,
+  Warning,
   Error,
   Delete,
   Suspend,
@@ -245,6 +247,9 @@ export const HistoryStatusIcon: FC<HistoryStatusIconProps> = ({ type, ...props }
   switch (type) {
     case HistoryStatusIconType.Success:
       StatusIcon = HistoryStatusAcceptedIcon;
+      break;
+    case HistoryStatusIconType.Warning:
+      StatusIcon = CredentialWarningIcon;
       break;
     case HistoryStatusIconType.Error:
       StatusIcon = HistoryStatusErrorIcon;
@@ -281,53 +286,75 @@ export enum HistoryActionIconType {
   Error,
 }
 
-export interface HistoryActionIconProps extends ViewProps {
-  type: HistoryActionIconType;
-}
+export type HistoryActionIconProps = ViewProps &
+  (
+    | {
+        type: HistoryActionIconType;
+      }
+    | {
+        statusIcon: HistoryStatusIconType;
+        TypeIcon: FC<SvgProps>;
+      }
+  );
 
-export const HistoryActionIcon: FC<HistoryActionIconProps> = ({ type, style, ...props }) => {
+export const HistoryActionIcon: FC<HistoryActionIconProps> = (props) => {
   let TypeIcon = HistoryShareIcon;
-  switch (type) {
-    case HistoryActionIconType.Issue:
-      TypeIcon = HistoryIssueIcon;
-      break;
-    case HistoryActionIconType.IssueReject:
-      TypeIcon = HistoryIssueIcon;
-      break;
-    case HistoryActionIconType.Revoke:
-      TypeIcon = HistoryRevokeIcon;
-      break;
-    case HistoryActionIconType.Revalidate:
-    case HistoryActionIconType.Suspend:
-    case HistoryActionIconType.SuspendTemporary:
-      TypeIcon = HistorySuspendIcon;
-      break;
-  }
-
   let statusIcon = HistoryStatusIconType.Success;
-  switch (type) {
-    case HistoryActionIconType.IssueReject:
-      statusIcon = HistoryStatusIconType.Error;
-      break;
-    case HistoryActionIconType.ShareReject:
-    case HistoryActionIconType.Error:
-    case HistoryActionIconType.Revoke:
-    case HistoryActionIconType.RequestReject:
-      statusIcon = HistoryStatusIconType.Error;
-      break;
-    case HistoryActionIconType.Suspend:
-      statusIcon = HistoryStatusIconType.Suspend;
-      break;
-    case HistoryActionIconType.SuspendTemporary:
-      statusIcon = HistoryStatusIconType.SuspendTemporary;
-      break;
-    case HistoryActionIconType.RequestDeleted:
-      statusIcon = HistoryStatusIconType.Delete;
-      break;
+  let style: StyleProp<ViewStyle>;
+  let viewProps: ViewProps;
+
+  if ('type' in props) {
+    const { type, style: styleProp, ...otherProps } = props;
+    style = styleProp;
+    viewProps = otherProps;
+
+    switch (type) {
+      case HistoryActionIconType.Issue:
+        TypeIcon = HistoryIssueIcon;
+        break;
+      case HistoryActionIconType.IssueReject:
+        TypeIcon = HistoryIssueIcon;
+        break;
+      case HistoryActionIconType.Revoke:
+        TypeIcon = HistoryRevokeIcon;
+        break;
+      case HistoryActionIconType.Revalidate:
+      case HistoryActionIconType.Suspend:
+      case HistoryActionIconType.SuspendTemporary:
+        TypeIcon = HistorySuspendIcon;
+        break;
+    }
+
+    switch (type) {
+      case HistoryActionIconType.IssueReject:
+        statusIcon = HistoryStatusIconType.Error;
+        break;
+      case HistoryActionIconType.ShareReject:
+      case HistoryActionIconType.Error:
+      case HistoryActionIconType.Revoke:
+      case HistoryActionIconType.RequestReject:
+        statusIcon = HistoryStatusIconType.Error;
+        break;
+      case HistoryActionIconType.Suspend:
+        statusIcon = HistoryStatusIconType.Suspend;
+        break;
+      case HistoryActionIconType.SuspendTemporary:
+        statusIcon = HistoryStatusIconType.SuspendTemporary;
+        break;
+      case HistoryActionIconType.RequestDeleted:
+        statusIcon = HistoryStatusIconType.Delete;
+        break;
+    }
+  } else {
+    const { TypeIcon: TypeIconProp, statusIcon: statusIconProp, style: styleProp, ...otherProps } = props;
+    TypeIcon = TypeIconProp;
+    statusIcon = statusIconProp;
+    style = styleProp;
+    viewProps = otherProps;
   }
 
   return (
-    <View style={[styles.wrapper, style]} {...props}>
+    <View style={[styles.wrapper, style]} {...viewProps}>
       <TypeIcon style={styles.round} />
       <HistoryStatusIcon style={styles.status} type={statusIcon} />
     </View>
