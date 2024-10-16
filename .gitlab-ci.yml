@@ -86,7 +86,7 @@ build_deps:
   script:
     - ''
   cache:
-    policy: push
+    policy: pull-push
 
 lint:
   stage: test
