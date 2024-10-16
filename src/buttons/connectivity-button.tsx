@@ -11,6 +11,7 @@ import {
 } from '../icons/connectivity';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
+import { concatTestID } from '../utils';
 
 export enum ConnectivityTransport {
   Internet = 'Internet',
@@ -25,6 +26,7 @@ export type ConnectivityButtonProps = {
   status?: boolean;
   title?: string;
   transport: ConnectivityTransport;
+  testID?: string;
 };
 
 const ConnectivityButton: FC<ConnectivityButtonProps> = ({
@@ -34,6 +36,7 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
   status,
   title,
   transport,
+  testID,
 }) => {
   const colorScheme = useAppColorScheme();
 
@@ -42,9 +45,17 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
   const icons = (
     <View style={styles.icons}>
       {transport !== ConnectivityTransport.Bluetooth &&
-        (available ? <ConnectivityInternetOnIcon /> : <ConnectivityInternetOffIcon />)}
+        (available ? (
+          <ConnectivityInternetOnIcon testID={concatTestID(testID, 'icon.on')} />
+        ) : (
+          <ConnectivityInternetOffIcon testID={concatTestID(testID, 'icon.off')} />
+        ))}
       {transport !== ConnectivityTransport.Internet &&
-        (available ? <ConnectivityBluetoothOnIcon /> : <ConnectivityBluetoothOffIcon />)}
+        (available ? (
+          <ConnectivityBluetoothOnIcon testID={concatTestID(testID, 'icon.on')} />
+        ) : (
+          <ConnectivityBluetoothOffIcon testID={concatTestID(testID, 'icon.off')} />
+        ))}
     </View>
   );
   return (
@@ -52,7 +63,7 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
       <View style={[styles.container, { backgroundColor, opacity }]}>
         {icons}
         {title && (
-          <Typography color={colorScheme.text} preset="s">
+          <Typography testID={concatTestID(testID, 'title')} color={colorScheme.text} preset="s">
             {title}
           </Typography>
         )}

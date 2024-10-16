@@ -3,16 +3,20 @@ import Svg, { G, Path } from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme';
 
-export type ConnectivityStatusIconProps = {
+export type ConnectivityIconProps = {
+  testID?: string;
+};
+
+export type ConnectivityStatusIconProps = ConnectivityIconProps & {
   status: boolean;
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=415-5402&node-type=frame&t=KNaBp0XLna0p48rq-0
-export const ConnectivityStatusIcon: FC<ConnectivityStatusIconProps> = ({ status }) => {
+export const ConnectivityStatusIcon: FC<ConnectivityStatusIconProps> = ({ status, testID }) => {
   const colorScheme = useAppColorScheme();
   const color = status ? colorScheme.success : colorScheme.error;
   return (
-    <Svg fill="none" height={16} viewBox="0 0 16 16" width={16}>
+    <Svg testID={testID} fill="none" height={16} viewBox="0 0 16 16" width={16}>
       <G opacity={0.1}>
         <Path
           d="M7.997 14c-.82 0-1.593-.157-2.316-.47a6.05 6.05 0 01-1.916-1.296 6.184 6.184 0 01-1.295-1.916A5.77 5.77 0 012 8c0-.82.157-1.593.47-2.318A6.15 6.15 0 015.675 2.47 5.762 5.762 0 017.99 2c.825 0 1.599.157 2.322.47a6.129 6.129 0 011.916 1.302c.554.55.987 1.186 1.3 1.91A5.77 5.77 0 0114 8a5.77 5.77 0 01-.47 2.318 6.134 6.134 0 01-3.216 3.212 5.762 5.762 0 01-2.317.47z"
@@ -52,10 +56,10 @@ export const ConnectivityStatusIcon: FC<ConnectivityStatusIconProps> = ({ status
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31963&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityInternetOnIcon: FC = () => {
+export const ConnectivityInternetOnIcon: FC<ConnectivityIconProps> = ({ testID }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg fill="none" height={20} viewBox="0 0 20 20" width={20}>
+    <Svg testID={testID} fill="none" height={20} viewBox="0 0 20 20" width={20}>
       <Path
         d="M2.744 9.542c0-.592.068-1.164.205-1.716a6.932 6.932 0 01.608-1.565c.264-.497.586-.95.964-1.36.132-.146.28-.22.444-.22a.506.506 0 01.417.185c.11.124.15.26.123.41a.866.866 0 01-.218.438 5.44 5.44 0 00-1.06 1.75 5.833 5.833 0 00-.37 2.078c0 .734.124 1.429.37 2.085.246.652.6 1.233 1.06 1.743a.866.866 0 01.218.438.466.466 0 01-.123.41.525.525 0 01-.417.191.615.615 0 01-.444-.225 6.615 6.615 0 01-1.32-2.12 6.994 6.994 0 01-.457-2.522zm2.878 0c0-.501.082-.98.246-1.435.164-.46.394-.875.69-1.244a.533.533 0 01.438-.233.54.54 0 01.437.185.44.44 0 01.116.403 1.11 1.11 0 01-.205.444c-.196.26-.346.55-.45.869a3.22 3.22 0 00-.158 1.011c0 .356.05.695.15 1.019.1.319.253.606.458.861.11.15.178.299.205.444a.44.44 0 01-.116.404.553.553 0 01-.875-.048 4.277 4.277 0 01-.936-2.68zm3.151 0a1.24 1.24 0 01.602-1.066c.186-.114.396-.171.628-.171.228 0 .433.057.616.17a1.222 1.222 0 01.608 1.067c0 .246-.066.47-.198.67a1.23 1.23 0 01-.506.438v6.145a.604.604 0 01-.144.424.463.463 0 01-.376.164.496.496 0 01-.382-.164.62.62 0 01-.144-.424V10.65a1.22 1.22 0 01-.513-.438 1.222 1.222 0 01-.191-.67zm3.794 2.728a.457.457 0 01-.123-.403c.032-.146.102-.295.212-.445.205-.255.357-.542.458-.861.1-.324.15-.663.15-1.019 0-.355-.052-.692-.157-1.011a2.97 2.97 0 00-.451-.869c-.11-.15-.18-.298-.212-.444a.457.457 0 01.123-.403.533.533 0 01.43-.185.54.54 0 01.445.233c.296.369.526.783.69 1.244.164.455.246.934.246 1.435a4.263 4.263 0 01-.936 2.68.553.553 0 01-.875.048zm2.05 1.948a.485.485 0 01-.13-.41.918.918 0 01.226-.438c.46-.51.814-1.091 1.06-1.743.246-.656.37-1.351.37-2.085 0-.733-.124-1.426-.37-2.078a5.438 5.438 0 00-1.06-1.75.918.918 0 01-.225-.437.484.484 0 01.13-.41.506.506 0 01.417-.185c.168 0 .316.073.444.219a6.705 6.705 0 011.565 2.926c.142.55.212 1.123.212 1.715 0 .884-.155 1.725-.465 2.523a6.517 6.517 0 01-1.312 2.119.6.6 0 01-.444.226.525.525 0 01-.417-.192z"
         fill={colorScheme.text}
@@ -65,10 +69,10 @@ export const ConnectivityInternetOnIcon: FC = () => {
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31963&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityInternetOffIcon: FC = () => {
+export const ConnectivityInternetOffIcon: FC<ConnectivityIconProps> = ({ testID }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg fill="none" height={20} viewBox="0 0 20 20" width={20}>
+    <Svg testID={testID} fill="none" height={20} viewBox="0 0 20 20" width={20}>
       <Path
         d="M5.382 14.218a.525.525 0 01-.417.191.615.615 0 01-.444-.225 6.615 6.615 0 01-1.32-2.12 6.994 6.994 0 01-.457-2.522c0-.752.111-1.472.335-2.16a6.594 6.594 0 01.957-1.88l.8.8c-.315.46-.557.964-.725 1.51a5.837 5.837 0 00-.253 1.73c0 .734.123 1.429.37 2.085.245.652.598 1.233 1.059 1.743a.866.866 0 01.218.438.466.466 0 01-.123.41zm2.051-1.948a.553.553 0 01-.875-.048 4.277 4.277 0 01-.451-4.655l.854.854c-.072.173-.13.353-.17.54-.037.187-.055.38-.055.581 0 .356.05.695.15 1.019.1.319.253.606.458.861.11.15.178.299.205.444a.44.44 0 01-.116.404zm2.57 5.113a.496.496 0 01-.382-.164.62.62 0 01-.144-.424v-5.851l1.046 1.045v4.806a.604.604 0 01-.144.424.463.463 0 01-.376.164zm3.958-6.009l-.875-.868c.06-.146.103-.3.13-.465.032-.164.048-.33.048-.499 0-.355-.052-.692-.157-1.011a2.97 2.97 0 00-.451-.869c-.11-.15-.18-.298-.212-.444a.457.457 0 01.123-.403.532.532 0 01.43-.185.54.54 0 01.445.233c.296.369.526.783.69 1.244.164.455.246.934.246 1.435 0 .328-.036.647-.109.957a3.91 3.91 0 01-.308.875zm2.092 2.099l-.813-.814a5.61 5.61 0 00.67-1.462 5.807 5.807 0 00.232-1.655c0-.733-.123-1.426-.37-2.078a5.438 5.438 0 00-1.059-1.75.918.918 0 01-.225-.437.484.484 0 01.13-.41.506.506 0 01.417-.185c.168 0 .316.073.444.219a6.705 6.705 0 011.565 2.926c.142.55.212 1.123.212 1.715 0 .725-.105 1.42-.314 2.085a7.046 7.046 0 01-.889 1.846zm-.089 2.687L3.701 3.896a.502.502 0 01-.15-.37c0-.15.05-.275.15-.375A.49.49 0 014.077 3c.145 0 .27.05.376.15l12.256 12.263c.105.1.158.224.158.37a.513.513 0 01-.158.376.488.488 0 01-.369.15.525.525 0 01-.376-.15z"
         fill={colorScheme.text}
@@ -78,10 +82,10 @@ export const ConnectivityInternetOffIcon: FC = () => {
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31968&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityBluetoothOnIcon: FC = () => {
+export const ConnectivityBluetoothOnIcon: FC<ConnectivityIconProps> = ({ testID }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg fill="none" height={20} viewBox="0 0 20 20" width={20}>
+    <Svg testID={testID} fill="none" height={20} viewBox="0 0 20 20" width={20}>
       <Path
         d="M13.823 12.406L11.064 10l2.756-2.378a.492.492 0 00.035-.716l-3.65-3.793A.376.376 0 009.935 3a.344.344 0 00-.346.337v5.288l-2.697-2.29a.549.549 0 00-.753.046.518.518 0 00.05.753L9.589 10l-3.378 2.84a.516.516 0 00-.053.748l.01.009c.196.219.54.24.765.047l2.656-2.3v5.306c0 .194.16.35.36.35.1 0 .193-.04.262-.11l3.647-3.765a.496.496 0 00-.035-.719zm-3.097-7.253l1.96 2.06c.025.024.022.065-.006.09L10.72 8.96c-.04.035-.106.007-.106-.046V5.196c.003-.06.075-.085.112-.044zm-.109 9.656v-3.696c0-.054.066-.082.106-.047l1.96 1.656c.028.022.028.062.006.09l-1.96 2.041c-.04.04-.112.013-.112-.044z"
         fill={colorScheme.text}
@@ -91,10 +95,10 @@ export const ConnectivityBluetoothOnIcon: FC = () => {
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31968&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityBluetoothOffIcon: FC = () => {
+export const ConnectivityBluetoothOffIcon: FC<ConnectivityIconProps> = ({ testID }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg fill="none" height={20} viewBox="0 0 20 20" width={20}>
+    <Svg testID={testID} fill="none" height={20} viewBox="0 0 20 20" width={20}>
       <Path
         d="M13.82 7.622l-1.897 1.637-.772-.664 1.529-1.292c.028-.025.03-.066.006-.09l-1.96-2.06c-.037-.04-.109-.015-.112.044v2.936l-1.025-.88V3.337c0-.184.156-.337.347-.337.1 0 .2.04.269.112l3.65 3.794a.492.492 0 01-.035.716z"
         fill={colorScheme.text}
