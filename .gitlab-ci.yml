@@ -84,7 +84,7 @@ build_deps:
   stage: prepare
   extends: .modules_setup
   script:
-    - ''
+    - yarn prepare
   cache:
     policy: pull-push
 
