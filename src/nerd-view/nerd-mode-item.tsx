@@ -213,7 +213,6 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
 
     setTimeout(() => {
       valueViewRef.current?.measure((x, y, w, h, px, py) => {
-        console.log(h, py, scrollOffset.value);
         expandedView.value = {
           expandedAtOffset: isSingleLine ? 0 : scrollOffset.value,
           viewHeight: isSingleLine ? 0 : h - 2 * CONTAINER_PADDING,
