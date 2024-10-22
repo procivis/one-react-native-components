@@ -45,7 +45,12 @@ const HistoryListItem: FC<HistoryListItemProps> = ({ icon, label, info, last, st
       testID={testID}>
       {iconView}
       <View style={styles.labelAndInfo}>
-        <Typography color={colorScheme.text} preset="s" style={styles.label} testID={concatTestID(testID, 'label')}>
+        <Typography
+          color={colorScheme.text}
+          numberOfLines={1}
+          preset="s"
+          style={styles.label}
+          testID={concatTestID(testID, 'label')}>
           {label}
         </Typography>
         {Boolean(info) && (
@@ -61,6 +66,7 @@ const HistoryListItem: FC<HistoryListItemProps> = ({ icon, label, info, last, st
       </View>
       <Typography
         color={colorScheme.text}
+        numberOfLines={1}
         preset="xs/line-height-small"
         style={styles.shaded}
         testID={concatTestID(testID, 'timeLabel')}>
