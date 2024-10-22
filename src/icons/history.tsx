@@ -6,7 +6,7 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 import { CredentialWarningIcon } from './credential';
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-99608
-const HistoryShareIcon: FC<SvgProps> = (props) => {
+export const HistoryShareIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="48" viewBox="0 0 48 48" width="48" {...props}>
@@ -20,7 +20,7 @@ const HistoryShareIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-99609
-const HistoryIssueIcon: FC<SvgProps> = (props) => {
+export const HistoryIssueIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="48" viewBox="0 0 48 48" width="48" {...props}>
@@ -34,7 +34,7 @@ const HistoryIssueIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-99610
-const HistoryRevokeIcon: FC<SvgProps> = (props) => {
+export const HistoryRevokeIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="48" viewBox="0 0 48 48" width="48" {...props}>
@@ -48,7 +48,7 @@ const HistoryRevokeIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-99611
-const HistorySuspendIcon: FC<SvgProps> = (props) => {
+export const HistorySuspendIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="48" viewBox="0 0 48 48" width="48" {...props}>
