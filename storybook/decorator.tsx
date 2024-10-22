@@ -5,8 +5,8 @@ import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { AccessibilityLanguageProvider } from '../src/accessibility/accessibilityLanguage';
-import { ColorSchemeProvider } from '../src/theme';
+import { AccessibilityLanguageProvider } from '../src/ui-components/accessibility/accessibilityLanguage';
+import { ColorSchemeProvider } from '../src/ui-components/theme';
 import ColorSchemes from './colorScheme';
 
 const getColorScheme = (context: StoryContext) => ColorSchemes[context.globals.colorScheme] ?? ColorSchemes.procivis;

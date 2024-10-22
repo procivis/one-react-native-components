@@ -1,0 +1,84 @@
+import { initializeHolderCore, initializeVerifierCore, ONECore } from '@procivis/react-native-one-core';
+import React, {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import { reportException } from '../../reporting';
+
+interface ContextValue {
+  core: ONECore;
+  initialize: (force?: boolean) => Promise<ONECore>;
+}
+
+const defaultContextValue: ContextValue = {
+  core: {} as ONECore,
+  initialize: () => Promise.reject(),
+};
+
+export enum ONECoreUseType {
+  holder = 'holder',
+  verifier = 'verifier',
+}
+
+export type ONECoreContextProviderProps = {
+  type: ONECoreUseType;
+};
+
+const ONECoreContext = createContext<ContextValue>(defaultContextValue);
+
+export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({ children, type }) => {
+  const [core, setCore] = useState<ONECore>();
+
+  const initialize = useCallback(
+    async (force?: boolean) => {
+      if (core && !force) {
+        return core;
+      }
+
+      try {
+        const coreInstance =
+          type === ONECoreUseType.holder ? await initializeHolderCore() : await initializeVerifierCore();
+        setCore(coreInstance);
+        return coreInstance;
+      } catch (e) {
+        reportException(e, 'Failed to initialize core');
+        throw e;
+      }
+    },
+    [core, type],
+  );
+
+  useEffect(
+    () => {
+      const corePromise = initialize();
+      return () => {
+        corePromise.then((c) => c?.uninitialize(false));
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      core: core ?? defaultContextValue.core,
+      initialize,
+    }),
+    [core, initialize],
+  );
+
+  if (!core) {
+    return null;
+  }
+
+  return <ONECoreContext.Provider value={contextValue}>{children}</ONECoreContext.Provider>;
+};
+
+export const useONECore = () => useContext(ONECoreContext);

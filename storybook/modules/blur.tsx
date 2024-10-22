@@ -1,7 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { useAppColorScheme } from '../../lib/commonjs/theme/color-scheme-context';
+import { useAppColorScheme } from '../../lib/commonjs/ui-components/theme/color-scheme-context';
 
 export type BlurViewProps = {
   blurAmount: number;
