@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "description": "Common Procivis ONE UI components for react-native",
   "homepage": "https://procivis.ch",
+  "repository": "https://github.com/procivis/one-react-native-components",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
@@ -43,7 +44,6 @@
     "ios",
     "android"
   ],
-  "repository": "https://gitlab.procivis.ch/procivis/one/one-react-native-components",
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
