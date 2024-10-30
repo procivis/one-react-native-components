@@ -1,4 +1,4 @@
-import type { ColorScheme } from '../../src/theme';
+import type { ColorScheme } from '../../src/ui-components/theme';
 
 export const light: ColorScheme = {
   accent: '#0F151A',

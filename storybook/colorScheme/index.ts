@@ -1,4 +1,4 @@
-import type { ColorScheme } from '../../src/theme';
+import type { ColorScheme } from '../../src/ui-components/theme';
 import * as procivis from './procivis';
 
 interface Flavor {

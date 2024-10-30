@@ -2,8 +2,8 @@ import type { Meta, Story } from '@storybook/react';
 import React, { FC } from 'react';
 import { ColorValue, StyleSheet, View } from 'react-native';
 
-import { Typography } from '../../src/text';
-import { ColorScheme, useAppColorScheme } from '../../src/theme';
+import { Typography } from '../../src/ui-components/text';
+import { ColorScheme, useAppColorScheme } from '../../src/ui-components/theme';
 import { colorArray } from '../../src/utils/color';
 
 // https://stackoverflow.com/a/9733420

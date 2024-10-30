@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { Typography } from '../src/text';
+import { Typography } from '../src/ui-components/text';
 
 interface Props {
   id?: string;
