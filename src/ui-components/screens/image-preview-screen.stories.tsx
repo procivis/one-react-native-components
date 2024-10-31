@@ -3,7 +3,7 @@ import React from 'react';
 
 import ImagePreviewScreen from './image-preview-screen';
 
-const profileImage = require('../../storybook/assets/ProfileImage.png');
+const profileImage = require('../../../storybook/assets/ProfileImage.png');
 
 const Basic: ComponentStory<typeof ImagePreviewScreen> = ({ ...args }) => {
   return <ImagePreviewScreen {...args} image={profileImage} />;

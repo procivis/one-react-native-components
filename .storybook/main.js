@@ -22,6 +22,7 @@ module.exports = {
         '@react-native-community/blur': '/storybook/modules/blur',
         '@procivis/react-native-picker': 'react-native-web/src/exports/View',
         'react-native-vision-camera': '/storybook/modules/react-native-vision-camera',
+        '@procivis/react-native-one-core': '/storybook/modules/react-native-one-core',
       },
     },
   }),
