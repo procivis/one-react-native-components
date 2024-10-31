@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-svg';
 
+import CredentialDetailsCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import { Placeholder } from '../../../../storybook/placeholder';
-import CredentialDetailsCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../icons/credential';
 import Selector from '../selector';
 import { SelectorStatus } from '../selector-status';

@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
+import CredentialCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import ColorSchemes from '../../../../storybook/colorScheme';
-import CredentialCardBackground from '../../../storybook/assets/CredentialCardBackground.png';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../icons/credential';
 import CredentialCard from './credential-card';
 
