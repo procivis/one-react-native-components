@@ -85,7 +85,7 @@ export const useInvitationHandler = () => {
   type MutationFunctionType = HandleInvitationParams extends [
     url: string,
     organisationType: string,
-    transport: Array<'HTTP' | 'MQTT' | 'BLE'>,
+    transport: string[] | undefined,
   ]
     ? { invitationUrl: string; transport: 'HTTP' | 'MQTT' | 'BLE' }
     : { invitationUrl: string; transport?: never };
