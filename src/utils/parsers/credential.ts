@@ -198,6 +198,7 @@ export const detailsCardAttributeFromClaim = (claim: Claim, config: Config, test
   return {
     id: claim.id,
     name: claim.key.split('/').pop(),
+    path: claim.key,
     ...value,
   };
 };
@@ -288,14 +289,14 @@ export const nestAttributes = (attributes: CredentialAttribute[]): CredentialAtt
   const result: CredentialAttribute[] = [];
 
   for (const attribute of attributes) {
-    const attributePath = attribute.name!.split('/');
+    const attributePath = attribute.path.split('/');
     if (attributePath.length === 0) {
       result.push(attribute);
     } else {
       const [first, ...rest] = attributePath;
       const parent = result.find((a) => a.name === first);
       if (parent) {
-        insertAttributeInObject({ ...attribute, name: rest.join('/') }, parent);
+        insertAttributeInObject({ ...attribute, path: rest.join('/') }, parent);
       } else {
         result.push(nestAttributeInDummyObject(attribute));
       }
@@ -308,7 +309,7 @@ export const nestAttributes = (attributes: CredentialAttribute[]): CredentialAtt
 // We nest the leaf node in a (one or more) nested object(s)
 // to make sure the tree structure is correctly rendered in proof request screens.
 const nestAttributeInDummyObject = (attribute: CredentialAttribute): CredentialAttribute => {
-  const pathParts = attribute.name!.split('/');
+  const pathParts = attribute.path.split('/');
   const [first, ...rest] = pathParts;
   if (!rest.length) {
     return attribute;
@@ -317,17 +318,18 @@ const nestAttributeInDummyObject = (attribute: CredentialAttribute): CredentialA
   // The dummy object is not selectable, and contains a placeholder ID
   // the user can't interact with it.
   return {
-    attributes: [nestAttributeInDummyObject({ ...attribute, name: rest.join('/') })],
+    attributes: [nestAttributeInDummyObject({ ...attribute, path: rest.join('/') })],
     disabled: true,
     id: `${attribute.id}/${first}`,
     name: first,
+    path: attribute.path,
   };
 };
 
 // Recursively insert an attribute into an object
 // Will create nested objects if necessary
 const insertAttributeInObject = (attribute: CredentialAttribute, object: CredentialAttribute) => {
-  const pathParts = attribute.name!.split('/');
+  const pathParts = attribute.path.split('/');
   const [first, ...rest] = pathParts;
 
   const nextParent = object.attributes?.find((a) => a.name === first);
@@ -335,7 +337,7 @@ const insertAttributeInObject = (attribute: CredentialAttribute, object: Credent
   if (!nextParent) {
     object.attributes?.push(nestAttributeInDummyObject(attribute));
   } else {
-    insertAttributeInObject({ ...attribute, name: rest.join('/') }, nextParent);
+    insertAttributeInObject({ ...attribute, path: rest.join('/') }, nextParent);
   }
 };
 
