@@ -175,7 +175,8 @@ export const shareCredentialCardAttributeFromClaim = (
   }
   return {
     id,
-    name: field?.name ?? id,
+    name: field?.name?.split('/').pop() ?? id,
+    path: field?.name ?? id,
     value: labels.missingAttribute,
     valueErrorColor: true,
   };

@@ -100,6 +100,7 @@ export type CredentialAttribute = CredentialAttributeValue & {
   listValue?: boolean;
   id: string;
   name?: string;
+  path: string;
   rightAccessory?: ComponentType<any> | ReactElement;
 };
 
