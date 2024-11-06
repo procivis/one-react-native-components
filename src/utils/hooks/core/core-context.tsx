@@ -14,11 +14,13 @@ import { reportException } from '../../reporting';
 
 interface ContextValue {
   core: ONECore;
+  organisationId: string;
   initialize: (force?: boolean) => Promise<ONECore>;
 }
 
 const defaultContextValue: ContextValue = {
   core: {} as ONECore,
+  organisationId: '11111111-2222-3333-a444-ffffffffffff',
   initialize: () => Promise.reject(),
 };
 
@@ -29,11 +31,16 @@ export enum ONECoreUseType {
 
 export type ONECoreContextProviderProps = {
   type: ONECoreUseType;
+  organisationId?: string;
 };
 
 const ONECoreContext = createContext<ContextValue>(defaultContextValue);
 
-export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({ children, type }) => {
+export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({
+  children,
+  organisationId = '11111111-2222-3333-a444-ffffffffffff',
+  type,
+}) => {
   const [core, setCore] = useState<ONECore>();
 
   const initialize = useCallback(
@@ -69,9 +76,10 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
   const contextValue = useMemo(
     () => ({
       core: core ?? defaultContextValue.core,
+      organisationId,
       initialize,
     }),
-    [core, initialize],
+    [core, initialize, organisationId],
   );
 
   if (!core) {

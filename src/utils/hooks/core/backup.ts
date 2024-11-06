@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { generateUUID } from '../../uuid';
 import { useONECore } from './core-context';
-import { HW_DID_NAME_PREFIX, ONE_CORE_ORGANISATION_ID, SW_DID_NAME_PREFIX } from './core-init';
+import { HW_DID_NAME_PREFIX, SW_DID_NAME_PREFIX } from './core-init';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const BACKUP_INFO_QUERY_KEY = 'backup-info';
@@ -62,7 +62,7 @@ export const useRollbackImport = () => {
 
 export const useBackupFinalizeImportProcedure = () => {
   const { mutateAsync: finalizeImport } = useFinalizeImport();
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   return useCallback(async () => {
     await finalizeImport();
@@ -70,7 +70,7 @@ export const useBackupFinalizeImportProcedure = () => {
     // update wallet did references
     const dids = await core.getDids({
       deactivated: false,
-      organisationId: ONE_CORE_ORGANISATION_ID,
+      organisationId,
       page: 0,
       pageSize: 1,
       type: DidTypeEnum.LOCAL,
@@ -82,7 +82,7 @@ export const useBackupFinalizeImportProcedure = () => {
         keyParams: {},
         keyType: 'EDDSA',
         name: `holder-key-sw-${generateUUID()}`,
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         storageParams: {},
         storageType: 'INTERNAL',
       });
@@ -96,7 +96,7 @@ export const useBackupFinalizeImportProcedure = () => {
           keyAgreement: [swKeyId],
         },
         name: `${SW_DID_NAME_PREFIX}-${generateUUID()}`,
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         params: {},
       });
     }
@@ -107,7 +107,7 @@ export const useBackupFinalizeImportProcedure = () => {
         keyParams: {},
         keyType: 'ES256',
         name: `holder-key-hw-${generateUUID()}`,
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         storageParams: {},
         storageType: 'SECURE_ELEMENT',
       })
@@ -129,11 +129,11 @@ export const useBackupFinalizeImportProcedure = () => {
           keyAgreement: [hwKeyId],
         },
         name: `${HW_DID_NAME_PREFIX}-${generateUUID()}`,
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         params: {},
       });
     }
 
     return [hwDidId, swDidId] as [string | null, string];
-  }, [core, finalizeImport]);
+  }, [core, organisationId, finalizeImport]);
 };

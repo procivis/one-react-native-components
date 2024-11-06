@@ -4,18 +4,16 @@ import { useCallback } from 'react';
 import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
 
-// using single static organisation within the wallet for all entries
-export const ONE_CORE_ORGANISATION_ID = '11111111-2222-3333-a444-ffffffffffff';
 export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
 
-const generateHwDid = async (core: ONECore) => {
+const generateHwDid = async (core: ONECore, organisationId: string) => {
   const hwKeyId = await core
     .generateKey({
       keyParams: {},
       keyType: 'ES256',
       name: 'holder-key-hw',
-      organisationId: ONE_CORE_ORGANISATION_ID,
+      organisationId,
       storageParams: {},
       storageType: 'SECURE_ELEMENT',
     })
@@ -38,7 +36,7 @@ const generateHwDid = async (core: ONECore) => {
         keyAgreement: [hwKeyId],
       },
       name: HW_DID_NAME_PREFIX,
-      organisationId: ONE_CORE_ORGANISATION_ID,
+      organisationId,
       params: {},
     });
   }
@@ -46,12 +44,12 @@ const generateHwDid = async (core: ONECore) => {
   return null;
 };
 
-const generateSwDid = async (core: ONECore) => {
+const generateSwDid = async (core: ONECore, organisationId: string) => {
   const swKeyId = await core.generateKey({
     keyParams: {},
     keyType: 'EDDSA',
     name: 'holder-key-sw',
-    organisationId: ONE_CORE_ORGANISATION_ID,
+    organisationId,
     storageParams: {},
     storageType: 'INTERNAL',
   });
@@ -66,28 +64,28 @@ const generateSwDid = async (core: ONECore) => {
       keyAgreement: [swKeyId],
     },
     name: SW_DID_NAME_PREFIX,
-    organisationId: ONE_CORE_ORGANISATION_ID,
+    organisationId,
     params: {},
   });
 };
 
 // create base local identifiers in the wallet
 export const useInitializeONECoreIdentifiers = () => {
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   return useCallback(async () => {
     return await core
-      .createOrganisation(ONE_CORE_ORGANISATION_ID)
+      .createOrganisation(organisationId)
       .catch((err) => {
         if (err instanceof OneError && err.code === OneErrorCode.AlreadyExists) {
           return;
         }
         throw err;
       })
-      .then(() => Promise.all([generateHwDid(core), generateSwDid(core)]))
+      .then(() => Promise.all([generateHwDid(core, organisationId), generateSwDid(core, organisationId)]))
       .catch((err) => {
         reportException(err, 'Failed to create base identifiers');
         throw err;
       });
-  }, [core]);
+  }, [core, organisationId]);
 };
