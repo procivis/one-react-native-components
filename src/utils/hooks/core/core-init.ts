@@ -5,7 +5,7 @@ import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
 
 // using single static organisation within the wallet for all entries
-export const ONE_CORE_ORGANISATION_ID = '11111111-2222-3333-4444-ffffffffffff';
+export const ONE_CORE_ORGANISATION_ID = '11111111-2222-3333-a444-ffffffffffff';
 export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
 
