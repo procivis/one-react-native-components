@@ -66,14 +66,13 @@ const formatCredentialDetail = (claim: Claim, config: Config, testID: string): s
   return attributeValue.value ?? '';
 };
 
-// TODO: fix when core bindings updated
 const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
-  const mdocMsoValidity: { nextUpdate: Date } | undefined =
-    credential.schema.format === 'MDOC' && 'mdocMsoValidity' in credential
-      ? (credential.mdocMsoValidity as { nextUpdate: Date })
-      : undefined;
+  const mdocMsoValidity: { nextUpdate: string } | undefined =
+    'mdocMsoValidity' in credential ? (credential.mdocMsoValidity as { nextUpdate: string }) : undefined;
 
-  const mdocMsoValidityIssue = Boolean(mdocMsoValidity?.nextUpdate && mdocMsoValidity.nextUpdate < new Date());
+  const mdocMsoValidityIssue = Boolean(
+    mdocMsoValidity?.nextUpdate && new Date(mdocMsoValidity.nextUpdate) < new Date(),
+  );
 
   return mdocMsoValidityIssue;
 };

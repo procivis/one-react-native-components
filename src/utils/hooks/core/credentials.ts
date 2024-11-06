@@ -82,7 +82,7 @@ export const useInvitationHandler = () => {
   const { core } = useONECore();
 
   type HandleInvitationParams = Parameters<typeof core.handleInvitation>;
-  type MutationFunctionType = HandleInvitationParams extends [
+  type InvitationHandlerHookParams = HandleInvitationParams extends [
     url: string,
     organisationType: string,
     transport: string[] | undefined,
@@ -90,7 +90,7 @@ export const useInvitationHandler = () => {
     ? { invitationUrl: string; transport: 'HTTP' | 'MQTT' | 'BLE' }
     : { invitationUrl: string; transport?: never };
   return useMutation(
-    async ({ invitationUrl, transport }: MutationFunctionType) => {
+    async ({ invitationUrl, transport }: InvitationHandlerHookParams) => {
       const params = transport
         ? ([invitationUrl, ONE_CORE_ORGANISATION_ID, [transport]] as unknown as HandleInvitationParams)
         : ([invitationUrl, ONE_CORE_ORGANISATION_ID] as unknown as HandleInvitationParams);
@@ -112,9 +112,24 @@ export const useCredentialAccept = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
+  type HolderAcceptCredentialParams = Parameters<typeof core.holderAcceptCredential>;
+  type CredentialAcceptHookParams = HolderAcceptCredentialParams extends [
+    interactionId: string,
+    didId: string,
+    keyId: string | undefined,
+    txCode: string | undefined,
+  ]
+    ? { didId: string; interactionId: string; keyId?: string; txCode: string | null }
+    : { didId: string; interactionId: string; keyId?: string; txCode?: never };
+
   return useMutation(
-    async ({ interactionId, didId, keyId }: { didId: string; interactionId: string; keyId?: string }) =>
-      core.holderAcceptCredential(interactionId, didId, keyId),
+    async ({ interactionId, didId, keyId, txCode }: CredentialAcceptHookParams) => {
+      const params =
+        txCode || txCode === null
+          ? ([interactionId, didId, keyId, txCode ?? undefined] as unknown as HolderAcceptCredentialParams)
+          : ([interactionId, didId, keyId] as unknown as HolderAcceptCredentialParams);
+      return core.holderAcceptCredential.apply(core.holderAcceptCredential, params);
+    },
     {
       onSuccess: () => {
         queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
