@@ -2,7 +2,6 @@ import { OneError, OneErrorCode, PresentationSubmitCredentialRequest } from '@pr
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useONECore } from './core-context';
-import { ONE_CORE_ORGANISATION_ID } from './core-init';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const PROOF_DETAIL_QUERY_KEY = 'proof-detail';
@@ -83,9 +82,9 @@ export enum ExchangeProtocol {
 
 export const useProposeProof = () => {
   const queryClient = useQueryClient();
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
-  return useMutation(async (exchange: ExchangeProtocol) => core.proposeProof(exchange, ONE_CORE_ORGANISATION_ID), {
+  return useMutation(async (exchange: ExchangeProtocol) => core.proposeProof(exchange, organisationId), {
     onSuccess: () => {
       queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },

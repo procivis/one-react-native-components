@@ -9,7 +9,6 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-q
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
 import { useONECore } from './core-context';
-import { ONE_CORE_ORGANISATION_ID } from './core-init';
 import { CREDENTIAL_SCHEMA_LIST_QUERY_KEY } from './credential-schemas';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
@@ -19,13 +18,13 @@ const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
 const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
 
 export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   return useQuery(
     [CREDENTIAL_LIST_QUERY_KEY, ...getQueryKeyFromCredentialListQueryParams(queryParams)],
     async () => {
       const { values } = await core.getCredentials({
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         page: 0,
         // TODO: workaround pagination for now, until it's supported by UI
         pageSize: 10000,
@@ -41,7 +40,7 @@ export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
 };
 
 export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) => {
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
     [
@@ -51,7 +50,7 @@ export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) 
     ],
     ({ pageParam = 0 }) =>
       core.getCredentials({
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         page: pageParam,
         pageSize: PAGE_SIZE,
         status: [CredentialStateEnum.ACCEPTED, CredentialStateEnum.SUSPENDED, CredentialStateEnum.REVOKED],
@@ -79,7 +78,7 @@ export const useCredentialDetail = (credentialId: string | undefined, active = t
 
 export const useInvitationHandler = () => {
   const queryClient = useQueryClient();
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   type HandleInvitationParams = Parameters<typeof core.handleInvitation>;
   type InvitationHandlerHookParams = HandleInvitationParams extends [
@@ -92,8 +91,8 @@ export const useInvitationHandler = () => {
   return useMutation(
     async ({ invitationUrl, transport }: InvitationHandlerHookParams) => {
       const params = transport
-        ? ([invitationUrl, ONE_CORE_ORGANISATION_ID, [transport]] as unknown as HandleInvitationParams)
-        : ([invitationUrl, ONE_CORE_ORGANISATION_ID] as unknown as HandleInvitationParams);
+        ? ([invitationUrl, organisationId, [transport]] as unknown as HandleInvitationParams)
+        : ([invitationUrl, organisationId] as unknown as HandleInvitationParams);
       return core.handleInvitation.apply(core.handleInvitation, params);
     },
     {

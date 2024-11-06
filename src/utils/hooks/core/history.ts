@@ -3,7 +3,6 @@ import { useInfiniteQuery } from 'react-query';
 
 import { getQueryKeyFromHistoryListQueryParams } from '../../parsers/query';
 import { useONECore } from './core-context';
-import { ONE_CORE_ORGANISATION_ID } from './core-init';
 
 export type HistoryListItemWithDid = HistoryListItem & {
   did?: string;
@@ -13,13 +12,13 @@ const PAGE_SIZE = 20;
 export const HISTORY_LIST_QUERY_KEY = 'history-list';
 
 export const useHistory = (queryParams?: Partial<HistoryListQuery>) => {
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
     [HISTORY_LIST_QUERY_KEY, ...getQueryKeyFromHistoryListQueryParams(queryParams)],
     async ({ pageParam = 0 }) => {
       const historyPage = await core.getHistory({
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         page: pageParam,
         pageSize: PAGE_SIZE,
         ...queryParams,
@@ -42,7 +41,7 @@ export const useHistory = (queryParams?: Partial<HistoryListQuery>) => {
 
       const credentials = await core.getCredentials({
         ids: credentialIds,
-        organisationId: ONE_CORE_ORGANISATION_ID,
+        organisationId,
         page: 0,
         pageSize: credentialIds.length,
       });
