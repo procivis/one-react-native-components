@@ -33,6 +33,12 @@ describe('getInvitationUrlTransports', () => {
     );
     expect(transports).toStrictEqual([Transport.HTTP]);
   });
+  test('HTTP OpenID4VP url with requestUri', () => {
+    const transports = getInvitationUrlTransports(
+      'openid4vp://?client_id=https%3A%2F%2Fcore.dev.procivis-one.com%2Fssi%2Foidc-verifier%2Fv1%2Fresponse&request_uri=https%3A%2F%2Fcore.dev.procivis-one.com%2Fssi%2Foidc-verifier%2Fv1%2F6e442f9d-bc14-4362-8786-504d7b79c402%2Fclient-request',
+    );
+    expect(transports).toStrictEqual([Transport.HTTP]);
+  });
   test('HTTP OpenID credential offer url', () => {
     const transports = getInvitationUrlTransports(
       'openid-credential-offer://?credential_offer_uri=https%3A%2F%2Fcore.dev.procivis-one.com%2Fssi%2Foidc-issuer%2Fv1%2F0c2cd9a6-1eff-4536-9505-98d7bd87aad1%2Foffer%2F275c09b2-4f4f-4738-85fc-35399acad176',

@@ -125,21 +125,31 @@ export const getInvitationUrlTransports = (url: string): Transport[] => {
   if ((parsedUrl.protocol as string) !== 'openid4vp') {
     return [Transport.HTTP];
   }
+
+  const query = parsedUrl.query as Record<string, string>;
+  const hasAllParameters = (...params: string[]): boolean => {
+    return params.every((param) => param in query);
+  };
+
   const transports: Transport[] = [];
+  // BLE/MQTT
   if (parsedUrl.host === 'connect') {
-    if (parsedUrl.query.name && parsedUrl.query.key) {
+    if (hasAllParameters('name', 'key')) {
       transports.push(Transport.Bluetooth);
     }
-    if (parsedUrl.query.key && parsedUrl.query.brokerUrl && parsedUrl.query.topicId) {
+    if (hasAllParameters('key', 'brokerUrl', 'topicId')) {
       transports.push(Transport.MQTT);
     }
-  } else if (
-    parsedUrl.query.response_type &&
-    parsedUrl.query.state &&
-    parsedUrl.query.nonce &&
-    parsedUrl.query.presentation_definition_uri
+
+    return transports;
+  }
+  // HTTP
+  if (
+    hasAllParameters('response_type', 'state', 'nonce', 'presentation_definition_uri') ||
+    hasAllParameters('client_id', 'request_uri')
   ) {
     transports.push(Transport.HTTP);
   }
+
   return transports;
 };
