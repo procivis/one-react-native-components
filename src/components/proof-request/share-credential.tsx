@@ -75,23 +75,10 @@ export const ShareCredential: FunctionComponent<{
     return new Date(credential.lvvcIssuanceDate) < new Date(request.validityCredentialNbf);
   }, [credential, request]);
 
-  if (isLoading || !config) {
-    return null;
-  }
-
-  const { card, attributes } = shareCredentialCardFromCredential(
-    credential,
-    invalid,
-    Boolean(expanded),
-    multipleCredentialsAvailable,
-    request,
-    selectedFields,
-    config,
-    testID,
-    labels,
-  );
-
-  const footer = (() => {
+  const footer = useMemo(() => {
+    if (!expanded) {
+      return;
+    }
     if (validityState === ValidityState.Revoked) {
       return (
         <View
@@ -145,7 +132,23 @@ export const ShareCredential: FunctionComponent<{
         </View>
       );
     }
-  })();
+  }, [colorScheme, expanded, invalid, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
+
+  if (isLoading || !config) {
+    return null;
+  }
+
+  const { card, attributes } = shareCredentialCardFromCredential(
+    credential,
+    invalid,
+    Boolean(expanded),
+    multipleCredentialsAvailable,
+    request,
+    selectedFields,
+    config,
+    testID,
+    labels,
+  );
 
   return (
     <CredentialDetailsCardListItem
