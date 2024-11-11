@@ -1,5 +1,5 @@
-![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-light-mode-only)
-![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-dark-mode-only)
+![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-dark-mode-only)
+![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-light-mode-only)
 
 # One Core React Components
 
