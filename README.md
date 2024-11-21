@@ -1,5 +1,5 @@
-![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-light-mode-only)
-![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-dark-mode-only)
+![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-dark-mode-only)
+![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-light-mode-only)
 
 # One Core React Components
 
@@ -42,6 +42,11 @@ npm install @procivis/one-react-native-components
 ```shell
 yarn add @procivis/one-react-native-components
 ```
+
+## Troubleshooting
+
+For issues related to installing `@procivis/react-native-picker`, delete the `yarn.lock`
+file and try again.
 
 ## Support
 
