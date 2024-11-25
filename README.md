@@ -1,7 +1,7 @@
 ![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-dark-mode-only)
 ![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-light-mode-only)
 
-# One Core React Components
+# One Core React Native Components
 
 React Native UI components for the [Procivis One Wallet][wallet].
 
@@ -11,7 +11,7 @@ via the [One Core React Native SDK][rncore].
 The Procivis One Core is a complete solution capable of powering every element
 of the digital identity credential lifecycle. See the complete solution [architecture][archi].
 
-## How to use the One Core React Components
+## How to use the One Core React Native Components
 
 - Use the library for UI elements for your digital wallet app
 - Use the [Procivis One Wallet][wallet] for a free-standing solution that can be white-labeled
