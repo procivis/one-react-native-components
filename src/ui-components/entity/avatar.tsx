@@ -1,5 +1,5 @@
 import React, { ComponentType, FunctionComponent, ReactElement, useMemo } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import ImageOrComponent, { ImageOrComponentSource } from '../image/image-or-component';
 import Typography from '../text/typography';
@@ -43,9 +43,10 @@ const Avatar: FunctionComponent<AvatarProps> = ({ avatar, placeholderText, statu
     };
   }, [colorScheme, avatar, placeholderText]);
 
+  const { borderRadius, ...avatarStyle } = StyleSheet.flatten([styles.avatar, style]) as ViewStyle;
   return (
-    <View accessibilityElementsHidden={true} style={[styles.avatar, style]} {...viewProps}>
-      <View style={styles.imageWrapper}>
+    <View accessibilityElementsHidden={true} style={avatarStyle} {...viewProps}>
+      <View style={[styles.imageWrapper, borderRadius ? { borderRadius } : undefined]}>
         <ImageOrComponent source={imageSource} style={styles.image} />
       </View>
       {statusIconView && <View style={styles.statusIcon}>{statusIconView}</View>}
@@ -67,7 +68,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   image: {
-    backgroundColor: 'orange',
     height: '100%',
     width: '100%',
   },
