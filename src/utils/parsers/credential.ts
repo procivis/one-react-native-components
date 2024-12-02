@@ -66,7 +66,7 @@ const formatCredentialDetail = (claim: Claim, config: Config, testID: string): s
   return attributeValue.value ?? '';
 };
 
-const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
+export const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
   const mdocMsoValidity: { nextUpdate: string } | undefined =
     'mdocMsoValidity' in credential ? (credential.mdocMsoValidity as { nextUpdate: string }) : undefined;
 
