@@ -1,10 +1,4 @@
-import {
-  CredentialListQuery,
-  CredentialStateEnum,
-  InvitationResult,
-  OneError,
-  OneErrorCode,
-} from '@procivis/react-native-one-core';
+import { CredentialListQuery, CredentialStateEnum, InvitationResult, OneError } from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
@@ -146,7 +140,13 @@ export const useCredentialReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectCredential(interactionId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.NotSupported) {
+        if (
+          e instanceof OneError &&
+          // supporting old core errors
+          (e.code === ('NotSupported' as any) ||
+            // as well as new ones
+            e.code === ('BR_0062' as any))
+        ) {
           return;
         }
         throw e;

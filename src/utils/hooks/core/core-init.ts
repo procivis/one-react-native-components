@@ -1,4 +1,4 @@
-import { ONECore, OneError, OneErrorCode } from '@procivis/react-native-one-core';
+import { ONECore, OneError } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 
 import { reportException } from '../../reporting';
@@ -19,7 +19,13 @@ const generateHwDid = async (core: ONECore, organisationId: string) => {
     })
     .catch((e) => {
       // ignore if HW keys not supported by device
-      if (e instanceof OneError && e.code === OneErrorCode.NotSupported) {
+      if (
+        e instanceof OneError &&
+        // supporting old core errors
+        (e.code === ('NotSupported' as any) ||
+          // as well as new ones
+          e.code === ('BR_0039' as any))
+      ) {
         return null;
       }
       throw e;
@@ -76,11 +82,17 @@ export const useInitializeONECoreIdentifiers = () => {
   return useCallback(async () => {
     return await core
       .createOrganisation(organisationId)
-      .catch((err) => {
-        if (err instanceof OneError && err.code === OneErrorCode.AlreadyExists) {
+      .catch((e) => {
+        if (
+          e instanceof OneError &&
+          // supporting old core errors
+          (e.code === ('AlreadyExists' as any) ||
+            // as well as new ones
+            e.code === ('BR_0023' as any))
+        ) {
           return;
         }
-        throw err;
+        throw e;
       })
       .then(() => Promise.all([generateHwDid(core, organisationId), generateSwDid(core, organisationId)]))
       .catch((err) => {

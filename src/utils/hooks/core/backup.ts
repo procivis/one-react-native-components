@@ -1,4 +1,4 @@
-import { DidTypeEnum, OneError, OneErrorCode } from '@procivis/react-native-one-core';
+import { DidTypeEnum, OneError } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -113,7 +113,13 @@ export const useBackupFinalizeImportProcedure = () => {
       })
       .catch((e) => {
         // ignore if HW keys not supported by device
-        if (e instanceof OneError && e.code === OneErrorCode.NotSupported) {
+        if (
+          e instanceof OneError &&
+          // supporting old core errors
+          (e.code === ('NotSupported' as any) ||
+            // as well as new ones
+            e.code === ('BR_0039' as any))
+        ) {
           return null;
         }
         throw e;

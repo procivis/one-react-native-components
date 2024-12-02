@@ -1,4 +1,4 @@
-import { OneError, OneErrorCode, PresentationSubmitCredentialRequest } from '@procivis/react-native-one-core';
+import { OneError, PresentationSubmitCredentialRequest } from '@procivis/react-native-one-core';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useONECore } from './core-context';
@@ -60,7 +60,13 @@ export const useProofReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectProof(interactionId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.NotSupported) {
+        if (
+          e instanceof OneError &&
+          // supporting old core errors
+          (e.code === ('NotSupported' as any) ||
+            // as well as new ones
+            e.code === ('BR_0062' as any))
+        ) {
           return;
         }
         throw e;
