@@ -12,11 +12,13 @@ export const useCredentialCardExpanded = () => {
 
 export const useCredentialListExpandedCard = () => {
   const [expandedCredential, setExpandedCredential] = useState<string>();
+  const [initialized, setInitialized] = useState(false);
 
   const onHeaderPress = useCallback((credentialId?: string) => {
     if (!credentialId) {
       return;
     }
+    setInitialized(true);
     setExpandedCredential((oldValue) => {
       if (credentialId === oldValue) {
         return undefined;
@@ -25,9 +27,19 @@ export const useCredentialListExpandedCard = () => {
     });
   }, []);
 
+  const setInitialCredential = useCallback(
+    (credentialId: string) => {
+      if (!initialized) {
+        setExpandedCredential(credentialId);
+      }
+      setInitialized(true);
+    },
+    [initialized],
+  );
+
   const foldCards = useCallback(() => {
     setExpandedCredential(undefined);
   }, []);
 
-  return { expandedCredential, foldCards, onHeaderPress };
+  return { expandedCredential, foldCards, onHeaderPress, setInitialCredential };
 };
