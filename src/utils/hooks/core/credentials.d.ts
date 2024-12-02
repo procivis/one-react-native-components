@@ -1,14 +1,5 @@
 import { CredentialListQuery, InvitationResult, ONECore } from '@procivis/react-native-one-core';
 
-type HandleInvitationParams = Parameters<ONECore['handleInvitation']>;
-type InvitationHandlerHookParams = HandleInvitationParams extends [
-  url: string,
-  organisationType: string,
-  transport: string[] | undefined,
-]
-  ? { invitationUrl: string; transport: 'HTTP' | 'MQTT' | 'BLE' }
-  : { invitationUrl: string; transport?: never };
-
 type HolderAcceptCredentialParams = Parameters<ONECore['holderAcceptCredential']>;
 type CredentialAcceptHookParams = HolderAcceptCredentialParams extends [
   interactionId: string,
@@ -38,7 +29,10 @@ export declare const useCredentialDetail: (
 export declare const useInvitationHandler: () => import('react-query').UseMutationResult<
   InvitationResult,
   unknown,
-  InvitationHandlerHookParams,
+  {
+    invitationUrl: string;
+    transport: 'HTTP' | 'MQTT' | 'BLE';
+  },
   unknown
 >;
 export declare const useCredentialAccept: () => import('react-query').UseMutationResult<

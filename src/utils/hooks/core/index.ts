@@ -4,6 +4,8 @@ export * from './core-context';
 export * from './core-init';
 export * from './credential-schemas';
 export * from './credentials';
+export * from './dids';
 export * from './history';
+export * from './proof-schemas';
 export * from './proofs';
 export * from './query';

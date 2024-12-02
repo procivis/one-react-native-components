@@ -74,21 +74,9 @@ export const useInvitationHandler = () => {
   const queryClient = useQueryClient();
   const { core, organisationId } = useONECore();
 
-  type HandleInvitationParams = Parameters<typeof core.handleInvitation>;
-  type InvitationHandlerHookParams = HandleInvitationParams extends [
-    url: string,
-    organisationType: string,
-    transport: string[] | undefined,
-  ]
-    ? { invitationUrl: string; transport: 'HTTP' | 'MQTT' | 'BLE' }
-    : { invitationUrl: string; transport?: never };
   return useMutation(
-    async ({ invitationUrl, transport }: InvitationHandlerHookParams) => {
-      const params = transport
-        ? ([invitationUrl, organisationId, [transport]] as unknown as HandleInvitationParams)
-        : ([invitationUrl, organisationId] as unknown as HandleInvitationParams);
-      return core.handleInvitation.apply(core.handleInvitation, params);
-    },
+    async ({ invitationUrl, transport }: { invitationUrl: string; transport: 'HTTP' | 'MQTT' | 'BLE' }) =>
+      core.handleInvitation(invitationUrl, organisationId, [transport]),
     {
       onSuccess: (result: InvitationResult) => {
         if ('credentialIds' in result) {

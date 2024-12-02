@@ -7,6 +7,7 @@ import {
 } from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
+import { getQueryKeyFromProofSchemaListQueryParams } from '../../parsers/query';
 import { useHTTPClient } from '../http/client';
 import { useONECore } from './core-context';
 import { CREDENTIAL_SCHEMA_LIST_QUERY_KEY } from './credential-schemas';
@@ -17,14 +18,6 @@ export const PROOF_SCHEMA_LIST_QUERY_KEY = 'proof-schema-list';
 export const PROOF_SCHEMA_IMPORT_DETAIL_QUERY_KEY = 'proof-schema-import';
 export const PROOF_SCHEMA_DETAIL_QUERY_KEY = 'proof-schema-detail';
 export const PROOF_SCHEMA_SHARE_QUERY_KEY = 'proof-schema-share';
-
-export const getQueryKeyFromProofSchemaListQueryParams = (queryParams?: Partial<ProofSchemaListQuery>) => {
-  if (!queryParams) {
-    return [];
-  }
-  const { name, sort, sortDirection, exact, ids } = queryParams;
-  return [name, sort, sortDirection, exact, ids];
-};
 
 export const useProofSchemas = (queryParams?: Partial<ProofSchemaListQuery>, keepPreviousData = true) => {
   const { core, organisationId } = useONECore();
