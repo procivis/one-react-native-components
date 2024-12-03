@@ -221,6 +221,9 @@ const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID
   } else {
     switch (typeConfig?.type) {
       case DataTypeEnum.Object: {
+        if (!Array.isArray(claim.value)) {
+          return { attributes: [] };
+        }
         return {
           attributes: (claim.value as Claim[]).map((nestedClaim, index) =>
             detailsCardAttributeFromClaim(nestedClaim, config, concatTestID(testID, index.toString())),

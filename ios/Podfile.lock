@@ -890,6 +890,10 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - react-native-netinfo (11.4.1):
+    - React-Core
+  - react-native-one-core (1.26999.0):
+    - React-Core
   - react-native-picker (5.0.3):
     - React-Core
   - react-native-safe-area-context (3.4.1):
@@ -1065,6 +1069,8 @@ PODS:
     - React-jsi (= 0.73.9)
     - React-logger (= 0.73.9)
     - React-perflogger (= 0.73.9)
+  - RNBluetoothStateManager (1.3.5):
+    - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
   - RNDateTimePicker (8.2.0):
@@ -1095,8 +1101,16 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
+  - RNSentry (5.34.0):
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - React-hermes
+    - Sentry/HybridSDK (= 8.37.0)
   - RNSVG (15.1.0):
     - React-Core
+  - Sentry/HybridSDK (8.37.0)
   - SocketRocket (0.6.1)
   - VisionCamera (4.5.1):
     - VisionCamera/Core (= 4.5.1)
@@ -1138,6 +1152,8 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - "react-native-one-core (from `../node_modules/@procivis/react-native-one-core`)"
   - "react-native-picker (from `../node_modules/@procivis/react-native-picker`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -1161,11 +1177,13 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNBluetoothStateManager (from `../node_modules/react-native-bluetooth-state-manager`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1174,6 +1192,7 @@ SPEC REPOS:
   trunk:
     - fmt
     - libevent
+    - Sentry
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1234,6 +1253,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
+  react-native-one-core:
+    :path: "../node_modules/@procivis/react-native-one-core"
   react-native-picker:
     :path: "../node_modules/@procivis/react-native-picker"
   react-native-safe-area-context:
@@ -1280,6 +1303,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNBluetoothStateManager:
+    :path: "../node_modules/react-native-bluetooth-state-manager"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
@@ -1290,6 +1315,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   VisionCamera:
@@ -1328,6 +1355,8 @@ SPEC CHECKSUMS:
   React-logger: 87a4232dd55485435edfa6803ff0de0b5c9eea1a
   React-Mapbuffer: 6c229dc8f1640457d1f665f0b7d79ab8f604dc8b
   react-native-blur: 799045500f56146afc46245148080e7b7623cb75
+  react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
+  react-native-one-core: 38bc8684469ed1f01880aad89ab7b856dbc11d4d
   react-native-picker: 208cd4d747bb5088aac73c7412b07f8a1fc45902
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   react-native-slider: 7a39874fc1fcdfee48e448fa72cce0a8f2c7c5d6
@@ -1351,12 +1380,15 @@ SPEC CHECKSUMS:
   React-runtimescheduler: efb26ad81d94a9b047504bd716b48869bd311649
   React-utils: dab84549e65d6d711937b9c34d9f6d8fb8bd711c
   ReactCommon: 3dc453f427d2f3d7f2c71499d191b456f83c59bd
+  RNBluetoothStateManager: 724f2c76b04e0a2b840dfd7305b68f614bc01c81
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNDateTimePicker: 40ffda97d071a98a10fdca4fa97e3977102ccd14
   RNGestureHandler: a4c4561307e67f2942f5a4fe1526ff78cf3f5280
   RNReanimated: ba95f6d26ca4b8a8f7f2b15f62a3513750762f6b
   RNScreens: 29418ceffb585b8f0ebd363de304288c3dce8323
+  RNSentry: 27ae234282d885dead1332071a361e08e6ac676d
   RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
+  Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: 104de00dce2e04dec51bfb6027eff0312fa3174e
   Yoga: 6aaa3c45f0fda0c6929f855121622669dabe1aaf
