@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   detailText: {
+    flex: 1,
     opacity: 0.7,
   },
   detailTextContainer: {
