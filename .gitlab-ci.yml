@@ -5,6 +5,7 @@ include:
     file:
       - "gitlab/docker.gitlab-ci.yml"
       - "gitlab/github.gitlab-ci.yml"
+      - "gitlab/ci-tools.gitlab-ci.yml"
 
 variables:
   YARN_CACHE_FOLDER: './.yarn/cache'
@@ -23,6 +24,7 @@ stages:
   - publish
   - deploy
   - github
+  - sync_with_jira
 
 .build-cache: &build-cache
   key:
@@ -168,12 +170,11 @@ deploy:storybook:
     strategy: depend
 
 github:push:
-  needs: []
+  stage: github
   extends:
-    - .github:push
+    - .ci-tool:open_source_release
 
-github:release:
+set_jira_version:
+  stage: sync_with_jira
   extends:
-    - .github:release
-  needs:
-    - job: github:push
+    - .ci-tool:set_jira_version
