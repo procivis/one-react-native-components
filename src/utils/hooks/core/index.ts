@@ -9,3 +9,4 @@ export * from './history';
 export * from './proof-schemas';
 export * from './proofs';
 export * from './query';
+export * from './trust-entity';

@@ -41,7 +41,7 @@ export const useProofUrl = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (proofId: string) => core.shareProof(proofId).then((proof) => proof.url), {
+  return useMutation(async (proofId: string) => core.shareProof(proofId, {}).then((proof) => proof.url), {
     onSuccess: () => {
       queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
       queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
