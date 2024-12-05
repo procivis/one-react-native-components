@@ -1,5 +1,6 @@
 import {
   CreateProofRequest,
+  ONECore,
   OneError,
   PresentationSubmitCredentialRequest,
   ProofListQuery,
@@ -37,16 +38,35 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
   });
 };
 
+type ShareProofRequestProps = {
+  params?: {
+    clientIdSchema?: 'REDIRECT_URI' | 'VERIFIER_ATTESTATION';
+  };
+};
+type ShareProofParams = Parameters<ONECore['shareProof']>;
+type ProofUrlHookParams = ShareProofParams extends [proofId: string, request: ShareProofRequestProps]
+  ? { proofId: string; request: ShareProofRequestProps | null }
+  : { proofId: string; request?: never };
+
 export const useProofUrl = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (proofId: string) => core.shareProof(proofId, {}).then((proof) => proof.url), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
-      queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
+  return useMutation(
+    async ({ proofId, request }: ProofUrlHookParams) => {
+      const params =
+        request || request === null
+          ? ([proofId, request ?? {}] as unknown as ShareProofParams)
+          : ([proofId] as unknown as ShareProofParams);
+      return core.shareProof.apply(core.shareProof, params).then((proof) => proof.url);
     },
-  });
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
+      },
+    },
+  );
 };
 
 export const useProofAccept = () => {
@@ -229,7 +249,7 @@ export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transpor
   return proofId;
 };
 
-export const useShareProof = (proofId: string | undefined, enabled: boolean) => {
+export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, enabled: boolean) => {
   const { mutateAsync: shareProof } = useProofUrl();
   const [shouldShareProof, setShouldShareProof] = useState(false);
 
@@ -239,19 +259,19 @@ export const useShareProof = (proofId: string | undefined, enabled: boolean) => 
   }>();
 
   useEffect(() => {
-    if (!proofId) {
+    if (!proofUrlProps?.proofId) {
       return;
     }
     setShouldShareProof(true);
     setSharedProof(undefined);
-  }, [proofId]);
+  }, [proofUrlProps?.proofId]);
 
   useEffect(() => {
-    if (!proofId || !shouldShareProof || sharedProof?.url || !enabled) {
+    if (!proofUrlProps?.proofId || !shouldShareProof || sharedProof?.url || !enabled) {
       return;
     }
     setShouldShareProof(false);
-    shareProof(proofId)
+    shareProof(proofUrlProps)
       .then((url) => {
         setSharedProof({
           bleAdapterDisabled: false,
@@ -266,7 +286,7 @@ export const useShareProof = (proofId: string | undefined, enabled: boolean) => 
           });
         }
       });
-  }, [proofId, shareProof, sharedProof, shouldShareProof, enabled]);
+  }, [proofUrlProps, shareProof, sharedProof, shouldShareProof, enabled]);
 
   return sharedProof;
 };
