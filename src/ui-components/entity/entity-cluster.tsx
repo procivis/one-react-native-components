@@ -11,6 +11,7 @@ export type EntityClusterProps = ViewProps & {
   entityName: string;
   subline?: string;
   textColor?: string;
+  sublineColor?: string;
   testID?: string;
 };
 
@@ -21,6 +22,7 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
   subline,
   textColor,
   style,
+  sublineColor,
   testID,
   ...viewProps
 }) => {
@@ -48,7 +50,7 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
         </Typography>
         {subline && (
           <View>
-            <Typography testID={concatTestID(testID, 'subline')} color={textColor ?? colorScheme.text} preset="xs">
+            <Typography testID={concatTestID(testID, 'subline')} color={sublineColor ?? colorScheme.text} preset="xs">
               {subline}
             </Typography>
           </View>

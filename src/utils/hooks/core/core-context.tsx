@@ -11,6 +11,7 @@ import React, {
 } from 'react';
 
 import { reportException } from '../../reporting';
+import { useCreateTrustAnchor } from './trust-entity';
 
 interface ContextValue {
   core: ONECore;
@@ -32,6 +33,7 @@ export enum ONECoreUseType {
 export type ONECoreContextProviderProps = {
   type: ONECoreUseType;
   organisationId?: string;
+  publisherReference: string;
 };
 
 const ONECoreContext = createContext<ContextValue>(defaultContextValue);
@@ -39,9 +41,11 @@ const ONECoreContext = createContext<ContextValue>(defaultContextValue);
 export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({
   children,
   organisationId = '11111111-2222-3333-a444-ffffffffffff',
+  publisherReference,
   type,
 }) => {
   const [core, setCore] = useState<ONECore>();
+  const createTrustAnchor = useCreateTrustAnchor(publisherReference);
 
   const initialize = useCallback(
     async (force?: boolean) => {
@@ -72,6 +76,13 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
+
+  useEffect(() => {
+    if (!core) {
+      return;
+    }
+    createTrustAnchor(core);
+  }, [core, createTrustAnchor]);
 
   const contextValue = useMemo(
     () => ({
