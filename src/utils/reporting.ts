@@ -1,3 +1,4 @@
+import { OneError } from '@procivis/react-native-one-core';
 import * as Sentry from '@sentry/react-native';
 
 export function reportError(message: string) {
@@ -12,7 +13,7 @@ export function reportError(message: string) {
   }
 }
 
-const getDebugExceptionInfo = (message: string | undefined, code: string | number | undefined) => {
+const getDebugExceptionInfo = (message: string | undefined, code: string | number) => {
   if (message) {
     const codeInfo = code ? `[${code}]` : '';
     return `(${message})${codeInfo}`;
@@ -21,24 +22,29 @@ const getDebugExceptionInfo = (message: string | undefined, code: string | numbe
 };
 
 export function reportException(e: unknown, message?: string) {
-  // `code` can be set in the native code
-  const code = (e as any)?.code ?? '';
-
   if (!__DEV__) {
     try {
       Sentry.withScope((scope) => {
         if (message) {
           scope.setExtra('message', message);
         }
-        if (code) {
-          scope.setExtra('code', code);
+
+        if (e instanceof OneError) {
+          scope.setExtra('operation', e.operation);
+          scope.setExtra('code', e.code);
+          scope.setExtra('codeMessage', e.message);
+          if (e.cause) {
+            scope.setExtra('cause', e.cause);
+          }
         }
+
         Sentry.captureException(e);
       });
     } catch (error) {
       // do nothing
     }
   } else {
+    const code = (e as any)?.code ?? '';
     const info = getDebugExceptionInfo(message, code);
     console.warn(`reportException${info}:`, e, e instanceof Error ? e.stack : undefined);
   }

@@ -265,9 +265,9 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
           url,
         });
       })
-      .catch((err: Error) => {
+      .catch((err: unknown) => {
         // TODO emit error with specific error code from core.
-        if (err.message.includes('adapter is disabled')) {
+        if (err instanceof OneError && err.cause?.includes('BLE adapter not enabled')) {
           setSharedProof({
             bleAdapterDisabled: true,
           });
