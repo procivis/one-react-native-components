@@ -3197,8 +3197,8 @@
 
 "@procivis/react-native-picker@5.0.3":
   version "5.0.3"
-  resolved "https://gitlab.procivis.ch/api/v4/projects/76/packages/npm/@procivis/react-native-picker/-/@procivis/react-native-picker-5.0.3.tgz#1246429f66087f32a31734ddf9f9763f8b901596"
-  integrity sha1-EkZCn2YIfzKjFzTd+fl2P4uQFZY=
+  resolved "https://registry.yarnpkg.com/@procivis/react-native-picker/-/react-native-picker-5.0.3.tgz#a1426a22a5d25c0be06da18b15e18e492269e4ed"
+  integrity sha512-+WMoB8EKNmBhj3hQgRQTW8EjEzZjlzW0/wciy8Ix7LCuWK3Iq9XZ0ZnxsnlwZjkLw+4tqIo/kMJ4lTL+l7RdDw==
   dependencies:
     prop-types "^15.8.1"
 

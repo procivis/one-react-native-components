@@ -1,7 +1,7 @@
-![Procivis One](docs/assets/logo_dark_Procivis_One.png#gh-light-mode-only)
-![Procivis One](docs/assets/logo_light_Procivis_One.png#gh-dark-mode-only)
+![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-dark-mode-only)
+![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-light-mode-only)
 
-# One Core React Components
+# One Core React Native Components
 
 React Native UI components for the [Procivis One Wallet][wallet].
 
@@ -11,7 +11,7 @@ via the [One Core React Native SDK][rncore].
 The Procivis One Core is a complete solution capable of powering every element
 of the digital identity credential lifecycle. See the complete solution [architecture][archi].
 
-## How to use the One Core React Components
+## How to use the One Core React Native Components
 
 - Use the library for UI elements for your digital wallet app
 - Use the [Procivis One Wallet][wallet] for a free-standing solution that can be white-labeled
@@ -35,40 +35,18 @@ See our documentation:
 
 ## Installation
 
-```sh
+```shell
 npm install @procivis/one-react-native-components
 ```
 
-## NPM package release management
-
-> **_NOTE:_** Git working directory should be clean (haven't uncommitted changes)
-
-Provide new package version with (Select from list)
-
 ```shell
-npm version <newversion> [major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]
+yarn add @procivis/one-react-native-components
 ```
 
-- Provide version from git
+## Troubleshooting
 
-```shell
-npm version patch
-# Response might be like: v0.2.2
-```
-
-> **_NOTE:_** _New commit will be created and tagged automatically_
-
-- (Optional) Change commit message
-
-```shell
-npm run commit -- 'v0.2.2: Fixes'
-```
-
-- Publish package to registry
-
-```shell
-git push origin v0.2.2
-```
+For issues related to installing `@procivis/react-native-picker`, delete the `yarn.lock`
+file and try again.
 
 ## Support
 
@@ -76,11 +54,10 @@ Need support or have feedback? [Contact us](https://www.procivis.ch/en/contact).
 
 ## License
 
-Some rights reserved. This library is published under the [Apache License
-Version 2.0](./LICENSE).
+Some rights reserved. This library is published under the [Apache License Version 2.0](./LICENSE).
 
-![Procivis AG](docs/assets/logo_light_mode_Procivis.svg#gh-light-mode-only)
-![Procivis AG](docs/assets/logo_dark_mode_Procivis.svg#gh-dark-mode-only)
+![Procivis AG](https://assets.procivis-one.com/static/logo/logo_light_mode_Procivis.svg#gh-light-mode-only)
+![Procivis AG](https://assets.procivis-one.com/static/logo/logo_dark_mode_Procivis.svg#gh-dark-mode-only)
 
 © Procivis AG, [https://www.procivis.ch](https://www.procivis.ch).
 
