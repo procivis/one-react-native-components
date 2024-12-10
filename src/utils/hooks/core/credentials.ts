@@ -93,24 +93,11 @@ export const useCredentialAccept = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  type HolderAcceptCredentialParams = Parameters<typeof core.holderAcceptCredential>;
-  type CredentialAcceptHookParams = HolderAcceptCredentialParams extends [
-    interactionId: string,
-    didId: string,
-    keyId: string | undefined,
-    txCode: string | undefined,
-  ]
-    ? { didId: string; interactionId: string; keyId?: string; txCode: string | null }
-    : { didId: string; interactionId: string; keyId?: string; txCode?: never };
+  type CredentialAcceptHookParams = { didId: string; interactionId: string; keyId?: string; txCode?: string };
 
   return useMutation(
-    async ({ interactionId, didId, keyId, txCode }: CredentialAcceptHookParams) => {
-      const params =
-        txCode || txCode === null
-          ? ([interactionId, didId, keyId, txCode ?? undefined] as unknown as HolderAcceptCredentialParams)
-          : ([interactionId, didId, keyId] as unknown as HolderAcceptCredentialParams);
-      return core.holderAcceptCredential.apply(core.holderAcceptCredential, params);
-    },
+    async ({ interactionId, didId, keyId, txCode }: CredentialAcceptHookParams) =>
+      core.holderAcceptCredential(interactionId, didId, keyId, txCode),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);

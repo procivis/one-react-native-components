@@ -66,7 +66,14 @@ export const ShareCredential: FunctionComponent<{
   );
   const multipleCredentialsAvailable = selectionOptions.length > 1;
 
-  const validityState = getValidityState(credential);
+  const validityState = getValidityState(
+    credential
+      ? {
+          ...credential,
+          issuerDid: credential?.issuerDid?.did,
+        }
+      : undefined,
+  );
 
   const invalid = useMemo(() => {
     if (!credential?.lvvcIssuanceDate || !request.validityCredentialNbf) {

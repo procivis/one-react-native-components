@@ -1,10 +1,10 @@
 import {
   CreateProofRequest,
-  ONECore,
   OneError,
   PresentationSubmitCredentialRequest,
   ProofListQuery,
   ProofStateEnum,
+  ShareProofRequest,
 } from '@procivis/react-native-one-core';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -38,28 +38,15 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
   });
 };
 
-type ShareProofRequestProps = {
-  params?: {
-    clientIdSchema?: 'REDIRECT_URI' | 'VERIFIER_ATTESTATION';
-  };
-};
-type ShareProofParams = Parameters<ONECore['shareProof']>;
-type ProofUrlHookParams = ShareProofParams extends [proofId: string, request: ShareProofRequestProps]
-  ? { proofId: string; request: ShareProofRequestProps | null }
-  : { proofId: string; request?: never };
+type ProofUrlHookParams = { proofId: string; request?: ShareProofRequest };
 
 export const useProofUrl = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
   return useMutation(
-    async ({ proofId, request }: ProofUrlHookParams) => {
-      const params =
-        request || request === null
-          ? ([proofId, request ?? {}] as unknown as ShareProofParams)
-          : ([proofId] as unknown as ShareProofParams);
-      return core.shareProof.apply(core.shareProof, params).then((proof) => proof.url);
-    },
+    async ({ proofId, request }: ProofUrlHookParams) =>
+      core.shareProof(proofId, request ?? {}).then((proof) => proof.url),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);

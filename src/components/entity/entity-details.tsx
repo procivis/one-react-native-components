@@ -1,8 +1,7 @@
-import { DidListItem, TrustEntityRoleEnum } from '@procivis/react-native-one-core';
+import { DidListItem, TrustEntity, TrustEntityRoleEnum } from '@procivis/react-native-one-core';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
-import { TrustEntity } from '../../model/trust-entity';
 import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityTrustedIcon, HistoryStatusIcon, HistoryStatusIconType } from '../../ui-components/icons';
 import { replaceBreakingHyphens } from '../../utils';

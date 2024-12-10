@@ -101,8 +101,7 @@ export const useShareCredentialSchema = (schemaId?: string) => {
 
   return useQuery(
     [CREDENTIAL_SCHEMA_SHARE_QUERY_KEY, schemaId],
-    () =>
-      schemaId && 'shareCredentialSchema' in core ? (core.shareCredentialSchema as any)(schemaId) : Promise.reject(),
+    () => (schemaId ? core.shareCredentialSchema(schemaId) : Promise.reject()),
     {
       enabled: Boolean(schemaId),
       keepPreviousData: true,
