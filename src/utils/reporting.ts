@@ -13,12 +13,16 @@ export function reportError(message: string) {
   }
 }
 
-const getDebugExceptionInfo = (message: string | undefined, code: string | number) => {
-  if (message) {
-    const codeInfo = code ? `[${code}]` : '';
-    return `(${message})${codeInfo}`;
+const getDebugExceptionInfo = (error: unknown, message: string | undefined) => {
+  if (error instanceof OneError) {
+    let info = `[${error.code}](${error.message})`;
+    if (error.cause) {
+      info = `${info}: ${error.cause}`;
+    }
+    return message ? `(${message}, ${info})` : info;
   }
-  return `[${code}]`;
+
+  return message ? `(${message})` : '';
 };
 
 export function reportException(e: unknown, message?: string) {
@@ -31,7 +35,7 @@ export function reportException(e: unknown, message?: string) {
 
         if (e instanceof OneError) {
           // prevent reporting specific errors
-          if (e.cause?.includes('BLE adapter not enabled') || e.cause?.includes('BLE adapter is disabled')) {
+          if (e.cause?.includes('BLE adapter not enabled')) {
             return;
           }
 
@@ -51,9 +55,8 @@ export function reportException(e: unknown, message?: string) {
       // do nothing
     }
   } else {
-    const code = (e as any)?.code ?? '';
-    const info = getDebugExceptionInfo(message, code);
-    console.warn(`reportException${info}:`, e, e instanceof Error ? e.stack : undefined);
+    const info = getDebugExceptionInfo(e, message);
+    console.warn(`reportException${info}`, e, e instanceof Error ? e.stack : undefined);
   }
 }
 
