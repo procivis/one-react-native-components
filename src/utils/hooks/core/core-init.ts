@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 
 import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
+import { OneErrorCode } from './error-code';
 
 export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
@@ -19,13 +20,7 @@ const generateHwDid = async (core: ONECore, organisationId: string) => {
     })
     .catch((e) => {
       // ignore if HW keys not supported by device
-      if (
-        e instanceof OneError &&
-        // supporting old core errors
-        (e.code === ('NotSupported' as any) ||
-          // as well as new ones
-          e.code === ('BR_0039' as any))
-      ) {
+      if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
         return null;
       }
       throw e;
@@ -83,13 +78,7 @@ export const useInitializeONECoreIdentifiers = () => {
     return await core
       .createOrganisation(organisationId)
       .catch((e) => {
-        if (
-          e instanceof OneError &&
-          // supporting old core errors
-          (e.code === ('AlreadyExists' as any) ||
-            // as well as new ones
-            e.code === ('BR_0023' as any))
-        ) {
+        if (e instanceof OneError && e.code === OneErrorCode.OrganisationAlreadyExists) {
           return;
         }
         throw e;

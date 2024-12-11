@@ -4,6 +4,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-q
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
 import { useONECore } from './core-context';
 import { CREDENTIAL_SCHEMA_LIST_QUERY_KEY } from './credential-schemas';
+import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const PAGE_SIZE = 20;
@@ -115,13 +116,7 @@ export const useCredentialReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectCredential(interactionId).catch((e) => {
-        if (
-          e instanceof OneError &&
-          // supporting old core errors
-          (e.code === ('NotSupported' as any) ||
-            // as well as new ones
-            e.code === ('BR_0062' as any))
-        ) {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
           return;
         }
         throw e;

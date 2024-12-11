@@ -13,6 +13,7 @@ import { getQueryKeyFromProofListQueryParams } from '../../parsers/query';
 import { Transport } from '../connectivity/connectivity';
 import { useONECore } from './core-context';
 import { useDids } from './dids';
+import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const PAGE_SIZE = 10;
@@ -91,13 +92,7 @@ export const useProofReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectProof(interactionId).catch((e) => {
-        if (
-          e instanceof OneError &&
-          // supporting old core errors
-          (e.code === ('NotSupported' as any) ||
-            // as well as new ones
-            e.code === ('BR_0062' as any))
-        ) {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
           return;
         }
         throw e;
@@ -135,7 +130,7 @@ export const useProofRetract = () => {
   return useMutation(
     async (proofId: string) => {
       return core.retractProof(proofId).catch((e) => {
-        if (e instanceof OneError && e.code === ('BR_0062' as any)) {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
           return;
         }
         throw e;

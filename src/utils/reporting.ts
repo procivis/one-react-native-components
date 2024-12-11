@@ -30,15 +30,22 @@ export function reportException(e: unknown, message?: string) {
         }
 
         if (e instanceof OneError) {
+          // prevent reporting specific errors
+          if (e.cause?.includes('BLE adapter not enabled')) {
+            return;
+          }
+
           scope.setExtra('operation', e.operation);
           scope.setExtra('code', e.code);
           scope.setExtra('codeMessage', e.message);
           if (e.cause) {
             scope.setExtra('cause', e.cause);
           }
-        }
 
-        Sentry.captureException(e);
+          Sentry.captureException(e.originalError);
+        } else {
+          Sentry.captureException(e);
+        }
       });
     } catch (error) {
       // do nothing

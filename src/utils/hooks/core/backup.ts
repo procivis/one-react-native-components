@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { generateUUID } from '../../uuid';
 import { useONECore } from './core-context';
 import { HW_DID_NAME_PREFIX, SW_DID_NAME_PREFIX } from './core-init';
+import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const BACKUP_INFO_QUERY_KEY = 'backup-info';
@@ -113,13 +114,7 @@ export const useBackupFinalizeImportProcedure = () => {
       })
       .catch((e) => {
         // ignore if HW keys not supported by device
-        if (
-          e instanceof OneError &&
-          // supporting old core errors
-          (e.code === ('NotSupported' as any) ||
-            // as well as new ones
-            e.code === ('BR_0039' as any))
-        ) {
+        if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
           return null;
         }
         throw e;
