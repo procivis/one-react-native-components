@@ -8,7 +8,7 @@ const Basic: ComponentStory<typeof QRCodeScannerScreen> = (args) => {
   const { hasPermission, requestPermission } = useCameraPermission();
   useEffect(() => {
     if (!hasPermission) {
-      requestPermission();
+      requestPermission().catch(() => {});
     }
   }, [hasPermission, requestPermission]);
 

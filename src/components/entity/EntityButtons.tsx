@@ -4,6 +4,7 @@ import { Linking, StyleSheet, View } from 'react-native';
 
 import { Button, ButtonType } from '../../ui-components/buttons';
 import { EntityLabels } from '../../ui-components/screens/nerd-mode-screen';
+import { reportException } from '../../utils';
 
 export interface EntityButton {
   url: string;
@@ -37,7 +38,9 @@ const EntityButtons: FC<EntityButtonsProps> = ({ entity, labels }) => {
 
   const openURL = useCallback(
     (url: string) => () => {
-      Linking.openURL(url);
+      Linking.openURL(url).catch((e) => {
+        reportException(e, 'Error opening entity link');
+      });
     },
     [],
   );

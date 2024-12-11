@@ -62,9 +62,9 @@ export const useCredentialSchemaAccept = () => {
         schema,
       }),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -88,10 +88,10 @@ export const useCredentialSchemaDelete = () => {
   const { core } = useONECore();
 
   return useMutation(async (credentialSchemaId: string) => core.deleteCredentialSchema(credentialSchemaId), {
-    onSuccess: (_, credentialId) => {
-      queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
-      queryClient.invalidateQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async (_, credentialId) => {
+      await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };

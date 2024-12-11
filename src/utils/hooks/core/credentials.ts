@@ -79,12 +79,12 @@ export const useInvitationHandler = () => {
     async ({ invitationUrl, transport }: { invitationUrl: string; transport: 'HTTP' | 'MQTT' | 'BLE' }) =>
       core.handleInvitation(invitationUrl, organisationId, [transport]),
     {
-      onSuccess: (result: InvitationResult) => {
+      onSuccess: async (result: InvitationResult) => {
         if ('credentialIds' in result) {
-          queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
-          queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+          await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+          await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
         }
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -100,10 +100,10 @@ export const useCredentialAccept = () => {
     async ({ interactionId, didId, keyId, txCode }: CredentialAcceptHookParams) =>
       core.holderAcceptCredential(interactionId, didId, keyId, txCode),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
-        queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -122,10 +122,10 @@ export const useCredentialReject = () => {
         throw e;
       }),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
-        queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -136,10 +136,10 @@ export const useCredentialRevocationCheck = () => {
   const { core } = useONECore();
 
   return useMutation(async (credentialIds: string[]) => core.checkRevocation(credentialIds), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
-      queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };
@@ -149,10 +149,10 @@ export const useCredentialDelete = () => {
   const { core } = useONECore();
 
   return useMutation(async (credentialId: string) => core.deleteCredential(credentialId), {
-    onSuccess: (_, credentialId) => {
-      queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
-      queryClient.invalidateQueries([CREDENTIAL_DETAIL_QUERY_KEY, credentialId]);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async (_, credentialId) => {
+      await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries([CREDENTIAL_DETAIL_QUERY_KEY, credentialId]);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };

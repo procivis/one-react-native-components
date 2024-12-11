@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
+import { reportException } from '../../utils';
 import { concatTestID } from '../../utils/testID';
 import { Button, ButtonType } from '../buttons/button';
 import { CopyContentIcon, OpenLinkIcon } from '../icons/nerd-view';
@@ -94,7 +95,9 @@ export const ActionIcon: FunctionComponent<{
 
   const openLink = useCallback(() => {
     if (link) {
-      Linking.openURL(link);
+      Linking.openURL(link).catch((e) => {
+        reportException(e, 'Error opening nerd link');
+      });
     }
   }, [link]);
 

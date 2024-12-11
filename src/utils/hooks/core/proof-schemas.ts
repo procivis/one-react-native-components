@@ -82,10 +82,10 @@ export const useProofSchemaAccept = () => {
         schema,
       }),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
-        queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -96,9 +96,9 @@ export const useProofSchemaCreate = () => {
   const { core } = useONECore();
 
   return useMutation(async (proofSchema: CreateProofSchemaRequest) => core.createProofSchema(proofSchema), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };
@@ -108,10 +108,10 @@ export const useProofSchemaDelete = () => {
   const { core } = useONECore();
 
   return useMutation(async (proofSchemaId: ProofSchema['id']) => core.deleteProofSchema(proofSchemaId), {
-    onSuccess: (_, proofSchemaId) => {
-      queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
-      queryClient.invalidateQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
+    onSuccess: async (_, proofSchemaId) => {
+      await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
     },
   });
 };

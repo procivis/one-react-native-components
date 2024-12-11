@@ -42,7 +42,7 @@ export function useMemoAsync<Value, FallbackValue = Value | undefined>(
         if (!abortCtrl.signal.aborted) setValue(fallbackValue ?? initialValue);
       }
     };
-    update();
+    update().catch(() => {});
     return () => abortCtrl.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);

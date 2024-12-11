@@ -65,11 +65,13 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
   }, [rotationIsAnimating, rotation]);
 
   const stopRotationAnimation = useCallback(() => {
-    InteractionManager.runAfterInteractions(() => {
-      rotationIsAnimating.current = false;
-      cancelAnimation(rotation);
-      rotation.value = 0;
-    });
+    Promise.resolve(
+      InteractionManager.runAfterInteractions(() => {
+        rotationIsAnimating.current = false;
+        cancelAnimation(rotation);
+        rotation.value = 0;
+      }),
+    ).catch(() => {});
   }, [rotationIsAnimating, rotation]);
 
   useEffect(() => {

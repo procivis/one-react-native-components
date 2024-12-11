@@ -70,7 +70,11 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
     () => {
       const corePromise = initialize();
       return () => {
-        corePromise.then((c) => c?.uninitialize(false));
+        corePromise
+          .then((c) => c?.uninitialize(false))
+          .catch((e) => {
+            reportException(e, 'Core uninitialization error');
+          });
       };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,7 +85,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
     if (!core) {
       return;
     }
-    createTrustAnchor(core);
+    createTrustAnchor(core).catch(() => {});
   }, [core, createTrustAnchor]);
 
   const contextValue = useMemo(

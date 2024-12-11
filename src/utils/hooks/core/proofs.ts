@@ -49,9 +49,9 @@ export const useProofUrl = () => {
     async ({ proofId, request }: ProofUrlHookParams) =>
       core.shareProof(proofId, request ?? {}).then((proof) => proof.url),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
       },
     },
   );
@@ -74,12 +74,12 @@ export const useProofAccept = () => {
       keyId?: string;
     }) => core.holderSubmitProof(interactionId, credentials, didId, keyId),
     {
-      onError: () => {
-        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+      onError: async () => {
+        await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
       },
-      onSuccess: () => {
-        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -98,9 +98,9 @@ export const useProofReject = () => {
         throw e;
       }),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -117,8 +117,8 @@ export const useProposeProof = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(async (exchange: ExchangeProtocol) => core.proposeProof(exchange, organisationId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };
@@ -137,11 +137,11 @@ export const useProofRetract = () => {
       });
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
-        queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
-        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
+        await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );
@@ -173,10 +173,10 @@ export const useProofCreate = () => {
   const { core } = useONECore();
 
   return useMutation(async (data: CreateProofRequest) => core.createProof(data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
-      queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
-      queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
+      await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
     },
   });
 };
@@ -224,7 +224,7 @@ export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transpor
         proofSchemaId,
         transport,
         verifierDidId: dids.values[0].id,
-      });
+      }).catch(() => {});
     }
   }, [proofSchemaId, proofs, dids, createProof, enabled, transport]);
 
@@ -285,9 +285,9 @@ export const useDeleteProofData = (proofId: string) => {
   const { core } = useONECore();
 
   return useMutation(async () => core.deleteProofClaims(proofId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };
@@ -298,7 +298,7 @@ export const useDeleteAllProofsData = (schemaId: string) => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async () => {
+    async () =>
       core
         .getProofs({
           organisationId,
@@ -307,14 +307,11 @@ export const useDeleteAllProofsData = (schemaId: string) => {
           proofSchemaIds: [schemaId],
           proofStates: [ProofStateEnum.ACCEPTED],
         })
-        .then((result) => {
-          return Promise.all(result.values.reverse().map((proof) => core.deleteProofClaims(proof.id)));
-        });
-    },
+        .then((result) => Promise.all(result.values.reverse().map((proof) => core.deleteProofClaims(proof.id)))),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
-        queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
   );

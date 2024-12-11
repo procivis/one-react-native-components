@@ -70,9 +70,9 @@ export const useCreateRemoteTrustEntity = () => {
   const { core } = useONECore();
 
   return useMutation(async (request: CreateRemoteTrustEntityRequest) => core.createRemoteTrustEntity(request), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };
@@ -82,9 +82,9 @@ export const useUpdateRemoteTrustEntity = () => {
   const { core } = useONECore();
 
   return useMutation(async (request: UpdateRemoteTrustEntityRequest) => core.updateRemoteTrustEntity(request), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
-      queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };
