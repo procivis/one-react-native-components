@@ -19,6 +19,7 @@ export const useDids = (queryParams?: Partial<DidListQuery>) => {
         page: pageParam,
         pageSize: PAGE_SIZE,
         type: DidTypeEnum.LOCAL,
+        ...queryParams,
       });
 
       return dids;

@@ -1,20 +1,25 @@
 import {
+  Config,
   CreateProofRequest,
+  DidListQuery,
   OneError,
   PresentationSubmitCredentialRequest,
   ProofListQuery,
+  ProofSchema,
   ProofStateEnum,
   ShareProofRequest,
 } from '@procivis/react-native-one-core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromProofListQueryParams } from '../../parsers/query';
 import { Transport } from '../connectivity/connectivity';
+import { useCoreConfig } from './core-config';
 import { useONECore } from './core-context';
 import { useDids } from './dids';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
+import { useProofSchemaDetail } from './proof-schemas';
 
 const PAGE_SIZE = 10;
 export const PROOF_DETAIL_QUERY_KEY = 'proof-detail';
@@ -181,8 +186,37 @@ export const useProofCreate = () => {
   });
 };
 
+const getDidFilterForProofSchema = (proofSchema: ProofSchema, config: Config): Partial<DidListQuery> => {
+  const requestedFormats = proofSchema.proofInputSchemas.map((schema) => schema.credentialSchema.format);
+  const requestedFormatsCapabilities = requestedFormats
+    .map((format) => config.format[format]?.capabilities)
+    .filter((x) => x);
+
+  // key algorithms must be supported by all requested formats
+  const keyAlgorithms = requestedFormatsCapabilities.reduce<string[] | undefined>((others, capabilities) => {
+    const current = capabilities.verificationKeyAlgorithms;
+    return others?.filter((item) => current.includes(item)) ?? current;
+  }, undefined);
+
+  // key storages must be supported by all requested formats
+  const keyStorages = requestedFormatsCapabilities.reduce<string[] | undefined>((others, capabilities) => {
+    const current = capabilities.verificationKeyStorages;
+    return others?.filter((item) => current.includes(item)) ?? current;
+  }, undefined);
+
+  return { keyAlgorithms, keyStorages };
+};
+
 export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transport[] | undefined, enabled: boolean) => {
-  const { data: dids } = useDids();
+  const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
+  const { data: config } = useCoreConfig();
+
+  const didFilter = useMemo(
+    () => (proofSchema && config ? getDidFilterForProofSchema(proofSchema, config) : undefined),
+    [config, proofSchema],
+  );
+
+  const { data: dids } = useDids(didFilter);
   const { mutateAsync: createProof } = useProofCreate();
   const { data: proofs } = useProofs({
     page: 0,
@@ -194,7 +228,7 @@ export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transpor
   const [proofId, setProofId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    if (!dids || !proofs || !transport || transport.length === 0) {
+    if (!dids || !didFilter || !dids.values.length || !proofs || !transport || transport.length === 0) {
       return;
     }
 
@@ -226,7 +260,7 @@ export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transpor
         verifierDidId: dids.values[0].id,
       }).catch(() => {});
     }
-  }, [proofSchemaId, proofs, dids, createProof, enabled, transport]);
+  }, [proofSchemaId, proofs, dids, didFilter, createProof, enabled, transport]);
 
   return proofId;
 };
