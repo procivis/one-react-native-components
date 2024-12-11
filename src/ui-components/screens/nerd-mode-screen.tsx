@@ -1,47 +1,58 @@
+import { DidListItem } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import EntityDetailsWithButtons, { ContextRole } from '../../components/entity/entity-details-with-buttons';
 import ContrastingStatusBar from '../../utils/contrasting-status-bar';
 import { concatTestID } from '../../utils/testID';
-import NerdModeItem, { NerdModeItemProps } from '..//nerd-view/nerd-mode-item';
-import EntityCluster from '../entity/entity-cluster';
+import SectionEntityCluster from '../entity/entity-cluster';
 import NavigationHeader from '../header/navigation-header';
 import { CloseIcon } from '../icons/icons';
+import NerdModeItem, { NerdModeItemProps } from '../nerd-view/nerd-mode-item';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
-const styles = StyleSheet.create({
-  entityCluster: {
-    paddingHorizontal: 24,
-    paddingVertical: 20,
-  },
-  sectionHeaderContainer: {
-    justifyContent: 'center',
-    marginTop: 20,
-    paddingVertical: 16,
-  },
-  sectionHeaderText: {
-    opacity: 0.7,
-    paddingHorizontal: 20,
-  },
-});
+export interface EntityLabels {
+  notTrusted: string;
+  trusted: string;
+  unknownIssuer: string;
+  unknownVerifier: string;
+  visitWebsite: string;
+  termsAndServices: string;
+  privacyPolicy: string;
+}
+
+export interface AttributesLabels {
+  trustRegistry: string;
+  issuerDid: string;
+  entityDid: string;
+  role: string;
+  expand: string;
+  collapse: string;
+}
+
+interface SectionEntityCluster {
+  did?: DidListItem;
+  subline?: string;
+  entityLabels: EntityLabels;
+  role: ContextRole;
+}
+
+type SectionAttribute = Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>;
+
+type NerdModeSectionItem = SectionAttribute | SectionEntityCluster;
 
 export type NerdModeSection = {
-  data: Array<Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>>;
-  title: string;
+  data: NerdModeSectionItem[];
+  title?: string;
 };
 
 export type NerdModeScreenProps = {
-  entityCluster?: {
-    entityName: string;
-  };
-  labels: {
-    expand: string;
-    collapse: string;
-  };
+  entityCluster?: SectionEntityCluster;
+  labels: AttributesLabels;
   onClose: () => void;
   onCopyToClipboard: (value: string) => void;
   sections: NerdModeSection[];
@@ -49,9 +60,17 @@ export type NerdModeScreenProps = {
   title: string;
 };
 
-const AnimatedSectionList = Animated.createAnimatedComponent(
-  SectionList<Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>>,
-);
+export enum EntityType {
+  CredentialEntity,
+  ProofEntity,
+}
+
+function isSectionEntityCluster(item: NerdModeSectionItem): item is SectionEntityCluster {
+  return (item as SectionEntityCluster).did !== undefined;
+}
+
+const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdModeSectionItem>);
+
 const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
   sections,
   labels,
@@ -78,9 +97,12 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     },
   });
 
-  const lastElementsForSection = sections.reduce((acc, { title: sectionTitle, data }) => {
+  const lastElementsForSection = sections.reduce((acc, { title: sectionTitle = '', data }) => {
     const lastElement = data[data.length - 1];
-    return { ...acc, [sectionTitle]: lastElement.attributeKey };
+    return {
+      ...acc,
+      [sectionTitle]: lastElement && !isSectionEntityCluster(lastElement) ? lastElement.attributeKey : '',
+    };
   }, {} as Record<string, string>);
 
   return (
@@ -102,40 +124,66 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
       <AnimatedSectionList
         ListHeaderComponent={
           entityCluster ? (
-            <EntityCluster
-              entityName={entityCluster?.entityName}
+            <EntityDetailsWithButtons
+              {...entityCluster}
+              entityType={EntityType.ProofEntity}
+              entityLabels={entityCluster.entityLabels}
+              attributesLabels={labels}
               style={[
                 styles.entityCluster,
                 {
                   backgroundColor: colorScheme.nerdView.background,
                 },
               ]}
+              onCopyToClipboard={onCopyToClipboard}
               testID={concatTestID(testID, 'entityCluster')}
               textColor={colorScheme.white}
             />
           ) : null
         }
         onScroll={onScroll}
-        renderItem={({ item, section }) => (
-          <NerdModeItem
-            {...item}
-            expandedAttributes={expandedAttributes}
-            labels={labels}
-            last={lastElementsForSection[section.title] === item.attributeKey}
-            onCopyToClipboard={onCopyToClipboard}
-            onExpand={onExpand}
-            scrollOffset={scrollOffset}
-            testID={concatTestID(testID, item.testID)}
-          />
-        )}
+        renderItem={({ item, section }) => {
+          if (isSectionEntityCluster(item)) {
+            return (
+              <EntityDetailsWithButtons
+                {...item}
+                entityType={EntityType.CredentialEntity}
+                entityLabels={entityCluster!.entityLabels}
+                attributesLabels={labels}
+                style={[
+                  styles.entityCluster,
+                  {
+                    backgroundColor: colorScheme.nerdView.background,
+                  },
+                ]}
+                onCopyToClipboard={onCopyToClipboard}
+                testID={concatTestID(testID, 'entityCluster')}
+                textColor={colorScheme.white}
+              />
+            );
+          } else {
+            return (
+              <NerdModeItem
+                {...item}
+                expandedAttributes={expandedAttributes}
+                labels={labels}
+                last={lastElementsForSection[section.title] === item.attributeKey}
+                onCopyToClipboard={onCopyToClipboard}
+                onExpand={onExpand}
+                scrollOffset={scrollOffset}
+                testID={concatTestID(testID, item.testID)}
+              />
+            );
+          }
+        }}
         renderSectionHeader={({ section }) => {
-          return (
+          return section.title ? (
             <View style={styles.sectionHeaderContainer} testID={concatTestID(testID, section.title)}>
               <Typography color={colorScheme.white} style={styles.sectionHeaderText}>
                 {section.title}
               </Typography>
             </View>
-          );
+          ) : null;
         }}
         scrollEventThrottle={16}
         sections={sections}
@@ -146,5 +194,21 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  entityCluster: {
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+  },
+  sectionHeaderContainer: {
+    justifyContent: 'center',
+    marginTop: 20,
+    paddingVertical: 16,
+  },
+  sectionHeaderText: {
+    opacity: 0.7,
+    paddingHorizontal: 20,
+  },
+});
 
 export default NerdModeScreen;

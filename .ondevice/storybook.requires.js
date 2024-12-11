@@ -31,8 +31,10 @@ try {
 const getStories = () => {
   return [
     require("../src/ui-components/action-modal/ActionModal.stories.tsx"),
+    require("../src/ui-components/activity-indicator/activity-indicator.stories.tsx"),
     require("../src/ui-components/buttons/back-button.stories.tsx"),
     require("../src/ui-components/buttons/button.stories.tsx"),
+    require("../src/ui-components/buttons/connectivity-button.stories.tsx"),
     require("../src/ui-components/buttons/ghost-button.stories.tsx"),
     require("../src/ui-components/buttons/scan-button.stories.tsx"),
     require("../src/ui-components/control/checkbox.stories.tsx"),

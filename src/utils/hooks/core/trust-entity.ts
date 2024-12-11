@@ -4,7 +4,7 @@ import {
   UpdateRemoteTrustEntityRequest,
 } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
-import { useMutation, useQueries, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
@@ -49,19 +49,6 @@ export const useTrustEntity = (didId: string | undefined) => {
       enabled: Boolean(didId),
       keepPreviousData: true,
     },
-  );
-};
-
-export const useTrustEntities = (didIds: string[]) => {
-  const { core } = useONECore();
-
-  return useQueries(
-    didIds.map((didId) => ({
-      keepPreviousData: true,
-      queryFn: () => (didId ? core.getTrustEntityByDid(didId) : Promise.reject()),
-      queryKey: [TRUST_ENTITY_DETAIL_QUERY_KEY, didId],
-      enable: Boolean(didId),
-    })),
   );
 };
 
