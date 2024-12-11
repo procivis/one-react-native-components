@@ -31,7 +31,7 @@ export function reportException(e: unknown, message?: string) {
 
         if (e instanceof OneError) {
           // prevent reporting specific errors
-          if (e.cause?.includes('BLE adapter not enabled')) {
+          if (e.cause?.includes('BLE adapter not enabled') || e.cause?.includes('BLE adapter is disabled')) {
             return;
           }
 
