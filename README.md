@@ -1,5 +1,8 @@
-![Procivis One](https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png#gh-dark-mode-only)
-![Procivis One](https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png#gh-light-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://assets.procivis-one.com/static/logo/logo_dark_Procivis_One.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png">
+  <img alt="Shows a Procivis One black logo in light color mode and a white one in dark color mode." src="https://assets.procivis-one.com/static/logo/logo_light_Procivis_One.png">
+</picture>
 
 # One Core React Native Components
 
@@ -57,8 +60,11 @@ Need support or have feedback? [Contact us](https://www.procivis.ch/en/contact).
 Some rights reserved. This library is published under the [Apache License
 Version 2.0](./LICENSE).
 
-![Procivis AG](https://assets.procivis-one.com/static/logo/logo_light_mode_Procivis.svg#gh-light-mode-only)
-![Procivis AG](https://assets.procivis-one.com/static/logo/logo_dark_mode_Procivis.svg#gh-dark-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://assets.procivis-one.com/static/logo/logo_dark_mode_Procivis.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://assets.procivis-one.com/static/logo/logo_light_mode_Procivis.svg">
+  <img alt="Shows a Procivis black logo in light color mode and a white one in dark color mode." src="https://assets.procivis-one.com/static/logo/logo_dark_mode_Procivis.svg">
+</picture>
 
 © Procivis AG, [https://www.procivis.ch](https://www.procivis.ch).
 
