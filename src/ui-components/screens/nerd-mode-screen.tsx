@@ -148,7 +148,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
               <EntityDetailsWithButtons
                 {...item}
                 entityType={EntityType.CredentialEntity}
-                entityLabels={entityCluster!.entityLabels}
+                entityLabels={item!.entityLabels}
                 attributesLabels={labels}
                 style={[
                   styles.entityCluster,
