@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useMemo } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 
 import { concatTestID } from '../../utils';
 import Typography from '../text/typography';
@@ -45,7 +45,8 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
           testID={concatTestID(testID, 'entityName')}
           color={textColor ?? colorScheme.text}
           numberOfLines={2}
-          preset="m">
+          preset="m"
+          style={styles.entityName}>
           {entityName}
         </Typography>
         {subline && (
@@ -64,6 +65,9 @@ const styles = StyleSheet.create({
   entity: {
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  entityName: {
+    letterSpacing: Platform.OS === 'ios' ? -0.2 : -0.3, // -0.2 breaks layout on Android
   },
   labels: {
     flex: 1,
