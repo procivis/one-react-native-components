@@ -1,4 +1,4 @@
-import { DidListItem, TrustEntity, TrustEntityRoleEnum } from '@procivis/react-native-one-core';
+import { DidListItem, TrustEntity, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -53,8 +53,14 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
     if (!trustEntity) {
       return undefined;
     }
-    const trusted = trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role;
-    if (!trusted) {
+    if (
+      trustEntity.state === TrustEntityStateEnum.REMOVED ||
+      trustEntity.state === TrustEntityStateEnum.REMOVED_AND_WITHDRAWN
+    ) {
+      return <HistoryStatusIcon type={HistoryStatusIconType.Error} />;
+    }
+    const trustedForRole = trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role;
+    if (trustEntity.state === TrustEntityStateEnum.WITHDRAWN || !trustedForRole) {
       return <HistoryStatusIcon type={HistoryStatusIconType.Suspend} />;
     }
     return EntityTrustedIcon;
