@@ -37,6 +37,10 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
   let { data: trustEntity } = useTrustEntity(did?.id);
   const colorScheme = useAppColorScheme();
 
+  const trusted =
+    trustEntity?.state === TrustEntityStateEnum.ACTIVE &&
+    (trustEntity?.role === TrustEntityRoleEnum.BOTH || trustEntity?.role === role);
+
   const trustEntityName = useMemo(() => {
     if (!trustEntity) {
       return role === TrustEntityRoleEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier;
@@ -46,16 +50,14 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
 
   const trustEntitySubline = useMemo(() => {
     if (!trustEntity) {
-      return 'did' in props ? (did?.did ? replaceBreakingHyphens(did.did) : undefined) : undefined;
+      return did?.did ? replaceBreakingHyphens(did.did) : undefined;
     }
-    const trusted =
-      trustEntity.state === TrustEntityStateEnum.ACTIVE &&
-      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role);
+
     if (!trusted) {
       return entityLabels.notTrusted;
     }
-    return undefined;
-  }, [trustEntity, role, props, did, entityLabels]);
+    return `${entityLabels.trusted} • ${trustEntity?.trustAnchor.name}`;
+  }, [trustEntity, trusted, entityLabels.trusted, entityLabels.notTrusted, did]);
 
   const trustEntityStatusIcon = useMemo(() => {
     if (!trustEntity) {
@@ -84,7 +86,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
         }}
         entityName={trustEntityName}
         subline={trustEntitySubline}
-        sublineColor={colorScheme.success}
+        sublineColor={trusted ? colorScheme.success : colorScheme.white}
         {...props}
       />
       <EntityButtons entity={trustEntity} labels={entityLabels} />
