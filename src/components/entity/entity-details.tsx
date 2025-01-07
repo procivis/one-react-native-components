@@ -4,7 +4,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 
 import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityTrustedIcon, HistoryStatusIcon, HistoryStatusIconType } from '../../ui-components/icons';
-import { replaceBreakingHyphens } from '../../utils';
+import { concatTestID, replaceBreakingHyphens } from '../../utils';
 import { useTrustEntity } from '../../utils/hooks/core/trust-entity';
 
 export type EntityDetailsLabels = {
@@ -57,14 +57,21 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
       trustEntity.state === TrustEntityStateEnum.REMOVED ||
       trustEntity.state === TrustEntityStateEnum.REMOVED_AND_WITHDRAWN
     ) {
-      return <HistoryStatusIcon type={HistoryStatusIconType.Error} />;
+      return (
+        <HistoryStatusIcon type={HistoryStatusIconType.Error} testID={concatTestID(testID, 'statusIcon', 'unknown')} />
+      );
     }
     const trustedForRole = trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role;
     if (trustEntity.state === TrustEntityStateEnum.WITHDRAWN || !trustedForRole) {
-      return <HistoryStatusIcon type={HistoryStatusIconType.Suspend} />;
+      return (
+        <HistoryStatusIcon
+          type={HistoryStatusIconType.Suspend}
+          testID={concatTestID(testID, 'statusIcon', 'notTrusted')}
+        />
+      );
     }
-    return EntityTrustedIcon;
-  }, [role, trustEntity]);
+    return <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />;
+  }, [role, testID, trustEntity]);
 
   return (
     <>
@@ -75,6 +82,7 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
                 avatar: trustEntity.logo ? { imageSource: { uri: trustEntity.logo } } : undefined,
                 placeholderText: trustEntity.name.substring(0, 1),
                 statusIcon: trustEntityStatusIcon,
+                testID: concatTestID(testID, 'avatar'),
               }
             : undefined
         }

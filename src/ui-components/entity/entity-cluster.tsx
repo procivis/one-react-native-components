@@ -51,7 +51,11 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
         </Typography>
         {subline && (
           <View>
-            <Typography testID={concatTestID(testID, 'subline')} color={sublineColor ?? colorScheme.text} preset="xs">
+            <Typography
+              testID={concatTestID(testID, 'subline')}
+              color={sublineColor ?? colorScheme.text}
+              numberOfLines={1}
+              preset="xs">
               {subline}
             </Typography>
           </View>

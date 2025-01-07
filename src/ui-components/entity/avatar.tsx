@@ -1,6 +1,7 @@
 import React, { ComponentType, FunctionComponent, ReactElement, useMemo } from 'react';
 import { StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
+import { concatTestID } from '../../utils';
 import ImageOrComponent, { ImageOrComponentSource } from '../image/image-or-component';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
@@ -9,10 +10,18 @@ export type AvatarProps = ViewProps & {
   avatar?: ImageOrComponentSource;
   placeholderText?: string;
   statusIcon?: ComponentType<any> | ReactElement;
+  testID?: string;
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25581&mode=design&t=YI1oD2BfBie5HcvJ-0
-const Avatar: FunctionComponent<AvatarProps> = ({ avatar, placeholderText, statusIcon, style, ...viewProps }) => {
+const Avatar: FunctionComponent<AvatarProps> = ({
+  avatar,
+  placeholderText,
+  statusIcon,
+  style,
+  testID,
+  ...viewProps
+}) => {
   const colorScheme = useAppColorScheme();
 
   const statusIconView: React.ReactElement | undefined = useMemo(() => {
@@ -45,11 +54,15 @@ const Avatar: FunctionComponent<AvatarProps> = ({ avatar, placeholderText, statu
 
   const { borderRadius, ...avatarStyle } = StyleSheet.flatten([styles.avatar, style]) as ViewStyle;
   return (
-    <View accessibilityElementsHidden={true} style={avatarStyle} {...viewProps}>
+    <View accessibilityElementsHidden={true} style={avatarStyle} testID={testID} {...viewProps}>
       <View style={[styles.imageWrapper, borderRadius ? { borderRadius } : undefined]}>
-        <ImageOrComponent source={imageSource} style={styles.image} />
+        <ImageOrComponent source={imageSource} style={styles.image} testID={concatTestID(testID, 'logo')} />
       </View>
-      {statusIconView && <View style={styles.statusIcon}>{statusIconView}</View>}
+      {statusIconView && (
+        <View style={styles.statusIcon} testID={concatTestID(testID, 'statusIcon')}>
+          {statusIconView}
+        </View>
+      )}
     </View>
   );
 };
