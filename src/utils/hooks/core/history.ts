@@ -56,7 +56,7 @@ export const useHistory = (queryParams?: Partial<HistoryListQuery>) => {
       const proofDidsMap: Record<string, string> = Object.assign(
         {},
         ...proofs.map((proof) => ({
-          [proof.id]: proof.verifierDid,
+          [proof.id]: proof.verifierDid?.did,
         })),
       );
 
