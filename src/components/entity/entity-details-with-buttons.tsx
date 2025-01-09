@@ -3,7 +3,7 @@ import React, { FC, memo, useMemo } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
 import EntityCluster from '../../ui-components/entity/entity-cluster';
-import { EntityTrustedIcon, HistoryStatusIcon, HistoryStatusIconType } from '../../ui-components/icons';
+import { EntityTrustedIcon } from '../../ui-components/icons';
 import { AttributesLabels, EntityLabels, EntityType } from '../../ui-components/screens/nerd-mode-screen';
 import { useAppColorScheme } from '../../ui-components/theme/color-scheme-context';
 import { concatTestID, replaceBreakingHyphens } from '../../utils';
@@ -39,50 +39,31 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
   const colorScheme = useAppColorScheme();
 
   const trusted =
-    trustEntity?.state === TrustEntityStateEnum.ACTIVE &&
-    (trustEntity?.role === TrustEntityRoleEnum.BOTH || trustEntity?.role === role);
+    trustEntity &&
+    trustEntity.state === TrustEntityStateEnum.ACTIVE &&
+    (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity?.role === role);
 
   const trustEntityName = useMemo(() => {
-    if (!trustEntity) {
+    if (!trustEntity || !trusted) {
       return role === TrustEntityRoleEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier;
     }
     return trustEntity.name;
-  }, [entityLabels, role, trustEntity]);
+  }, [entityLabels, role, trustEntity, trusted]);
 
   const trustEntitySubline = useMemo(() => {
-    if (!trustEntity) {
+    if (!trusted) {
       return did?.did ? replaceBreakingHyphens(did.did) : undefined;
     }
 
-    if (!trusted) {
-      return entityLabels.notTrusted;
-    }
     return `${entityLabels.trusted} • ${trustEntity?.trustAnchor.name}`;
-  }, [trustEntity, trusted, entityLabels.trusted, entityLabels.notTrusted, did]);
+  }, [trustEntity, trusted, entityLabels.trusted, did]);
 
   const trustEntityStatusIcon = useMemo(() => {
-    if (!trustEntity) {
+    if (!trusted) {
       return undefined;
     }
-    if (
-      trustEntity.state === TrustEntityStateEnum.REMOVED ||
-      trustEntity.state === TrustEntityStateEnum.REMOVED_AND_WITHDRAWN
-    ) {
-      return (
-        <HistoryStatusIcon type={HistoryStatusIconType.Error} testID={concatTestID(testID, 'statusIcon', 'unknown')} />
-      );
-    }
-    const trustedForRole = trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role;
-    if (trustEntity.state === TrustEntityStateEnum.WITHDRAWN || !trustedForRole) {
-      return (
-        <HistoryStatusIcon
-          type={HistoryStatusIconType.Suspend}
-          testID={concatTestID(testID, 'statusIcon', 'notTrusted')}
-        />
-      );
-    }
     return <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />;
-  }, [role, testID, trustEntity]);
+  }, [testID, trusted]);
 
   return (
     <View style={{ backgroundColor: colorScheme.nerdView.background }}>
@@ -99,7 +80,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
         testID={testID}
         {...props}
       />
-      <EntityButtons entity={trustEntity} labels={entityLabels} />
+      <EntityButtons entity={trustEntity} labels={entityLabels} testID={concatTestID(testID, 'links')} />
       <EntityAttributes
         trustEntity={trustEntity!}
         labels={attributesLabels}

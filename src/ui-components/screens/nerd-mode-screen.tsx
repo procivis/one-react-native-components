@@ -16,7 +16,6 @@ import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export interface EntityLabels {
-  notTrusted: string;
   trusted: string;
   unknownIssuer: string;
   unknownVerifier: string;

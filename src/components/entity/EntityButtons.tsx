@@ -4,7 +4,7 @@ import { Linking, StyleSheet, View } from 'react-native';
 
 import { Button, ButtonType } from '../../ui-components/buttons';
 import { EntityLabels } from '../../ui-components/screens/nerd-mode-screen';
-import { reportException } from '../../utils';
+import { concatTestID, reportException } from '../../utils';
 
 export interface EntityButton {
   url: string;
@@ -14,23 +14,27 @@ export interface EntityButton {
 interface EntityButtonsProps {
   entity?: TrustEntity;
   labels: EntityLabels;
+  testID?: string;
 }
 
-const EntityButtons: FC<EntityButtonsProps> = ({ entity, labels }) => {
+const EntityButtons: FC<EntityButtonsProps> = ({ entity, labels, testID }) => {
   const buttons = useMemo(
     () =>
       [
         {
           label: labels.visitWebsite,
           url: entity?.website || '',
+          testID: 'website',
         },
         {
           label: labels.termsAndServices,
           url: entity?.termsUrl || '',
+          testID: 'termsOfService',
         },
         {
           label: labels.privacyPolicy,
           url: entity?.privacyUrl || '',
+          testID: 'privacyPolicy',
         },
       ].filter((btn) => Boolean(btn.url)),
     [entity, labels],
@@ -45,9 +49,16 @@ const EntityButtons: FC<EntityButtonsProps> = ({ entity, labels }) => {
     [],
   );
   return (
-    <View style={[styles.buttons]}>
-      {buttons.map(({ label, url }) => (
-        <Button key={label} title={label} onPress={openURL(url)} style={styles.urlButton} type={ButtonType.SmallTech} />
+    <View style={[styles.buttons]} testID={testID}>
+      {buttons.map(({ label, url, testID: testIdSuffix }) => (
+        <Button
+          key={label}
+          title={label}
+          onPress={openURL(url)}
+          style={styles.urlButton}
+          testID={concatTestID(testID, testIdSuffix)}
+          type={ButtonType.SmallTech}
+        />
       ))}
     </View>
   );
