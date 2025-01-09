@@ -117,12 +117,13 @@ export const useAvailableTransports = (
   return transportStatus;
 };
 
-export const getInvitationUrlTransports = (url: string): Transport[] => {
+export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: string): Transport[] => {
   const parsedUrl = parseUrl(url);
   if (parsedUrl.parse_failed) {
     return [];
   }
-  if ((parsedUrl.protocol as string) !== 'openid4vp') {
+  const protocol = parsedUrl.protocol as string;
+  if (protocol !== 'openid4vp' && protocol !== customOpenIdUrlScheme) {
     return [Transport.HTTP];
   }
 
