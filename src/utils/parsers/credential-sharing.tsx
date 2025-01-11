@@ -77,10 +77,11 @@ export const missingCredentialCardFromRequest = (
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
-): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID'> => {
+): Omit<CredentialCardProps, 'onHeaderPress' | 'style'> => {
   return {
     cardImage: undefined,
     color: undefined,
+    testID,
     header: {
       credentialDetailErrorColor: true,
       credentialDetailPrimary: labels.missingCredential,
@@ -275,7 +276,7 @@ export const shareCredentialCardFromCredential = (
       ...shareCredentialCardAttributeFromClaim(
         id,
         config,
-        concatTestID(testID, 'claim', `${index}`),
+        concatTestID(testID, 'attribute', `${index}`),
         labels,
         claim,
         field,

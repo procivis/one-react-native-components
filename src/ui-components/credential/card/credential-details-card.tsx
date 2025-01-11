@@ -32,6 +32,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   onAttributeSelected,
   style,
   showAllButtonLabel,
+  testID,
   ...viewProps
 }) => {
   const colorScheme = useAppColorScheme();
@@ -164,7 +165,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                 <CredentialAttributeItem
                   key={attribute.id}
                   last={!footerView && !extraAttributes.length && idx === previewAttributes.length - 1}
-                  testID={concatTestID(card.testID, 'attribute', attribute.id)}
+                  testID={concatTestID(testID, 'attribute', idx.toString())}
                   onImagePreview={onImagePreview}
                   onPress={onAttributeSelected}
                   {...attribute}
@@ -176,7 +177,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                 <Button
                   onPress={() => setAllAttributesRendered(true)}
                   type={ButtonType.Secondary}
-                  testID={concatTestID(card.testID, 'showAllAttributesButton')}
+                  testID={concatTestID(testID, 'showAllAttributesButton')}
                   title={showAllButtonLabel!}
                 />
               </View>
@@ -189,7 +190,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                   <CredentialAttributeItem
                     key={attribute.id}
                     last={!footerView && index === length - 1}
-                    testID={concatTestID(card.testID, 'attribute', attribute.id)}
+                    testID={concatTestID(testID, 'attribute', index.toString())}
                     onImagePreview={onImagePreview}
                     onPress={onAttributeSelected}
                     {...attribute}
