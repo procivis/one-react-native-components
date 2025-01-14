@@ -38,10 +38,11 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
   let { data: trustEntity } = useTrustEntity(did?.id);
   const colorScheme = useAppColorScheme();
 
-  const trusted =
+  const trusted = Boolean(
     trustEntity &&
-    trustEntity.state === TrustEntityStateEnum.ACTIVE &&
-    (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity?.role === role);
+      trustEntity.state === TrustEntityStateEnum.ACTIVE &&
+      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity?.role === role),
+  );
 
   const trustEntityName = useMemo(() => {
     if (!trustEntity || !trusted) {
@@ -80,9 +81,10 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
         testID={testID}
         {...props}
       />
-      <EntityButtons entity={trustEntity} labels={entityLabels} testID={concatTestID(testID, 'links')} />
+      {trusted && <EntityButtons entity={trustEntity} labels={entityLabels} testID={concatTestID(testID, 'links')} />}
       <EntityAttributes
-        trustEntity={trustEntity!}
+        trustEntity={trustEntity}
+        trusted={trusted}
         labels={attributesLabels}
         onCopyToClipboard={onCopyToClipboard}
         entityType={entityType}

@@ -1,4 +1,4 @@
-import { TrustEntity, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import { TrustEntity } from '@procivis/react-native-one-core';
 import React, { FC, memo } from 'react';
 import { View } from 'react-native';
 
@@ -8,19 +8,26 @@ import { addElementIf } from '../../utils/array';
 
 interface EntityAttributesProps {
   trustEntity?: TrustEntity;
+  trusted: boolean;
   labels: AttributesLabels;
   onCopyToClipboard: (value: string) => void;
   entityType: EntityType;
 }
 
-const EntityAttributes: FC<EntityAttributesProps> = ({ trustEntity, labels, entityType, onCopyToClipboard }) => {
+const EntityAttributes: FC<EntityAttributesProps> = ({
+  trustEntity,
+  trusted,
+  labels,
+  entityType,
+  onCopyToClipboard,
+}) => {
   const didId = trustEntity?.did?.did || '';
   const didSections = didId.split(':') ?? [];
   const identifier = didSections.pop();
   const didMethod = didSections.length ? didSections.join(':') + ':' : '';
 
   const attributes = [
-    ...addElementIf(Boolean(trustEntity?.state === TrustEntityStateEnum.ACTIVE), {
+    ...addElementIf(trusted, {
       attributeKey: labels.trustRegistry,
       highlightedText: trustEntity?.trustAnchor.name,
       testID: 'trustRegistry',
@@ -32,7 +39,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({ trustEntity, labels, enti
       highlightedText: didMethod,
       testID: 'issuerDID',
     }),
-    ...addElementIf(Boolean(trustEntity?.role), {
+    ...addElementIf(trusted && Boolean(trustEntity?.role), {
       attributeKey: labels.role,
       highlightedText: trustEntity?.role,
       testID: 'role',
