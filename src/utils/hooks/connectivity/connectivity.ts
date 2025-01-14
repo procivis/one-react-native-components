@@ -118,7 +118,13 @@ export const useAvailableTransports = (
 };
 
 export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: string): Transport[] => {
-  const parsedUrl = parseUrl(url);
+  let parsedUrl: parseUrl.ParsedUrl;
+  try {
+    parsedUrl = parseUrl(url);
+  } catch (e) {
+    return [];
+  }
+
   if (parsedUrl.parse_failed) {
     return [];
   }

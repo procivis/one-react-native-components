@@ -79,4 +79,9 @@ describe('getInvitationUrlTransports', () => {
     );
     expect(transports).toStrictEqual([Transport.HTTP]);
   });
+
+  test('Invalid link', () => {
+    const transports = getInvitationUrlTransports('invalid');
+    expect(transports).toStrictEqual([]);
+  });
 });
