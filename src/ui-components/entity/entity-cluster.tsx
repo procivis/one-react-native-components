@@ -39,7 +39,7 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
 
   return (
     <View style={[styles.entity, style]} testID={testID} {...viewProps}>
-      <Avatar {...avatarProps} />
+      <Avatar testID={concatTestID(testID, 'avatar')} {...avatarProps} />
       <View style={styles.labels}>
         <Typography
           testID={concatTestID(testID, 'entityName')}
