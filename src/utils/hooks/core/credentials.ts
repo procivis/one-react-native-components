@@ -1,4 +1,10 @@
-import { CredentialListQuery, CredentialStateEnum, InvitationResult, OneError } from '@procivis/react-native-one-core';
+import {
+  BypassCache,
+  CredentialListQuery,
+  CredentialStateEnum,
+  InvitationResult,
+  OneError,
+} from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
@@ -131,11 +137,11 @@ export const useCredentialReject = () => {
   );
 };
 
-export const useCredentialRevocationCheck = () => {
+export const useCredentialRevocationCheck = (bypassCache?: BypassCache[]) => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (credentialIds: string[]) => core.checkRevocation(credentialIds), {
+  return useMutation(async (credentialIds: string[]) => core.checkRevocation(credentialIds, bypassCache), {
     onSuccess: async () => {
       await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
       await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
