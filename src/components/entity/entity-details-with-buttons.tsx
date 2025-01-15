@@ -70,7 +70,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
     <View style={{ backgroundColor: colorScheme.nerdView.background }}>
       <EntityCluster
         avatar={{
-          avatar: trustEntity?.logo ? { imageSource: { uri: trustEntity.logo } } : undefined,
+          avatar: trusted && trustEntity?.logo ? { imageSource: { uri: trustEntity.logo } } : undefined,
           placeholderText: trustEntity?.name.substring(0, 1),
           statusIcon: trustEntityStatusIcon,
           testID: concatTestID(testID, 'avatar'),
