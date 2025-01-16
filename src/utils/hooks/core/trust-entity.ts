@@ -1,12 +1,14 @@
 import {
   CreateRemoteTrustEntityRequest,
   ONECore,
+  TrustAnchor,
   UpdateRemoteTrustEntityRequest,
 } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { reportException } from '../../reporting';
+import { useHTTPClient } from '../http/client';
 import { useONECore } from './core-context';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
@@ -14,6 +16,8 @@ const TRUST_ENTITY_DETAIL_QUERY_KEY = 'trust-entity-detail';
 const REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY = 'remote-trust-entity-detail';
 
 export const useCreateTrustAnchor = (publisherReference: string) => {
+  const httpClient = useHTTPClient();
+
   return useCallback(
     async (core: ONECore) => {
       const trustAnchors = await core.getTrustAnchors({
@@ -23,10 +27,15 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
       if (trustAnchors.values.length > 0) {
         return;
       }
+      const response = await httpClient.get<TrustAnchor>(publisherReference);
+      if (!response.ok || !response.data) {
+        return;
+      }
+      const trustAnchor = response.data;
       await core
         .createTrustAnchor({
           isPublisher: false,
-          name: 'Procivis One Trust Registry',
+          name: trustAnchor.name,
           publisherReference,
           type: 'SIMPLE_TRUST_LIST',
         })
@@ -35,7 +44,7 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
           throw err;
         });
     },
-    [publisherReference],
+    [publisherReference, httpClient],
   );
 };
 

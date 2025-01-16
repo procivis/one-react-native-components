@@ -129,7 +129,7 @@ export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: 
     return [];
   }
   const protocol = parsedUrl.protocol as string;
-  if (protocol !== 'openid4vp' && protocol !== customOpenIdUrlScheme) {
+  if (protocol !== 'openid4vp' && protocol !== customOpenIdUrlScheme?.toLowerCase()) {
     return [Transport.HTTP];
   }
 
