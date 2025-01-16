@@ -26,7 +26,7 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
       await core
         .createTrustAnchor({
           isPublisher: false,
-          name: 'Mobile trust list',
+          name: 'Procivis One Trust Registry',
           publisherReference,
           type: 'SIMPLE_TRUST_LIST',
         })
