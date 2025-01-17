@@ -6,9 +6,10 @@ import { BackButton, BackButtonIcon, GhostButton, InfoIcon, OptionsIcon } from '
 
 export type HeaderButtonProps = {
   onPress?: () => void;
+  testID: string;
 };
 
-export const HeaderBackButton: FC<HeaderButtonProps> = ({ onPress }) => {
+export const HeaderBackButton: FC<HeaderButtonProps> = ({ onPress, testID }) => {
   const navigation = useNavigation();
   const handleBackButtonPress = useCallback(() => {
     if (onPress) {
@@ -19,10 +20,10 @@ export const HeaderBackButton: FC<HeaderButtonProps> = ({ onPress }) => {
   if (!navigation.canGoBack) {
     return null;
   }
-  return <BackButton onPress={handleBackButtonPress} testID="Screen.back" />;
+  return <BackButton onPress={handleBackButtonPress} testID={testID} />;
 };
 
-export const HeaderCloseButton: FC<HeaderButtonProps> = ({ onPress }) => {
+export const HeaderCloseButton: FC<HeaderButtonProps> = ({ onPress, testID }) => {
   const navigation = useNavigation();
   const handleCloseButtonPress = useCallback(() => {
     if (onPress) {
@@ -30,18 +31,17 @@ export const HeaderCloseButton: FC<HeaderButtonProps> = ({ onPress }) => {
     }
     navigation.goBack();
   }, [onPress, navigation]);
-  return <BackButton icon={BackButtonIcon.Close} onPress={handleCloseButtonPress} testID="Screen.closeButton" />;
+  return <BackButton icon={BackButtonIcon.Close} onPress={handleCloseButtonPress} testID={testID} />;
 };
 
 export type HeaderInfoButtonProps = {
   accessibilityLabel: string;
   onPress: () => void;
+  testID: string;
 };
 
-export const HeaderInfoButton: FC<HeaderInfoButtonProps> = ({ accessibilityLabel, onPress }) => {
-  return (
-    <GhostButton accessibilityLabel={accessibilityLabel} icon={InfoIcon} onPress={onPress} testID="Screen.infoButton" />
-  );
+export const HeaderInfoButton: FC<HeaderInfoButtonProps> = ({ accessibilityLabel, onPress, testID }) => {
+  return <GhostButton accessibilityLabel={accessibilityLabel} icon={InfoIcon} onPress={onPress} testID={testID} />;
 };
 
 export type HeaderOptionsButtonProps = {
