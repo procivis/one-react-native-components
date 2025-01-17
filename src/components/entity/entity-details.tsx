@@ -28,7 +28,7 @@ export type EntityDetailsProps = {
 
 const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style, testID, ...props }) => {
   const { data } = useTrustEntity('did' in props ? props.did?.id : undefined);
-  const trustEntity: TrustEntity | undefined = 'entity' in props ? props.entity : data;
+  const trustEntity: TrustEntity | undefined = 'entity' in props ? props.entity : data ?? undefined;
 
   const trusted =
     trustEntity &&

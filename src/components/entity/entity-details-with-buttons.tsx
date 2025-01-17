@@ -35,13 +35,15 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
   testID,
   ...props
 }) => {
-  let { data: trustEntity } = useTrustEntity(did?.id);
+  let { data } = useTrustEntity(did?.id);
+  const trustEntity = data ?? undefined;
+
   const colorScheme = useAppColorScheme();
 
   const trusted = Boolean(
     trustEntity &&
       trustEntity.state === TrustEntityStateEnum.ACTIVE &&
-      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity?.role === role),
+      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role),
   );
 
   const trustEntityName = useMemo(() => {

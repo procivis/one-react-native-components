@@ -1,6 +1,7 @@
 import {
   CreateRemoteTrustEntityRequest,
   ONECore,
+  OneError,
   TrustAnchor,
   UpdateRemoteTrustEntityRequest,
 } from '@procivis/react-native-one-core';
@@ -10,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { reportException } from '../../reporting';
 import { useHTTPClient } from '../http/client';
 import { useONECore } from './core-context';
+import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const TRUST_ENTITY_DETAIL_QUERY_KEY = 'trust-entity-detail';
@@ -53,7 +55,15 @@ export const useTrustEntity = (didId: string | undefined) => {
 
   return useQuery(
     [TRUST_ENTITY_DETAIL_QUERY_KEY, didId],
-    () => (didId ? core.getTrustEntityByDid(didId) : Promise.reject()),
+    () =>
+      didId
+        ? core.getTrustEntityByDid(didId).catch((e) => {
+            if (e instanceof OneError && e.code === OneErrorCode.NoTrustEntityFound) {
+              return null;
+            }
+            throw e;
+          })
+        : undefined,
     {
       enabled: Boolean(didId),
       keepPreviousData: true,
@@ -66,7 +76,7 @@ export const useRemoteTrustEntity = (did: string | undefined) => {
 
   return useQuery(
     [REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY, did],
-    () => (did ? core.getRemoteTrustEntity(did) : Promise.reject()),
+    () => (did ? core.getRemoteTrustEntity(did) : undefined),
     {
       enabled: Boolean(did),
       keepPreviousData: true,
