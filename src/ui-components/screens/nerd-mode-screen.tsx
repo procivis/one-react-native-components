@@ -38,6 +38,7 @@ interface SectionEntityCluster {
   subline?: string;
   entityLabels: EntityLabels;
   role: ContextRole;
+  testID?: string;
 }
 
 type SectionAttribute = Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>;
@@ -135,13 +136,13 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 },
               ]}
               onCopyToClipboard={onCopyToClipboard}
-              testID={concatTestID(testID, 'entityCluster')}
+              testID={entityCluster.testID ?? concatTestID(testID, 'entityCluster')}
               textColor={colorScheme.white}
             />
           ) : null
         }
         onScroll={onScroll}
-        renderItem={({ item, section }) => {
+        renderItem={({ item, section, index }) => {
           if (isSectionEntityCluster(item)) {
             return (
               <EntityDetailsWithButtons
@@ -156,7 +157,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                   },
                 ]}
                 onCopyToClipboard={onCopyToClipboard}
-                testID={concatTestID(testID, 'entityCluster')}
+                testID={item.testID ?? concatTestID(testID, 'sectionEntityCluster', index.toString())}
                 textColor={colorScheme.white}
               />
             );
