@@ -267,26 +267,25 @@ export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transpor
 
 export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, enabled: boolean) => {
   const { mutateAsync: shareProof } = useProofUrl();
-  const [shouldShareProof, setShouldShareProof] = useState(false);
+  const { data: proofState } = useProofState(proofUrlProps?.proofId, enabled);
 
   const [sharedProof, setSharedProof] = useState<{
     bleAdapterDisabled: boolean;
     url?: string;
   }>();
 
+  // reset when proofId changes or the proof was retracted
   useEffect(() => {
-    if (!proofUrlProps?.proofId) {
-      return;
+    if (!proofUrlProps?.proofId || proofState === ProofStateEnum.CREATED) {
+      setSharedProof(undefined);
     }
-    setShouldShareProof(true);
-    setSharedProof(undefined);
-  }, [proofUrlProps?.proofId]);
+  }, [proofUrlProps?.proofId, proofState]);
 
   useEffect(() => {
-    if (!proofUrlProps?.proofId || !shouldShareProof || sharedProof?.url || !enabled) {
+    if (!proofUrlProps || !enabled || sharedProof) {
       return;
     }
-    setShouldShareProof(false);
+
     shareProof(proofUrlProps)
       .then((url) => {
         setSharedProof({
@@ -302,7 +301,7 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
           });
         }
       });
-  }, [proofUrlProps, shareProof, sharedProof, shouldShareProof, enabled]);
+  }, [enabled, proofUrlProps, shareProof, sharedProof]);
 
   return sharedProof;
 };
