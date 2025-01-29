@@ -23,6 +23,7 @@ module.exports = {
         '@procivis/react-native-picker': 'react-native-web/src/exports/View',
         'react-native-vision-camera': '/storybook/modules/react-native-vision-camera',
         '@procivis/react-native-one-core': '/storybook/modules/react-native-one-core',
+        'lottie-react-native': 'react-native-web/src/exports/View',
       },
     },
   }),

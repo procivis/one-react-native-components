@@ -19,4 +19,10 @@ buildscript {
     }
 }
 
+allprojects {
+   repositories {
+        flatDir { dirs "$rootDir/../node_modules/@procivis/react-native-one-core/android/libs" }
+    }
+}
+
 apply plugin: "com.facebook.react.rootproject"

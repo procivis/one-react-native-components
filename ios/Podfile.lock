@@ -15,6 +15,12 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.9)
   - hermes-engine/Pre-built (0.73.9)
   - libevent (2.1.12)
+  - lottie-ios (4.5.0)
+  - lottie-react-native (7.2.2):
+    - glog
+    - lottie-ios (= 4.5.0)
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -892,7 +898,7 @@ PODS:
     - React-Core
   - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-one-core (1.26999.0):
+  - react-native-one-core (1.31795.0):
     - React-Core
   - react-native-picker (5.0.3):
     - React-Core
@@ -1110,6 +1116,8 @@ PODS:
     - Sentry/HybridSDK (= 8.37.0)
   - RNSVG (15.1.0):
     - React-Core
+  - RNSystemtime (1.0.4):
+    - React
   - Sentry/HybridSDK (8.37.0)
   - SocketRocket (0.6.1)
   - VisionCamera (4.5.1):
@@ -1128,6 +1136,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1185,6 +1194,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNSystemtime (from `../node_modules/react-native-system-time`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1192,6 +1202,7 @@ SPEC REPOS:
   trunk:
     - fmt
     - libevent
+    - lottie-ios
     - Sentry
     - SocketRocket
 
@@ -1209,6 +1220,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-04-29-RNv0.73.8-644c8be78af1eae7c138fa4093fb87f0f4f8db85
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -1319,6 +1332,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNSystemtime:
+    :path: "../node_modules/react-native-system-time"
   VisionCamera:
     :path: "../node_modules/react-native-vision-camera"
   Yoga:
@@ -1326,13 +1341,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: 98c189b92292d4bfeac13ffa8df3ce3d84e2fc5b
   FBReactNativeSpec: 4fe1d8c2fadc7949344b197d933f76b40401aac5
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: ed62e0dcd013bf4a3b487f164feec1c4e705b5b5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  lottie-ios: a881093fab623c467d3bce374367755c272bdd59
+  lottie-react-native: b4730698370eee677234dfab3236e04f35bfe230
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: d362a61864a64315aee00faea8dee6cf5b3f4aad
   RCTTypeSafety: 09baf60faeab02492dc8bf04ce5af1dda645b86d
@@ -1356,7 +1373,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 6c229dc8f1640457d1f665f0b7d79ab8f604dc8b
   react-native-blur: 799045500f56146afc46245148080e7b7623cb75
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
-  react-native-one-core: 38bc8684469ed1f01880aad89ab7b856dbc11d4d
+  react-native-one-core: 0258f0c6ec82de4e1c20ba064be16c10dcd72835
   react-native-picker: 208cd4d747bb5088aac73c7412b07f8a1fc45902
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   react-native-slider: 7a39874fc1fcdfee48e448fa72cce0a8f2c7c5d6
@@ -1388,11 +1405,12 @@ SPEC CHECKSUMS:
   RNScreens: 29418ceffb585b8f0ebd363de304288c3dce8323
   RNSentry: 27ae234282d885dead1332071a361e08e6ac676d
   RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
+  RNSystemtime: 00c2bd6b2c1e380d76ecff01e57c89dfd1a558cd
   Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: 104de00dce2e04dec51bfb6027eff0312fa3174e
-  Yoga: 6aaa3c45f0fda0c6929f855121622669dabe1aaf
+  Yoga: 57d2ffe418d024d56f8b0047f335c677e4c4d9ac
 
 PODFILE CHECKSUM: 80d3902f676a9314556c3e8c680a68b4d1b6a0c8
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
