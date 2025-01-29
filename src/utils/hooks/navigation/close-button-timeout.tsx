@@ -7,16 +7,22 @@ export const useCloseButtonTimeout = (active: boolean, closeButtonHandler: () =>
     if (!active) {
       return;
     }
-    if (closeTimeout === 0) {
-      closeButtonHandler();
-      return;
-    }
-    const timeout = setTimeout(() => {
-      setCloseTimeout(closeTimeout - 1);
+
+    const interval = setInterval(() => {
+      setCloseTimeout((prev) => {
+        const next = prev - 1;
+        return next > 0 ? next : 0;
+      });
     }, 1000);
     return () => {
-      clearTimeout(timeout);
+      clearInterval(interval);
     };
+  }, [active]);
+
+  useEffect(() => {
+    if (active && closeTimeout === 0) {
+      closeButtonHandler();
+    }
   }, [closeTimeout, active, closeButtonHandler]);
 
   return { closeTimeout };
