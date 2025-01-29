@@ -3202,10 +3202,10 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@procivis/react-native-one-core@1.31795.0":
-  version "1.31795.0"
-  resolved "https://gitlab.procivis.ch/api/v4/projects/88/packages/npm/@procivis/react-native-one-core/-/@procivis/react-native-one-core-1.31795.0.tgz#be1c5a6d641e3701c4e088626c8513d36ac33229"
-  integrity sha1-vhxabWQeNwHE4IhibIUT02rDMik=
+"@procivis/react-native-one-core@1.33398.0":
+  version "1.33398.0"
+  resolved "https://gitlab.procivis.ch/api/v4/projects/88/packages/npm/@procivis/react-native-one-core/-/@procivis/react-native-one-core-1.33398.0.tgz#ec778f26cba91afe5b1b48fde420d44194952c2d"
+  integrity sha1-7HePJsupGv5bG0j95CDUQZSVLC0=
 
 "@procivis/react-native-picker@5.0.3":
   version "5.0.3"

@@ -1,4 +1,4 @@
-import { initializeHolderCore, initializeVerifierCore, ONECore } from '@procivis/react-native-one-core';
+import { initializeCore, ONECore } from '@procivis/react-native-one-core';
 import React, {
   createContext,
   FC,
@@ -25,13 +25,8 @@ const defaultContextValue: ContextValue = {
   initialize: () => Promise.reject(),
 };
 
-export enum ONECoreUseType {
-  holder = 'holder',
-  verifier = 'verifier',
-}
-
 export type ONECoreContextProviderProps = {
-  type: ONECoreUseType;
+  config?: Record<string, unknown>;
   organisationId?: string;
   publisherReference: string;
 };
@@ -42,7 +37,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
   children,
   organisationId = '11111111-2222-3333-a444-ffffffffffff',
   publisherReference,
-  type,
+  config,
 }) => {
   const [core, setCore] = useState<ONECore>();
   const createTrustAnchor = useCreateTrustAnchor(publisherReference);
@@ -54,8 +49,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
       }
 
       try {
-        const coreInstance =
-          type === ONECoreUseType.holder ? await initializeHolderCore() : await initializeVerifierCore();
+        const coreInstance = await initializeCore(config);
         setCore(coreInstance);
         return coreInstance;
       } catch (e) {
@@ -63,7 +57,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
         throw e;
       }
     },
-    [core, type],
+    [core, config],
   );
 
   useEffect(
