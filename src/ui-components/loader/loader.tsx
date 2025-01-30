@@ -62,7 +62,7 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
       }),
       -1,
     );
-  }, [rotationIsAnimating, rotation]);
+  }, [rotation]);
 
   const stopRotationAnimation = useCallback(() => {
     Promise.resolve(
@@ -72,14 +72,17 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
         rotation.value = 0;
       }),
     ).catch(() => {});
-  }, [rotationIsAnimating, rotation]);
+  }, [rotation]);
 
   useEffect(() => {
     if (animate) {
-      startRotationAnimation();
+      if (!finished) {
+        startRotationAnimation();
+      }
     } else {
       stopRotationAnimation();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animate, startRotationAnimation, stopRotationAnimation]);
 
   useEffect(() => {

@@ -1,13 +1,13 @@
 import { DidListItem } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import EntityDetailsWithButtons, { ContextRole } from '../../components/entity/entity-details-with-buttons';
 import ContrastingStatusBar from '../../utils/contrasting-status-bar';
 import { concatTestID } from '../../utils/testID';
+import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import SectionEntityCluster from '../entity/entity-cluster';
 import NavigationHeader from '../header/navigation-header';
 import { CloseIcon } from '../icons/icons';

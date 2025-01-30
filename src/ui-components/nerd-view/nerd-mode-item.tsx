@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import { Dimensions, LayoutChangeEvent, Linking, StyleSheet, View, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, {
   clamp,
   SharedValue,
@@ -11,6 +10,7 @@ import Animated, {
 
 import { reportException } from '../../utils';
 import { concatTestID } from '../../utils/testID';
+import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import { Button, ButtonType } from '../buttons/button';
 import { CopyContentIcon, OpenLinkIcon } from '../icons/nerd-view';
 import Typography from '../text/typography';
