@@ -70,8 +70,17 @@ const generateSwDid = async (core: ONECore, organisationId: string) => {
   });
 };
 
-// create base local identifiers in the wallet
-export const useInitializeONECoreIdentifiers = () => {
+export interface IdentifiersInitializationConfig {
+  generateHwKey: boolean;
+  generateSwKey: boolean;
+}
+
+/**
+ * Create base local identifiers
+ * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be created
+ * @returns [hwDidId, swDidId]
+ */
+export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
   const { core, organisationId } = useONECore();
 
   return useCallback(async () => {
@@ -83,10 +92,15 @@ export const useInitializeONECoreIdentifiers = () => {
         }
         throw e;
       })
-      .then(() => Promise.all([generateHwDid(core, organisationId), generateSwDid(core, organisationId)]))
+      .then(() =>
+        Promise.all([
+          generateHwKey ? generateHwDid(core, organisationId) : null,
+          generateSwKey ? generateSwDid(core, organisationId) : null,
+        ]),
+      )
       .catch((err) => {
         reportException(err, 'Failed to create base identifiers');
         throw err;
       });
-  }, [core, organisationId]);
+  }, [core, organisationId, generateHwKey, generateSwKey]);
 };

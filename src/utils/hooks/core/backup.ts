@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { generateUUID } from '../../uuid';
 import { useONECore } from './core-context';
-import { HW_DID_NAME_PREFIX, SW_DID_NAME_PREFIX } from './core-init';
+import { HW_DID_NAME_PREFIX, IdentifiersInitializationConfig, SW_DID_NAME_PREFIX } from './core-init';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
@@ -61,7 +61,7 @@ export const useRollbackImport = () => {
   });
 };
 
-export const useBackupFinalizeImportProcedure = () => {
+export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
   const { mutateAsync: finalizeImport } = useFinalizeImport();
   const { core, organisationId } = useONECore();
 
@@ -78,7 +78,7 @@ export const useBackupFinalizeImportProcedure = () => {
     });
     let swDidId = dids.values.find((did) => did.name.startsWith(SW_DID_NAME_PREFIX))?.id;
 
-    if (!swDidId) {
+    if (!swDidId && generateSwKey) {
       const swKeyId = await core.generateKey({
         keyParams: {},
         keyType: 'EDDSA',
@@ -102,23 +102,27 @@ export const useBackupFinalizeImportProcedure = () => {
       });
     }
 
+    let hwKeyId: string | null = null;
+    if (generateHwKey) {
+      hwKeyId = await core
+        .generateKey({
+          keyParams: {},
+          keyType: 'ES256',
+          name: `holder-key-hw-${generateUUID()}`,
+          organisationId,
+          storageParams: {},
+          storageType: 'SECURE_ELEMENT',
+        })
+        .catch((e) => {
+          // ignore if HW keys not supported by device
+          if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
+            return null;
+          }
+          throw e;
+        });
+    }
+
     let hwDidId: string | null = null;
-    const hwKeyId = await core
-      .generateKey({
-        keyParams: {},
-        keyType: 'ES256',
-        name: `holder-key-hw-${generateUUID()}`,
-        organisationId,
-        storageParams: {},
-        storageType: 'SECURE_ELEMENT',
-      })
-      .catch((e) => {
-        // ignore if HW keys not supported by device
-        if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
-          return null;
-        }
-        throw e;
-      });
     if (hwKeyId) {
       hwDidId = await core.createDid({
         didMethod: 'KEY',
@@ -135,6 +139,6 @@ export const useBackupFinalizeImportProcedure = () => {
       });
     }
 
-    return [hwDidId, swDidId] as [string | null, string];
-  }, [core, organisationId, finalizeImport]);
+    return [hwDidId, swDidId] as [string | null, string | undefined];
+  }, [core, organisationId, finalizeImport, generateHwKey, generateSwKey]);
 };
