@@ -14,9 +14,9 @@ import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
 const PAGE_SIZE = 20;
-const CREDENTIAL_LIST_QUERY_KEY = 'credential-list';
-const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
-const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
+export const CREDENTIAL_LIST_QUERY_KEY = 'credential-list';
+export const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
+export const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
 
 export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
   const { core, organisationId } = useONECore();

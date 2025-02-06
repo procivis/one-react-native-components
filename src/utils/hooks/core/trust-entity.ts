@@ -14,8 +14,8 @@ import { useONECore } from './core-context';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 
-const TRUST_ENTITY_DETAIL_QUERY_KEY = 'trust-entity-detail';
-const REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY = 'remote-trust-entity-detail';
+export const TRUST_ENTITY_DETAIL_QUERY_KEY = 'trust-entity-detail';
+export const REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY = 'remote-trust-entity-detail';
 
 export const useCreateTrustAnchor = (publisherReference: string) => {
   const httpClient = useHTTPClient();
