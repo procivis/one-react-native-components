@@ -31,6 +31,7 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams?: Partial<Hist
     credentialSchemaId,
     searchText,
     searchType,
+    proofSchemaId,
   } = queryParams;
   return [
     entityId,
@@ -43,6 +44,7 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams?: Partial<Hist
     credentialSchemaId,
     searchText,
     searchType,
+    proofSchemaId,
   ];
 };
 
