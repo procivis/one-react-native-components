@@ -10,11 +10,12 @@ import { useCredentialRevocationCheck, useCredentials } from '../core/credential
  *
  * Navigates to the result page if some credential states were updated
  * @param {string[]} credentialIds if specified only those credentials get checked, otherwise all potentially eligible credentials
+ * @param {boolean} forceRefresh revocation check forces cache refresh
  */
-export const useCredentialStatusCheck = (credentialIds?: string[]) => {
+export const useCredentialStatusCheck = (credentialIds?: string[], forceRefresh = false) => {
   const isFocused = useIsFocused();
   const checkDone = useRef(false);
-  const { mutateAsync: check } = useCredentialRevocationCheck();
+  const { mutateAsync: check } = useCredentialRevocationCheck(forceRefresh);
   const { data: credentials } = useCredentials({
     ids: credentialIds,
     status: [CredentialStateEnum.ACCEPTED, CredentialStateEnum.SUSPENDED],
