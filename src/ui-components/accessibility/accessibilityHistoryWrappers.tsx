@@ -52,7 +52,6 @@ const WithAccessibilityFocusHistory = <ComponentProps extends OnPressProps, RefT
 /**
  * Wrappers of RN touchable components with accessibilty focus history support
  */
-
 export const TouchableOpacity = WithAccessibilityFocusHistory<TouchableOpacityProps, RNTouchableOpacity>(
   RNTouchableOpacity,
   'TouchableOpacity',
@@ -73,7 +72,6 @@ type WrapperRefType<C extends React.ForwardRefExoticComponent<React.RefAttribute
 /**
  * Ref types to be used in forwardRef for the wrappers
  */
-
 export type TouchableOpacityRef = WrapperRefType<typeof TouchableOpacity>;
 export type TouchableWithoutFeedbackRef = WrapperRefType<typeof TouchableWithoutFeedback>;
 export type TouchableHighlightRef = WrapperRefType<typeof TouchableHighlight>;

@@ -36,6 +36,7 @@ const getStories = () => {
     require("../src/ui-components/buttons/button.stories.tsx"),
     require("../src/ui-components/buttons/connectivity-button.stories.tsx"),
     require("../src/ui-components/buttons/ghost-button.stories.tsx"),
+    require("../src/ui-components/buttons/hold-button.stories.tsx"),
     require("../src/ui-components/buttons/scan-button.stories.tsx"),
     require("../src/ui-components/control/checkbox.stories.tsx"),
     require("../src/ui-components/control/switch.stories.tsx"),

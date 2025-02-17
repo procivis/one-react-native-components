@@ -3,6 +3,7 @@ import { Button, ButtonProps, ButtonType } from './button';
 import ConnectivityButton, { ConnectivityButtonProps, ConnectivityTransport } from './connectivity-button';
 import FilterButton, { FilterButtonProps } from './filter-button';
 import GhostButton, { GhostButtonProps } from './ghost-button';
+import HoldButton, { HoldButtonProps } from './hold-button';
 import ScanButton, { ScanButtonProps } from './scan-button';
 
 export {
@@ -19,6 +20,8 @@ export {
   FilterButtonProps,
   GhostButton,
   GhostButtonProps,
+  HoldButton,
+  HoldButtonProps,
   ScanButton,
   ScanButtonProps,
 };
