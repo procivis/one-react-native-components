@@ -164,6 +164,8 @@ deploy:storybook:
     HELM_APP_NAME: react-native
     HELM_PATH: charts/one-rn-components-chart
     DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    PROJECT_TITLE: $CI_PROJECT_TITLE
+    DEPLOY_ENVIRONMENT: Dev
   trigger:
     project: procivis/one/one-operations
     branch: main
