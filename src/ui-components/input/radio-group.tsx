@@ -77,7 +77,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
               <Selector
                 status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty}
                 style={styles.selector}
-                testID={concatTestID(testID, 'selector')}
+                testID={concatTestID(item.testID, 'selector')}
               />
             </TouchableOpacity>
             <View style={[styles.divider, { backgroundColor: colorScheme.background }]} />
