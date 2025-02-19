@@ -6,6 +6,7 @@ import Selector from '../credential/selector';
 import { SelectorStatus } from '../credential/selector-status';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
+import { concatTestID } from '../../utils';
 
 export type RadioGroupItem = {
   key: React.Key;
@@ -76,6 +77,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
               <Selector
                 status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty}
                 style={styles.selector}
+                testID={concatTestID(testID, 'selector')}
               />
             </TouchableOpacity>
             <View style={[styles.divider, { backgroundColor: colorScheme.background }]} />
