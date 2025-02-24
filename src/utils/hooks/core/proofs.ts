@@ -128,13 +128,13 @@ export const useProposeProof = () => {
   });
 };
 
-export const useProofRetract = () => {
+export const useProofDelete = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
   return useMutation(
     async (proofId: string) => {
-      return core.retractProof(proofId).catch((e) => {
+      return core.deleteProof(proofId).catch((e) => {
         if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
           return;
         }
