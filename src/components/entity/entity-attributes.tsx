@@ -7,6 +7,7 @@ import { AttributesLabels, EntityType } from '../../ui-components/screens/nerd-m
 import { addElementIf } from '../../utils/array';
 
 interface EntityAttributesProps {
+  did?: string;
   trustEntity?: TrustEntity;
   trusted: boolean;
   labels: AttributesLabels;
@@ -15,14 +16,14 @@ interface EntityAttributesProps {
 }
 
 const EntityAttributes: FC<EntityAttributesProps> = ({
+  did,
   trustEntity,
   trusted,
   labels,
   entityType,
   onCopyToClipboard,
 }) => {
-  const didId = trustEntity?.did?.did || '';
-  const didSections = didId.split(':') ?? [];
+  const didSections = did?.split(':') ?? [];
   const identifier = didSections.pop();
   const didMethod = didSections.length ? didSections.join(':') + ':' : '';
 
@@ -32,7 +33,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
       highlightedText: trustEntity?.trustAnchor.name,
       testID: 'trustRegistry',
     }),
-    ...addElementIf(Boolean(didId), {
+    ...addElementIf(Boolean(did), {
       attributeKey: entityType === EntityType.CredentialEntity ? labels.issuerDid : labels.entityDid,
       attributeText: identifier,
       canBeCopied: true,

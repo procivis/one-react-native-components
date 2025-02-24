@@ -6,7 +6,7 @@ import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityTrustedIcon } from '../../ui-components/icons';
 import { AttributesLabels, EntityLabels, EntityType } from '../../ui-components/screens/nerd-mode-screen';
 import { useAppColorScheme } from '../../ui-components/theme/color-scheme-context';
-import { concatTestID, replaceBreakingHyphens } from '../../utils';
+import { concatTestID } from '../../utils';
 import { useTrustEntity } from '../../utils/hooks/core/trust-entity';
 import EntityAttributes from './entity-attributes';
 import EntityButtons from './EntityButtons';
@@ -55,11 +55,11 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
 
   const trustEntitySubline = useMemo(() => {
     if (!trusted) {
-      return did?.did ? replaceBreakingHyphens(did.did) : undefined;
+      return undefined;
     }
 
     return `${entityLabels.trusted} • ${trustEntity?.trustAnchor.name}`;
-  }, [trustEntity, trusted, entityLabels.trusted, did]);
+  }, [trustEntity, trusted, entityLabels.trusted]);
 
   const trustEntityStatusIcon = useMemo(() => {
     if (!trusted) {
@@ -85,6 +85,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
       />
       {trusted && <EntityButtons entity={trustEntity} labels={entityLabels} testID={concatTestID(testID, 'links')} />}
       <EntityAttributes
+        did={did?.did}
         trustEntity={trustEntity}
         trusted={trusted}
         labels={attributesLabels}
