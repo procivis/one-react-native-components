@@ -9,7 +9,7 @@ import {
   ProofStateEnum,
   ShareProofRequest,
 } from '@procivis/react-native-one-core';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromProofListQueryParams } from '../../parsers/query';
@@ -207,7 +207,11 @@ const getDidFilterForProofSchema = (proofSchema: ProofSchema, config: Config): P
   return { keyAlgorithms, keyStorages };
 };
 
-export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transport[] | undefined, enabled: boolean) => {
+export const useProofForSchemaIdWithTransport = (
+  proofSchemaId: string,
+  transport: Transport[] | undefined,
+  enabled: boolean,
+) => {
   const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
   const { data: config } = useCoreConfig();
 
@@ -218,51 +222,86 @@ export const useProofCreateOrReuse = (proofSchemaId: string, transport: Transpor
 
   const { data: dids } = useDids(didFilter);
   const { mutateAsync: createProof } = useProofCreate();
+  const { mutateAsync: deleteProof } = useProofDelete();
+
+  const [deleting, setDeleting] = useState(false);
+  const [proofId, setProofIdState] = useState<string | undefined>(undefined);
+  const proofIdRef = useRef<string>();
+
+  const { data: proofState } = useProofState(proofId, enabled);
+
+  const setProofId = useCallback((id: string | undefined) => {
+    proofIdRef.current = id;
+    setProofIdState(id);
+  }, []);
+
+  useEffect(() => {
+    if (!proofIdRef.current) {
+      return;
+    }
+    setDeleting(true);
+    deleteProof(proofIdRef.current)
+      .then(() => {
+        setProofId(undefined);
+        setDeleting(false);
+      })
+      .catch(() => {});
+  }, [proofIdRef, deleteProof, proofSchemaId, transport, setProofId]);
+
+  useEffect(() => {
+    if (enabled) {
+      return;
+    }
+    if (proofState !== ProofStateEnum.CREATED && proofState !== ProofStateEnum.PENDING) {
+      setProofId(undefined);
+    }
+  }, [enabled, proofState, setProofId]);
+
+  useEffect(() => {
+    if (
+      deleting ||
+      !enabled ||
+      proofId ||
+      !dids ||
+      !didFilter ||
+      !dids.values.length ||
+      !transport ||
+      transport.length === 0
+    ) {
+      return;
+    }
+
+    createProof({
+      exchange: ExchangeProtocol.OPENID4VC,
+      proofSchemaId,
+      transport,
+      verifierDidId: dids.values[0].id,
+    })
+      .then((id) => {
+        setProofId(id);
+      })
+      .catch(() => {});
+  }, [proofSchemaId, dids, didFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
+
+  return proofId;
+};
+
+export const useCleanupUnusedProofs = () => {
+  const { mutateAsync: deleteProof } = useProofDelete();
   const { data: proofs } = useProofs({
     page: 0,
     pageSize: 100,
-    proofSchemaIds: [proofSchemaId],
     proofStates: [ProofStateEnum.CREATED, ProofStateEnum.PENDING],
   });
-
-  const [proofId, setProofId] = useState<string | undefined>(undefined);
+  const [cleaned, setCleaned] = useState(false);
 
   useEffect(() => {
-    if (!dids || !didFilter || !dids.values.length || !proofs || !transport || transport.length === 0) {
+    if (cleaned || !proofs) {
       return;
     }
-
-    const transportFilter = transport.length === 2 ? '' : transport[0];
-    const filteredProofs = proofs.values.filter(
-      (p) => p.exchange === ExchangeProtocol.OPENID4VC && p.transport === transportFilter,
-    );
-    const proof =
-      filteredProofs.length > 0
-        ? filteredProofs.find((p) => p.state === ProofStateEnum.PENDING) ?? filteredProofs[0]
-        : undefined;
-
-    const reusableProof = proof?.id;
-
-    if (!enabled) {
-      if (!reusableProof) {
-        setProofId(undefined);
-      }
-      return;
-    }
-
-    if (reusableProof) {
-      setProofId(reusableProof);
-    } else {
-      createProof({
-        exchange: ExchangeProtocol.OPENID4VC,
-        proofSchemaId,
-        transport,
-        verifierDidId: dids.values[0].id,
-      }).catch(() => {});
-    }
-  }, [proofSchemaId, proofs, dids, didFilter, createProof, enabled, transport]);
-
-  return proofId;
+    setCleaned(true);
+    proofs.values.forEach((proof) => deleteProof(proof.id));
+  }, [cleaned, deleteProof, proofs]);
 };
 
 export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, enabled: boolean) => {
