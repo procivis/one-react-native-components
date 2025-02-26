@@ -283,7 +283,7 @@ export const useProofForSchemaIdWithTransport = (
       .catch(() => {});
   }, [proofSchemaId, dids, didFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
 
-  return proofId;
+  return deleting ? undefined : proofId;
 };
 
 export const useCleanupUnusedProofs = () => {
