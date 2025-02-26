@@ -47,7 +47,7 @@ const SearchBar = forwardRef<TextInput, SearchBarProps>(
           testID={testID}
           {...textInputProps}
         />
-        {searchPhrase && (
+        {searchPhrase ? (
           <TouchableOpacity
             testID={concatTestID(testID, 'clear')}
             accessibilityRole="button"
@@ -56,7 +56,7 @@ const SearchBar = forwardRef<TextInput, SearchBarProps>(
             style={styles.clearButton}>
             <CloseIcon color={colorScheme.text} height={12} width={12} />
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
     );
   },

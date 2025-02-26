@@ -84,6 +84,8 @@ before_script:
 
 build_deps:
   stage: prepare
+  tags:
+    - azure
   extends: .modules_setup
   script:
     - yarn prepare
@@ -113,6 +115,8 @@ test:
 
 build:storybook:
   stage: build
+  tags:
+    - azure
   image: node:16-alpine
   needs: [build_deps]
   extends:

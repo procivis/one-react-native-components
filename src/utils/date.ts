@@ -139,9 +139,9 @@ export const formatDateOnlyFromUTCTimestamp = (utcTimestamp: number): string => 
 const locale = (
   Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLocale
-    : NativeModules.I18nManager.localeIdentifier
+    : NativeModules.I18nManager?.localeIdentifier
 )
-  .split('@')[0]
+  ?.split('@')[0]
   .replace('_', '-');
 
 export const formatDateTimeLocalized = (date: Date) => {

@@ -22,6 +22,10 @@ const style = StyleSheet.create({
   carouselItem: {
     flex: 1,
   },
+  footer: {
+    backgroundColor: 'lightgray',
+    padding: 12,
+  },
 });
 
 Basic.args = {
@@ -270,16 +274,10 @@ Basic.args = {
   showAllButtonLabel: 'See all',
   expanded: true,
   footer: (
-    <View
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        backgroundColor: 'lightgray',
-        padding: 12,
-      }}>
+    <View style={style.footer}>
       <Text>Footer view</Text>
     </View>
   ),
-  onAttributeSelected: console.log,
 };
 
 export { Basic as CredentialDetailsCard };
@@ -287,6 +285,10 @@ export { Basic as CredentialDetailsCard };
 export default {
   title: 'credential/card/CredentialDetailsCard',
   component: CredentialDetailsCard,
+  argTypes: {
+    onImagePreview: { action: 'onImagePreview' },
+    onAttributeSelected: { action: 'onAttributeSelected' },
+  },
   parameters: {
     backgrounds: {
       default: 'background',

@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ScrollViewScreen } from '..';
 import { Button } from '../buttons';
 import { CredentialWarningIcon } from '../icons';
+import { ScrollViewScreen } from '../screens';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
