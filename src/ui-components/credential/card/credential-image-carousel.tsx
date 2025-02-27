@@ -46,6 +46,9 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
         enabled={numberOfSlides >= 2}
         data={imagesToRender}
         testID={testID}
+        panGestureHandlerProps={{
+          activeOffsetX: [-10, 10],
+        }}
         renderItem={({ item: { type, element } }) => (
           <View style={styles.carouselItem}>
             <View style={[styles[type]]}>{element}</View>
