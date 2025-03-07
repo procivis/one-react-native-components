@@ -95,6 +95,10 @@ android {
             exclude 'lib/x86_64/**'
         }
     }
+    
+    buildFeatures {
+        dataBinding true
+    }
 
     signingConfigs {
         debug {
