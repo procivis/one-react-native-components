@@ -8,6 +8,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { EventSubscription } from 'react-native';
 import BTStateManager from 'react-native-bluetooth-state-manager';
 
+import { getEnabledTransports, useCoreConfig } from '../core/core-config';
+
 export enum InternetState {
   Available,
   Unreachable,
@@ -37,7 +39,7 @@ export type TransportError = {
 };
 
 export const useAvailableTransports = (
-  supportedTransports: Transport[],
+  possibleTransports: Transport[],
 ): {
   availableTransport: Transport[] | undefined;
   transportError: TransportError;
@@ -45,7 +47,22 @@ export const useAvailableTransports = (
   const [internetState, setInternetState] = useState<InternetState>();
   const [bluetoothState, setBluetoothState] = useState<BluetoothState>();
 
+  const { data: coreConfig } = useCoreConfig();
+
+  const supportedTransports = useMemo(() => {
+    if (!coreConfig) {
+      return;
+    }
+    const enabledTransports = getEnabledTransports(coreConfig);
+
+    return possibleTransports.filter((t) => enabledTransports.includes(t));
+  }, [possibleTransports, coreConfig]);
+
   useEffect(() => {
+    if (!supportedTransports) {
+      return;
+    }
+
     let btSubscription: EventSubscription | undefined;
     if (supportedTransports.includes(Transport.Bluetooth)) {
       btSubscription = BTStateManager.onStateChange((state) => {
@@ -88,6 +105,13 @@ export const useAvailableTransports = (
   }, [supportedTransports]);
 
   const transportStatus = useMemo(() => {
+    if (!supportedTransports) {
+      return {
+        availableTransport: undefined,
+        transportError: {},
+      };
+    }
+
     const waitingForInternetState =
       (supportedTransports.includes(Transport.HTTP) || supportedTransports.includes(Transport.MQTT)) &&
       internetState === undefined;
@@ -101,8 +125,8 @@ export const useAvailableTransports = (
     const availableTransport: Transport[] = [];
     const transportError: TransportError = {};
     if (internetState === InternetState.Available) {
-      availableTransport.push(Transport.MQTT);
-      availableTransport.push(Transport.HTTP);
+      supportedTransports.includes(Transport.MQTT) && availableTransport.push(Transport.MQTT);
+      supportedTransports.includes(Transport.HTTP) && availableTransport.push(Transport.HTTP);
     } else {
       transportError.internet = internetState;
     }
@@ -144,7 +168,7 @@ export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: 
     if (hasAllParameters('name', 'key')) {
       transports.push(Transport.Bluetooth);
     }
-    if (hasAllParameters('key', 'brokerUrl', 'topicId')) {
+    if (hasAllParameters('brokerUrl', 'topicId')) {
       transports.push(Transport.MQTT);
     }
 

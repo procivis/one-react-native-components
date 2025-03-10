@@ -115,6 +115,7 @@ export enum ExchangeProtocol {
   ISO_MDL = 'ISO_MDL',
   OPENID4VC = 'OPENID4VC',
   PROCIVIS = 'PROCIVIS_TEMPORARY',
+  SCAN_TO_VERIFY = 'SCAN_TO_VERIFY',
 }
 
 export const useProposeProof = () => {

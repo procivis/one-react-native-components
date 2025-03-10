@@ -1,5 +1,13 @@
 import { getInvitationUrlTransports, Transport } from './connectivity';
 
+jest.mock('@procivis/react-native-one-core', () => ({
+  initializeCore: () => Promise.resolve({} as any),
+}));
+
+jest.mock('@sentry/react-native', () => ({
+  captureException: () => {},
+}));
+
 jest.mock('@react-native-community/netinfo', () => ({
   addEventListener: () => {},
 }));

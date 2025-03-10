@@ -39,7 +39,7 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
           isPublisher: false,
           name: trustAnchor.name,
           publisherReference,
-          type: 'SIMPLE_TRUST_LIST',
+          type: TrustManagementEnum.SimpleTrustList,
         })
         .catch((err) => {
           reportException(err, 'Failed to create trust anchor');
@@ -107,3 +107,7 @@ export const useUpdateRemoteTrustEntity = () => {
     },
   });
 };
+
+export enum TrustManagementEnum {
+  SimpleTrustList = 'SIMPLE_TRUST_LIST',
+}

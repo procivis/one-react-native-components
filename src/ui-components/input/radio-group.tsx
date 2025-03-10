@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { FlatList, FlatListProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
+import { concatTestID } from '../../utils';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import Selector from '../credential/selector';
 import { SelectorStatus } from '../credential/selector-status';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
-import { concatTestID } from '../../utils';
 
 export type RadioGroupItem = {
   key: React.Key;

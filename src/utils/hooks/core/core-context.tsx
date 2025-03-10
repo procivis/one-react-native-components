@@ -11,7 +11,8 @@ import React, {
 } from 'react';
 
 import { reportException } from '../../reporting';
-import { useCreateTrustAnchor } from './trust-entity';
+import { getEnabledTrustManagement } from './core-config';
+import { TrustManagementEnum, useCreateTrustAnchor } from './trust-entity';
 
 interface ContextValue {
   core: ONECore;
@@ -79,7 +80,19 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
     if (!core) {
       return;
     }
-    createTrustAnchor(core).catch(() => {});
+
+    core
+      .getConfig()
+      .then((coreConfig) => {
+        const trustManagementEnabled = getEnabledTrustManagement(coreConfig).includes(
+          TrustManagementEnum.SimpleTrustList,
+        );
+
+        if (trustManagementEnabled) {
+          createTrustAnchor(core).catch(() => {});
+        }
+      })
+      .catch(() => {});
   }, [core, createTrustAnchor]);
 
   const contextValue = useMemo(
