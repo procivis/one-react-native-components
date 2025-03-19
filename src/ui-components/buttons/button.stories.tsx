@@ -1,15 +1,14 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from './button';
 
-const Basic: ComponentStory<typeof Button> = (args) => <Button {...args} />;
-
-Basic.args = {
-  title: 'Title',
-  subtitle: '',
-  disabled: false,
-  style: { margin: 24 },
+const Basic: StoryObj<typeof Button> = {
+  args: {
+    title: 'Title',
+    subtitle: '',
+    disabled: false,
+    style: { margin: 24 },
+  },
 };
 
 export { Basic as Button };
@@ -26,4 +25,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=419-18389',
     },
   },
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;

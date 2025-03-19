@@ -1,4 +1,4 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { EntityTrustedIcon } from '../icons/entity';
@@ -9,7 +9,7 @@ type Args = AvatarProps & {
   withImage: boolean;
 };
 
-const Basic: Story<Args> = ({ withStatusIcon, withImage, ...args }) => {
+const Render = ({ withStatusIcon, withImage, ...args }: Args) => {
   return (
     <Avatar
       {...args}
@@ -19,10 +19,13 @@ const Basic: Story<Args> = ({ withStatusIcon, withImage, ...args }) => {
   );
 };
 
-Basic.args = {
-  placeholderText: 'A',
-  withStatusIcon: true,
-  withImage: true,
+const Basic: StoryObj<Args> = {
+  args: {
+    placeholderText: 'A',
+    withStatusIcon: true,
+    withImage: true,
+  },
+  render: Render,
 };
 
 export { Basic as Avatar };
@@ -36,4 +39,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25581&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
-} as ComponentMeta<typeof Avatar>;
+} as Meta<typeof Avatar>;

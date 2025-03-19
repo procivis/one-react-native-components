@@ -15,7 +15,7 @@ const isWritable = <T extends Object>(obj: T, key: keyof T) => {
  *    return <RefComponent ref={forwardedRef} {...props} />;
  * }
  */
-export const useForwardedRef = <Component extends React.Component<any> | React.ComponentClass<any>>(
+export const useForwardedRef = <Component extends React.ElementType<any, any>>(
   passedRef?: React.Ref<Component>,
 ) => {
   const localRef = useRef<Component>(null);

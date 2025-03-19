@@ -1,5 +1,5 @@
+import type { AccessibilityTextTransformer } from './accessibility';
 import {
-  AccessibilityTextTransformer,
   focusAccessibility,
   setAccessibilityTextTransformer,
   transformAccessibilityText,
@@ -10,9 +10,10 @@ import {
   useIsOutsideTransition,
 } from './accessibility';
 import { AccessibilityFocusHistoryProvider, useAccessibilityFocusHistory } from './accessibilityHistory';
-import { AccessibilityLanguageProvider, AccessibilityLanguageProviderProps } from './accessibilityLanguage';
+import type { AccessibilityLanguageProviderProps } from './accessibilityLanguage';
+import { AccessibilityLanguageProvider } from './accessibilityLanguage';
 // @ts-ignore
-import { AccessibilityLanguageFile, SupportedAccessibilityLanguage } from './locale';
+import type { AccessibilityLanguageFile, SupportedAccessibilityLanguage } from './locale';
 
 export * from './accessibilityHistoryWrappers';
 

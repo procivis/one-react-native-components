@@ -1,10 +1,17 @@
-import BackButton, { BackButtonIcon, BackButtonProps } from './back-button';
-import { Button, ButtonProps, ButtonType } from './button';
-import ConnectivityButton, { ConnectivityButtonProps, ConnectivityTransport } from './connectivity-button';
-import FilterButton, { FilterButtonProps } from './filter-button';
-import GhostButton, { GhostButtonProps } from './ghost-button';
-import HoldButton, { HoldButtonProps } from './hold-button';
-import ScanButton, { ScanButtonProps } from './scan-button';
+import type { BackButtonProps } from './back-button';
+import BackButton, { BackButtonIcon } from './back-button';
+import type { ButtonProps } from './button';
+import { Button, ButtonType } from './button';
+import type { ConnectivityButtonProps } from './connectivity-button';
+import ConnectivityButton, { ConnectivityTransport } from './connectivity-button';
+import type { FilterButtonProps } from './filter-button';
+import FilterButton from './filter-button';
+import type { GhostButtonProps } from './ghost-button';
+import GhostButton from './ghost-button';
+import type { HoldButtonProps } from './hold-button';
+import HoldButton from './hold-button';
+import type { ScanButtonProps } from './scan-button';
+import ScanButton from './scan-button';
 
 export {
   BackButton,

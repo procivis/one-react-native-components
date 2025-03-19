@@ -1,13 +1,13 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import CredentialAttributeSelector from './selector';
 import { SelectorStatus } from './selector-status';
 
-const Basic: ComponentStory<typeof CredentialAttributeSelector> = (args) => <CredentialAttributeSelector {...args} />;
-Basic.args = {
-  status: SelectorStatus.SelectedCheckmark,
-  style: { margin: 12 },
+const Basic: StoryObj<typeof CredentialAttributeSelector> = {
+  args: {
+    status: SelectorStatus.SelectedCheckmark,
+    style: { margin: 12 },
+  },
 };
 
 export { Basic as Selector };
@@ -34,4 +34,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=433-28352&mode=design&t=91K8am4RSNRB8qgZ-0',
     },
   },
-} as ComponentMeta<typeof CredentialAttributeSelector>;
+} as Meta<typeof CredentialAttributeSelector>;

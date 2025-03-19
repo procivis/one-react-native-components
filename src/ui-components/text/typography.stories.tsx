@@ -1,26 +1,30 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta,StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React from 'react';
 import type { ColorValue } from 'react-native';
 
 import ColorSchemes from '../../../storybook/colorScheme';
 import { ColorScheme, useAppColorScheme } from '../theme';
-import Typography from './typography';
+import Typography, { TypographyProps } from './typography';
 
 type ColorSchemeKey = keyof Omit<ColorScheme, 'darkMode'>;
 
-const Basic: ComponentStory<typeof Typography> = ({ color, ...args }) => {
+const Render = ({ color, ...args }: TypographyProps) => {
   const colorScheme = useAppColorScheme();
   return <Typography {...args} color={colorScheme[color as ColorSchemeKey] as ColorValue} />;
 };
 
-Basic.args = {
-  children: 'Text',
-  preset: 'regular',
-  caps: false,
-  color: 'text',
-  align: 'left',
-  numberOfLines: 1,
-  ellipsizeMode: 'tail',
+const Basic: StoryObj<typeof Typography> = {
+  args: {
+    children: 'Text',
+    preset: 'regular',
+    caps: false,
+    color: 'text',
+    align: 'left',
+    numberOfLines: 1,
+    ellipsizeMode: 'tail',
+  },
+  render: Render,
 };
 
 export { Basic as Typography };
@@ -28,6 +32,9 @@ export { Basic as Typography };
 export default {
   title: 'base/Typography',
   component: Typography,
+  args: {
+   onAnnouncementFinished: fn()
+  },
   argTypes: {
     preset: {
       options: [
@@ -67,4 +74,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1045-30326',
     },
   },
-} as ComponentMeta<typeof Typography>;
+} as Meta<typeof Typography>;

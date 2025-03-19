@@ -48,7 +48,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
     return {
       height: 60,
     };
-  });
+  }, [cardListItemHeight, lastItem, expanded]);
 
   const onContentLayout = useCallback(
     (event: LayoutChangeEvent) => {

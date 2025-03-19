@@ -4,7 +4,7 @@ import React, { FC, PropsWithChildren, useCallback, useContext, useEffect, useMe
 import { useForwardedRef } from '../../utils/ref';
 import { focusAccessibility, useAccessibleAfterTransition } from './accessibility';
 
-type AccessibilityRefComponent = React.Component | React.ComponentClass | null;
+type AccessibilityRefComponent = React.ElementType<any, any> | null;
 interface AccessibilityRefContextValue {
   setRef: (route: string, ref: AccessibilityRefComponent) => void;
   getRef: (route: string) => AccessibilityRefComponent;
@@ -36,7 +36,7 @@ export const AccessibilityFocusHistoryProvider: FC<PropsWithChildren<{}>> = ({ c
  * @note This needs to be used inside {@link AccessibilityFocusHistoryProvider} and navigation context
  */
 export const useAccessibilityFocusHistory = <
-  Component extends React.Component<any> | React.ComponentClass<any>,
+  Component extends React.ElementType<any, any>,
   OnPress extends (...args: never[]) => void = () => void,
 >(
   pressHandler: OnPress | undefined,

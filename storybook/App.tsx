@@ -1,9 +1,17 @@
-import '../.ondevice/storybook.requires';
-
-import { getStorybookUI } from '@storybook/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 
-const StorybookUIRoot = getStorybookUI({ tabOpen: -1 });
+import { view } from '../.ondevice/storybook.requires';
+
+const StorybookUIRoot = view.getStorybookUI({
+  storage: {
+    getItem: AsyncStorage.getItem,
+    setItem: AsyncStorage.setItem,
+  },
+  enableWebsockets: true,
+  host: 'localhost',
+  port: 7007,
+});
 
 export default function App() {
   return <StorybookUIRoot />;

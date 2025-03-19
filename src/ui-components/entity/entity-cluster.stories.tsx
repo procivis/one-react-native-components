@@ -1,4 +1,4 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { EntityTrustedIcon } from '../icons/entity';
@@ -9,7 +9,7 @@ type Args = EntityClusterProps & {
   withImage: boolean;
 };
 
-const Basic: Story<Args> = ({ withStatusIcon, withImage, ...args }) => {
+const Render = ({ withStatusIcon, withImage, ...args }: Args) => {
   return (
     <EntityCluster
       {...args}
@@ -21,11 +21,14 @@ const Basic: Story<Args> = ({ withStatusIcon, withImage, ...args }) => {
   );
 };
 
-Basic.args = {
-  entityName: 'Entity name',
-  subline: 'entity detail',
-  withStatusIcon: true,
-  withImage: true,
+const Basic: StoryObj<Args> = {
+  args: {
+    entityName: 'Entity name',
+    subline: 'entity detail',
+    withStatusIcon: true,
+    withImage: true,
+  },
+  render: Render,
 };
 
 export { Basic as EntityCluster };
@@ -39,4 +42,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25595&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
-} as ComponentMeta<typeof EntityCluster>;
+} as Meta<typeof EntityCluster>;

@@ -1,14 +1,11 @@
-import type { ComponentMeta, Story } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import LoaderView, { LoaderViewProps, LoaderViewState } from './loader';
 
-const Basic: Story<LoaderViewProps> = ({ ...props }) => {
-  return <LoaderView {...props} />;
-};
-
-Basic.args = {
-  state: LoaderViewState.InProgress,
+const Basic: StoryObj<LoaderViewProps> = {
+  args: {
+    state: LoaderViewState.InProgress,
+  },
 };
 
 export { Basic as LoaderView };
@@ -28,4 +25,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=444-44894&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
-} as ComponentMeta<typeof LoaderView>;
+} as Meta<typeof LoaderView>;

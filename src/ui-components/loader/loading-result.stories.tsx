@@ -1,4 +1,4 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { ButtonType } from '../buttons';
@@ -15,7 +15,7 @@ type Args = {
   withHeader: boolean;
 };
 
-const Basic: Story<Args> = ({ label, state, withButton1, withButton2, withButton3, withHeader }) => {
+const Render = ({ label, state, withButton1, withButton2, withButton3, withHeader }: Args) => {
   return (
     <LoadingResultScreen
       button={withButton1 ? { title: 'Button 1' } : undefined}
@@ -38,13 +38,16 @@ const Basic: Story<Args> = ({ label, state, withButton1, withButton2, withButton
   );
 };
 
-Basic.args = {
-  label: 'Loading...',
-  state: LoaderViewState.InProgress,
-  withButton1: true,
-  withButton2: false,
-  withButton3: false,
-  withHeader: true,
+const Basic: StoryObj<Args> = {
+  args: {
+    label: 'Loading...',
+    state: LoaderViewState.InProgress,
+    withButton1: true,
+    withButton2: false,
+    withButton3: false,
+    withHeader: true,
+  },
+  render: Render,
 };
 
 export { Basic as LoadingResultScreen };
@@ -64,4 +67,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=444-44894&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
-} as ComponentMeta<typeof LoadingResultScreen>;
+} as Meta<typeof LoadingResultScreen>;

@@ -137,9 +137,10 @@ export const formatDateOnlyFromUTCTimestamp = (utcTimestamp: number): string => 
 };
 
 const locale = (
-  Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale
-    : NativeModules.I18nManager?.localeIdentifier
+  // Platform.OS === 'ios'
+  //   ? Settings.get('AppleLocale')
+  //   : NativeModules.I18nManager?.localeIdentifier
+    NativeModules.I18nManager?.localeIdentifier
 )
   ?.split('@')[0]
   .replace('_', '-');

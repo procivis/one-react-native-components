@@ -1,16 +1,15 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import ConnectivityButton, { ConnectivityTransport } from './connectivity-button';
 
-const Basic: ComponentStory<typeof ConnectivityButton> = (args) => <ConnectivityButton {...args} />;
-
-Basic.args = {
-  available: true,
-  disabled: false,
-  status: true,
-  title: 'Connectivity message',
-  transport: ConnectivityTransport.Internet,
+const Basic: StoryObj<typeof ConnectivityButton> = {
+  args: {
+    available: true,
+    disabled: false,
+    status: true,
+    title: 'Connectivity message',
+    transport: ConnectivityTransport.Internet,
+  },
 };
 
 export { Basic as ConnectivityButton };
@@ -31,4 +30,4 @@ export default {
       url: 'https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4237-32033&node-type=frame&t=TJ4R3WHLQ1CsXNeT-0',
     },
   },
-} as ComponentMeta<typeof ConnectivityButton>;
+} as Meta<typeof ConnectivityButton>;

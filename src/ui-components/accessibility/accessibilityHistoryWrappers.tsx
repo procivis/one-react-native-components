@@ -20,7 +20,7 @@ interface OnPressProps {
   onPress?: RNOnPress | null;
 }
 
-const WithAccessibilityFocusHistory = <ComponentProps extends OnPressProps, RefType extends React.Component>(
+const WithAccessibilityFocusHistory = <ComponentProps extends OnPressProps, RefType extends React.ElementType<any, any>>(
   C: React.ComponentType<ComponentProps>,
   displayName: string,
 ) => {
@@ -52,7 +52,7 @@ const WithAccessibilityFocusHistory = <ComponentProps extends OnPressProps, RefT
 /**
  * Wrappers of RN touchable components with accessibilty focus history support
  */
-export const TouchableOpacity = WithAccessibilityFocusHistory<TouchableOpacityProps, RNTouchableOpacity>(
+export const TouchableOpacity = WithAccessibilityFocusHistory<TouchableOpacityProps, typeof RNTouchableOpacity>(
   RNTouchableOpacity,
   'TouchableOpacity',
 );
@@ -60,7 +60,7 @@ export const TouchableWithoutFeedback = WithAccessibilityFocusHistory<
   TouchableWithoutFeedbackProps,
   RNTouchableWithoutFeedback
 >(RNTouchableWithoutFeedback, 'TouchableWithoutFeedback');
-export const TouchableHighlight = WithAccessibilityFocusHistory<TouchableHighlightProps, RNTouchableHighlight>(
+export const TouchableHighlight = WithAccessibilityFocusHistory<TouchableHighlightProps, typeof RNTouchableHighlight>(
   RNTouchableHighlight,
   'TouchableHighlight',
 );

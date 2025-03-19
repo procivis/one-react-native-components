@@ -8,10 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-storybook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-storybook.a */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1513C1372BF4A8CF00D34A9A /* Procivis-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1513C1362BF4A8CF00D34A9A /* Procivis-Book.ttf */; };
+		15C14EB72D89CBCE00372038 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C14EB62D89CBCE00372038 /* AppDelegate.swift */; };
 		330CDC5F2BAC6EA6007CD7FF /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 330CDC5C2BAC6EA6007CD7FF /* IBMPlexMono-Regular.ttf */; };
 		330CDC602BAC6EA6007CD7FF /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 330CDC5D2BAC6EA6007CD7FF /* OpenSans-Regular.ttf */; };
 		330CDC612BAC6EA6007CD7FF /* OpenSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 330CDC5E2BAC6EA6007CD7FF /* OpenSans-Medium.ttf */; };
@@ -20,14 +19,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0CBABA714313A35846982375 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = storybook/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		0CBABA714313A35846982375 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = storybook/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* storybook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = storybook.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = storybook/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = storybook/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = storybook/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = storybook/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = storybook/main.m; sourceTree = "<group>"; };
 		1513C1362BF4A8CF00D34A9A /* Procivis-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Procivis-Book.ttf"; path = "storybook/fonts/Procivis-Book.ttf"; sourceTree = "<group>"; };
+		15C14EB52D89CAA200372038 /* storybook-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "storybook-Bridging-Header.h"; sourceTree = "<group>"; };
+		15C14EB62D89CBCE00372038 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-storybook-storybookTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-storybook-storybookTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		330CDC5C2BAC6EA6007CD7FF /* IBMPlexMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "IBMPlexMono-Regular.ttf"; path = "storybook/fonts/IBMPlexMono-Regular.ttf"; sourceTree = "<group>"; };
 		330CDC5D2BAC6EA6007CD7FF /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "storybook/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -56,14 +54,13 @@
 		13B07FAE1A68108700A75B9A /* storybook */ = {
 			isa = PBXGroup;
 			children = (
+				15C14EB62D89CBCE00372038 /* AppDelegate.swift */,
 				330CDC5B2BAC6E88007CD7FF /* fonts */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				13B07FB71A68108700A75B9A /* main.m */,
 				0CBABA714313A35846982375 /* PrivacyInfo.xcprivacy */,
+				15C14EB52D89CAA200372038 /* storybook-Bridging-Header.h */,
 			);
 			name = storybook;
 			sourceTree = "<group>";
@@ -163,7 +160,7 @@
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
@@ -301,8 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				15C14EB72D89CBCE00372038 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +315,7 @@
 				DEVELOPMENT_TEAM = AGG3V6QN4G;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = storybook/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -333,6 +330,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "storybook-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -349,6 +347,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AGG3V6QN4G;
 				INFOPLIST_FILE = storybook/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -363,6 +362,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "storybook-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -441,6 +441,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = Debug;

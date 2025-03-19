@@ -29,8 +29,10 @@ export const useBlockOSBackNavigation = (block: boolean = true, onAndroidBack?: 
       const handler = () => {
         return onAndroidBack?.() ?? true;
       };
-      BackHandler.addEventListener('hardwareBackPress', handler);
-      return () => BackHandler.removeEventListener('hardwareBackPress', handler);
+      const subscription = BackHandler.addEventListener('hardwareBackPress', handler);
+      return () => {
+        subscription.remove();
+      };
     }
     return undefined;
   }, [block, isFocused, onAndroidBack]);

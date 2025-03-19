@@ -1,13 +1,13 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta,StoryObj } from '@storybook/react';
 
 import { Checkbox } from './checkbox';
 
-const Basic: ComponentStory<typeof Checkbox> = (args) => <Checkbox {...args} />;
-Basic.args = {
-  text: 'Example text\non multiple\nlines',
-  value: true,
-  disabled: false,
+const Basic: StoryObj<typeof Checkbox> = {
+  args: {
+    text: 'Example text\non multiple\nlines',
+    value: true,
+    disabled: false,
+  },
 };
 
 export { Basic as Checkbox };
@@ -24,4 +24,4 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=621-21936&mode=dev',
     },
   },
-} as ComponentMeta<typeof Checkbox>;
+} as Meta<typeof Checkbox>;

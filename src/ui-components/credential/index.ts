@@ -1,8 +1,9 @@
-import CredentialAttributeItem, {
+import type {
   CredentialAttribute,
   CredentialAttributeItemProps,
   CredentialAttributeValue,
 } from './credential-attribute-item';
+import CredentialAttributeItem from './credential-attribute-item';
 import { Barcode, Mrz, QrCode } from './credential-carousel-images';
 import Selector from './selector';
 import { SelectorStatus } from './selector-status';

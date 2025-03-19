@@ -1,17 +1,25 @@
-// .storybook/main.js
+import type { StorybookConfig } from '@storybook/react-native-web-vite';
 
-const path = require('path');
+type ServerStorybookConfig = StorybookConfig & {
+  reactNativeServerOptions: { host: string; port: number };
+};
 
-module.exports = {
+const main: ServerStorybookConfig = {
   stories: ['../src/**/*.stories.?(ts|tsx|js|jsx)', '../storybook/web/*.stories.?(ts|tsx|js|jsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-react-native-web',
-    'storybook-addon-designs',
+    '@storybook/addon-react-native-server',
+    '@storybook/addon-designs',
   ],
-  framework: '@storybook/react',
-  webpackFinal: async (config) => ({
+
+  framework: {
+    name: '@storybook/react-native-web-vite',
+    options: {},
+  },
+
+  viteFinal: async (config) => ({
     ...config,
     resolve: {
       ...(config.resolve || {}),
@@ -26,8 +34,24 @@ module.exports = {
         'lottie-react-native': 'react-native-web/src/exports/View',
         'react-native-bluetooth-state-manager': '/storybook/modules/react-native-bluetooth-state-manager',
         'qrcode-svg': '/storybook/modules/qrcode-svg',
-        'react-native-reanimated-carousel': 'react-native-web/src/exports/View'
+        'react-native-reanimated-carousel': 'react-native-web/src/exports/View',
+        '@react-navigation/native': '/storybook/modules/react-navigation-native'
       },
     },
   }),
+
+  reactNativeServerOptions: {
+    host: 'localhost',
+    port: 7007,
+  },
+
+  docs: {},
+
+  staticDirs: ['./assets'],
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript'
+  }
 };
+
+export default main;

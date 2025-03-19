@@ -1,4 +1,4 @@
-import type { Meta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { FC } from 'react';
 import { ColorValue, StyleSheet, View } from 'react-native';
 
@@ -101,8 +101,8 @@ const TextBackgroundTest: FC<{ text: SimpleColorName; background: SimpleColorNam
   );
 };
 
-export const ColorContrast: Story = () => {
-  return (
+export const ColorContrast: StoryObj = {
+  render: () => (
     <View style={styles.container}>
       <TextBackgroundTest text="text" background="white" />
       <TextBackgroundTest text="text" background="background" />
@@ -111,7 +111,7 @@ export const ColorContrast: Story = () => {
       <TextBackgroundTest text="linkText" background="white" />
       <TextBackgroundTest text="linkText" background="background" />
     </View>
-  );
+  ),
 };
 
 export default {

@@ -117,7 +117,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     return {
       height: currentHeight.value,
     };
-  });
+  }, [expanded, currentHeight]);
 
   const onPreviewAttrContentLayout = useCallback((event: LayoutChangeEvent) => {
     setPreviewAttributesHeight(event.nativeEvent.layout.height);

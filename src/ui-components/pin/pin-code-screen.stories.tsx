@@ -1,4 +1,5 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
   actionButton: { position: 'absolute', right: 24, top: 40 },
 });
 
-const Basic: Story<Props> = ({
+const Render = ({
   title,
   instruction,
   onAccessibilityAnnounced,
@@ -23,7 +24,7 @@ const Basic: Story<Props> = ({
   onBack,
   showActions,
   ...args
-}) => {
+}: Props) => {
   const subtitle = instruction ? { instruction, onAccessibilityAnnounced } : {};
   const actionsRef = useRef<PinCodeScreenActions>(null);
 
@@ -43,15 +44,18 @@ const Basic: Story<Props> = ({
   );
 };
 
-Basic.args = {
-  length: 6,
-  enteredLength: 0,
-  withBackButton: true,
-  title: 'Title',
-  instruction: 'Instruction',
-  error: '',
-  biometry: Biometry.FaceID,
-  showActions: false,
+const Basic: StoryObj<Props> = {
+  args: {
+    length: 6,
+    enteredLength: 0,
+    withBackButton: true,
+    title: 'Title',
+    instruction: 'Instruction',
+    error: '',
+    biometry: Biometry.FaceID,
+    showActions: false,
+  },
+  render: Render,
 };
 
 export { Basic as PINScreen };
@@ -66,6 +70,9 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=621-21892&mode=design&t=nCa9UdCDzPYtOPgu-4',
     },
   },
+  args: {
+   onAccessibilityAnnounced: fn()
+  },
   argTypes: {
     onBack: { action: 'onBack' },
     onBiometricPress: { action: 'onBiometricPress' },
@@ -77,4 +84,4 @@ export default {
       control: { type: 'radio' },
     },
   },
-} as ComponentMeta<typeof PinCodeScreen>;
+} as Meta<typeof PinCodeScreen>;

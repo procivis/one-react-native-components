@@ -1,8 +1,8 @@
+import type { Preview } from '@storybook/react';
 import ColorSchemes from '../storybook/colorScheme';
 import { withCommonLibs, FullScreen, withColorScheme } from '../storybook/decorator';
-import { withDesign } from 'storybook-addon-designs';
 
-export const decorators = [FullScreen, withCommonLibs, withColorScheme, withDesign];
+const decorators = [FullScreen, withCommonLibs, withColorScheme];
 
 const viewports = {
   iPhoneX: {
@@ -49,7 +49,7 @@ const viewports = {
   },
 };
 
-export const parameters = {
+const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   layout: 'none',
   controls: {
@@ -57,6 +57,10 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  reactOptions: {
+    legacyRootApi: false,
+    strictMode: false,
   },
   backgrounds: {
     default: 'white',
@@ -75,7 +79,7 @@ export const parameters = {
   },
 };
 
-export const globalTypes = {
+const globalTypes = {
   colorScheme: {
     name: 'Color Scheme',
     defaultValue: 'procivis',
@@ -86,3 +90,12 @@ export const globalTypes = {
     },
   },
 };
+
+
+const preview: Preview = {
+  decorators,
+  parameters,
+  globalTypes,
+};
+
+export default preview;

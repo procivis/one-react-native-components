@@ -104,7 +104,7 @@ export function useIsOutsideTransition<
  * @param component component ref
  * @note Disabled on android as it is not reliable
  */
-export const focusAccessibility = (component?: React.Component | React.ComponentClass | null) => {
+export const focusAccessibility = (component?: React.ElementType<any, any> | null) => {
   if (Platform.OS === 'ios' && component) {
     const nodeHandle = findNodeHandle(component);
     if (nodeHandle) {

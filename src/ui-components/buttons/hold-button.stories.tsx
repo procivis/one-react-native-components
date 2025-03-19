@@ -1,16 +1,15 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import HoldButton from './hold-button';
 
-const Basic: ComponentStory<typeof HoldButton> = (args) => <HoldButton {...args} />;
-
-Basic.args = {
-  title: 'Title',
-  subtitlePrefix: 'subtitle prefix ',
-  subtitleSuffix: 'suffix',
-  disabled: false,
-  style: { margin: 24 },
+const Basic: StoryObj<typeof HoldButton> = {
+  args: {
+    title: 'Title',
+    subtitlePrefix: 'subtitle prefix ',
+    subtitleSuffix: 'suffix',
+    disabled: false,
+    style: { margin: 24 },
+  },
 };
 
 export { Basic as HoldButton };
@@ -27,4 +26,4 @@ export default {
       url: 'https://www.figma.com/design/cCmAyBQrQWCQZuDi85pJfe/Procivis-One-Wallet-Developments-2025?node-id=1-882',
     },
   },
-} as ComponentMeta<typeof HoldButton>;
+} as Meta<typeof HoldButton>;

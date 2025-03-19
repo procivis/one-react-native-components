@@ -66,7 +66,7 @@ const Content = ({
   );
   const movingUpStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -translateY.value }],
-  }));
+  }), [translateY]);
 
   return (
     <View style={[styles.contentWrapper, disabled && styles.contentDisabled, { width, height }]} pointerEvents="none">
@@ -153,10 +153,10 @@ const HoldButtonLayouted = ({
   const translateX = useDerivedValue(() => progress.value * width, [width]);
   const movingRightStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
-  }));
+  }), [translateX]);
   const movingLeftStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: -translateX.value }],
-  }));
+  }), [translateX]);
 
   const contentProps = useMemo(
     () => ({ title, subtitlePrefix, subtitleSuffix, progress, holdTimeoutSecs, width, height }),

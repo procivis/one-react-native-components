@@ -1,4 +1,4 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -12,7 +12,7 @@ type Args = NavigationHeaderProps & {
   withRightButton: boolean;
 };
 
-const Basic: Story<Args> = ({ withBackButton, withRightButton, ...args }) => {
+const Render = ({ withBackButton, withRightButton, ...args }: Args) => {
   return (
     <NavigationHeader
       {...args}
@@ -28,11 +28,14 @@ const Basic: Story<Args> = ({ withBackButton, withRightButton, ...args }) => {
   );
 };
 
-Basic.args = {
-  title: 'Title',
-  modalHandleVisible: false,
-  withBackButton: true,
-  withRightButton: true,
+const Basic: StoryObj<Args> = {
+  args: {
+    title: 'Title',
+    modalHandleVisible: false,
+    withBackButton: true,
+    withRightButton: true,
+  },
+  render: Render,
 };
 
 export { Basic as NavigationHeader };
@@ -46,7 +49,7 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=425-18624&mode=design&t=29eTMhPYwNIK3rK3-0',
     },
   },
-} as ComponentMeta<typeof NavigationHeader>;
+} as Meta<typeof NavigationHeader>;
 
 const styles = StyleSheet.create({
   rightButton: {

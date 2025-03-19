@@ -1,10 +1,10 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
 import { useCameraPermission } from 'react-native-vision-camera';
 
-import QRCodeScannerScreen from './qr-code-scanner-screen';
+import QRCodeScannerScreen, { QRCodeScannerScreenProps } from './qr-code-scanner-screen';
 
-const Basic: ComponentStory<typeof QRCodeScannerScreen> = (args) => {
+const Render = (args: QRCodeScannerScreenProps) => {
   const { hasPermission, requestPermission } = useCameraPermission();
   useEffect(() => {
     if (!hasPermission) {
@@ -15,9 +15,12 @@ const Basic: ComponentStory<typeof QRCodeScannerScreen> = (args) => {
   return <QRCodeScannerScreen {...args} />;
 };
 
-Basic.args = {
-  title: 'Scan QR Code to connect.',
-};
+const Basic: StoryObj<typeof QRCodeScannerScreen> = {
+  args: {
+    title: 'Scan QR Code to connect.',
+  },
+  render: Render,
+}
 
 export { Basic as QRCodeScannerScreen };
 
@@ -34,4 +37,4 @@ export default {
   argTypes: {
     onQRCodeRead: { action: 'onQRCodeRead' },
   },
-} as ComponentMeta<typeof QRCodeScannerScreen>;
+} as Meta<typeof QRCodeScannerScreen>;

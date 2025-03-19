@@ -1,16 +1,19 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta,StoryObj } from '@storybook/react';
 import React from 'react';
 
-import ImagePreviewScreen from './image-preview-screen';
+import ImagePreviewScreen, { ImagePreviewScreenProps } from './image-preview-screen';
 
 const profileImage = require('../../../storybook/assets/ProfileImage.png');
 
-const Basic: ComponentStory<typeof ImagePreviewScreen> = ({ ...args }) => {
+const Render = ({ ...args }: ImagePreviewScreenProps) => {
   return <ImagePreviewScreen {...args} image={profileImage} />;
 };
 
-Basic.args = {
-  title: 'Title',
+const Basic: StoryObj<typeof ImagePreviewScreen> = {
+  args: {
+    title: 'Title',
+  },
+  render: Render,
 };
 
 export { Basic as ImagePreviewScreen };
@@ -25,4 +28,4 @@ export default {
       url: 'https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=493-79444&m=dev',
     },
   },
-} as ComponentMeta<typeof ImagePreviewScreen>;
+} as Meta<typeof ImagePreviewScreen>;

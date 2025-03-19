@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { OneError } from '@procivis/react-native-one-core';
 import * as Sentry from '@sentry/react-native';
 

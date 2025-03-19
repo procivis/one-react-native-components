@@ -205,7 +205,7 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
         },
       ],
     };
-  });
+  }, [iconTopPosition]);
 
   const previewText = expanded ? attributeText : attributeText.slice(0, VALUE_PREVIEW_LENGTH) + '...';
 

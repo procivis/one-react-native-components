@@ -1,4 +1,4 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Insets, StyleSheet } from 'react-native';
 
@@ -13,7 +13,7 @@ type Args = DetailScreenProps & {
 
 const hitSlop: Insets = { top: 8, bottom: 12, left: 24, right: 24 };
 
-const Basic: Story<Args> = ({ onRightAction, contentHeight, headerProps }) => {
+const Render = ({ onRightAction, contentHeight, headerProps }: Args) => {
   return (
     <DetailScreen
       headerProps={{
@@ -29,12 +29,15 @@ const Basic: Story<Args> = ({ onRightAction, contentHeight, headerProps }) => {
   );
 };
 
-Basic.args = {
-  headerProps: {
-    title: 'Title',
-    onBack: () => {},
+const Basic: StoryObj<Args> = {
+  args: {
+    headerProps: {
+      title: 'Title',
+      onBack: () => {},
+    },
+    contentHeight: 0,
   },
-  contentHeight: 0,
+  render: Render,
 };
 
 export { Basic as DetailScreen };
@@ -52,7 +55,7 @@ export default {
   argTypes: {
     onRightAction: { action: 'onRightAction' },
   },
-} as ComponentMeta<typeof DetailScreen>;
+} as Meta<typeof DetailScreen>;
 
 const styles = StyleSheet.create({
   content: {

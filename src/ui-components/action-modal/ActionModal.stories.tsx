@@ -1,4 +1,4 @@
-import type { ComponentMeta, Story } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
@@ -6,7 +6,7 @@ import { Button } from '../buttons';
 import { Typography } from '../text';
 import ActionModal from './ActionModal';
 
-const Basic: Story = () => {
+const Render = () => {
   const [visible, setVisible] = useState(false);
   return (
     <>
@@ -21,6 +21,10 @@ const Basic: Story = () => {
   );
 };
 
+const Basic: StoryObj = {
+  render: Render,
+};
+
 export { Basic as ActionModal };
 
 export default {
@@ -32,4 +36,4 @@ export default {
       url: 'https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=391-9097&t=WhKthlRU5MCuUWfw-0',
     },
   },
-} as ComponentMeta<typeof ActionModal>;
+} as Meta<typeof ActionModal>;

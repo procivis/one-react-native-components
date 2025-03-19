@@ -1,14 +1,13 @@
-import type { ComponentMeta, Story } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import ErrorScreen, { ErrorScreenProps } from './error-screen';
 
-const Basic: Story<ErrorScreenProps> = (props) => <ErrorScreen {...props} />;
-
-Basic.args = {
-  title: 'Error',
-  subtitle: 'The app has reached an error state.',
-  button: { label: 'Primary', onPress: () => null },
+const Basic: StoryObj<ErrorScreenProps> = {
+  args: {
+    title: 'Error',
+    subtitle: 'The app has reached an error state.',
+    button: { label: 'Primary', onPress: () => null },
+  },
 };
 
 export { Basic as ErrorScreen };
@@ -19,4 +18,4 @@ export default {
   parameters: {
     noSafeArea: true,
   },
-} as ComponentMeta<typeof ErrorScreen>;
+} as Meta<typeof ErrorScreen>;
