@@ -59,7 +59,7 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
     </View>
   );
   return (
-    <TouchableHighlight onPress={onPress} style={styles.button}>
+    <TouchableHighlight onPress={onPress} style={styles.button} testID={testID}>
       <View style={[styles.container, { backgroundColor, opacity }]}>
         {icons}
         {title && (
