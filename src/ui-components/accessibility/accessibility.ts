@@ -118,7 +118,7 @@ export const focusAccessibility = (component?: React.ElementType<any, any> | nul
  * @param {boolean} focused Focusing happens when this changes to `true`
  * @returns reference to be used with the target element
  */
-export const useAccessibilityFocus = <T extends React.Component | React.ComponentClass>(focused: boolean = true) => {
+export const useAccessibilityFocus = <T extends React.ElementType<any, any>>(focused: boolean = true) => {
   const ref = useRef<T>(null);
 
   useEffect(() => {
