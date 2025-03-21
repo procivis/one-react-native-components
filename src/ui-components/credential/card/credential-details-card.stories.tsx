@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-svg';
+import { StyleSheet, Text, View } from 'react-native';
 
 import CredentialDetailsCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import { Placeholder } from '../../../../storybook/placeholder';

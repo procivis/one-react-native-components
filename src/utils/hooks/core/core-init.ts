@@ -85,7 +85,7 @@ export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }
 
   return useCallback(async () => {
     return await core
-      .createOrganisation(organisationId)
+      .createOrganisation({ id: organisationId })
       .catch((e) => {
         if (e instanceof OneError && e.code === OneErrorCode.OrganisationAlreadyExists) {
           return;

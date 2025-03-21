@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "Common Procivis ONE UI components for react-native",
@@ -52,7 +52,7 @@
     "@babel/runtime": "^7.25.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@gorhom/bottom-sheet": "^5.1.2",
-    "@procivis/react-native-one-core": "1.37136.0",
+    "@procivis/react-native-one-core": "1.37536.0",
     "@procivis/react-native-picker": "5.0.3",
     "@react-native-async-storage/async-storage": "^1.17.3",
     "@react-native-community/blur": "^4.4.0",
@@ -134,7 +134,7 @@
     "vite": "^6.2.2"
   },
   "peerDependencies": {
-    "@procivis/react-native-one-core": "^1.37136.0",
+    "@procivis/react-native-one-core": "^1.37536.0",
     "@procivis/react-native-picker": "*",
     "@react-native-community/blur": "*",
     "@react-native-community/netinfo": "^11.4.1",
@@ -270,9 +270,6 @@
         }
       ]
     ]
-  },
-  "resolutions": {
-    "@storybook/react-docgen-typescript-plugin": "1.0.6--canary.9.cd77847.0"
   },
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }
