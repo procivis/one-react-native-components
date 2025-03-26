@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, ButtonProps } from '../buttons/button';
 import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
@@ -28,7 +28,7 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
   ...viewProps
 }) => {
   const colorScheme = useAppColorScheme();
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
 
   let headerPaddingStyle: ViewStyle | undefined;
   if (Platform.OS === 'android') {
@@ -38,6 +38,10 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
   } else if (!header?.modalHandleVisible && Platform.OS === 'ios') {
     headerPaddingStyle = styles.modalHeaderWithoutHandle;
   }
+
+  let buttonsWrapperMarginStyle: ViewStyle = {
+    marginBottom: bottom,
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
@@ -50,11 +54,11 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
           {label}
         </Typography>
       </View>
-      <SafeAreaView edges={['bottom']} style={styles.buttonWrapper}>
+      <View style={[styles.buttonWrapper, buttonsWrapperMarginStyle]}>
         {button && <Button {...button}>{button.title}</Button>}
         {button2 && <Button {...button2}>{button2.title}</Button>}
         {button3 && <Button {...button3}>{button3.title}</Button>}
-      </SafeAreaView>
+      </View>
     </View>
   );
 };
