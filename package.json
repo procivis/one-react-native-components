@@ -24,16 +24,15 @@
     "lint:eslint": "eslint \"**/*.{js,ts,tsx}\"",
     "lint:eslint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "lint:ts": "tsc --noEmit",
-    "lint": "yarn lint:eslint",
-    "lint:fix": "yarn lint:eslint:fix",
+    "lint": "pnpm lint:eslint",
+    "lint:fix": "pnpm lint:eslint:fix",
     "prepare": "npx patch-package && bob build",
     "release": "release-it",
-    "bootstrap": "yarn",
     "android": "react-native run-android --appId=ch.procivis.storybook",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "update-stories": "sb-rn-get-stories --config-path .ondevice",
-    "prestart": "yarn update-stories",
+    "prestart": "pnpm update-stories",
     "storybook-watcher": "sb-rn-watcher --config-path .ondevice",
     "storybook": "storybook dev -p 6006 -c .storybook-web",
     "build-storybook": "storybook build -c .storybook-web",
@@ -63,7 +62,9 @@
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-community/slider": "^4.5.6",
     "@react-native/babel-preset": "0.77.1",
+    "@react-native/codegen": "0.77.1",
     "@react-native/eslint-config": "0.77.1",
+    "@react-native/gradle-plugin": "0.77.1",
     "@react-native/metro-config": "0.77.1",
     "@react-native/normalize-color": "^2.0.0",
     "@react-native/typescript-config": "0.77.1",
@@ -271,5 +272,5 @@
       ]
     ]
   },
-  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
+  "packageManager": "pnpm@10.5.2"
 }

@@ -8,8 +8,7 @@ include:
       - "gitlab/ci-tools.gitlab-ci.yml"
 
 variables:
-  YARN_CACHE_FOLDER: './.yarn/cache'
-  YARN_ENABLE_GLOBAL_CACHE: 'false'
+  PNPM_CACHE_FOLDER: "~/.pnpm-store"
   GITHUB_PROJECT: "procivis/one-react-native-components"
 
 workflow:
@@ -29,12 +28,12 @@ stages:
 .build-cache: &build-cache
   key:
     files:
-      - yarn.lock
+      - pnpm-lock.yaml
       - package.json
   paths:
     - node_modules/
     - lib/
-    - ${YARN_CACHE_FOLDER}
+    - ${PNPM_CACHE_FOLDER}
   policy: pull
 
 .app_settings: &app_settings
@@ -42,6 +41,17 @@ stages:
   - IMAGE_NAME=$CI_REGISTRY_IMAGE/storybook
   - IMAGE_TAG=$IMAGE_NAME:$APP_VERSION
 
+.pnpm_install: &pnpm_install
+  - npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
+  - npm config set -- //${CI_SERVER_HOST}/:_authToken ${CI_JOB_TOKEN}
+  - npm config set -- //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
+  - npm install --global corepack@latest
+  - corepack enable
+  - corepack prepare pnpm@latest-10 --activate
+  - export PNPM_HOME=$HOME/.local/share/pnpm
+  - export PATH="$PNPM_HOME:$PATH"
+  - pnpm config set global-bin-dir $PNPM_HOME
+  - pnpm config set store-dir ${PNPM_CACHE_FOLDER}
 
 .install-node-modules: &install-node-modules
   - >
@@ -53,14 +63,15 @@ stages:
       npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
       npm config set -- //${CI_SERVER_HOST}/:_authToken ${CI_JOB_TOKEN}
       npm config set -- //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
-      yarn global add node-gyp @mapbox/node-pre-gyp
-      yarn install --frozen-lockfile --network-concurrency 1
+      pnpm add -g node-gyp @mapbox/node-pre-gyp
+      pnpm install --frozen-lockfile --network-concurrency 1
     fi
 
 .modules_setup:
   cache:
     <<: *build-cache
   before_script:
+    - *pnpm_install
     - *install-node-modules
     - *app_settings
 
@@ -88,7 +99,7 @@ build_deps:
     - azure
   extends: .modules_setup
   script:
-    - yarn prepare
+    - pnpm prepare
   cache:
     policy: pull-push
 
@@ -97,33 +108,32 @@ lint:
   needs: [build_deps]
   extends: .modules_setup
   script:
-    - yarn lint
+    - pnpm lint
 
 compile:
   stage: test
   needs: [build_deps]
   extends: .modules_setup
   script:
-    - yarn typescript
+    - pnpm typescript
 
 test:
   stage: test
   needs: [build_deps]
   extends: .modules_setup
   script:
-    - yarn test
+    - pnpm test
 
 build:storybook:
   stage: build
   tags:
     - azure
-  image: node:16-alpine
   needs: [build_deps]
   extends:
     - .modules_setup
     - .only_main
   script:
-    - yarn build-storybook
+    - pnpm build-storybook
   artifacts:
     paths:
       - storybook-static

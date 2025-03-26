@@ -1256,7 +1256,7 @@ PODS:
     - Yoga
   - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-one-core (1.37136.0):
+  - react-native-one-core (1.37536.0):
     - React-Core
   - react-native-picker (5.0.3):
     - React-Core
@@ -2249,7 +2249,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 72564d5469003687d39bfc4efad281df8efc0684
   react-native-blur: f8aca243712a7f93a908b2b8dd0a7ad83ece3e09
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
-  react-native-one-core: 4f4aef5e3f308683d2808e80b3d9d4c61c5cdbb5
+  react-native-one-core: 1ce95165636077c931b1286fa3e71ec13b09a488
   react-native-picker: 208cd4d747bb5088aac73c7412b07f8a1fc45902
   react-native-safe-area-context: 286b3e7b5589795bb85ffc38faf4c0706c48a092
   react-native-slider: e7f302c8d3296ddb49c642473f77f8f98809d53b
@@ -2294,8 +2294,8 @@ SPEC CHECKSUMS:
   Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: b5c2b3c45e641102902a5194af11dc532805221e
-  Yoga: 1fd059161b449018342943b095a6d4e69bcaa719
+  Yoga: 2957d0e744897870b5a377f26522e3f08cadd7ac
 
 PODFILE CHECKSUM: 291150d5ed9eaec5c6603fd527863bf31b8e5731
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

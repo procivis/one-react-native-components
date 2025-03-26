@@ -43,13 +43,8 @@ npm install @procivis/one-react-native-components
 ```
 
 ```shell
-yarn add @procivis/one-react-native-components
+pnpm add @procivis/one-react-native-components
 ```
-
-## Troubleshooting
-
-For issues related to installing `@procivis/react-native-picker`, delete the `yarn.lock`
-file and try again.
 
 ## Support
 
