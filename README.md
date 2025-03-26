@@ -68,5 +68,5 @@ Version 2.0](./LICENSE).
 [docs]: https://docs.procivis.ch/
 [rncore]: https://github.com/procivis/react-native-one-core
 [sdkref]: https://docs.procivis.ch/sdk
-[trial]: https://docs.procivis.ch/trial/
+[trial]: https://docs.procivis.ch/trial
 [wallet]: https://github.com/procivis/one-wallet
