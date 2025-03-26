@@ -1,13 +1,13 @@
 // Date & Time formatted as specified in SW-610
 
-import { NativeModules, Platform } from 'react-native';
+import { I18nManager, Platform, Settings } from 'react-native';
 import { format } from 'timeago.js';
 
 const MINUTE = 60 * 1000;
 const DAY = 24 * 60 * MINUTE;
 
 // OS locale
-const systemLocale: string = NativeModules.I18nManager?.localeIdentifier
+const systemLocale: string | undefined = I18nManager.getConstants().localeIdentifier
   ?.replace(/_/g, '-')
   .split('#')[0]
   .replace(/-$/, '');
@@ -137,10 +137,9 @@ export const formatDateOnlyFromUTCTimestamp = (utcTimestamp: number): string => 
 };
 
 const locale = (
-  // Platform.OS === 'ios'
-  //   ? Settings.get('AppleLocale')
-  //   : NativeModules.I18nManager?.localeIdentifier
-    NativeModules.I18nManager?.localeIdentifier
+  Platform.OS === 'ios'
+    ? Settings.get('AppleLocale')
+    : I18nManager.getConstants().localeIdentifier
 )
   ?.split('@')[0]
   .replace('_', '-');
