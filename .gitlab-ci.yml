@@ -95,8 +95,6 @@ before_script:
 
 build_deps:
   stage: prepare
-  tags:
-    - azure
   extends: .modules_setup
   script:
     - pnpm prepare
@@ -126,8 +124,6 @@ test:
 
 build:storybook:
   stage: build
-  tags:
-    - azure
   needs: [build_deps]
   extends:
     - .modules_setup

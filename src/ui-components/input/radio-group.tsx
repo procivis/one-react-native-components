@@ -73,7 +73,9 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
               }}
               style={[styles.item, item.style]}
               testID={item.testID}>
-              <Typography color={colorScheme.text}>{item.label}</Typography>
+              <Typography color={colorScheme.text} style={styles.label} numberOfLines={2}>
+                {item.label}
+              </Typography>
               <Selector
                 status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty}
                 style={styles.selector}
@@ -99,9 +101,11 @@ const styles = StyleSheet.create({
   item: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingVertical: 24,
     width: '100%',
+  },
+  label: {
+    flex: 1,
   },
   selector: {
     marginLeft: 4,
