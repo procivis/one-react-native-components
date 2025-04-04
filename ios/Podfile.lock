@@ -1256,7 +1256,7 @@ PODS:
     - Yoga
   - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-one-core (1.37536.0):
+  - react-native-one-core (1.38852.0):
     - React-Core
   - react-native-picker (5.0.3):
     - React-Core
@@ -2249,7 +2249,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 72564d5469003687d39bfc4efad281df8efc0684
   react-native-blur: f8aca243712a7f93a908b2b8dd0a7ad83ece3e09
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
-  react-native-one-core: 1ce95165636077c931b1286fa3e71ec13b09a488
+  react-native-one-core: a07b3662e82c0bfd10335f02ac9ed3870355e34e
   react-native-picker: 208cd4d747bb5088aac73c7412b07f8a1fc45902
   react-native-safe-area-context: 286b3e7b5589795bb85ffc38faf4c0706c48a092
   react-native-slider: e7f302c8d3296ddb49c642473f77f8f98809d53b
