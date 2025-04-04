@@ -107,7 +107,7 @@ export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey 
       hwKeyId = await core
         .generateKey({
           keyParams: {},
-          keyType: 'ES256',
+          keyType: 'ECDSA',
           name: `holder-key-hw-${generateUUID()}`,
           organisationId,
           storageParams: {},

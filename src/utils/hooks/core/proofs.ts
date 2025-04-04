@@ -111,10 +111,13 @@ export const useProofReject = () => {
   );
 };
 
-export enum ExchangeProtocol {
+export enum IssuanceProtocol {
+  OPENID4VCI_DRAFT13 = 'OPENID4VCI_DRAFT13',
+}
+
+export enum VerificationProtocol {
   ISO_MDL = 'ISO_MDL',
-  OPENID4VC = 'OPENID4VC',
-  PROCIVIS = 'PROCIVIS_TEMPORARY',
+  OPENID4VP_DRAFT20 = 'OPENID4VP_DRAFT20',
   SCAN_TO_VERIFY = 'SCAN_TO_VERIFY',
 }
 
@@ -122,7 +125,7 @@ export const useProposeProof = () => {
   const queryClient = useQueryClient();
   const { core, organisationId } = useONECore();
 
-  return useMutation(async (exchange: ExchangeProtocol) => core.proposeProof(exchange, organisationId), {
+  return useMutation(async (exchange: VerificationProtocol) => core.proposeProof(exchange, organisationId), {
     onSuccess: async () => {
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
@@ -273,7 +276,7 @@ export const useProofForSchemaIdWithTransport = (
     }
 
     createProof({
-      exchange: ExchangeProtocol.OPENID4VC,
+      exchange: VerificationProtocol.OPENID4VP_DRAFT20,
       proofSchemaId,
       transport,
       verifierDidId: dids.values[0].id,

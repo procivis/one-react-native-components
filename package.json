@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "Common Procivis ONE UI components for react-native",
@@ -135,7 +135,7 @@
     "vite": "^6.2.2"
   },
   "peerDependencies": {
-    "@procivis/react-native-one-core": "^1.37536.0",
+    "@procivis/react-native-one-core": "^1.38852.1",
     "@procivis/react-native-picker": "*",
     "@react-native-community/blur": "*",
     "@react-native-community/netinfo": "^11.4.1",
