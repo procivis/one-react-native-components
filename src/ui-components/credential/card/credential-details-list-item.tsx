@@ -17,6 +17,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
   style,
   ...props
 }) => {
+  const [cardWidth, setCardWidth] = useState<number>();
   const [minHeight, setMinHeight] = useState<number>();
   const [detailsCardHeight, setDetailsCardHeight] = useState<number>();
 
@@ -36,7 +37,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
     });
   }, [cardListItemHeight, detailsCardHeight, minHeight, expanded]);
 
-  const cardWrapperStyle = useAnimatedStyle(() => {
+  const animatedCardWrapperStyle = useAnimatedStyle(() => {
     if (cardListItemHeight.value !== undefined) {
       return {
         height: cardListItemHeight.value,
@@ -50,9 +51,14 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
     };
   }, [cardListItemHeight, lastItem, expanded]);
 
+  const cardWrapperStyle: ViewStyle = {
+    minHeight: cardWidth ? cardWidth / CredentialCardRatio : undefined,
+  }
+
   const onContentLayout = useCallback(
     (event: LayoutChangeEvent) => {
       const { width, height } = event.nativeEvent.layout;
+      setCardWidth(width);
       if (!minHeight) {
         setMinHeight(lastItem ? width / CredentialCardRatio : 60);
       }
@@ -63,8 +69,8 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
   );
 
   return (
-    <Animated.View style={[cardWrapperStyle, style]}>
-      <View style={styles.cardWrapper}>
+    <Animated.View style={[styles.animatedWrapper, animatedCardWrapperStyle, style]}>
+      <View style={[styles.cardWrapper, cardWrapperStyle]}>
         <CredentialDetailsCard
           animate={false}
           expanded={expanded}
@@ -78,9 +84,13 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
 };
 
 const styles = StyleSheet.create({
-  cardWrapper: {
+  animatedWrapper: {
     ...CredentialCardShadow,
-    overflow: 'visible',
+  },
+  cardWrapper: {
+    borderRadius: 10,
+    height: '100%',
+    overflow: 'hidden',
   },
 });
 

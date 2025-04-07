@@ -11,6 +11,7 @@ export interface ColorScheme {
   codeAccent: string;
   credentialHeaderBackground: string;
   error: string;
+  errorText: string;
   grayDark: string;
   linkText: string;
   success: string;

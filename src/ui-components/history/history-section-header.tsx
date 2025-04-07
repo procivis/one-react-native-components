@@ -8,7 +8,7 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 // component used on the history section lists (Settings->History, CredentialDetail->History)
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=1246-51813&mode=dev
 
-const HistorySectionHeader: FC<{
+const HistorySectionHeaderView: FC<{
   day: string;
   testID?: string;
   year?: string;
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HistorySectionHeader;
+export default HistorySectionHeaderView;

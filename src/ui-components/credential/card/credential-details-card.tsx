@@ -78,7 +78,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
     const additionalAttributesHeight = fullAttributesHeight ?? 0;
     const additionalHeight = allAttributesRendered ? additionalAttributesHeight : buttonViewHeight;
-    const newHeight = expanded ? previewAttributesHeight + additionalHeight : 0;
+    const newHeight = expanded || !animate ? previewAttributesHeight + additionalHeight : 0;
 
     if (currentHeight.value === undefined || !animate) {
       currentHeight.value = newHeight;

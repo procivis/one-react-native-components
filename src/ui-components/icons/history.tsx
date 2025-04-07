@@ -1,12 +1,63 @@
 import React, { FC } from 'react';
-import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 import Svg, { G, Path, Rect, SvgProps } from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
-import { CredentialWarningIcon } from './credential';
+
+export const HistoryCredentialIcon: FC<SvgProps> = (props) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width={48} height={48} viewBox="0 0 48 48" fill="none" {...props}>
+      <Rect width={48} height={48} rx={24} fill={colorScheme.background} />
+      <Path
+        d="M23.79 24.82a.728.728 0 00-.5.188.61.61 0 00-.212.476v2.461l.07 1.125-.546-.562-.61-.625a.832.832 0 00-.219-.156.63.63 0 00-.71.11.593.593 0 00-.172.436.622.622 0 00.218.485l2.125 1.945c.094.084.183.146.266.188a.67.67 0 00.29.062.62.62 0 00.28-.062c.089-.042.18-.104.274-.188l2.125-1.945a.62.62 0 00.219-.484.58.58 0 00-.18-.438.63.63 0 00-.703-.11.833.833 0 00-.22.157l-.608.625-.547.562.07-1.125v-2.46a.61.61 0 00-.21-.477.728.728 0 00-.5-.188zm-4.173 8.055c-.86 0-1.513-.224-1.96-.672-.444-.448-.665-1.104-.665-1.969V18.492c0-.86.221-1.515.664-1.969.448-.453 1.102-.68 1.961-.68h3.555v6.04c0 .958.476 1.437 1.43 1.437h5.984v6.914c0 .865-.224 1.521-.672 1.97-.448.447-1.099.671-1.953.671h-8.344zm5.211-10.758c-.307 0-.46-.15-.46-.453v-5.742c.187.02.374.099.562.234.187.13.383.3.586.508l4.242 4.29c.213.218.385.421.515.608a1.3 1.3 0 01.235.555h-5.68z"
+        fill={colorScheme.accent}
+      />
+    </Svg>
+  );
+};
+
+export const HistorySchemaIcon: FC<SvgProps> = (props) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width={48} height={48} viewBox="0 0 48 48" fill="none" {...props}>
+      <Rect width={48} height={48} rx={24} fill={colorScheme.background} />
+      <Path
+        d="M16.992 25.008v-6.516c0-.86.221-1.515.664-1.969.448-.453 1.102-.68 1.961-.68h3.555v6.04c0 .958.476 1.437 1.43 1.437h5.984v6.914c0 .865-.224 1.521-.672 1.97-.448.447-1.099.671-1.953.671h-6.54c.246-.39.433-.813.563-1.266.136-.448.203-.914.203-1.398 0-.714-.135-1.383-.406-2.008a5.184 5.184 0 00-1.125-1.656 5.184 5.184 0 00-3.664-1.54zm7.836-2.89c-.307 0-.46-.152-.46-.454v-5.742c.187.02.374.099.562.234.187.13.383.3.586.508l4.242 4.29c.213.218.385.421.515.608a1.3 1.3 0 01.235.555h-5.68zm-7.836 12.155c-.557 0-1.08-.106-1.57-.32a4.087 4.087 0 01-1.29-.883c-.374-.37-.668-.8-.882-1.289a3.885 3.885 0 01-.32-1.57c0-.563.107-1.086.32-1.57a4.18 4.18 0 01.883-1.297c.37-.375.8-.667 1.289-.875a3.884 3.884 0 011.57-.32c.557 0 1.08.106 1.57.32.49.208.922.5 1.297.875a3.982 3.982 0 011.188 2.867c0 .552-.107 1.073-.32 1.562-.209.49-.5.922-.875 1.297a4.18 4.18 0 01-1.297.883c-.49.214-1.01.32-1.563.32zm0-1.468a.56.56 0 00.414-.157.56.56 0 00.157-.414v-1.453h1.453a.55.55 0 00.57-.57.545.545 0 00-.57-.57h-1.453v-1.446a.56.56 0 00-.157-.414.56.56 0 00-.414-.156.56.56 0 00-.414.156.56.56 0 00-.156.414v1.446h-1.453a.56.56 0 00-.414.156.56.56 0 00-.157.414.545.545 0 00.57.57h1.454v1.453c0 .172.052.31.156.414a.56.56 0 00.414.157z"
+        fill={colorScheme.accent}
+      />
+    </Svg>
+  );
+};
+
+export const HistoryBackupCreatedIcon: FC<SvgProps> = (props) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width={48} height={48} viewBox="0 0 48 48" fill="none" {...props}>
+      <Rect width={48} height={48} rx={24} fill={colorScheme.background} />
+      <Path
+        d="M21.21 35.156c-.853 0-1.507-.218-1.96-.656-.448-.438-.677-1.078-.688-1.922v-.094h7.594c.787 0 1.461-.15 2.024-.453a3.102 3.102 0 001.304-1.297c.302-.562.453-1.234.453-2.015v-6.422h.29c.864 0 1.52.224 1.968.672.453.442.68 1.093.68 1.953v7.61c0 .853-.227 1.505-.68 1.952-.448.448-1.104.672-1.968.672H21.21zm-4.07-3.812c-.864 0-1.523-.224-1.976-.672-.448-.443-.672-1.094-.672-1.953v-7.61c0-.859.224-1.51.672-1.953.453-.448 1.112-.672 1.977-.672h9.015c.865 0 1.521.224 1.969.672.453.443.68 1.094.68 1.953v7.61c0 .86-.227 1.51-.68 1.953-.448.448-1.104.672-1.969.672h-9.015zm4.508-17.055a.764.764 0 00-.57.242.75.75 0 00-.234.547v7.758l.07 1.164-.39-.523-1.047-1.118a.708.708 0 00-.54-.234.702.702 0 00-.492.195.63.63 0 00-.203.485c0 .182.073.349.219.5l2.57 2.468c.104.1.206.17.305.211a.799.799 0 00.617 0c.104-.041.209-.112.313-.21l2.562-2.47a.694.694 0 00.227-.5c0-.197-.07-.359-.211-.484a.702.702 0 00-.492-.195.67.67 0 00-.532.234l-1.047 1.118-.39.523.062-1.164v-7.758a.75.75 0 00-.234-.547.739.739 0 00-.563-.242z"
+        fill={colorScheme.accent}
+      />
+    </Svg>
+  );
+};
+
+export const HistoryBackupRestoredIcon: FC<SvgProps> = (props) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <Svg width={48} height={48} viewBox="0 0 48 48" fill="none" {...props}>
+      <Rect width={48} height={48} rx={24} fill={colorScheme.background} />
+      <Path
+        d="M17.14 31.344c-.864 0-1.523-.224-1.976-.672-.448-.443-.672-1.094-.672-1.953v-7.61c0-.859.224-1.51.672-1.953.453-.448 1.112-.672 1.977-.672h9.015c.865 0 1.521.224 1.969.672.453.443.68 1.094.68 1.953v7.61c0 .86-.227 1.51-.68 1.953-.448.448-1.104.672-1.969.672h-9.015zm4.508-6.43a.75.75 0 00.563-.234.75.75 0 00.234-.547v-7.766l-.062-1.156.453.594.984 1.047a.67.67 0 00.532.234.718.718 0 00.492-.188c.14-.13.21-.294.21-.492a.677.677 0 00-.226-.5l-2.562-2.469a.848.848 0 00-.313-.21.797.797 0 00-.617 0 .872.872 0 00-.305.21l-2.57 2.47a.689.689 0 00-.219.5c0 .197.068.361.203.491.14.125.305.188.492.188a.709.709 0 00.54-.234l.976-1.047.461-.594-.07 1.156v7.766c0 .208.078.39.234.547a.777.777 0 00.57.234zm-.437 10.242c-.854 0-1.508-.218-1.961-.656-.448-.438-.677-1.078-.688-1.922v-.094h7.594c.787 0 1.461-.15 2.024-.453a3.102 3.102 0 001.304-1.297c.302-.562.453-1.234.453-2.015v-6.414h.29c.864 0 1.52.224 1.968.672.453.442.68 1.093.68 1.953v7.601c0 .854-.227 1.505-.68 1.953-.448.448-1.104.672-1.968.672H21.21z"
+        fill={colorScheme.accent}
+      />
+    </Svg>
+  );
+};
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-99608
-export const HistoryShareIcon: FC<SvgProps> = (props) => {
+export const HistoryProofRequestIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="48" viewBox="0 0 48 48" width="48" {...props}>
@@ -61,6 +112,17 @@ export const HistorySuspendIcon: FC<SvgProps> = (props) => {
   );
 };
 
+// TODO: replace HistoryDidIcon with icon of schema
+export const HistoryDidIcon = HistoryIssueIcon;
+
+// TODO: replace HistoryKeyIcon with icon of schema
+export const HistoryKeyIcon = HistoryIssueIcon;
+
+// TODO: replace HistoryOrganisationIcon with icon of schema
+export const HistoryOrganisationIcon = HistoryIssueIcon;
+
+// STATUS
+
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-100241
 export const HistoryStatusAcceptedIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
@@ -85,7 +147,7 @@ export const HistoryStatusAcceptedIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=415-5402&node-type=frame&t=MNBdPiFol0J4XsBR-0
-const HistoryStatusDeleteIcon: FC<SvgProps> = (props) => {
+export const HistoryStatusDeleteIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="22" viewBox="0 0 22 22" width="22" {...props}>
@@ -109,7 +171,7 @@ const HistoryStatusDeleteIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=426-27862
-const HistoryStatusErrorIcon: FC<SvgProps> = (props) => {
+export const HistoryStatusErrorIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="22" viewBox="0 0 22 22" width="22" {...props}>
@@ -132,7 +194,7 @@ const HistoryStatusErrorIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=544-93347
-const HistoryStatusSuspendIcon: FC<SvgProps> = (props) => {
+export const HistoryStatusSuspendIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="22" viewBox="0 0 22 22" width="22" {...props}>
@@ -155,7 +217,7 @@ const HistoryStatusSuspendIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=544-93350
-const HistoryStatusSuspendTemporaryIcon: FC<SvgProps> = (props) => {
+export const HistoryStatusSuspendTemporaryIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="22" viewBox="0 0 22 22" width="22" {...props}>
@@ -186,7 +248,7 @@ const HistoryStatusSuspendTemporaryIcon: FC<SvgProps> = (props) => {
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=493-79830
-const HistoryStatusIndicatorIcon: FC<SvgProps> = (props) => {
+export const HistoryStatusIndicatorIcon: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height="16" viewBox="0 0 16 16" width="16" {...props}>
@@ -228,135 +290,18 @@ const HistoryStatusIndicatorIcon: FC<SvgProps> = (props) => {
   );
 };
 
-export enum HistoryStatusIconType {
-  Success,
-  Warning,
-  Error,
-  Delete,
-  Suspend,
-  SuspendTemporary,
-  Indicator,
-}
-
-export interface HistoryStatusIconProps extends SvgProps {
-  type: HistoryStatusIconType;
-}
-
-export const HistoryStatusIcon: FC<HistoryStatusIconProps> = ({ type, ...props }) => {
-  let StatusIcon = HistoryStatusAcceptedIcon;
-  switch (type) {
-    case HistoryStatusIconType.Success:
-      StatusIcon = HistoryStatusAcceptedIcon;
-      break;
-    case HistoryStatusIconType.Warning:
-      StatusIcon = CredentialWarningIcon;
-      break;
-    case HistoryStatusIconType.Error:
-      StatusIcon = HistoryStatusErrorIcon;
-      break;
-    case HistoryStatusIconType.Delete:
-      StatusIcon = HistoryStatusDeleteIcon;
-      break;
-    case HistoryStatusIconType.Suspend:
-      StatusIcon = HistoryStatusSuspendIcon;
-      break;
-    case HistoryStatusIconType.SuspendTemporary:
-      StatusIcon = HistoryStatusSuspendTemporaryIcon;
-      break;
-    case HistoryStatusIconType.Indicator:
-      StatusIcon = HistoryStatusIndicatorIcon;
-      break;
-  }
-
-  return <StatusIcon {...props} />;
+export type HistoryItemIconProps = ViewProps & {
+  StatusIcon: FC<SvgProps>;
+  TypeIcon: FC<SvgProps>;
 };
 
-export enum HistoryActionIconType {
-  Issue,
-  IssueReject,
-  Request,
-  RequestDeleted,
-  RequestReject,
-  Revalidate,
-  Revoke,
-  Share,
-  ShareReject,
-  Suspend,
-  SuspendTemporary,
-  Error,
-}
-
-export type HistoryActionIconProps = ViewProps &
-  (
-    | {
-        type: HistoryActionIconType;
-      }
-    | {
-        statusIcon: HistoryStatusIconType;
-        TypeIcon: FC<SvgProps>;
-      }
-  );
-
-export const HistoryActionIcon: FC<HistoryActionIconProps> = (props) => {
-  let TypeIcon = HistoryShareIcon;
-  let statusIcon = HistoryStatusIconType.Success;
-  let style: StyleProp<ViewStyle>;
-  let viewProps: ViewProps;
-
-  if ('type' in props) {
-    const { type, style: styleProp, ...otherProps } = props;
-    style = styleProp;
-    viewProps = otherProps;
-
-    switch (type) {
-      case HistoryActionIconType.Issue:
-        TypeIcon = HistoryIssueIcon;
-        break;
-      case HistoryActionIconType.IssueReject:
-        TypeIcon = HistoryIssueIcon;
-        break;
-      case HistoryActionIconType.Revoke:
-        TypeIcon = HistoryRevokeIcon;
-        break;
-      case HistoryActionIconType.Revalidate:
-      case HistoryActionIconType.Suspend:
-      case HistoryActionIconType.SuspendTemporary:
-        TypeIcon = HistorySuspendIcon;
-        break;
-    }
-
-    switch (type) {
-      case HistoryActionIconType.IssueReject:
-        statusIcon = HistoryStatusIconType.Error;
-        break;
-      case HistoryActionIconType.ShareReject:
-      case HistoryActionIconType.Error:
-      case HistoryActionIconType.Revoke:
-      case HistoryActionIconType.RequestReject:
-        statusIcon = HistoryStatusIconType.Error;
-        break;
-      case HistoryActionIconType.Suspend:
-        statusIcon = HistoryStatusIconType.Suspend;
-        break;
-      case HistoryActionIconType.SuspendTemporary:
-        statusIcon = HistoryStatusIconType.SuspendTemporary;
-        break;
-      case HistoryActionIconType.RequestDeleted:
-        statusIcon = HistoryStatusIconType.Delete;
-        break;
-    }
-  } else {
-    const { TypeIcon: TypeIconProp, statusIcon: statusIconProp, style: styleProp, ...otherProps } = props;
-    TypeIcon = TypeIconProp;
-    statusIcon = statusIconProp;
-    style = styleProp;
-    viewProps = otherProps;
-  }
+export const HistoryItemIcon: FC<HistoryItemIconProps> = (props) => {
+  const { TypeIcon, StatusIcon, style, ...viewProps } = props;
 
   return (
     <View style={[styles.wrapper, style]} {...viewProps}>
       <TypeIcon style={styles.round} />
-      <HistoryStatusIcon style={styles.status} type={statusIcon} />
+      <StatusIcon style={styles.status} />
     </View>
   );
 };

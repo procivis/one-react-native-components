@@ -11,6 +11,7 @@ const defaultColorScheme: ColorScheme = {
   codeAccent: '#CFD2E7',
   credentialHeaderBackground: 'rgba(255, 255, 255, 0.87)',
   error: '#D90D0D',
+  errorText: '#A73535',
   grayDark: '#CDD4DA',
   linkText: '#3F7BA6',
   success: '#00D066',

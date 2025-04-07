@@ -1,5 +1,5 @@
-import { FC, ReactNode } from 'react';
-import React, { ColorValue, StyleSheet, View, ViewProps } from 'react-native';
+import React, { ComponentType, FC, ReactElement, useMemo } from 'react';
+import { ColorValue, StyleSheet, View, ViewProps } from 'react-native';
 
 import { concatTestID } from '../../utils/testID';
 import Typography from '../text/typography';
@@ -11,7 +11,7 @@ export type DataItemProps = ViewProps & {
   multiline?: boolean;
   value: string;
   valueColor?: ColorValue;
-  valueIcon?: ReactNode;
+  valueIcon?: ComponentType<any> | ReactElement;
 };
 
 const DataItem: FC<DataItemProps> = ({
@@ -27,6 +27,15 @@ const DataItem: FC<DataItemProps> = ({
 }) => {
   const colorScheme = useAppColorScheme();
 
+  const valueIconView: ReactElement | undefined = useMemo(() => {
+    if (React.isValidElement(valueIcon)) {
+      return valueIcon;
+    } else if (valueIcon) {
+      const IconComponent = valueIcon as ComponentType<any>;
+      return <IconComponent />;
+    }
+  }, [valueIcon]);
+
   return (
     <View
       style={[styles.dataItem, { borderColor: colorScheme.background }, last && styles.last, style]}
@@ -41,7 +50,7 @@ const DataItem: FC<DataItemProps> = ({
       </Typography>
 
       <View style={styles.value}>
-        {valueIcon}
+        {valueIconView}
         <Typography
           color={valueColor ?? colorScheme.text}
           numberOfLines={multiline ? undefined : 1}
