@@ -1,56 +1,22 @@
-import { Claim, ClaimValue, DataTypeEnum, ProofInputClaim } from '@procivis/react-native-one-core';
 import React, { ComponentType, FC, ReactElement, useEffect, useMemo } from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet, View } from 'react-native';
 
 import { CredentialDetails, CredentialDetailsProps, EntityDetails, EntityDetailsProps } from '../../components';
 import { HeaderInfoButton } from '../../components/navigation/header-buttons';
 import { CardLabels, concatTestID, useCredentialListExpandedCard } from '../../utils';
-import { nonEmptyFilter } from '../../utils/filtering';
 import { BackButton } from '../buttons';
-import { CredentialHeader, CredentialHeaderProps } from '../credential';
+import {
+  CredentialDetailsCardListItem,
+  CredentialDetailsCardListItemProps,
+  CredentialHeader,
+  CredentialHeaderProps,
+} from '../credential';
 import { ScrollViewScreen } from '../screens';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 import DataItem from './data-item';
-
-const claimFromProofInputClaim = (input: ProofInputClaim): Claim | undefined => {
-  const value = claimValueFromProofInputClaim(input);
-  if (!value) {
-    return undefined;
-  }
-  return {
-    ...value,
-    id: input.schema.id,
-    key: input.schema.key,
-  };
-};
-
-const claimValueFromProofInputClaim = ({ schema, value }: ProofInputClaim): ClaimValue | undefined => {
-  if (!value) {
-    return undefined;
-  }
-
-  if (Array.isArray(value)) {
-    const values = value.map(claimFromProofInputClaim).filter(nonEmptyFilter);
-    return schema.dataType === (DataTypeEnum.Object as string)
-      ? {
-          array: schema.array,
-          dataType: DataTypeEnum.Object,
-          value: values,
-        }
-      : {
-          array: true,
-          dataType: schema.dataType,
-          value: values,
-        };
-  }
-
-  return {
-    array: false,
-    dataType: schema.dataType,
-    value,
-  };
-};
+import { TouchableOpacity } from '../accessibility';
+import { NextIcon } from '../icons';
 
 export type HistoryDetailsLabels = {
   credentialCard: CardLabels;
@@ -63,13 +29,29 @@ export type HistoryDetailsLabels = {
   title: string;
 };
 
+type CredentialDetails = Omit<
+  CredentialDetailsProps,
+  'expanded' | 'labels' | 'lastItem' | 'onHeaderPress' | 'onImagePreview'
+>;
+
+type CredentialCard = Omit<
+  CredentialDetailsCardListItemProps,
+  'expanded' | 'labels' | 'lastItem' | 'onHeaderPress' | 'onImagePreview'
+>;
+
 export type HistoryDetailsViewProps = {
   assets?: {
-    credentialHeader?: CredentialHeaderProps;
-    credentialsDetails?: Omit<
-      CredentialDetailsProps,
-      'expanded' | 'labels' | 'lastItem' | 'onHeaderPress' | 'onImagePreview'
-    >[];
+    header?: CredentialHeaderProps & {
+      onPressed?: () => void;
+    };
+    cards?: (
+      | {
+          credentialDetails: CredentialDetails;
+        }
+      | {
+          credentialCard: CredentialCard;
+        }
+    )[];
   };
   data: {
     header?:
@@ -86,6 +68,7 @@ export type HistoryDetailsViewProps = {
       color: ColorValue;
     };
   };
+  headerButton?: ReactElement;
   labels: HistoryDetailsLabels;
   onBackPressed: () => void;
   onInfoPressed?: () => void;
@@ -96,6 +79,7 @@ export type HistoryDetailsViewProps = {
 export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
   assets,
   data,
+  headerButton,
   labels,
   onBackPressed,
   onInfoPressed,
@@ -107,12 +91,22 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
 
   // Expand the first credential
   useEffect(() => {
-    if (assets?.credentialsDetails && assets.credentialsDetails.length > 0) {
-      setInitialCredential(assets.credentialsDetails[0].credentialId);
+    if (assets?.cards && assets.cards.length > 0) {
+      let id =
+        'credentialDetails' in assets.cards[0]
+          ? assets.cards[0].credentialDetails.credentialId
+          : assets.cards[0].credentialCard.card.credentialId;
+      if (id) {
+        setInitialCredential(id);
+      }
     }
-  }, [assets?.credentialsDetails, setInitialCredential]);
+  }, [assets?.cards, setInitialCredential]);
 
-  const moreInfoIcon = useMemo(() => {
+  const moreInfoHeaderButton = useMemo(() => {
+    if (headerButton) {
+      return headerButton;
+    }
+
     if (!onInfoPressed) {
       return undefined;
     }
@@ -124,13 +118,13 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
         accessibilityLabel={labels.infoButtonAccessibility ?? ''}
       />
     );
-  }, [labels.infoButtonAccessibility, onInfoPressed, testID]);
+  }, [headerButton, labels.infoButtonAccessibility, onInfoPressed, testID]);
 
   return (
     <ScrollViewScreen
       header={{
         leftItem: <BackButton onPress={onBackPressed} testID={concatTestID(testID, 'header', 'back')} />,
-        rightItem: moreInfoIcon,
+        rightItem: moreInfoHeaderButton,
         static: true,
         title: labels.title,
       }}
@@ -148,7 +142,8 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
         {data.header && 'credentialHeader' in data.header && (
           <CredentialHeader
             {...data.header.credentialHeader}
-            style={[styles.entity, { borderColor: colorScheme.background }, data.header.credentialHeader.style]}
+            blur={false}
+            style={[styles.header, { borderColor: colorScheme.background }, data.header.credentialHeader.style]}
           />
         )}
         <DataItem attribute={labels.data.date} value={data.date} />
@@ -164,26 +159,58 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
       <Typography color={colorScheme.text} preset="m" style={styles.sectionHeader}>
         {labels.relatedAssets}
       </Typography>
-      {assets?.credentialHeader && (
-        <CredentialHeader {...assets.credentialHeader} style={[assets.credentialHeader.style]} />
+      
+      {assets?.header && (
+        <TouchableOpacity disabled={!assets.header.onPressed} onPress={assets.header.onPressed}>
+          <CredentialHeader
+            {...assets.header}
+            accessory={assets.header.onPressed ? <NextIcon color={colorScheme.text} /> : undefined}
+            blur={false}
+            style={[styles.assetsHeader, assets.header.style]} />
+        </TouchableOpacity>
       )}
-      {assets?.credentialsDetails?.map((props, index, { length }) => (
-        <View key={props.credentialId} style={styles.credential}>
-          <CredentialDetails
-            {...props}
-            expanded={expandedCredential === props.credentialId}
-            labels={labels.credentialCard}
-            lastItem={index === length - 1}
-            onHeaderPress={onHeaderPress}
-            onImagePreview={onImagePreview}
-          />
-        </View>
-      ))}
+      {assets?.cards?.map((props, index, { length }) => {
+        if ('credentialDetails' in props) {
+          return (
+            <View key={props.credentialDetails.credentialId} style={styles.credential}>
+              <CredentialDetails
+                {...props.credentialDetails}
+                expanded={expandedCredential === props.credentialDetails.credentialId}
+                labels={labels.credentialCard}
+                lastItem={index === length - 1}
+                onHeaderPress={onHeaderPress}
+                onImagePreview={onImagePreview}
+              />
+            </View>
+          );
+        } else {
+          const itemProps = {
+            ...props.credentialCard,
+            card: {
+              ...props.credentialCard.card,
+              onHeaderPress,
+            }
+          };
+          return (
+            <View key={index.toString()} style={styles.credential}>
+              <CredentialDetailsCardListItem
+                {...itemProps}
+                expanded={expandedCredential === props.credentialCard.card.credentialId}
+                lastItem={index === length - 1}
+                onImagePreview={onImagePreview}
+              />
+            </View>
+          );
+        }
+      })}
     </ScrollViewScreen>
   );
 };
 
 const styles = StyleSheet.create({
+  assetsHeader: {
+    borderRadius: 8,
+  },
   content: {
     paddingHorizontal: 16,
     paddingTop: 12,
@@ -194,6 +221,12 @@ const styles = StyleSheet.create({
   entity: {
     borderBottomWidth: 1,
     paddingBottom: 8,
+  },
+  header: {
+    borderBottomWidth: 1,
+    marginTop: -8,
+    paddingBottom: 12,
+    paddingHorizontal: 0,
   },
   section: {
     borderRadius: 8,

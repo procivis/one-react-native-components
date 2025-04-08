@@ -11,7 +11,7 @@ export interface CredentialHeaderProps extends AccessibilityProps {
   accessory?: React.ComponentType<any> | React.ReactElement;
   blur?: boolean;
   color?: ColorValue;
-  credentialDetailPrimary: string;
+  credentialDetailPrimary?: string;
   credentialDetailSecondary?: string;
   credentialDetailTestID?: string;
   credentialDetailErrorColor?: boolean;
@@ -65,6 +65,9 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
   }, [accessory]);
 
   const DetailText = useMemo(() => {
+    if (!credentialDetailPrimary) {
+      return undefined;
+    }
     const commonProps: TypographyProps = {
       color: credentialDetailErrorColor ? colorScheme.error : colorScheme.text,
       ellipsizeMode: 'tail',

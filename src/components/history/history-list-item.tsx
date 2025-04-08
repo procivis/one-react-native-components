@@ -11,6 +11,7 @@ export type HistoryListItemLabels = {
 };
 
 export interface HistoryListItemViewProps {
+  dateFormatter?: (date: Date) => string;
   first?: boolean;
   item: HistoryListItem;
   labels: HistoryListItemLabels;
@@ -19,7 +20,15 @@ export interface HistoryListItemViewProps {
   testID?: string;
 }
 
-export const HistoryListItemView: FC<HistoryListItemViewProps> = ({ first, item, labels, last, onPress, testID }) => {
+export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
+  dateFormatter = formatTime,
+  first,
+  item,
+  labels,
+  last,
+  onPress,
+  testID
+}) => {
   const { data: entity } = useTrustEntity(item.target);
 
   const label = `${labels.entityTypes[item.entityType]} ${labels.actions[item.action]}`;
@@ -38,7 +47,7 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({ first, item,
       last={last}
       onPress={pressHandler}
       testID={testID}
-      time={formatTime(new Date(item.createdDate)) ?? ''}
+      time={dateFormatter(new Date(item.createdDate)) ?? ''}
     />
   );
 };

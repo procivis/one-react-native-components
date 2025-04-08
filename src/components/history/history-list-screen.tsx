@@ -26,7 +26,7 @@ export type HistoryListScreenProps = {
   labels: HistoryListScreenLabels;
   onBackPressed: () => void;
   onHistoryItemPressed: (historyItem: HistoryListItem) => void;
-  onOpenFilter: () => void;
+  onOpenFilter?: () => void;
   onSearchPhraseChange: (searchPhrase: string | undefined) => void;
   queryParams: Partial<HistoryListQuery>;
   testID?: string;
@@ -112,13 +112,13 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
           !searchBarVisible
             ? undefined
             : {
-                rightButton: (
+                rightButton: onOpenFilter ? (
                   <FilterButton
                     active={Boolean(queryParams.credentialSchemaId)}
                     onPress={onOpenFilter}
                     testID={concatTestID(testID, 'filter')}
                   />
-                ),
+                ) : undefined,
                 rightButtonAlwaysVisible: true,
                 searchBarProps: {
                   onSearchPhraseChange: setSearchPhrase,
