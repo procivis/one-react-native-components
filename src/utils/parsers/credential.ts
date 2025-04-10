@@ -207,7 +207,7 @@ const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID
 
   if (claim.array) {
     return {
-      values: claim.value.map((arrayValue, index) => {
+      values: (claim.value || []).map((arrayValue, index) => {
         return detailsCardAttributeFromClaim(
           {
             ...arrayValue,
