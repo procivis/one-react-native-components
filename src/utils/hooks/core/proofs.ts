@@ -38,10 +38,14 @@ export const useProofDetail = (proofId: string | undefined) => {
 export const useProofState = (proofId: string | undefined, isPolling: boolean) => {
   const { core } = useONECore();
 
-  return useQuery([PROOF_STATE_QUERY_KEY, proofId], () => core.getProof(proofId!).then((proof) => proof.state), {
-    enabled: Boolean(proofId),
-    refetchInterval: isPolling ? 1000 : false,
-  });
+  return useQuery(
+    [PROOF_STATE_QUERY_KEY, proofId],
+    () => (proofId ? core.getProof(proofId).then((proof) => proof.state) : undefined),
+    {
+      enabled: Boolean(proofId),
+      refetchInterval: isPolling ? 1000 : false,
+    },
+  );
 };
 
 type ProofUrlHookParams = { proofId: string; request?: ShareProofRequest };
@@ -232,7 +236,7 @@ export const useProofForSchemaIdWithTransport = (
   const [proofId, setProofIdState] = useState<string | undefined>(undefined);
   const proofIdRef = useRef<string>();
 
-  const { data: proofState } = useProofState(proofId, enabled);
+  const { data: proofState } = useProofState(deleting ? undefined : proofId, enabled);
 
   const setProofId = useCallback((id: string | undefined) => {
     proofIdRef.current = id;
