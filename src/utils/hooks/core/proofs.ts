@@ -366,7 +366,7 @@ export const useDeleteProofData = (proofId: string) => {
 
   return useMutation(async () => core.deleteProofClaims(proofId), {
     onSuccess: async () => {
-      await queryClient.invalidateQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
+      await queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });

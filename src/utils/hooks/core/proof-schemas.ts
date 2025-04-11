@@ -111,7 +111,7 @@ export const useProofSchemaDelete = () => {
     onSuccess: async (_, proofSchemaId) => {
       await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
-      await queryClient.invalidateQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
+      await queryClient.removeQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
     },
   });
 };

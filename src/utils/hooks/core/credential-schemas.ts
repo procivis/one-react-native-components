@@ -90,7 +90,7 @@ export const useCredentialSchemaDelete = () => {
   return useMutation(async (credentialSchemaId: string) => core.deleteCredentialSchema(credentialSchemaId), {
     onSuccess: async (_, credentialId) => {
       await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
-      await queryClient.invalidateQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
+      await queryClient.removeQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
