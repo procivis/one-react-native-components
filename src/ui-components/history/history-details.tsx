@@ -120,6 +120,8 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
     );
   }, [headerButton, labels.infoButtonAccessibility, onInfoPressed, testID]);
 
+  const hasAssets = assets && (assets.header || assets.cards?.length);
+
   return (
     <ScrollViewScreen
       header={{
@@ -156,17 +158,20 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
         />
       </View>
 
-      <Typography color={colorScheme.text} preset="m" style={styles.sectionHeader}>
-        {labels.relatedAssets}
-      </Typography>
-      
+      {hasAssets && (
+        <Typography color={colorScheme.text} preset="m" style={styles.sectionHeader}>
+          {labels.relatedAssets}
+        </Typography>
+      )}
+
       {assets?.header && (
         <TouchableOpacity disabled={!assets.header.onPressed} onPress={assets.header.onPressed}>
           <CredentialHeader
             {...assets.header}
             accessory={assets.header.onPressed ? <NextIcon color={colorScheme.text} /> : undefined}
             blur={false}
-            style={[styles.assetsHeader, assets.header.style]} />
+            style={[styles.assetsHeader, assets.header.style]}
+          />
         </TouchableOpacity>
       )}
       {assets?.cards?.map((props, index, { length }) => {
@@ -189,7 +194,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
             card: {
               ...props.credentialCard.card,
               onHeaderPress,
-            }
+            },
           };
           return (
             <View key={index.toString()} style={styles.credential}>
