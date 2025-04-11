@@ -19,6 +19,7 @@ export interface HistoryListViewProps
   extends Omit<SectionListProps<HistoryListItem, HistoryGroupByDaySection>, 'sections'> {
   // optional customization of item props
   getItemProps?: (item: HistoryListItem) => Partial<HistoryListItemViewProps> | undefined;
+  groupItems?: (entries: HistoryListItem[]) => HistoryGroupByDaySection[];
   itemProps?: Partial<HistoryListItemViewProps>;
   labels: HistoryListLabels;
   // callback when empty list displayed
@@ -30,6 +31,7 @@ export const HistoryListView: FC<HistoryListViewProps> = ({
   query,
   contentContainerStyle,
   getItemProps,
+  groupItems = groupEntriesByDay,
   itemProps,
   labels,
   onEmpty,
@@ -56,8 +58,8 @@ export const HistoryListView: FC<HistoryListViewProps> = ({
     if (historyData) {
       setImmediate(() => onEmpty?.(!items.length));
     }
-    return groupEntriesByDay(items);
-  }, [historyData, onEmpty]);
+    return groupItems(items);
+  }, [historyData, onEmpty, groupItems]);
 
   const onEndReached = useCallback(() => {
     if (hasNextHistoryPage) {

@@ -11,7 +11,7 @@ import {
   Typography,
   useAppColorScheme,
 } from '../../ui-components';
-import { concatTestID, useListContentInset } from '../../utils';
+import { concatTestID, groupEntriesByDay, HistoryGroupByDaySection, useListContentInset } from '../../utils';
 import { HistoryListLabels, HistoryListView } from './history-list';
 
 export type HistoryListScreenLabels = {
@@ -23,6 +23,7 @@ export type HistoryListScreenLabels = {
 };
 
 export type HistoryListScreenProps = {
+  groupItems?: (entries: HistoryListItem[]) => HistoryGroupByDaySection[];
   labels: HistoryListScreenLabels;
   onBackPressed: () => void;
   onHistoryItemPressed: (historyItem: HistoryListItem) => void;
@@ -34,6 +35,7 @@ export type HistoryListScreenProps = {
 
 export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = ({
   children,
+  groupItems = groupEntriesByDay,
   labels,
   onBackPressed,
   onHistoryItemPressed,
@@ -89,6 +91,7 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
       )}
       <HistoryListView
         contentContainerStyle={insets}
+        groupItems={groupItems}
         itemProps={{ onPress: onHistoryItemPressed }}
         onEmpty={setEmpty}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffset } } }], {
