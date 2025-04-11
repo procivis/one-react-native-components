@@ -42,7 +42,7 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
     <HistoryItemView
       first={first}
       icon={icon}
-      info={entity?.name ?? item.target ?? ''}
+      info={entity?.name}
       label={label}
       last={last}
       onPress={pressHandler}
