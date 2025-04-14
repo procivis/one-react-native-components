@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { Linking, Platform } from 'react-native';
-import { openSettings } from 'react-native-bluetooth-state-manager';
 
 export const useOpenSettings = () => {
   const openBleSettings = useCallback(() => {
@@ -26,9 +25,9 @@ export const useOpenSettings = () => {
       Linking.sendIntent('android.settings.WIFI_SETTINGS').catch(() => {});
     }
   }, []);
-
+  
   const openAppPermissionSettings = useCallback(() => {
-    openSettings().catch(() => {});
+    Linking.openSettings();
   }, []);
 
   return {
