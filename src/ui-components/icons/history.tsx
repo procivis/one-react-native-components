@@ -121,6 +121,12 @@ export const HistoryKeyIcon = HistoryIssueIcon;
 // TODO: replace HistoryOrganisationIcon with icon of schema
 export const HistoryOrganisationIcon = HistoryIssueIcon;
 
+// TODO: replace HistoryTrustAnchorIcon with icon of schema
+export const HistoryTrustAnchorIcon = HistoryIssueIcon;
+
+// TODO: replace HistoryTrustedEntityIcon with icon of schema
+export const HistoryTrustedEntityIcon = HistoryIssueIcon;
+
 // STATUS
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=454-100241

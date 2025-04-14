@@ -7,6 +7,7 @@ import {
   HistoryBackupRestoredIcon,
   HistoryCredentialIcon,
   HistoryDidIcon,
+  HistoryIssueIcon,
   HistoryItemIcon,
   HistoryKeyIcon,
   HistoryOrganisationIcon,
@@ -18,6 +19,8 @@ import {
   HistoryStatusErrorIcon,
   HistoryStatusSuspendIcon,
   HistorySuspendIcon,
+  HistoryTrustAnchorIcon,
+  HistoryTrustedEntityIcon,
 } from '../../ui-components';
 
 const defaultIcons: {
@@ -46,6 +49,8 @@ const defaultIcons: {
     SUSPENDED: HistoryStatusSuspendIcon,
     UPDATED: HistoryStatusAcceptedIcon,
     WITHDRAWN: HistoryStatusErrorIcon,
+    REACTIVATED: HistoryStatusAcceptedIcon,
+    CSR_GENERATED: HistoryStatusAcceptedIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,
@@ -56,11 +61,13 @@ const defaultIcons: {
     ORGANISATION: HistoryOrganisationIcon,
     PROOF: HistoryProofRequestIcon,
     PROOF_SCHEMA: HistorySchemaIcon,
+    TRUST_ANCHOR: HistoryTrustAnchorIcon,
+    TRUST_ENTITY: HistoryTrustedEntityIcon,
   },
 };
 
 export const getHistoryItemActionIcon = (action: HistoryActionEnum) => {
-  return defaultIcons.actions[action];
+  return defaultIcons.actions[action] ?? HistoryStatusAcceptedIcon;
 };
 
 export type HistoryListItemIconProps = {
@@ -95,7 +102,7 @@ export const HistoryListItemIcon: FC<HistoryListItemIconProps> = ({ item }) => {
         break;
     }
 
-    return defaultIcons.entityTypes[item.entityType];
+    return defaultIcons.entityTypes[item.entityType] ?? HistoryIssueIcon;
   }, [item.action, item.entityType]);
   return <HistoryItemIcon StatusIcon={statusIcon} TypeIcon={typeIcon} />;
 };
