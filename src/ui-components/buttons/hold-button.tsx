@@ -124,6 +124,14 @@ const HoldButtonLayouted = ({
 
   const progress = useSharedValue(0);
 
+  const onLongPress = useCallback(() => {
+    // Fix for detox bug https://github.com/wix/Detox/issues/4754
+    if (isFinished || progress.value !== 0) {
+      return;
+    }
+    setFinished(true);
+  }, [progress, isFinished]);
+
   const onPressIn = useCallback(() => {
     const holdTimeout = holdTimeoutSecs * 1000;
 
@@ -178,6 +186,7 @@ const HoldButtonLayouted = ({
           accessibilityRole="button"
           ref={ref}
           disabled={isFinished || disabled}
+          onLongPress={onLongPress}
           onPressIn={isFinished ? undefined : onPressIn}
           onPressOut={isFinished ? undefined : onPressOut}
           {...props}>
