@@ -353,10 +353,19 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
   return sharedProof;
 };
 
-export const useRetainProofCheck = () => {
+export const useRetainProofCheck = (proofId?: string) => {
+  const queryClient = useQueryClient();
+
   const { core } = useONECore();
 
-  return useMutation(async () => core.runTask('RETAIN_PROOF_CHECK'));
+  return useMutation(async () => core.runTask('RETAIN_PROOF_CHECK'), {
+    onSuccess: async () => {
+      if (proofId) {
+        await queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      }
+    },
+  });
 };
 
 export const useDeleteProofData = (proofId: string) => {

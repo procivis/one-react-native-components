@@ -4,6 +4,7 @@ import { ColorValue, ImageSourcePropType, StyleSheet, View } from 'react-native'
 import { CredentialDetails, CredentialDetailsProps, EntityDetails, EntityDetailsProps } from '../../components';
 import { HeaderInfoButton } from '../../components/navigation/header-buttons';
 import { CardLabels, concatTestID, useCredentialListExpandedCard } from '../../utils';
+import { TouchableOpacity } from '../accessibility';
 import { BackButton } from '../buttons';
 import {
   CredentialDetailsCardListItem,
@@ -11,12 +12,11 @@ import {
   CredentialHeader,
   CredentialHeaderProps,
 } from '../credential';
+import { NextIcon } from '../icons';
 import { ScrollViewScreen } from '../screens';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 import DataItem from './data-item';
-import { TouchableOpacity } from '../accessibility';
-import { NextIcon } from '../icons';
 
 export type HistoryDetailsLabels = {
   credentialCard: CardLabels;
