@@ -19,7 +19,7 @@ export const getEnabledTransports = (config: Config): string[] => {
     .map((transport) => transport.type);
 };
 
-export const getEnabledExchangeProtocols = (exchangeProtocol: ConfigEntities): string[] => {
+export const getEnabledExchangeProtocols = (exchangeProtocol: ConfigEntities<any>): string[] => {
   return Object.values(exchangeProtocol ?? {})
     .filter((t) => t.enabled !== false)
     .map((exchange) => exchange.type);

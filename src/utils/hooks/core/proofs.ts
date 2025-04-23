@@ -122,6 +122,8 @@ export enum IssuanceProtocol {
 export enum VerificationProtocol {
   ISO_MDL = 'ISO_MDL',
   OPENID4VP_DRAFT20 = 'OPENID4VP_DRAFT20',
+  OPENID4VP_DRAFT25 = 'OPENID4VP_DRAFT25',
+  OPENID4VP_PROXIMITY_DRAFT00 = 'OPENID4VP_PROXIMITY_DRAFT00',
   SCAN_TO_VERIFY = 'SCAN_TO_VERIFY',
 }
 
@@ -280,7 +282,7 @@ export const useProofForSchemaIdWithTransport = (
     }
 
     createProof({
-      exchange: VerificationProtocol.OPENID4VP_DRAFT20,
+      exchange: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       proofSchemaId,
       transport,
       verifierDidId: dids.values[0].id,
