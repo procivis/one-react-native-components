@@ -48,7 +48,7 @@ const generateHwDid = async (core: ONECore, organisationId: string) => {
 const generateSwDid = async (core: ONECore, organisationId: string) => {
   const swKeyId = await core.generateKey({
     keyParams: {},
-    keyType: 'EDDSA',
+    keyType: 'ECDSA',
     name: 'holder-key-sw',
     organisationId,
     storageParams: {},
