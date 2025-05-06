@@ -66,6 +66,7 @@ export type HistoryDetailsViewProps = {
       icon: ComponentType<any> | ReactElement;
       label: string;
       color: ColorValue;
+      testID?: string;
     };
   };
   headerButton?: ReactElement;
@@ -152,6 +153,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
         <DataItem
           attribute={labels.data.action}
           last
+          testID={data.action.testID}
           value={data.action.label}
           valueColor={data.action.color}
           valueIcon={data.action.icon}

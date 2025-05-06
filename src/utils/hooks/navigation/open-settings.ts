@@ -27,7 +27,7 @@ export const useOpenSettings = () => {
   }, []);
   
   const openAppPermissionSettings = useCallback(() => {
-    Linking.openSettings();
+    Linking.openSettings().catch(() => {});
   }, []);
 
   return {

@@ -11,7 +11,7 @@ import {
   HistoryDetailsView,
   HistoryDetailsViewProps,
 } from '../../ui-components/history/history-details';
-import { capitalizeFirstLetter, formatDateTimeLocalized } from '../../utils';
+import { capitalizeFirstLetter, concatTestID, formatDateTimeLocalized } from '../../utils';
 import { HistoryListItemLabels } from './history-list-item';
 import { getHistoryItemActionIcon } from './history-list-item-icon';
 
@@ -75,6 +75,7 @@ export const HistoryDetailsScreen: FC<HistoryDetailsScreenProps> = ({
           icon: getHistoryItemActionIcon(item.action),
           label: capitalizeFirstLetter(labels.item.actions[item.action]),
           color: actionValueColor,
+          testID: concatTestID(testID, 'action', item.action),
         },
       }}
       headerButton={headerButton}
