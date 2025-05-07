@@ -1,0 +1,24 @@
+diff --git a/dist/index.js b/dist/index.js
+index 4f699876d1902f758c3af4df5438e8ecc78bd6b4..cd945548364ca6e29b94e7a55cf8153187b70006 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -25,6 +25,7 @@ export { default as NativeEventEmitter } from './exports/NativeEventEmitter';
+ export { default as PanResponder } from './exports/PanResponder';
+ export { default as PixelRatio } from './exports/PixelRatio';
+ export { default as Platform } from './exports/Platform';
++export { default as Settings } from './exports/I18nManager';
+ export { default as Share } from './exports/Share';
+ export { default as StyleSheet } from './exports/StyleSheet';
+ export { default as UIManager } from './exports/UIManager';
+diff --git a/src/index.js b/src/index.js
+index f1a6f23fca1cc5971412cdf39d95384a4663bc3e..58479479651b7e7f170256846b5120665739a932 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -26,6 +26,7 @@ export { default as NativeEventEmitter } from './exports/NativeEventEmitter';
+ export { default as PanResponder } from './exports/PanResponder';
+ export { default as PixelRatio } from './exports/PixelRatio';
+ export { default as Platform } from './exports/Platform';
++export { default as Settings } from './exports/I18nManager';
+ export { default as Share } from './exports/Share';
+ export { default as StyleSheet } from './exports/StyleSheet';
+ export { default as UIManager } from './exports/UIManager';
