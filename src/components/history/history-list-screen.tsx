@@ -13,6 +13,7 @@ import {
 } from '../../ui-components';
 import { concatTestID, groupEntriesByDay, HistoryGroupByDaySection, useListContentInset } from '../../utils';
 import { HistoryListLabels, HistoryListView } from './history-list';
+import { HistoryListItemViewProps } from './history-list-item';
 
 export type HistoryListScreenLabels = {
   emptyTitle: string;
@@ -24,6 +25,7 @@ export type HistoryListScreenLabels = {
 
 export type HistoryListScreenProps = {
   groupItems?: (entries: HistoryListItem[]) => HistoryGroupByDaySection[];
+  itemInfoLabelMode?: HistoryListItemViewProps['infoLabelMode'];
   labels: HistoryListScreenLabels;
   onBackPressed: () => void;
   onHistoryItemPressed: (historyItem: HistoryListItem) => void;
@@ -36,6 +38,7 @@ export type HistoryListScreenProps = {
 export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = ({
   children,
   groupItems = groupEntriesByDay,
+  itemInfoLabelMode = 'entity',
   labels,
   onBackPressed,
   onHistoryItemPressed,
@@ -92,7 +95,7 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
       <HistoryListView
         contentContainerStyle={insets}
         groupItems={groupItems}
-        itemProps={{ onPress: onHistoryItemPressed }}
+        itemProps={{ infoLabelMode: itemInfoLabelMode, onPress: onHistoryItemPressed }}
         onEmpty={setEmpty}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffset } } }], {
           useNativeDriver: true,

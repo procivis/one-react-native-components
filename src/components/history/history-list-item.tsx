@@ -13,6 +13,7 @@ export type HistoryListItemLabels = {
 export interface HistoryListItemViewProps {
   dateFormatter?: (date: Date) => string;
   first?: boolean;
+  infoLabelMode?: 'entity' | 'associatedLabel' | 'none';
   item: HistoryListItem;
   labels: HistoryListItemLabels;
   last?: boolean;
@@ -23,15 +24,25 @@ export interface HistoryListItemViewProps {
 export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
   dateFormatter = formatTime,
   first,
+  infoLabelMode = 'entity',
   item,
   labels,
   last,
   onPress,
   testID
 }) => {
-  const { data: entity } = useTrustEntity(item.target);
+  const { data: entity } = useTrustEntity(infoLabelMode === 'entity' ? item.target : undefined);
 
   const label = `${labels.entityTypes[item.entityType]} ${labels.actions[item.action]}`;
+  let infoLabel;
+  switch (infoLabelMode) {
+    case 'entity':
+      infoLabel = entity?.name;
+      break;
+    case 'associatedLabel':
+      infoLabel = item.name;
+      break;
+  }
   const icon = <HistoryListItemIcon item={item} />;
 
   const pressHandler = useCallback(() => {
@@ -42,7 +53,7 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
     <HistoryItemView
       first={first}
       icon={icon}
-      info={entity?.name}
+      info={infoLabel}
       label={label}
       last={last}
       onPress={pressHandler}
