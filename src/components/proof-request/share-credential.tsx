@@ -70,7 +70,8 @@ export const ShareCredential: FunctionComponent<{
     credential
       ? {
           ...credential,
-          issuerDid: credential?.issuerDid?.did,
+          issuerDid: credential?.issuerDid?.id,
+          issuer: credential?.issuer?.id,
         }
       : undefined,
   );

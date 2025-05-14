@@ -75,13 +75,15 @@ export const useProofAccept = () => {
       interactionId,
       credentials,
       didId,
+      identifierId,
       keyId,
     }: {
       credentials: Record<string, PresentationSubmitCredentialRequest>;
-      didId: string;
+      didId?: string;
+      identifierId?: string;
       interactionId: string;
       keyId?: string;
-    }) => core.holderSubmitProof(interactionId, credentials, didId, keyId),
+    }) => core.holderSubmitProof(interactionId, credentials, didId, identifierId, keyId),
     {
       onError: async () => {
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);

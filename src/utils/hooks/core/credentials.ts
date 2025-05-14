@@ -95,11 +95,17 @@ export const useCredentialAccept = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  type CredentialAcceptHookParams = { didId: string; interactionId: string; keyId?: string; txCode?: string };
+  type CredentialAcceptHookParams = {
+    didId?: string;
+    identifierId?: string;
+    interactionId: string;
+    keyId?: string;
+    txCode?: string;
+  };
 
   return useMutation(
-    async ({ interactionId, didId, keyId, txCode }: CredentialAcceptHookParams) =>
-      core.holderAcceptCredential(interactionId, didId, keyId, txCode),
+    async ({ interactionId, didId, identifierId, keyId, txCode }: CredentialAcceptHookParams) =>
+      core.holderAcceptCredential(interactionId, didId, identifierId, keyId, txCode),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);

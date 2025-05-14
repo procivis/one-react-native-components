@@ -114,6 +114,8 @@ export const HistorySuspendIcon: FC<SvgProps> = (props) => {
 
 // TODO: replace HistoryDidIcon with icon of schema
 export const HistoryDidIcon = HistoryIssueIcon;
+export const HistoryIdentifierIcon = HistoryIssueIcon;
+export const HistoryCertificateIcon = HistoryIssueIcon;
 
 // TODO: replace HistoryKeyIcon with icon of schema
 export const HistoryKeyIcon = HistoryIssueIcon;
