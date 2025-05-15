@@ -34,7 +34,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
       testID: 'trustRegistry',
     }),
     ...addElementIf(Boolean(did), {
-      attributeKey: entityType === EntityType.CredentialEntity ? labels.issuerDid : labels.entityDid,
+      attributeKey: entityType === EntityType.CredentialEntity ? labels.issuerIdentifier : labels.entityIdentifier,
       attributeText: identifier,
       canBeCopied: true,
       highlightedText: didMethod,

@@ -8,7 +8,7 @@ import { OneErrorCode } from './error-code';
 export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
 
-const generateHwDid = async (core: ONECore, organisationId: string) => {
+const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
   const hwKeyId = await core
     .generateKey({
       keyParams: {},
@@ -27,25 +27,27 @@ const generateHwDid = async (core: ONECore, organisationId: string) => {
     });
 
   if (hwKeyId) {
-    return core.createDid({
-      didMethod: 'KEY',
-      keys: {
-        assertionMethod: [hwKeyId],
-        authentication: [hwKeyId],
-        capabilityDelegation: [hwKeyId],
-        capabilityInvocation: [hwKeyId],
-        keyAgreement: [hwKeyId],
+    return core.createIdentifier({
+      did: {
+        method: 'KEY',
+        keys: {
+          assertionMethod: [hwKeyId],
+          authentication: [hwKeyId],
+          capabilityDelegation: [hwKeyId],
+          capabilityInvocation: [hwKeyId],
+          keyAgreement: [hwKeyId],
+        },
+        params: {},
       },
       name: HW_DID_NAME_PREFIX,
       organisationId,
-      params: {},
     });
   }
 
   return null;
 };
 
-const generateSwDid = async (core: ONECore, organisationId: string) => {
+const generateSwIdentifier = async (core: ONECore, organisationId: string) => {
   const swKeyId = await core.generateKey({
     keyParams: {},
     keyType: 'ECDSA',
@@ -55,18 +57,20 @@ const generateSwDid = async (core: ONECore, organisationId: string) => {
     storageType: 'INTERNAL',
   });
 
-  return core.createDid({
-    didMethod: 'KEY',
-    keys: {
-      assertionMethod: [swKeyId],
-      authentication: [swKeyId],
-      capabilityDelegation: [swKeyId],
-      capabilityInvocation: [swKeyId],
-      keyAgreement: [swKeyId],
+  return core.createIdentifier({
+    did: {
+      method: 'KEY',
+      keys: {
+        assertionMethod: [swKeyId],
+        authentication: [swKeyId],
+        capabilityDelegation: [swKeyId],
+        capabilityInvocation: [swKeyId],
+        keyAgreement: [swKeyId],
+      },
+      params: {},
     },
     name: SW_DID_NAME_PREFIX,
     organisationId,
-    params: {},
   });
 };
 
@@ -94,8 +98,8 @@ export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }
       })
       .then(() =>
         Promise.all([
-          generateHwKey ? generateHwDid(core, organisationId) : null,
-          generateSwKey ? generateSwDid(core, organisationId) : null,
+          generateHwKey ? generateHwIdentifier(core, organisationId) : null,
+          generateSwKey ? generateSwIdentifier(core, organisationId) : null,
         ]),
       )
       .catch((err) => {

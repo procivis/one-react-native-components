@@ -40,13 +40,13 @@ export const validityCheckedCardFromCredential = (
 ): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID'> => {
   let credentialHeaderDetail:
     | Pick<
-        CredentialHeaderProps,
-        | 'credentialDetailPrimary'
-        | 'credentialDetailSecondary'
-        | 'credentialDetailErrorColor'
-        | 'credentialDetailTestID'
-        | 'statusIcon'
-      >
+      CredentialHeaderProps,
+      | 'credentialDetailPrimary'
+      | 'credentialDetailSecondary'
+      | 'credentialDetailErrorColor'
+      | 'credentialDetailTestID'
+      | 'statusIcon'
+    >
     | undefined;
   if (invalidLVVC) {
     credentialHeaderDetail = {
@@ -242,22 +242,22 @@ export const shareCredentialCardFromCredential = (
   const notice: CredentialCardNotice | undefined =
     selectiveDisclosureSupported === false
       ? {
-          text: labels.selectiveDisclosureNotice,
-          noticeIcon: CredentialNoticeWarningIcon,
-        }
+        text: labels.selectiveDisclosureNotice,
+        noticeIcon: CredentialNoticeWarningIcon,
+      }
       : undefined;
   const cardTestId = concatTestID(testID, 'card');
   const card = credential
     ? validityCheckedCardFromCredential(
-        credential,
-        invalidLVVC,
-        expanded,
-        multipleCredentialsAvailable,
-        config,
-        notice,
-        cardTestId,
-        labels,
-      )
+      credential,
+      invalidLVVC,
+      expanded,
+      multipleCredentialsAvailable,
+      config,
+      notice,
+      cardTestId,
+      labels,
+    )
     : missingCredentialCardFromRequest(request, notice, cardTestId, labels);
   const validityState = getValidityState(
     credential ? { ...credential, issuerDid: credential.issuerDid?.id, issuer: credential.issuer?.id } : undefined,
@@ -327,9 +327,9 @@ export const selectCredentialCardFromCredential = (
   const notice: CredentialCardNotice | undefined =
     selectiveDisclosureSupported === false
       ? {
-          text: labels.selectiveDisclosureNotice,
-          noticeIcon: CredentialNoticeWarningIcon,
-        }
+        text: labels.selectiveDisclosureNotice,
+        noticeIcon: CredentialNoticeWarningIcon,
+      }
       : undefined;
   const { header, ...cardProps } = getCredentialCardPropsFromCredential(
     credential,

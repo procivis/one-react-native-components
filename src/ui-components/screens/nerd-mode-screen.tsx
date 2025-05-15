@@ -26,8 +26,8 @@ export interface EntityLabels {
 
 export interface AttributesLabels {
   trustRegistry: string;
-  issuerDid: string;
-  entityDid: string;
+  issuerIdentifier: string;
+  entityIdentifier: string;
   role: string;
   expand: string;
   collapse: string;
