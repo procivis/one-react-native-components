@@ -44,7 +44,7 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
         <Typography
           testID={concatTestID(testID, 'entityName')}
           color={textColor ?? colorScheme.text}
-          numberOfLines={2}
+          numberOfLines={1}
           preset="m"
           style={styles.entityName}>
           {entityName}

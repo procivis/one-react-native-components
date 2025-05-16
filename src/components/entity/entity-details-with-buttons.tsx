@@ -7,7 +7,7 @@ import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityNotTrustedIcon, EntityTrustedIcon } from '../../ui-components/icons';
 import { AttributesLabels, EntityLabels, EntityType } from '../../ui-components/screens/nerd-mode-screen';
 import { useAppColorScheme } from '../../ui-components/theme/color-scheme-context';
-import { concatTestID, useIdentifierDetails } from '../../utils';
+import { concatTestID, replaceBreakingHyphens, useIdentifierDetails } from '../../utils';
 import { useTrustEntity } from '../../utils/hooks/core/trust-entity';
 import EntityAttributes from './entity-attributes';
 import EntityButtons from './EntityButtons';
@@ -51,7 +51,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
   const trustEntityName = useMemo(() => {
     if (!trustEntity || !trusted) {
       if (identifierDetail?.did) {
-        return identifierDetail.did.did.substring(0, 20) + '...';
+        return replaceBreakingHyphens(identifierDetail.did.did);
       }
 
       return role === TrustEntityRoleEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier;

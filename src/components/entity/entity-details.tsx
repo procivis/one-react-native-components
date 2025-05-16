@@ -40,7 +40,7 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
   const trustEntityName = useMemo(() => {
     if (!trusted) {
       if (identifierDetail?.did?.did) {
-        return replaceBreakingHyphens(identifierDetail.did.did).substring(0, 20) + '...';
+        return replaceBreakingHyphens(identifierDetail.did.did);
       }
       return labels.unknown;
     }
