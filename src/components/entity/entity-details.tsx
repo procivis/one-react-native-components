@@ -1,10 +1,11 @@
-import { DidListItem, TrustEntity, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import { TrustEntity, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import { IdentifierListItem } from '@procivis/react-native-one-core/dist/src/identifier';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import EntityCluster from '../../ui-components/entity/entity-cluster';
-import { EntityTrustedIcon } from '../../ui-components/icons';
-import { concatTestID, replaceBreakingHyphens } from '../../utils';
+import { EntityNotTrustedIcon, EntityTrustedIcon } from '../../ui-components/icons';
+import { concatTestID, replaceBreakingHyphens, useIdentifierDetails } from '../../utils';
 import { useTrustEntity } from '../../utils/hooks/core/trust-entity';
 
 export type EntityDetailsLabels = {
@@ -18,17 +19,18 @@ export type EntityDetailsProps = {
   style?: StyleProp<ViewStyle>;
   testID?: string;
 } & (
-  | {
-      did?: DidListItem;
+    | {
+      identifier?: IdentifierListItem;
     }
-  | {
+    | {
       entity: TrustEntity;
     }
-);
+  );
 
 const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style, testID, ...props }) => {
-  const { data } = useTrustEntity('did' in props ? props.did?.id : undefined);
+  const { data } = useTrustEntity('identifier' in props ? props.identifier?.id : undefined);
   const trustEntity: TrustEntity | undefined = 'entity' in props ? props.entity : data ?? undefined;
+  const { data: identifierDetail } = useIdentifierDetails('identifier' in props ? props.identifier?.id : undefined);
 
   const trusted =
     trustEntity &&
@@ -37,24 +39,17 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
 
   const trustEntityName = useMemo(() => {
     if (!trusted) {
+      if (identifierDetail?.did?.did) {
+        return replaceBreakingHyphens(identifierDetail.did.did).substring(0, 20) + '...';
+      }
       return labels.unknown;
     }
     return trustEntity.name;
-  }, [labels.unknown, trustEntity, trusted]);
-
-  const trustEntitySubline = useMemo(() => {
-    if (!trustEntity) {
-      return 'did' in props ? (props.did?.did ? replaceBreakingHyphens(props.did.did) : undefined) : undefined;
-    }
-    if (!trusted) {
-      return replaceBreakingHyphens(trustEntity.did.did);
-    }
-    return undefined;
-  }, [props, trustEntity, trusted]);
+  }, [labels.unknown, trustEntity, trusted, identifierDetail]);
 
   const trustEntityStatusIcon = useMemo(() => {
     if (!trusted) {
-      return undefined;
+      return <EntityNotTrustedIcon testID={concatTestID(testID, 'statusIcon', 'notTrusted')} />;
     }
     return <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />;
   }, [testID, trusted]);
@@ -65,16 +60,18 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
         avatar={
           trustEntity
             ? {
-                avatar: trusted && trustEntity.logo ? { imageSource: { uri: trustEntity.logo } } : undefined,
-                placeholderText: trustEntity.name.substring(0, 1),
-                statusIcon: trustEntityStatusIcon,
-                testID: concatTestID(testID, 'avatar'),
-              }
-            : undefined
+              avatar: trusted && trustEntity.logo ? { imageSource: { uri: trustEntity.logo } } : undefined,
+              placeholderText: trusted ? trustEntity.name.substring(0, 1) : "U",
+              statusIcon: trustEntityStatusIcon,
+              testID: concatTestID(testID, 'avatar'),
+            }
+            : {
+              statusIcon: trustEntityStatusIcon,
+              placeholderText: "U",
+            }
         }
         entityName={trustEntityName}
         style={style}
-        subline={trustEntitySubline}
         testID={testID}
       />
       {trustEntity && renderMore && renderMore(trustEntity)}

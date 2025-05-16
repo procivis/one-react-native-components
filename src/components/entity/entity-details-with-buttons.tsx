@@ -1,12 +1,13 @@
-import { DidListItem, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import { TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import { IdentifierListItem } from '@procivis/react-native-one-core/dist/src/identifier';
 import React, { FC, memo, useMemo } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
 import EntityCluster from '../../ui-components/entity/entity-cluster';
-import { EntityTrustedIcon } from '../../ui-components/icons';
+import { EntityNotTrustedIcon, EntityTrustedIcon } from '../../ui-components/icons';
 import { AttributesLabels, EntityLabels, EntityType } from '../../ui-components/screens/nerd-mode-screen';
 import { useAppColorScheme } from '../../ui-components/theme/color-scheme-context';
-import { concatTestID } from '../../utils';
+import { concatTestID, useIdentifierDetails } from '../../utils';
 import { useTrustEntity } from '../../utils/hooks/core/trust-entity';
 import EntityAttributes from './entity-attributes';
 import EntityButtons from './EntityButtons';
@@ -14,7 +15,7 @@ import EntityButtons from './EntityButtons';
 export type ContextRole = Exclude<TrustEntityRoleEnum, TrustEntityRoleEnum.BOTH>;
 
 interface EntityDetailsWithButtonsProps {
-  did?: DidListItem;
+  identifier?: IdentifierListItem;
   entityLabels: EntityLabels;
   attributesLabels: AttributesLabels;
   style?: StyleProp<ViewStyle>;
@@ -26,7 +27,7 @@ interface EntityDetailsWithButtonsProps {
 }
 
 const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
-  did,
+  identifier,
   entityLabels,
   attributesLabels,
   onCopyToClipboard,
@@ -35,23 +36,28 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
   testID,
   ...props
 }) => {
-  let { data } = useTrustEntity(did?.id);
+  let { data } = useTrustEntity(identifier?.id);
+  let { data: identifierDetail } = useIdentifierDetails(identifier?.id);
   const trustEntity = data ?? undefined;
 
   const colorScheme = useAppColorScheme();
 
   const trusted = Boolean(
     trustEntity &&
-      trustEntity.state === TrustEntityStateEnum.ACTIVE &&
-      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role),
+    trustEntity.state === TrustEntityStateEnum.ACTIVE &&
+    (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role),
   );
 
   const trustEntityName = useMemo(() => {
     if (!trustEntity || !trusted) {
+      if (identifierDetail?.did) {
+        return identifierDetail.did.did.substring(0, 20) + '...';
+      }
+
       return role === TrustEntityRoleEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier;
     }
     return trustEntity.name;
-  }, [entityLabels, role, trustEntity, trusted]);
+  }, [entityLabels, role, trustEntity, trusted, identifierDetail]);
 
   const trustEntitySubline = useMemo(() => {
     if (!trusted) {
@@ -63,7 +69,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
 
   const trustEntityStatusIcon = useMemo(() => {
     if (!trusted) {
-      return undefined;
+      return <EntityNotTrustedIcon testID={concatTestID(testID, 'statusIcon', 'notTrusted')} />;
     }
     return <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />;
   }, [testID, trusted]);
@@ -73,7 +79,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
       <EntityCluster
         avatar={{
           avatar: trusted && trustEntity?.logo ? { imageSource: { uri: trustEntity.logo } } : undefined,
-          placeholderText: trustEntity?.name.substring(0, 1),
+          placeholderText: trusted ? trustEntity?.name.substring(0, 1) : "U",
           statusIcon: trustEntityStatusIcon,
           testID: concatTestID(testID, 'avatar'),
         }}
@@ -85,7 +91,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
       />
       {trusted && <EntityButtons entity={trustEntity} labels={entityLabels} testID={concatTestID(testID, 'links')} />}
       <EntityAttributes
-        did={did?.did}
+        did={trustEntity?.did?.did}
         trustEntity={trustEntity}
         trusted={trusted}
         labels={attributesLabels}

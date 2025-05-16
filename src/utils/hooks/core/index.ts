@@ -7,6 +7,7 @@ export * from './credential-schemas';
 export * from './credentials';
 export * from './dids';
 export * from './history';
+export * from './identifiers';
 export * from './proof-schemas';
 export * from './proofs';
 export * from './query';

@@ -13,6 +13,7 @@ import { useHTTPClient } from '../http/client';
 import { useONECore } from './core-context';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
+import { useIdentifierDetails } from './identifiers';
 
 export const TRUST_ENTITY_DETAIL_QUERY_KEY = 'trust-entity-detail';
 export const REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY = 'remote-trust-entity-detail';
@@ -50,22 +51,25 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
   );
 };
 
-export const useTrustEntity = (didId: string | undefined) => {
+// NOTE: As per ONE-5672, only handles DID Identifier details
+export const useTrustEntity = (identifierId: string | undefined) => {
   const { core } = useONECore();
 
+  const { data: identifierDetail } = useIdentifierDetails(identifierId);
+
   return useQuery(
-    [TRUST_ENTITY_DETAIL_QUERY_KEY, didId],
+    [TRUST_ENTITY_DETAIL_QUERY_KEY, identifierId],
     () =>
-      didId
-        ? core.getTrustEntityByDid(didId).catch((e) => {
-            if (e instanceof OneError && e.code === OneErrorCode.NoTrustEntityFound) {
-              return null;
-            }
-            throw e;
-          })
+      identifierDetail?.did
+        ? core.getTrustEntityByDid(identifierDetail.did.id).catch((e) => {
+          if (e instanceof OneError && e.code === OneErrorCode.NoTrustEntityFound) {
+            return null;
+          }
+          throw e;
+        })
         : undefined,
     {
-      enabled: Boolean(didId),
+      enabled: Boolean(identifierDetail?.did),
       keepPreviousData: true,
     },
   );

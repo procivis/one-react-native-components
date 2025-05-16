@@ -1,4 +1,4 @@
-import { DidListItem } from '@procivis/react-native-one-core';
+import { IdentifierListItem } from '@procivis/react-native-one-core/dist/src/identifier';
 import React, { FunctionComponent, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -34,7 +34,7 @@ export interface AttributesLabels {
 }
 
 interface SectionEntityCluster {
-  did?: DidListItem;
+  identifier?: IdentifierListItem;
   subline?: string;
   entityLabels: EntityLabels;
   role: ContextRole;
@@ -66,7 +66,7 @@ export enum EntityType {
 }
 
 function isSectionEntityCluster(item: NerdModeSectionItem): item is SectionEntityCluster {
-  return (item as SectionEntityCluster).did !== undefined;
+  return (item as SectionEntityCluster).identifier !== undefined;
 }
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdModeSectionItem>);
