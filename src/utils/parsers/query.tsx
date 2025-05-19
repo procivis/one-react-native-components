@@ -6,6 +6,7 @@ import {
   ProofListQuery,
   ProofSchemaListQuery,
 } from '@procivis/react-native-one-core';
+import { IdentifierListQuery } from '@procivis/react-native-one-core/dist/src/identifier';
 
 export const getQueryKeyFromCredentialListQueryParams = (queryParams?: Partial<CredentialListQuery>) => {
   if (!queryParams) {
@@ -79,4 +80,13 @@ export const getQueryKeyFromDidListQueryParams = (queryParams?: Partial<DidListQ
 
   const { name, did, type, deactivated, keyAlgorithms, keyRoles } = queryParams;
   return [name, did, type, deactivated, keyAlgorithms, keyRoles];
+};
+
+export const getQueryKeyFromIdentifierListQueryParams = (queryParams?: Partial<IdentifierListQuery>) => {
+  if (!queryParams) {
+    return [];
+  }
+
+  const { isRemote, didMethods, state, keyStorages, keyAlgorithms, exact, keyRoles, type, name, } = queryParams;
+  return [name, type, state, isRemote, didMethods, keyStorages, keyAlgorithms, exact, keyRoles];
 };

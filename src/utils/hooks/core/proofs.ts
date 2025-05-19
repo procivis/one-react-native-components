@@ -1,7 +1,6 @@
 import {
   Config,
   CreateProofRequest,
-  DidListQuery,
   OneError,
   PresentationSubmitCredentialRequest,
   ProofListQuery,
@@ -9,6 +8,7 @@ import {
   ProofStateEnum,
   ShareProofRequest,
 } from '@procivis/react-native-one-core';
+import { IdentifierListQuery } from '@procivis/react-native-one-core/dist/src/identifier';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -16,9 +16,9 @@ import { getQueryKeyFromProofListQueryParams } from '../../parsers/query';
 import { Transport } from '../connectivity/connectivity';
 import { useCoreConfig } from './core-config';
 import { useONECore } from './core-context';
-import { useDids } from './dids';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
+import { useIdentifiers } from './identifiers';
 import { useProofSchemaDetail } from './proof-schemas';
 
 const PAGE_SIZE = 10;
@@ -198,7 +198,7 @@ export const useProofCreate = () => {
   });
 };
 
-const getDidFilterForProofSchema = (proofSchema: ProofSchema, config: Config): Partial<DidListQuery> => {
+const getIdentifierFilterForProofSchema = (proofSchema: ProofSchema, config: Config): Partial<IdentifierListQuery> => {
   const requestedFormats = proofSchema.proofInputSchemas.map((schema) => schema.credentialSchema.format);
   const requestedFormatsCapabilities = requestedFormats
     .map((format) => config.format[format]?.capabilities)
@@ -227,12 +227,12 @@ export const useProofForSchemaIdWithTransport = (
   const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
   const { data: config } = useCoreConfig();
 
-  const didFilter = useMemo(
-    () => (proofSchema && config ? getDidFilterForProofSchema(proofSchema, config) : undefined),
+  const identifierFilter = useMemo(
+    () => (proofSchema && config ? getIdentifierFilterForProofSchema(proofSchema, config) : undefined),
     [config, proofSchema],
   );
 
-  const { data: dids } = useDids(didFilter);
+  const { data: identifiers } = useIdentifiers(identifierFilter);
   const { mutateAsync: createProof } = useProofCreate();
   const { mutateAsync: deleteProof } = useProofDelete();
 
@@ -257,7 +257,7 @@ export const useProofForSchemaIdWithTransport = (
         setProofId(undefined);
         setDeleting(false);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [proofIdRef, deleteProof, proofSchemaId, transport, setProofId]);
 
   useEffect(() => {
@@ -274,9 +274,9 @@ export const useProofForSchemaIdWithTransport = (
       deleting ||
       !enabled ||
       proofId ||
-      !dids ||
-      !didFilter ||
-      !dids.values.length ||
+      !identifiers ||
+      !identifierFilter ||
+      !identifiers.values.length ||
       !transport ||
       transport.length === 0
     ) {
@@ -287,13 +287,13 @@ export const useProofForSchemaIdWithTransport = (
       exchange: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       proofSchemaId,
       transport,
-      verifierDidId: dids.values[0].id,
+      verifierIdentifierId: identifiers.values[0].id,
     })
       .then((id) => {
         setProofId(id);
       })
-      .catch(() => {});
-  }, [proofSchemaId, dids, didFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
+      .catch(() => { });
+  }, [proofSchemaId, identifiers, identifierFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
 
   return deleting ? undefined : proofId;
 };
