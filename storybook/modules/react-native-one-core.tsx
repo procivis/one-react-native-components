@@ -18,11 +18,11 @@ export class OneError extends Error {
   readonly originalError: Error;
 
   constructor(params: {
-      operation: string;
-      code: string;
-      message: string;
-      cause?: string;
-      originalError: Error;
+    operation: string;
+    code: string;
+    message: string;
+    cause?: string;
+    originalError: Error;
   }) {
     super();
     this.operation = params.operation;
@@ -101,6 +101,17 @@ export enum TrustEntityStateEnum {
   REMOVED = "REMOVED",
   WITHDRAWN = "WITHDRAWN",
   REMOVED_AND_WITHDRAWN = "REMOVED_AND_WITHDRAWN"
+}
+
+export enum IdentifierTypeEnum {
+  KEY = "KEY",
+  DID = "DID",
+  CERTIFICATE = "CERTIFICATE",
+}
+
+export enum IdentifierStateEnum {
+  ACTIVE = "ACTIVE",
+  DEACTIVATED = "DEACTIVATED",
 }
 
 export const initializeCore = fn;
