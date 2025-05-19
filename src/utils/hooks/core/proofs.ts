@@ -1,14 +1,13 @@
 import {
   Config,
   CreateProofRequest,
+  IdentifierListQuery,
   OneError,
   PresentationSubmitCredentialRequest,
   ProofListQuery,
   ProofSchema,
   ProofStateEnum,
-  ShareProofRequest,
-} from '@procivis/react-native-one-core';
-import { IdentifierListQuery } from '@procivis/react-native-one-core/dist/src/identifier';
+  ShareProofRequest} from '@procivis/react-native-one-core';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 

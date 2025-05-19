@@ -1,4 +1,4 @@
-import { IdentifierListItem } from '@procivis/react-native-one-core/dist/src/identifier';
+import { IdentifierListItem } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';

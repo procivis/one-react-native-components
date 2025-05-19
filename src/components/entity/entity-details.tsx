@@ -1,5 +1,4 @@
-import { TrustEntity, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
-import { IdentifierListItem } from '@procivis/react-native-one-core/dist/src/identifier';
+import { IdentifierListItem,TrustEntity, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 

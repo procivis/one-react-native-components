@@ -1,4 +1,4 @@
-import { IdentifierListQuery, IdentifierStateEnum, IdentifierTypeEnum } from "@procivis/react-native-one-core/dist/src/identifier";
+import { IdentifierListQuery, IdentifierStateEnum, IdentifierTypeEnum } from "@procivis/react-native-one-core";
 import { useQuery } from "react-query";
 
 import { getQueryKeyFromIdentifierListQueryParams } from "../../parsers";

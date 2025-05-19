@@ -3,10 +3,8 @@ import {
   CredentialSchemaListQuery,
   DidListQuery,
   HistoryListQuery,
-  ProofListQuery,
-  ProofSchemaListQuery,
-} from '@procivis/react-native-one-core';
-import { IdentifierListQuery } from '@procivis/react-native-one-core/dist/src/identifier';
+ IdentifierListQuery,  ProofListQuery,
+  ProofSchemaListQuery } from '@procivis/react-native-one-core';
 
 export const getQueryKeyFromCredentialListQueryParams = (queryParams?: Partial<CredentialListQuery>) => {
   if (!queryParams) {
