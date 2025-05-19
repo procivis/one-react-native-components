@@ -155,6 +155,8 @@ publish:npm:private:
 
 publish:npm:public:
   stage: deploy
+  before_script:
+    - *install-node-modules
   script:
     - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
     - npm publish --verbose --access public
