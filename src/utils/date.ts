@@ -9,7 +9,7 @@ const DAY = 24 * 60 * MINUTE;
 // OS locale
 const systemLocale: string | undefined = I18nManager.getConstants().localeIdentifier
   ?.replace(/_/g, '-')
-  .split('#')[0]
+  .split(/[#@]/)[0]
   .replace(/-$/, '');
 
 /**
