@@ -231,6 +231,10 @@ const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID
         };
       }
       case DataTypeEnum.Date: {
+        if (!claim.value) {
+          // Don't try to parse empty values (which will return "Invalid Date")
+          return { testID: testID, value: String(claim.value) };
+        }
         const date = claim.value as string;
         return {
           testID: testID,
