@@ -8,12 +8,17 @@ jest.mock('@sentry/react-native', () => ({
   captureException: () => {},
 }));
 
+jest.mock('../core/core-config', () => ({
+  getEnabledTransports: () => [],
+  useCoreConfig: () => ({}),
+}));
+
 jest.mock('@react-native-community/netinfo', () => ({
-  addEventListener: () => {},
+  addEventListener: () => { },
 }));
 
 jest.mock('react-native-bluetooth-state-manager', () => ({
-  onStateChange: () => {},
+  onStateChange: () => { },
 }));
 
 describe('getInvitationUrlTransports', () => {
