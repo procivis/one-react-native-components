@@ -7,7 +7,8 @@ import {
   ProofListQuery,
   ProofSchema,
   ProofStateEnum,
-  ShareProofRequest} from '@procivis/react-native-one-core';
+  ShareProofRequest,
+} from '@procivis/react-native-one-core';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -256,7 +257,7 @@ export const useProofForSchemaIdWithTransport = (
         setProofId(undefined);
         setDeleting(false);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [proofIdRef, deleteProof, proofSchemaId, transport, setProofId]);
 
   useEffect(() => {
@@ -291,7 +292,7 @@ export const useProofForSchemaIdWithTransport = (
       .then((id) => {
         setProofId(id);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [proofSchemaId, identifiers, identifierFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
 
   return deleting ? undefined : proofId;
@@ -322,6 +323,7 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
   const [sharedProof, setSharedProof] = useState<{
     bleAdapterDisabled: boolean;
     url?: string;
+    error?: unknown;
   }>();
 
   // reset when proofId changes or the proof was retracted
@@ -343,12 +345,13 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
           url,
         });
       })
-      .catch((err: unknown) => {
-        // TODO emit error with specific error code from core.
-        if (err instanceof OneError && err.cause?.includes('BLE adapter not enabled')) {
+      .catch((error: unknown) => {
+        if (error instanceof OneError && error.cause?.includes('BLE adapter not enabled')) {
           setSharedProof({
             bleAdapterDisabled: true,
           });
+        } else {
+          setSharedProof({ error, bleAdapterDisabled: false });
         }
       });
   }, [enabled, proofUrlProps, shareProof, sharedProof]);
