@@ -27,7 +27,7 @@ export const useIdentifiers = (identifierFilter?: Partial<IdentifierListQuery>) 
   return useQuery(
     [IDENTIFIER_LIST_QUERY_KEY, ...getQueryKeyFromIdentifierListQueryParams(identifierFilter)],
     ({ pageParam = 0 }) => (core.getIdentifiers({
-      type: IdentifierTypeEnum.DID,
+      types: [IdentifierTypeEnum.DID],
       isRemote: false,
       page: pageParam,
       state: IdentifierStateEnum.ACTIVE,
