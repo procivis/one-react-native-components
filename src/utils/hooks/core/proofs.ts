@@ -264,10 +264,19 @@ export const useProofForSchemaIdWithTransport = (
     if (enabled) {
       return;
     }
+
     if (proofState !== ProofStateEnum.CREATED && proofState !== ProofStateEnum.PENDING) {
       setProofId(undefined);
+    } else {
+      setDeleting(true);
+      deleteProof(proofIdRef.current || '')
+        .then(() => {
+          setProofId(undefined);
+          setDeleting(false);
+        })
+        .catch(() => {});
     }
-  }, [enabled, proofState, setProofId]);
+  }, [deleteProof, enabled, proofId, proofState, setProofId]);
 
   useEffect(() => {
     if (
