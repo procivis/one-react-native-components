@@ -37,7 +37,10 @@ type CredentialDetails = Omit<
 type CredentialCard = Omit<
   CredentialDetailsCardListItemProps,
   'expanded' | 'labels' | 'lastItem' | 'onHeaderPress' | 'onImagePreview'
->;
+> & {
+  /** default: true */
+  headerPressable?: boolean;
+};
 
 export type HistoryDetailsViewProps = {
   assets?: {
@@ -195,7 +198,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
             ...props.credentialCard,
             card: {
               ...props.credentialCard.card,
-              onHeaderPress,
+              onHeaderPress: props.credentialCard.headerPressable === false ? undefined : onHeaderPress,
             },
           };
           return (
