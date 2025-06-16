@@ -1,13 +1,8 @@
-import {
-  HistoryActionEnum,
-  HistoryEntityTypeEnum,
-  HistoryListItem,
-  IdentifierTypeEnum,
-} from '@procivis/react-native-one-core';
+import { HistoryActionEnum, HistoryEntityTypeEnum, HistoryListItem } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
 
 import { HistoryItemView } from '../../ui-components';
-import { formatTime, useIdentifierDetails, useTrustEntity } from '../../utils';
+import { formatTime, useTrustEntity } from '../../utils';
 import { HistoryListItemIcon } from './history-list-item-icon';
 
 export type HistoryListItemLabels = {
@@ -18,7 +13,7 @@ export type HistoryListItemLabels = {
 export interface HistoryListItemViewProps {
   dateFormatter?: (date: Date) => string;
   first?: boolean;
-  infoLabelMode?: 'entityOrAssociatedLabel' | 'associatedLabel' | 'none';
+  infoLabelMode?: 'entity' | 'associatedLabel' | 'none';
   item: HistoryListItem;
   labels: HistoryListItemLabels;
   last?: boolean;
@@ -29,46 +24,28 @@ export interface HistoryListItemViewProps {
 export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
   dateFormatter = formatTime,
   first,
-  infoLabelMode = 'entityOrAssociatedLabel',
+  infoLabelMode = 'entity',
   item,
   labels,
   last,
   onPress,
   testID,
 }) => {
-  const identifierId = infoLabelMode === 'entityOrAssociatedLabel' ? item.target : undefined;
+  const identifierId = infoLabelMode === 'entity' ? item.target : undefined;
   const { data: trustEntity } = useTrustEntity(identifierId);
-  const { data: identifier } = useIdentifierDetails(identifierId);
 
   const label = `${labels.entityTypes[item.entityType]} ${labels.actions[item.action]}`;
 
   const info = useMemo(() => {
     switch (infoLabelMode) {
-      case 'entityOrAssociatedLabel': {
-        if (!item.target) {
-          return item.name;
-        }
-
-        if (trustEntity) {
-          return trustEntity.name;
-        }
-
-        switch (identifier?.type) {
-          case IdentifierTypeEnum.DID:
-            return identifier.did?.did;
-          case IdentifierTypeEnum.CERTIFICATE:
-            return identifier.certificates?.[0]?.name;
-        }
-
-        return undefined;
-      }
-
+      case 'entity':
+        return trustEntity?.name;
       case 'associatedLabel':
         return item.name;
       case 'none':
         return undefined;
     }
-  }, [infoLabelMode, item, trustEntity, identifier]);
+  }, [infoLabelMode, item, trustEntity]);
 
   const icon = <HistoryListItemIcon item={item} />;
 
