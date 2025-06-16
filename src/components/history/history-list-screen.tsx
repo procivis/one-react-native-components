@@ -38,7 +38,7 @@ export type HistoryListScreenProps = {
 export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = ({
   children,
   groupItems = groupEntriesByDay,
-  itemInfoLabelMode = 'entity',
+  itemInfoLabelMode = 'entityOrAssociatedLabel',
   labels,
   onBackPressed,
   onHistoryItemPressed,
