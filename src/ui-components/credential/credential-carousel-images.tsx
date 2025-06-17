@@ -64,17 +64,23 @@ type QrCodeProps = {
   content: string;
   padding?: number;
   testID?: string;
+  onError?: (err: string) => void;
 };
 
-export const QrCode: FC<QrCodeProps> = ({ content, padding, testID }) => {
+export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) => {
   const qrCodeXml = useMemo(() => {
-    return new QRCode({
-      container: 'svg-viewbox',
-      content,
-      join: true,
-      padding: padding ?? 1,
-    }).svg();
-  }, [content, padding]);
+    try {
+      return new QRCode({
+        container: 'svg-viewbox',
+        content,
+        join: true,
+        padding: padding ?? 1,
+      }).svg();
+    } catch (err) {
+      onError && onError(err instanceof Error ? err.message : 'Unknown error occurred.');
+      return null;
+    }
+  }, [content, onError, padding]);
   return <SvgXml height={'100%'} testID={testID} width={'100%'} xml={qrCodeXml} />;
 };
 
