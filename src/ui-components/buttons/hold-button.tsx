@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { TouchableWithoutFeedback, TouchableWithoutFeedbackRef } from '../accessibility/accessibilityHistoryWrappers';
+import { TouchableOpacity, TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
@@ -96,7 +96,7 @@ const Content = ({
 };
 
 interface HoldButtonLayoutedProps extends Omit<HoldButtonProps, 'style'> {
-  ref: React.ForwardedRef<TouchableWithoutFeedbackRef>;
+  ref: React.ForwardedRef<TouchableOpacityRef>;
   width: number;
   height: number;
 }
@@ -182,16 +182,17 @@ const HoldButtonLayouted = ({
         </Animated.View>
       )}
       <View style={styles.pressableLayer}>
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           accessibilityRole="button"
           ref={ref}
           disabled={isFinished || disabled}
           onLongPress={onLongPress}
           onPressIn={isFinished ? undefined : onPressIn}
           onPressOut={isFinished ? undefined : onPressOut}
+          activeOpacity={1}
           {...props}>
           <View style={{ width, height }} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -202,7 +203,7 @@ const HoldButtonLayouted = ({
  *
  * follows design: https://www.figma.com/design/cCmAyBQrQWCQZuDi85pJfe/Procivis-One-Wallet-Developments-2025?node-id=1-871
  */
-const HoldButton = React.forwardRef<TouchableWithoutFeedbackRef, HoldButtonProps>(
+const HoldButton = React.forwardRef<TouchableOpacityRef, HoldButtonProps>(
   ({ style, disabled, ...props }, ref) => {
     const colorScheme = useAppColorScheme();
 
