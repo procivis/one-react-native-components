@@ -8,7 +8,7 @@ import { OneErrorCode } from './error-code';
 export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
 
-const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
+export const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
   const hwKeyId = await core
     .generateKey({
       keyParams: {},
@@ -30,6 +30,7 @@ const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
     return core.createIdentifier({
       did: {
         method: 'KEY',
+        name: HW_DID_NAME_PREFIX,
         keys: {
           assertionMethod: [hwKeyId],
           authentication: [hwKeyId],
@@ -47,7 +48,7 @@ const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
   return null;
 };
 
-const generateSwIdentifier = async (core: ONECore, organisationId: string) => {
+export const generateSwIdentifier = async (core: ONECore, organisationId: string) => {
   const swKeyId = await core.generateKey({
     keyParams: {},
     keyType: 'ECDSA',
@@ -60,6 +61,7 @@ const generateSwIdentifier = async (core: ONECore, organisationId: string) => {
   return core.createIdentifier({
     did: {
       method: 'KEY',
+      name: SW_DID_NAME_PREFIX,
       keys: {
         assertionMethod: [swKeyId],
         authentication: [swKeyId],
@@ -82,7 +84,7 @@ export interface IdentifiersInitializationConfig {
 /**
  * Create base local identifiers
  * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be created
- * @returns [hwDidId, swDidId]
+ * @returns [hwIdentifierId, swIdentifierId]
  */
 export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
   const { core, organisationId } = useONECore();
