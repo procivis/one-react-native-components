@@ -73,6 +73,7 @@ export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) =
       return new QRCode({
         container: 'svg-viewbox',
         content,
+        ecl: 'L',
         join: true,
         padding: padding ?? 1,
       }).svg();
