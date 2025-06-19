@@ -1,12 +1,13 @@
 import { TrustEntity } from '@procivis/react-native-one-core';
 import React, { FC, memo } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { NerdModeItem } from '../../ui-components/nerd-view';
 import { AttributesLabels, EntityType } from '../../ui-components/screens/nerd-mode-screen';
 import { addElementIf } from '../../utils/array';
 
 interface EntityAttributesProps {
+  certificate?: string;
   did?: string;
   trustEntity?: TrustEntity;
   trusted: boolean;
@@ -16,6 +17,7 @@ interface EntityAttributesProps {
 }
 
 const EntityAttributes: FC<EntityAttributesProps> = ({
+  certificate,
   did,
   trustEntity,
   trusted,
@@ -40,6 +42,12 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
       highlightedText: didMethod,
       testID: 'issuerDID',
     }),
+    ...addElementIf(Boolean(certificate), {
+      attributeKey: entityType === EntityType.CredentialEntity ? labels.issuerIdentifier : labels.entityIdentifier,
+      attributeText: certificate,
+      canBeCopied: true,
+      testID: 'issuerCertificate',
+    }),
     ...addElementIf(trusted && Boolean(trustEntity?.role), {
       attributeKey: labels.role,
       highlightedText: trustEntity?.role,
@@ -47,7 +55,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
     }),
   ];
   return (
-    <View>
+    <View style={styles.wrapper}>
       {attributes.map((attribute) => (
         <NerdModeItem
           key={attribute.attributeKey}
@@ -59,5 +67,11 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    marginBottom: 20,
+  }
+})
 
 export default memo(EntityAttributes);

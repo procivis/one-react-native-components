@@ -1,4 +1,4 @@
-import { IdentifierListItem,TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import { IdentifierListItem, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
 import React, { FC, memo, useMemo } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
@@ -52,6 +52,9 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
       if (identifierDetail?.did) {
         return replaceBreakingHyphens(identifierDetail.did.did);
       }
+      if (identifierDetail?.certificates?.length) {
+        return identifierDetail.certificates[0].name;
+      }
 
       return role === TrustEntityRoleEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier;
     }
@@ -90,7 +93,8 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
       />
       {trusted && <EntityButtons entity={trustEntity} labels={entityLabels} testID={concatTestID(testID, 'links')} />}
       <EntityAttributes
-        did={trustEntity?.did?.did}
+        certificate={identifierDetail?.certificates?.[0]?.chain}
+        did={identifierDetail?.did?.did}
         trustEntity={trustEntity}
         trusted={trusted}
         labels={attributesLabels}
