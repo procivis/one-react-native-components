@@ -143,22 +143,16 @@ const getDisplayedAttributes = (
   selectiveDisclosureSupported?: boolean,
   selectedFields?: string[],
 ): DisplayedAttribute[] => {
-  if (credential && selectiveDisclosureSupported === false) {
-    return credential.claims.map((claim) => ({
-      claim,
-      id: claim.id,
-      status: SelectorStatus.Required,
-    }));
-  }
+  const claims = credential ? spreadClaims(credential.claims) : undefined;
 
   return request.fields.map((field) => {
     const selected = !field.required && selectedFields?.includes(field.id);
     const claim =
-      credential &&
-      spreadClaims(credential.claims).find(({ key }) => {
+      credential ?
+      claims?.find(({ key }) => {
         return key === field.keyMap[credential.id];
-      });
-    const status = getAttributeSelectorStatus(field, validityState, credential, claim, selected);
+      }) : undefined;
+    const status = selectiveDisclosureSupported === false ? SelectorStatus.Required : getAttributeSelectorStatus(field, validityState, credential, claim, selected);
     return { claim, field, id: field.id, selected, status };
   });
 };
