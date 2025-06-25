@@ -1,5 +1,7 @@
 import { Biometry } from './keypad';
-import { PinCodeScreen, PinCodeScreenActions, PinCodeScreenProps } from './pin-code-screen';
-import PinLockModal, { PinLockModalLabels } from './pin-lock';
+import type { PinCodeScreenActions, PinCodeScreenProps } from './pin-code-screen';
+import { PinCodeScreen } from './pin-code-screen';
+import type { PinLockModalLabels } from './pin-lock';
+import PinLockModal from './pin-lock';
 
 export { Biometry, PinCodeScreen, PinCodeScreenActions, PinCodeScreenProps, PinLockModal, PinLockModalLabels };

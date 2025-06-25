@@ -277,5 +277,10 @@
       ]
     ]
   },
-  "packageManager": "pnpm@10.5.2"
+  "packageManager": "pnpm@10.5.2",
+  "pnpm": {
+    "patchedDependencies": {
+      "react-native-web": "patches/react-native-web.patch"
+    }
+  }
 }

@@ -1,7 +1,10 @@
-import DataItem, { DataItemProps } from './data-item';
-import HistoryItemView, { HistoryItemViewProps } from './history-item';
+import type { DataItemProps } from './data-item';
+import DataItem from './data-item';
+import type { HistoryItemViewProps } from './history-item';
+import HistoryItemView from './history-item';
 import HistorySectionHeaderView from './history-section-header';
-import HistorySectionListItem, { HistorySectionListItemProps } from './history-section-list-item';
+import type { HistorySectionListItemProps } from './history-section-list-item';
+import HistorySectionListItem from './history-section-list-item';
 
 export * from './history-details';
 export { DataItem, DataItemProps };
