@@ -293,7 +293,7 @@ export const useProofForSchemaIdWithTransport = (
     }
 
     createProof({
-      exchange: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
+      protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       proofSchemaId,
       transport,
       verifierIdentifierId: identifiers.values[0].id,
