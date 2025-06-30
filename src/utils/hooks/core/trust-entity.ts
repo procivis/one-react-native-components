@@ -51,7 +51,6 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
   );
 };
 
-// NOTE: As per ONE-5672, only handles DID Identifier details
 export const useTrustEntity = (identifierId: string | undefined) => {
   const { core } = useONECore();
 
@@ -59,9 +58,15 @@ export const useTrustEntity = (identifierId: string | undefined) => {
 
   return useQuery(
     [TRUST_ENTITY_DETAIL_QUERY_KEY, identifierId],
-    () =>
-      identifierDetail?.did
-        ? core.getTrustEntityByDid(identifierDetail.did.id).catch((e) => {
+    () => identifierId && identifierDetail
+        ? core.resolveTrustEntityByIdentifier({
+          identifiers: [{
+            certificateId: identifierDetail.type === 'CERTIFICATE' ? identifierDetail.certificates?.[0]?.id : undefined,
+            id: identifierId,
+          }],
+        }).then((result) => {
+          return result[identifierId];
+        }).catch((e) => {
           if (e instanceof OneError && e.code === OneErrorCode.NoTrustEntityFound) {
             return null;
           }
@@ -69,7 +74,7 @@ export const useTrustEntity = (identifierId: string | undefined) => {
         })
         : undefined,
     {
-      enabled: Boolean(identifierDetail?.did),
+      enabled: Boolean(identifierDetail),
       keepPreviousData: true,
     },
   );

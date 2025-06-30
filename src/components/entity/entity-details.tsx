@@ -2,7 +2,7 @@ import { IdentifierCertificateDetail, IdentifierListItem,TrustEntity, TrustEntit
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
-import { AvatarProps, LoaderView } from '../../ui-components';
+import { AvatarProps } from '../../ui-components';
 import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityNotTrustedIcon, EntityTrustedIcon } from '../../ui-components/icons';
 import { concatTestID, replaceBreakingHyphens, useIdentifierDetails } from '../../utils';
@@ -47,14 +47,10 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
 
   const avatarProps: AvatarProps | undefined = useMemo(() => {
     if (isLoading) {
-      return {
-        avatar: {
-          component: <LoaderView animate={true} />
-        }
-      }
+      return undefined;
     }
 
-    const avatar = trusted && trustEntity.logo ? { imageSource: { uri: trustEntity.logo } } : undefined;
+    const avatar = trusted && identifierDetail?.type === 'DID' && trustEntity.logo ? { imageSource: { uri: trustEntity.logo } } : undefined;
 
     const placeholderText = identifierDetail?.type === 'CERTIFICATE' && identifierDetail.certificates?.[0] ? getCertificateCommonName(identifierDetail.certificates[0])?.substring(0, 1) : 'D';
 
@@ -106,6 +102,7 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
         testID={testID}
         textColor={textColor}
         sublineColor={sublineColor}
+        isLoading={isLoading}
       />
       {trustEntity && renderMore && renderMore(trustEntity)}
     </>
