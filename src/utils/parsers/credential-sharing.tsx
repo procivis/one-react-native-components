@@ -230,7 +230,7 @@ export const shareCredentialCardFromCredential = (
   labels: ShareCredentialCardLabels,
 ): Omit<CredentialDetailsCardProps, 'expanded'> => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuerDid: credential.issuerDid?.id, issuer: credential.issuer?.id } : undefined,
+    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
     config,
   );
   const notice: CredentialCardNotice | undefined =
@@ -254,7 +254,7 @@ export const shareCredentialCardFromCredential = (
     )
     : missingCredentialCardFromRequest(request, notice, cardTestId, labels);
   const validityState = getValidityState(
-    credential ? { ...credential, issuerDid: credential.issuerDid?.id, issuer: credential.issuer?.id } : undefined,
+    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
   );
   const displayedAttributes = getDisplayedAttributes(
     request,
@@ -314,7 +314,7 @@ export const selectCredentialCardFromCredential = (
   labels: ShareCredentialCardLabels,
 ): Omit<CredentialDetailsCardProps, 'expanded'> => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuerDid: credential.issuerDid?.id, issuer: credential.issuer?.id } : undefined,
+    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
     config,
   );
   const rightAccessory = <Selector status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty} />;
