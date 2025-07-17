@@ -1,5 +1,6 @@
 import {
   CreateRemoteTrustEntityRequest,
+  IdentifierTypeEnum,
   ONECore,
   OneError,
   TrustAnchor,
@@ -58,20 +59,29 @@ export const useTrustEntity = (identifierId: string | undefined) => {
 
   return useQuery(
     [TRUST_ENTITY_DETAIL_QUERY_KEY, identifierId],
-    () => identifierId && identifierDetail
-        ? core.resolveTrustEntityByIdentifier({
-          identifiers: [{
-            certificateId: identifierDetail.type === 'CERTIFICATE' ? identifierDetail.certificates?.[0]?.id : undefined,
-            id: identifierId,
-          }],
-        }).then((result) => {
-          return result[identifierId];
-        }).catch((e) => {
-          if (e instanceof OneError && e.code === OneErrorCode.NoTrustEntityFound) {
-            return null;
-          }
-          throw e;
-        })
+    () =>
+      identifierId && identifierDetail
+        ? core
+            .resolveTrustEntityByIdentifier({
+              identifiers: [
+                {
+                  certificateId:
+                    identifierDetail?.type === IdentifierTypeEnum.CERTIFICATE
+                      ? identifierDetail.certificates?.[0]?.id
+                      : undefined,
+                  id: identifierId,
+                },
+              ],
+            })
+            .then((result) => {
+              return result[identifierId]?.[0]?.trustEntity ?? null;
+            })
+            .catch((e) => {
+              if (e instanceof OneError && e.code === OneErrorCode.NoTrustEntityFound) {
+                return null;
+              }
+              throw e;
+            })
         : undefined,
     {
       enabled: Boolean(identifierDetail),
@@ -99,51 +109,57 @@ export const useCreateRemoteTrustEntity = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (request: Omit<CreateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string, didId?: string }) => {
-    const { identifierId, didId } = request
+  return useMutation(
+    async (request: Omit<CreateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string; didId?: string }) => {
+      const { identifierId, didId } = request;
 
-    let entityDidId = didId;
+      let entityDidId = didId;
 
-    if (identifierId) {
-      const identifierDetail = await core.getIdentifier(identifierId);
-      entityDidId = identifierDetail?.did?.id;
-    }
+      if (identifierId) {
+        const identifierDetail = await core.getIdentifier(identifierId);
+        entityDidId = identifierDetail?.did?.id;
+      }
 
-    return core.createRemoteTrustEntity({
-      ...request,
-      didId: entityDidId!,
-    })
-  }, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      return core.createRemoteTrustEntity({
+        ...request,
+        didId: entityDidId!,
+      });
     },
-  });
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
+    },
+  );
 };
 
 export const useUpdateRemoteTrustEntity = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (request: Omit<UpdateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string, didId?: string }) => {
-    const { identifierId, didId } = request
+  return useMutation(
+    async (request: Omit<UpdateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string; didId?: string }) => {
+      const { identifierId, didId } = request;
 
-    let entityDidId = didId;
-    if (identifierId) {
-      const identifierDetail = await core.getIdentifier(identifierId);
-      entityDidId = identifierDetail?.did?.id;
-    }
+      let entityDidId = didId;
+      if (identifierId) {
+        const identifierDetail = await core.getIdentifier(identifierId);
+        entityDidId = identifierDetail?.did?.id;
+      }
 
-    return core.updateRemoteTrustEntity({
-      ...request,
-      didId: entityDidId!,
-    })
-  }, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      return core.updateRemoteTrustEntity({
+        ...request,
+        didId: entityDidId!,
+      });
     },
-  });
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
+    },
+  );
 };
 
 export enum TrustManagementEnum {

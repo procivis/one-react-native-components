@@ -1,4 +1,11 @@
-import { IdentifierCertificateDetail, IdentifierListItem,TrustEntity, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import {
+  IdentifierCertificateDetail,
+  IdentifierListItem,
+  IdentifierTypeEnum,
+  TrustEntity,
+  TrustEntityRoleEnum,
+  TrustEntityStateEnum,
+} from '@procivis/react-native-one-core';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -21,22 +28,39 @@ export type EntityDetailsProps = {
   textColor?: string;
   testID?: string;
 } & (
-    | {
+  | {
       identifier?: IdentifierListItem;
     }
-    | {
+  | {
       entity: TrustEntity;
     }
-  );
+);
 
 const getCertificateCommonName = (certificate: IdentifierCertificateDetail): string | undefined => {
-  return certificate.x509Attributes.subject.split(', ').find((s) => s.startsWith('CN'))?.split('=')?.pop();
-}
+  return certificate.x509Attributes.subject
+    .split(', ')
+    .find((s) => s.startsWith('CN'))
+    ?.split('=')
+    ?.pop();
+};
 
-const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style, testID, sublineColor, textColor, ...props }) => {
-  const { data, isLoading: isLoadingTrustEntity } = useTrustEntity('identifier' in props ? props.identifier?.id : undefined);
+const EntityDetails: FC<EntityDetailsProps> = ({
+  labels,
+  renderMore,
+  role,
+  style,
+  testID,
+  sublineColor,
+  textColor,
+  ...props
+}) => {
+  const { data, isLoading: isLoadingTrustEntity } = useTrustEntity(
+    'identifier' in props ? props.identifier?.id : undefined,
+  );
   const trustEntity: TrustEntity | undefined = 'entity' in props ? props.entity : data ?? undefined;
-  const { data: identifierDetail, isLoading: isLoadingIdentifier } = useIdentifierDetails('identifier' in props ? props.identifier?.id : undefined);
+  const { data: identifierDetail, isLoading: isLoadingIdentifier } = useIdentifierDetails(
+    'identifier' in props ? props.identifier?.id : undefined,
+  );
 
   const trusted =
     trustEntity &&
@@ -50,18 +74,27 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
       return undefined;
     }
 
-    const avatar = trusted && identifierDetail?.type === 'DID' && trustEntity.logo ? { imageSource: { uri: trustEntity.logo } } : undefined;
+    const avatar =
+      trusted && identifierDetail?.type === 'DID' && trustEntity.logo
+        ? { imageSource: { uri: trustEntity.logo } }
+        : undefined;
 
-    const placeholderText = identifierDetail?.type === 'CERTIFICATE' && identifierDetail.certificates?.[0] ? getCertificateCommonName(identifierDetail.certificates[0])?.substring(0, 1) : 'D';
+    const placeholderText =
+      identifierDetail?.type === IdentifierTypeEnum.CERTIFICATE && identifierDetail.certificates?.[0]
+        ? getCertificateCommonName(identifierDetail.certificates[0])?.substring(0, 1)
+        : 'D';
 
-    const statusIcon = trusted ? 
-      <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} /> :
-      <EntityNotTrustedIcon testID={concatTestID(testID, 'statusIcon', 'notTrusted')} />;
+    const statusIcon = trusted ? (
+      <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />
+    ) : (
+      <EntityNotTrustedIcon testID={concatTestID(testID, 'statusIcon', 'notTrusted')} />
+    );
 
     if (trustEntity) {
       return {
         avatar,
-        placeholderText: trusted && identifierDetail?.type === 'DID' ? trustEntity.name.substring(0, 1) : placeholderText,
+        placeholderText:
+          trusted && identifierDetail?.type === 'DID' ? trustEntity.name.substring(0, 1) : placeholderText,
         statusIcon,
         testID: concatTestID(testID, 'avatar'),
       };
@@ -70,14 +103,14 @@ const EntityDetails: FC<EntityDetailsProps> = ({ labels, renderMore, role, style
     return {
       placeholderText,
       statusIcon,
-    }
+    };
   }, [trustEntity, trusted, identifierDetail, isLoading, testID]);
 
   const trustEntityName = useMemo(() => {
     if (isLoading) {
       return '';
     }
-    if (identifierDetail?.type === 'CERTIFICATE' && identifierDetail.certificates?.[0]) {
+    if (identifierDetail?.type === IdentifierTypeEnum.CERTIFICATE && identifierDetail.certificates?.[0]) {
       const commonName = getCertificateCommonName(identifierDetail.certificates[0]);
       if (commonName) {
         return commonName;
