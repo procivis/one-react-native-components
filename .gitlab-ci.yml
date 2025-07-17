@@ -178,6 +178,7 @@ deploy:storybook:
     DEPLOY_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     PROJECT_TITLE: $CI_PROJECT_TITLE
     DEPLOY_ENVIRONMENT: Dev
+    DEPLOYMENT_NAME: react-native-app-components-chart
   trigger:
     project: procivis/one/one-operations
     branch: main
