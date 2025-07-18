@@ -9,7 +9,6 @@ include:
 
 variables:
   PNPM_CACHE_FOLDER: "~/.pnpm-store"
-  GITHUB_PROJECT: "procivis/one-react-native-components"
 
 workflow:
   rules:
@@ -186,6 +185,9 @@ deploy:storybook:
 
 github:push:
   stage: github
+  variables:
+    GITHUB_PROJECT: "procivis/one-react-native-components"
+    PROJECT: $CI_PROJECT_NAME
   extends:
     - .ci-tool:open_source_release
 
