@@ -40,10 +40,12 @@ stages:
   - IMAGE_NAME=$CI_REGISTRY_IMAGE/storybook
   - IMAGE_TAG=$IMAGE_NAME:$APP_VERSION
 
-.pnpm_install: &pnpm_install
+.config_private_registry: &config_private_registry
   - npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
   - npm config set -- //${CI_SERVER_HOST}/:_authToken ${CI_JOB_TOKEN}
   - npm config set -- //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken ${CI_JOB_TOKEN}
+
+.pnpm_install: &pnpm_install
   - npm install --global corepack@latest
   - corepack enable
   - corepack prepare pnpm@latest-10 --activate
@@ -70,6 +72,7 @@ stages:
   cache:
     <<: *build-cache
   before_script:
+    - *config_private_registry
     - *pnpm_install
     - *install-node-modules
     - *app_settings
@@ -155,6 +158,7 @@ publish:npm:private:
 publish:npm:public:
   stage: deploy
   before_script:
+    - *pnpm_install
     - *install-node-modules
   script:
     - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
