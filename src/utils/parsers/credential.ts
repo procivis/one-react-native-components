@@ -91,7 +91,8 @@ export const cardHeaderFromCredential = (
   testID: string,
   labels: CardHeaderLabels,
 ): Omit<CredentialHeaderProps, 'style'> => {
-  let credentialDetailPrimary = formatDateTimeLocalized(new Date(credential.issuanceDate)) ?? '';
+  let credentialDetailPrimary =
+    formatDateTimeLocalized(new Date(credential.issuanceDate ?? credential.createdDate)) ?? '';
 
   let credentialDetailSecondary: string | undefined;
   let credentialDetailErrorColor: boolean | undefined;
