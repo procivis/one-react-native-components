@@ -132,3 +132,16 @@ export const FilterIcon: FC<SvgProps> = ({ color, ...props }) => {
     </Svg>
   );
 };
+
+// https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=3436-22561
+export const PlusIcon: FC<SvgProps> = ({ color, ...props }) => {
+  const colorScheme = useAppColorScheme();
+  const iconColor = color ?? colorScheme.text;
+
+  return (
+    <Svg fill="none" height={24} viewBox="0 0 24 24" width={24} {...props}>
+      <Rect fill={iconColor} height={2} rx={0.5} width={14} x={5} y={11} />
+      <Rect fill={iconColor} height={2} rx={0.5} transform="rotate(90 13 5)" width={14} x={13} y={5} />
+    </Svg>
+  );
+};
