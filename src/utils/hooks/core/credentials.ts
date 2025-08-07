@@ -1,4 +1,10 @@
-import { CredentialListQuery, CredentialStateEnum, InvitationResult, OneError } from '@procivis/react-native-one-core';
+import {
+  CredentialListQuery,
+  CredentialStateEnum,
+  InitiateIssuanceRequest,
+  InvitationResult,
+  OneError,
+} from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
@@ -169,4 +175,32 @@ export const useInvalidateCredentialDetails = () => {
 
   return (credentialId: string | undefined) =>
     queryClient.invalidateQueries([CREDENTIAL_DETAIL_QUERY_KEY, credentialId]);
+};
+
+export const useInitiateIssuance = () => {
+  const queryClient = useQueryClient();
+  const { core, organisationId } = useONECore();
+
+  return useMutation(
+    async (request: Omit<InitiateIssuanceRequest, 'organisationId'>) =>
+      core.initiateIssuance({ organisationId, ...request }),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
+    },
+  );
+};
+
+export const useContinueIssuance = () => {
+  const queryClient = useQueryClient();
+  const { core } = useONECore();
+
+  return useMutation(async (url: string) => core.continueIssuance(url), {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    },
+  });
 };
