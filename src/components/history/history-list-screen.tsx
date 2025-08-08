@@ -52,7 +52,7 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
   const [scrollOffset] = useState(() => new Animated.Value(0));
 
   const [searchPhrase, setSearchPhrase] = useState<string>('');
-  const searchBarVisible = !empty || Boolean(queryParams.searchText);
+  const searchBarVisible = !empty || Boolean(queryParams.search?.text);
 
   const handleSearchPhraseChange = useMemo(() => debounce(onSearchPhraseChange, 500), [onSearchPhraseChange]);
   useEffect(() => {

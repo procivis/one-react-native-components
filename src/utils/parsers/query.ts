@@ -38,6 +38,14 @@ export const getQueryKeyFromCredentialListQueryParams = (queryParams: Partial<Cr
     'status',
     'include',
     'profile',
+    'createdDateAfter',
+    'createdDateBefore',
+    'lastModifiedAfter',
+    'lastModifiedBefore',
+    'issuanceDateAfter',
+    'issuanceDateBefore',
+    'revocationDateAfter',
+    'revocationDateBefore',
   ]);
 };
 
@@ -49,14 +57,13 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<Histo
     'entityId',
     'actions',
     'entityTypes',
-    'createdDateFrom',
-    'createdDateTo',
+    'createdDateAfter',
+    'createdDateBefore',
     'identifierId',
     'credentialId',
     'credentialSchemaId',
     'proofSchemaId',
-    'searchText',
-    'searchType',
+    'search',
   ]);
 };
 
@@ -75,6 +82,10 @@ export const getQueryKeyFromCredentialSchemaListQueryParams = (
     'include',
     'schemaId',
     'formats',
+    'createdDateAfter',
+    'createdDateBefore',
+    'lastModifiedAfter',
+    'lastModifiedBefore',
   ]);
 };
 
@@ -89,6 +100,10 @@ export const getQueryKeyFromProofSchemaListQueryParams = (queryParams: Partial<P
     'exact',
     'ids',
     'formats',
+    'createdDateAfter',
+    'createdDateBefore',
+    'lastModifiedAfter',
+    'lastModifiedBefore',
   ]);
 };
 
@@ -106,6 +121,14 @@ export const getQueryKeyFromProofListQueryParams = (queryParams: Partial<ProofLi
     'proofSchemaIds',
     'exact',
     'profile',
+    'createdDateAfter',
+    'createdDateBefore',
+    'lastModifiedAfter',
+    'lastModifiedBefore',
+    'requestedDateAfter',
+    'requestedDateBefore',
+    'completedDateAfter',
+    'completedDateBefore',
   ]);
 };
 
@@ -145,5 +168,9 @@ export const getQueryKeyFromIdentifierListQueryParams = (queryParams: Partial<Id
     'keyAlgorithms',
     'keyRoles',
     'keyStorages',
+    'createdDateAfter',
+    'createdDateBefore',
+    'lastModifiedAfter',
+    'lastModifiedBefore',
   ]);
 };
