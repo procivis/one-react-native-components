@@ -8,7 +8,7 @@ import { useAppColorScheme } from '../theme';
 
 export interface HeaderProps extends ViewProps {
   onBack?: () => void;
-  rightButton?: ReactNode;
+  rightButtons?: ReactNode[];
   style?: StyleProp<ViewStyle>;
   titleRowStyle?: StyleProp<ViewStyle>;
   title: ReactNode;
@@ -22,7 +22,7 @@ const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
  * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624
  * states (Default + Dashboard)
  */
-const Header: FC<HeaderProps> = ({ onBack, rightButton, style, titleRowStyle, testID, title, ...viewProps }) => {
+const Header: FC<HeaderProps> = ({ onBack, rightButtons, style, titleRowStyle, testID, title, ...viewProps }) => {
   const colorScheme = useAppColorScheme();
 
   return (
@@ -31,7 +31,7 @@ const Header: FC<HeaderProps> = ({ onBack, rightButton, style, titleRowStyle, te
         <View style={styles.backButtonRow}>
           <BackButton hitSlop={backButtonHitSlop} onPress={onBack} testID={concatTestID(testID, 'back')} />
           <View />
-          {rightButton}
+          {rightButtons}
         </View>
       )}
 
@@ -39,7 +39,7 @@ const Header: FC<HeaderProps> = ({ onBack, rightButton, style, titleRowStyle, te
         style={[
           styles.titleRow,
           onBack ? styles.titleRow2nd : styles.titleRowNoBackButton,
-          (onBack || !rightButton) && styles.titleRowNoRightButton,
+          (onBack || !rightButtons) && styles.titleRowNoRightButton,
           titleRowStyle,
         ]}>
         {typeof title === 'string' ? (
@@ -55,7 +55,7 @@ const Header: FC<HeaderProps> = ({ onBack, rightButton, style, titleRowStyle, te
           <View style={styles.title}>{title}</View>
         )}
 
-        {!onBack && rightButton && <View style={styles.rightButtonWrapper}>{rightButton}</View>}
+        {!onBack && rightButtons && <View style={styles.rightButtonWrapper}>{rightButtons}</View>}
       </View>
     </View>
   );
@@ -75,6 +75,8 @@ const styles = StyleSheet.create({
   },
   rightButtonWrapper: {
     alignItems: 'center',
+    flexDirection: 'row',
+    gap: '16',
     height: 48,
     justifyContent: 'center',
     paddingHorizontal: 12,

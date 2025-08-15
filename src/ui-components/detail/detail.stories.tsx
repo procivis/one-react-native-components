@@ -18,11 +18,11 @@ const Render = ({ onRightAction, contentHeight, headerProps }: Args) => {
     <DetailScreen
       headerProps={{
         ...headerProps,
-        rightButton: (
+        rightButtons: [
           <TouchableOpacity onPress={onRightAction} hitSlop={hitSlop}>
             <Placeholder id="R" style={styles.rightButton} />
-          </TouchableOpacity>
-        ),
+          </TouchableOpacity>,
+        ],
       }}>
       <Placeholder id="Content" style={[contentHeight ? { height: contentHeight } : styles.content]} />
     </DetailScreen>

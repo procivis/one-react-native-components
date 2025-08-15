@@ -16,12 +16,14 @@ const Render = ({ onBack, withBackButton, withRightButton, ...args }: Args) => {
     <Header
       {...args}
       onBack={withBackButton ? onBack : undefined}
-      rightButton={
-        withRightButton ? (
-          <TouchableOpacity>
-            <Placeholder id="R" style={styles.rightButton} />
-          </TouchableOpacity>
-        ) : undefined
+      rightButtons={
+        withRightButton
+          ? [
+              <TouchableOpacity>
+                <Placeholder id="R" style={styles.rightButton} />
+              </TouchableOpacity>,
+            ]
+          : undefined
       }
     />
   );

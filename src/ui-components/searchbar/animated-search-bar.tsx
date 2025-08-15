@@ -5,7 +5,7 @@ import SearchBar, { SearchBarProps } from './search-bar';
 
 export type AnimatedSearchBarProps = {
   collapsed: boolean;
-  rightButton?: ReactNode;
+  rightButtons?: ReactNode[];
   rightButtonAlwaysVisible?: boolean;
   searchBarProps: SearchBarProps;
 };
@@ -17,10 +17,10 @@ const AnimatedSearchBar = ({
   collapsed,
   rightButtonAlwaysVisible = false,
   searchBarProps,
-  rightButton,
+  rightButtons = [],
 }: AnimatedSearchBarProps) => {
   const [rightIconFadeAnimation] = useState(
-    () => new Animated.Value(rightButton && rightButtonAlwaysVisible ? 1.5 : 0),
+    () => new Animated.Value(rightButtons && rightButtonAlwaysVisible ? 1.5 : 0),
   );
   const [searchPaddingAnimation] = useState(() => new Animated.Value(0));
 
@@ -39,10 +39,10 @@ const AnimatedSearchBar = ({
 
     Animated.timing(rightIconFadeAnimation, {
       duration: 250,
-      toValue: collapsed && rightButton ? 1.5 : 0,
+      toValue: collapsed && rightButtons ? 1.5 : 0,
       useNativeDriver: false,
     }).start();
-  }, [rightButtonAlwaysVisible, rightIconFadeAnimation, rightButton, collapsed]);
+  }, [rightButtonAlwaysVisible, rightIconFadeAnimation, rightButtons, collapsed]);
 
   const searchBarContainerAnimatedStyle = {
     paddingHorizontal: searchPaddingAnimation.interpolate({
@@ -64,7 +64,7 @@ const AnimatedSearchBar = ({
     width: rightIconFadeAnimation.interpolate({
       extrapolate: 'clamp',
       inputRange: [0, 1],
-      outputRange: ['100%', '88%'],
+      outputRange: ['100%', `${100 - 12 * rightButtons.length}%`],
     }),
   };
 
@@ -74,8 +74,8 @@ const AnimatedSearchBar = ({
       <Animated.View style={searchBarAnimatedStyle}>
         <SearchBar {...searchProps} />
       </Animated.View>
-      {rightButton && (
-        <Animated.View style={[styles.rightButtonWrapper, optionsIconAnimatedStyle]}>{rightButton}</Animated.View>
+      {rightButtons && (
+        <Animated.View style={[styles.rightButtonWrapper, optionsIconAnimatedStyle]}>{rightButtons}</Animated.View>
       )}
     </Animated.View>
   );
@@ -83,7 +83,9 @@ const AnimatedSearchBar = ({
 
 const styles = StyleSheet.create({
   rightButtonWrapper: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: '16',
     justifyContent: 'center',
   },
   searchBarContainer: {

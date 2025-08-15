@@ -118,13 +118,15 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
           !searchBarVisible
             ? undefined
             : {
-                rightButton: onOpenFilter ? (
-                  <FilterButton
-                    active={Boolean(queryParams.credentialSchemaId)}
-                    onPress={onOpenFilter}
-                    testID={concatTestID(testID, 'filter')}
-                  />
-                ) : undefined,
+                rightButtons: onOpenFilter
+                  ? [
+                      <FilterButton
+                        active={Boolean(queryParams.credentialSchemaId)}
+                        onPress={onOpenFilter}
+                        testID={concatTestID(testID, 'filter')}
+                      />,
+                    ]
+                  : undefined,
                 rightButtonAlwaysVisible: true,
                 searchBarProps: {
                   onSearchPhraseChange: setSearchPhrase,
