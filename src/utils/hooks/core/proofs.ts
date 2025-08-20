@@ -20,6 +20,7 @@ import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 import { useIdentifiers } from './identifiers';
 import { useProofSchemaDetail } from './proof-schemas';
+import { reportException } from '../../reporting';
 
 const PAGE_SIZE = 10;
 export const PROOF_DETAIL_QUERY_KEY = 'proof-detail';
@@ -85,7 +86,8 @@ export const useProofAccept = () => {
       keyId?: string;
     }) => core.holderSubmitProof(interactionId, credentials, didId, identifierId, keyId),
     {
-      onError: async () => {
+      onError: async (err) => {
+        reportException(err, 'Proof submission failure');
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
       },
       onSuccess: async () => {
