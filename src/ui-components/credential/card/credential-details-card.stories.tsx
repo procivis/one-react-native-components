@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryContext, StoryObj } from '@storybook/react';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 
 import CredentialDetailsCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import { Placeholder } from '../../../../storybook/placeholder';
@@ -23,8 +23,17 @@ const style = StyleSheet.create({
   },
 });
 
-const Render = ({ ...args }: CredentialDetailsCardProps) => {
-  return <CredentialDetailsCard {...args} style={style.card} />;
+const Render = (args: CredentialDetailsCardProps, context: StoryContext<CredentialDetailsCardProps>) => {
+  const viewport = context.parameters.viewport.viewports[context.userGlobals.viewport];
+  const width = parseInt(viewport.styles.width.replace('px', '')) - 32;
+  const props = {
+    ...args,
+    card: {
+      ...args.card,
+      width,
+    },
+  };
+  return <CredentialDetailsCard {...props} style={style.card} />;
 };
 
 const Basic: StoryObj<typeof CredentialDetailsCard> = {
@@ -270,6 +279,7 @@ const Basic: StoryObj<typeof CredentialDetailsCard> = {
         text: 'Notice related to the credential',
         noticeIcon: CredentialNoticeWarningIcon,
       },
+      width: Dimensions.get('screen').width - 32,
     },
     showAllButtonLabel: 'See all',
     expanded: true,

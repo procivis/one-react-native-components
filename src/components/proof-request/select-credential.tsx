@@ -1,6 +1,6 @@
 import { PresentationDefinitionRequestedCredential } from '@procivis/react-native-one-core';
-import React, { FC } from 'react';
-import { ImageSourcePropType } from 'react-native';
+import React, { FC, useMemo } from 'react';
+import { Dimensions, ImageSourcePropType } from 'react-native';
 
 import { CredentialDetailsCardListItem } from '../../ui-components';
 import { useCoreConfig } from '../../utils/hooks/core/core-config';
@@ -19,6 +19,7 @@ export const SelectCredential: FC<{
 }> = ({ credentialId, labels, lastItem, onImagePreview, onPress, request, selected, testID }) => {
   const { data: credential } = useCredentialDetail(credentialId);
   const { data: config } = useCoreConfig();
+  const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   if (!credential || !config) {
     return null;
@@ -39,6 +40,7 @@ export const SelectCredential: FC<{
       card={{
         ...card,
         onHeaderPress: onPress,
+        width: cardWidth,
       }}
       expanded={selected}
       lastItem={lastItem}

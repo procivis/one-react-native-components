@@ -5,7 +5,7 @@ import {
   PresentationDefinitionRequestedCredential,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo } from 'react';
-import { ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { Button, ButtonType, CredentialDetailsCardListItem, Typography, useAppColorScheme } from '../../ui-components';
 import { concatTestID } from '../../utils';
@@ -56,6 +56,7 @@ export const ShareCredential: FunctionComponent<{
   const colorScheme = useAppColorScheme();
   const { data: credential, isLoading } = useCredentialDetail(selectedCredentialId);
   const { data: config } = useCoreConfig();
+  const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   const selectionOptions = useMemo(
     () =>
@@ -164,6 +165,7 @@ export const ShareCredential: FunctionComponent<{
         ...card,
         credentialId,
         onHeaderPress,
+        width: cardWidth,
       }}
       expanded={expanded}
       footer={footer}

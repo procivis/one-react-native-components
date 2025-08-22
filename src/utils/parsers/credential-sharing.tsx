@@ -10,7 +10,6 @@ import React from 'react';
 import {
   CredentialAttribute,
   CredentialCardProps,
-  CredentialDetailsCardProps,
   CredentialHeaderProps,
   Selector,
   SelectorStatus,
@@ -20,6 +19,7 @@ import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIc
 import { concatTestID } from '../testID';
 import {
   CardLabels,
+  CredentialDetailsCardPropsWithoutWidth,
   detailsCardAttributeFromClaim,
   getCredentialCardPropsFromCredential,
   getValidityState,
@@ -37,7 +37,7 @@ export const validityCheckedCardFromCredential = (
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
-): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID'> => {
+): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID' | 'width'> => {
   let credentialHeaderDetail:
     | Pick<
       CredentialHeaderProps,
@@ -77,7 +77,7 @@ export const missingCredentialCardFromRequest = (
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
-): Omit<CredentialCardProps, 'onHeaderPress' | 'style'> => {
+): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> => {
   return {
     cardImage: undefined,
     color: undefined,
@@ -228,7 +228,7 @@ export const shareCredentialCardFromCredential = (
   config: Config,
   testID: string,
   labels: ShareCredentialCardLabels,
-): Omit<CredentialDetailsCardProps, 'expanded'> => {
+): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
     config,
@@ -312,7 +312,7 @@ export const selectCredentialCardFromCredential = (
   config: Config,
   testID: string,
   labels: ShareCredentialCardLabels,
-): Omit<CredentialDetailsCardProps, 'expanded'> => {
+): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
     config,

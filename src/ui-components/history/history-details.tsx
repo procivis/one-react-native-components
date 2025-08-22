@@ -1,5 +1,5 @@
 import React, { ComponentType, FC, ReactElement, useEffect, useMemo } from 'react';
-import { ColorValue, ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { ColorValue, Dimensions, ImageSourcePropType, StyleSheet, View } from 'react-native';
 
 import { CredentialDetails, CredentialDetailsProps, EntityDetails, EntityDetailsProps } from '../../components';
 import { HeaderInfoButton } from '../../components/navigation/header-buttons';
@@ -92,6 +92,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
 }) => {
   const colorScheme = useAppColorScheme();
   const { expandedCredential, onHeaderPress, setInitialCredential } = useCredentialListExpandedCard();
+  const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   // Expand the first credential
   useEffect(() => {
@@ -199,6 +200,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
             card: {
               ...props.credentialCard.card,
               onHeaderPress: props.credentialCard.headerPressable === false ? undefined : onHeaderPress,
+              width: cardWidth,
             },
           };
           return (

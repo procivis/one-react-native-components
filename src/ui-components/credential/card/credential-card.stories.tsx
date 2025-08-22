@@ -1,9 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryContext, StoryObj } from '@storybook/react';
 
 import CredentialCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import ColorSchemes from '../../../../storybook/colorScheme';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../icons/credential';
-import CredentialCard from './credential-card';
+import CredentialCard, { CredentialCardProps } from './credential-card';
+
+const Render = (args: CredentialCardProps, context: StoryContext<CredentialCardProps>) => {
+  const viewport = context.parameters.viewport.viewports[context.userGlobals.viewport];
+  const width = parseInt(viewport.styles.width.replace('px', ''));
+  const props = {
+    ...args,
+    width,
+  };
+  return <CredentialCard {...props} />;
+};
 
 const Basic: StoryObj<typeof CredentialCard> = {
   args: {
@@ -26,6 +36,7 @@ const Basic: StoryObj<typeof CredentialCard> = {
       noticeIcon: CredentialNoticeWarningIcon,
     },
   },
+  render: Render,
 };
 
 export { Basic as CredentialCard };

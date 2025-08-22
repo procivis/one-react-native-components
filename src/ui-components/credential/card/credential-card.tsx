@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { ColorValue, Image, LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { FC, useCallback, useMemo } from 'react';
+import { ColorValue, Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../../utils/testID';
 import { TouchableOpacity } from '../../accessibility/accessibilityHistoryWrappers';
@@ -39,6 +39,7 @@ export type CredentialCardProps = {
   onHeaderPress?: (credentialId?: string) => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
+  width: number;
 };
 
 const CredentialCard: FC<CredentialCardProps> = ({
@@ -52,19 +53,13 @@ const CredentialCard: FC<CredentialCardProps> = ({
   onHeaderPress,
   style,
   testID,
+  width,
 }) => {
   const colorScheme = useAppColorScheme();
-  const [tappableHeaderHeight, setTappableHeaderHeight] = useState<number>();
-  const [cardSize, setCardSize] = useState<{ height: number; width: number }>();
-
-  const onCardLayoutChange = useCallback((event: LayoutChangeEvent) => {
-    const { width, height } = event.nativeEvent.layout;
-    setCardSize({ width, height });
-  }, []);
-
-  const onHeaderLayoutChange = useCallback((event: LayoutChangeEvent) => {
-    setTappableHeaderHeight(event.nativeEvent.layout.height);
-  }, []);
+  const cardSize = {
+    width,
+    height: Math.ceil(width / CredentialCardRatio),
+  };
 
   const headerPressHandler = useCallback(() => {
     onHeaderPress?.(credentialId);
@@ -88,35 +83,34 @@ const CredentialCard: FC<CredentialCardProps> = ({
 
   const shouldShowCarousel = cardSize?.width && cardSize.height;
   return (
-    <View onLayout={onCardLayoutChange} style={[styles.card, style]} testID={testID}>
+    <View style={[styles.card, cardSize, style]} testID={testID}>
       {cardImage ? (
         'imageSource' in cardImage ? (
-          <View style={styles.cardImage}>
+          <View style={cardSize}>
             <Image testID={concatTestID(testID, 'imageSource')} source={cardImage.imageSource} style={styles.image} />
           </View>
         ) : (
-          <ImageOrComponent testID={concatTestID(testID, 'cardImage')} source={cardImage} style={styles.cardImage} />
+          <ImageOrComponent testID={concatTestID(testID, 'cardImage')} source={cardImage} style={cardSize} />
         )
       ) : (
         <View
           testID={concatTestID(testID, 'cardBackgroundColor', String(color))}
-          style={[styles.cardImage, { backgroundColor: color }]}
+          style={[cardSize, { backgroundColor: color }]}
         />
       )}
       {onCardPress && <TouchableOpacity style={styles.cardButton} onPress={cardPressHandler} />}
       {shouldShowCarousel ? (
         <CarouselComponent
-          style={{ marginTop: tappableHeaderHeight ?? 0 }}
+          style={styles.carousel}
           imagesToRender={cardCarouselImages ?? []}
           carouselSize={{
             width: cardSize.width,
-            height: cardSize.height - (tappableHeaderHeight ?? 0),
+            height: cardSize.height - 60,
           }}
           testID={concatTestID(testID, 'carousel')}
         />
       ) : null}
       <TouchableOpacity
-        onLayout={onHeaderLayoutChange}
         activeOpacity={0.9}
         disabled={!onHeaderPress}
         onPress={headerPressHandler}
@@ -151,9 +145,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
   },
-  cardImage: {
-    aspectRatio: CredentialCardRatio,
-    width: '100%',
+  carousel: {
+    marginTop: 60,
   },
   header: {
     position: 'absolute',

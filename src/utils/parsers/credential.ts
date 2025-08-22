@@ -169,7 +169,7 @@ export const getCredentialCardPropsFromCredential = (
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: CardLabels,
-): Omit<CredentialCardProps, 'onHeaderPress' | 'style'> => {
+): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> => {
   const { layoutProperties } = credential.schema;
 
   if (hasMsoValidityIssues(credential)) {
@@ -179,7 +179,7 @@ export const getCredentialCardPropsFromCredential = (
     };
   }
 
-  const result: Omit<CredentialCardProps, 'onHeaderPress' | 'style'> = {
+  const result: Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> = {
     cardCarouselImages: getCarouselImagesFromClaims(claims, layoutProperties, concatTestID(testID, 'carousel')),
     cardImage: layoutProperties?.background?.image
       ? { imageSource: { uri: layoutProperties.background.image } }
@@ -255,12 +255,16 @@ const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID
   }
 };
 
+export type CredentialDetailsCardPropsWithoutWidth = Omit<CredentialDetailsCardProps, 'expanded' | 'card'> & {
+  card: Omit<CredentialCardProps, 'width'>;
+}
+
 export const detailsCardFromCredential = (
   credential: CredentialDetail,
   config: Config,
   testID: string,
   labels: CardLabels,
-): Omit<CredentialDetailsCardProps, 'expanded'> => {
+): CredentialDetailsCardPropsWithoutWidth => {
   return detailsCardFromCredentialWithClaims(credential, credential.claims, config, testID, labels);
 };
 
@@ -270,7 +274,7 @@ export const detailsCardFromCredentialWithClaims = (
   config: Config,
   testID: string,
   labels: CardLabels,
-): Omit<CredentialDetailsCardProps, 'expanded'> => {
+): CredentialDetailsCardPropsWithoutWidth => {
   const attributes: CredentialAttribute[] = claims.map((claim, index) =>
     detailsCardAttributeFromClaim(claim, config, concatTestID(testID, 'attribute', index.toString())),
   );

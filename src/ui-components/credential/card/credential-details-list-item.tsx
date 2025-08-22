@@ -52,20 +52,24 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
   }, [cardListItemHeight, lastItem, expanded]);
 
   const cardWrapperStyle: ViewStyle = {
-    minHeight: cardWidth ? cardWidth / CredentialCardRatio : undefined,
+    minHeight: cardWidth ? Math.ceil(cardWidth / CredentialCardRatio) : undefined,
   }
 
   const onContentLayout = useCallback(
     (event: LayoutChangeEvent) => {
       const { width, height } = event.nativeEvent.layout;
+      const borderWidth = StyleSheet.flatten(style)?.borderWidth ?? 0;
+      const cardHeight = Math.round(height) + 2 * borderWidth;
+      if (cardHeight === detailsCardHeight) {
+        return;
+      }
       setCardWidth(width);
       if (!minHeight) {
-        setMinHeight(lastItem ? width / CredentialCardRatio : 60);
+        setMinHeight(lastItem ? Math.ceil(width / CredentialCardRatio) : 60);
       }
-      const borderWidth = StyleSheet.flatten(style)?.borderWidth ?? 0;
-      setDetailsCardHeight(height + 2 * borderWidth);
+      setDetailsCardHeight(cardHeight);
     },
-    [lastItem, minHeight, style],
+    [lastItem, minHeight, style, detailsCardHeight],
   );
 
   return (
@@ -73,7 +77,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
       <View style={[styles.cardWrapper, cardWrapperStyle]}>
         <CredentialDetailsCard
           animate={false}
-          expanded={expanded}
+          expanded={true}
           onLayout={onContentLayout}
           style={detailsCardStyle}
           {...props}

@@ -1,6 +1,6 @@
 import { Claim } from '@procivis/react-native-one-core';
-import React, { FC } from 'react';
-import { ImageSourcePropType, StyleSheet } from 'react-native';
+import React, { FC, useMemo } from 'react';
+import { Dimensions, ImageSourcePropType, StyleSheet } from 'react-native';
 
 import { CredentialDetailsCardListItem, CredentialHeaderProps } from '../../ui-components/credential/card';
 import { concatTestID } from '../../utils';
@@ -31,6 +31,7 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
 }) => {
   const { data: credential } = useCredentialDetail(credentialId);
   const { data: config } = useCoreConfig();
+  const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   if (!credential || !config) {
     return null;
@@ -55,6 +56,7 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
         ...card,
         credentialId,
         onHeaderPress,
+        width: cardWidth,
       }}
       expanded={expanded}
       lastItem={lastItem}

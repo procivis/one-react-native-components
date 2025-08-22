@@ -7,7 +7,7 @@ import { Button, ButtonType } from '../../buttons';
 import { DownIcon, UpIcon } from '../../icons/credential';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
 import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
-import CredentialCard, { CredentialCardProps } from './credential-card';
+import CredentialCard, { CredentialCardProps, CredentialCardRatio } from './credential-card';
 
 export type CredentialDetailsCardProps = ViewProps & {
   animate?: boolean;
@@ -21,6 +21,7 @@ export type CredentialDetailsCardProps = ViewProps & {
 };
 
 const PREVIEW_ATTRIBUTES_COUNT = 3;
+const SEE_ALL_BUTTON_HEIGHT = 78;
 
 const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   animate = true,
@@ -38,7 +39,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const colorScheme = useAppColorScheme();
   const [previewAttributesHeight, setPreviewAttributesHeight] = useState<number>();
   const [fullAttributesHeight, setFullAttributesHeight] = useState<number>();
-  const [buttonViewHeight, setButtonViewHeight] = useState<number>();
 
   const [allAttributesRendered, setAllAttributesRendered] = useState<boolean>(
     (attributes && attributes.length <= PREVIEW_ATTRIBUTES_COUNT) || !showAllButtonLabel,
@@ -46,16 +46,11 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const CaretIcon = expanded ? UpIcon : DownIcon;
 
+  const cardHeight = Math.ceil(card.width / CredentialCardRatio);
   const currentHeight = useSharedValue<number | undefined>(undefined);
 
   const previewAttributes = attributes ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT) : [];
   const extraAttributes = useMemo(() => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []), [attributes]);
-
-  useEffect(() => {
-    if (!extraAttributes || allAttributesRendered) {
-      setButtonViewHeight(0);
-    }
-  }, [extraAttributes, allAttributesRendered]);
 
   useEffect(() => {
     if (extraAttributes.length === 0) {
@@ -69,53 +64,56 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   }, [extraAttributes, footer]);
 
   useEffect(() => {
-    if (previewAttributesHeight === undefined || buttonViewHeight === undefined) {
+    if (previewAttributesHeight === undefined) {
       return;
     }
     if (allAttributesRendered && fullAttributesHeight === undefined) {
       return;
     }
 
+    const buttonViewHeight = !extraAttributes || allAttributesRendered ? 0 : SEE_ALL_BUTTON_HEIGHT;
     const additionalAttributesHeight = fullAttributesHeight ?? 0;
     const additionalHeight = allAttributesRendered ? additionalAttributesHeight : buttonViewHeight;
-    const newHeight = expanded || !animate ? previewAttributesHeight + additionalHeight : 0;
+    const fullHeight = previewAttributesHeight + additionalHeight;
+
+    if (!animate) {
+      currentHeight.value = fullHeight;
+      return;
+    }
+
+    const newHeight = expanded ? fullHeight : 0;
 
     if (currentHeight.value === undefined || !animate) {
       currentHeight.value = newHeight;
       return;
     }
 
-    const duration = !expanded
-      ? 250
-      : allAttributesRendered
-      ? previewAttributes.length * 50
-      : extraAttributes.length * 50;
+    const duration = fullHeight / 5;
     currentHeight.value = withTiming(newHeight, {
       duration,
     });
   }, [
     allAttributesRendered,
-    buttonViewHeight,
     currentHeight,
     animate,
     expanded,
-    extraAttributes.length,
+    extraAttributes,
     fullAttributesHeight,
     previewAttributes.length,
     previewAttributesHeight,
   ]);
 
-  const credentialAttributesStyle = useAnimatedStyle(() => {
+  const animatedStyle = useAnimatedStyle(() => {
     if (currentHeight.value === undefined) {
       if (expanded) {
         return {};
       }
       return {
-        height: 0,
+        height: cardHeight,
       };
     }
     return {
-      height: currentHeight.value,
+      height: cardHeight + currentHeight.value,
     };
   }, [expanded, currentHeight]);
 
@@ -125,10 +123,6 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const onFullAttrContentLayout = useCallback((event: LayoutChangeEvent) => {
     setFullAttributesHeight(event.nativeEvent.layout.height);
-  }, []);
-
-  const onButtonViewLayout = useCallback((event: LayoutChangeEvent) => {
-    setButtonViewHeight(event.nativeEvent.layout.height);
   }, []);
 
   const footerView: ReactElement | undefined = useMemo(() => {
@@ -147,9 +141,11 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const renderExtraAttributes =
     allAttributesRendered || (previewAttributesHeight !== undefined && currentHeight.value !== undefined);
+
+  const ContainerComponent = animate ? Animated.View : View;
   return (
-    <View
-      style={[styles.detailsCard, { backgroundColor: colorScheme.white }, style]}
+    <ContainerComponent
+      style={[styles.detailsCard, { backgroundColor: colorScheme.white }, animate ? animatedStyle : undefined, style]}
       {...viewProps}
       testID={concatTestID(card.testID, expanded ? 'expanded' : 'collapsed')}>
       <CredentialCard
@@ -158,7 +154,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
         style={[styles.card, cardProps.style]}
       />
       {previewAttributes.length > 0 && (
-        <Animated.View style={[styles.attributesAnimatedWrapper, credentialAttributesStyle]}>
+        <View>
           <View style={styles.attributesWrapper}>
             <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
               {previewAttributes.map((attribute, idx) => (
@@ -173,7 +169,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               ))}
             </View>
             {!allAttributesRendered && extraAttributes.length > 0 && (
-              <View style={styles.allAttributesWrapper} onLayout={onButtonViewLayout}>
+              <View style={styles.buttonWrapper}>
                 <Button
                   onPress={() => setAllAttributesRendered(true)}
                   type={ButtonType.Secondary}
@@ -199,10 +195,10 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               </View>
             )}
           </View>
-        </Animated.View>
+        </View>
       )}
       {footerView ? <View style={styles.footer}>{footerView}</View> : null}
-    </View>
+    </ContainerComponent>
   );
 };
 
@@ -215,12 +211,14 @@ const styles = StyleSheet.create({
   allAttributesWrapperWithFooter: {
     paddingBottom: 0,
   },
-  attributesAnimatedWrapper: {
-    overflow: 'hidden',
-  },
   attributesWrapper: {
     paddingTop: 7,
-    position: 'absolute',
+    width: '100%',
+  },
+  buttonWrapper: {
+    height: SEE_ALL_BUTTON_HEIGHT,
+    paddingBottom: 12,
+    paddingHorizontal: 4,
     width: '100%',
   },
   card: {

@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromProofListQueryParams } from '../../parsers/query';
+import { reportException } from '../../reporting';
 import { Transport } from '../connectivity/connectivity';
 import { useCoreConfig } from './core-config';
 import { useONECore } from './core-context';
@@ -20,7 +21,6 @@ import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 import { useIdentifiers } from './identifiers';
 import { useProofSchemaDetail } from './proof-schemas';
-import { reportException } from '../../reporting';
 
 const PAGE_SIZE = 10;
 export const PROOF_DETAIL_QUERY_KEY = 'proof-detail';
