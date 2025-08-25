@@ -1,4 +1,5 @@
 import {
+  CredentialDetail,
   CredentialListItem,
   CredentialStateEnum,
   PresentationDefinitionField,
@@ -10,21 +11,19 @@ import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle
 import { Button, ButtonType, CredentialDetailsCardListItem, Typography, useAppColorScheme } from '../../ui-components';
 import { concatTestID } from '../../utils';
 import { useCoreConfig } from '../../utils/hooks/core/core-config';
-import { useCredentialDetail } from '../../utils/hooks/core/credentials';
 import { getValidityState, ValidityState } from '../../utils/parsers/credential';
 import { shareCredentialCardFromCredential, ShareCredentialCardLabels } from '../../utils/parsers/credential-sharing';
 
 export type ShareCredentialLabels = ShareCredentialCardLabels & {
-  revokedCredentialNotice: string;
-  suspendedCredentialNotice: string;
   invalidCredentialNotice: string;
   multipleCredentialsNotice: string;
   multipleCredentialsSelect: string;
+  revokedCredentialNotice: string;
+  suspendedCredentialNotice: string;
 };
 
 export const ShareCredential: FunctionComponent<{
-  allCredentials: CredentialListItem[];
-  credentialId: string;
+  allCredentials: CredentialDetail[];
   expanded?: boolean;
   labels: ShareCredentialLabels;
   lastItem?: boolean;
@@ -39,7 +38,6 @@ export const ShareCredential: FunctionComponent<{
   testID: string;
 }> = ({
   allCredentials,
-  credentialId,
   expanded,
   labels,
   lastItem,
@@ -54,7 +52,7 @@ export const ShareCredential: FunctionComponent<{
   testID,
 }) => {
   const colorScheme = useAppColorScheme();
-  const { data: credential, isLoading } = useCredentialDetail(selectedCredentialId);
+  const credential = allCredentials.find((c) => c.id === selectedCredentialId);
   const { data: config } = useCoreConfig();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
@@ -142,7 +140,7 @@ export const ShareCredential: FunctionComponent<{
     }
   }, [colorScheme, expanded, invalid, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
 
-  if (isLoading || !config) {
+  if (!config) {
     return null;
   }
 
@@ -163,7 +161,7 @@ export const ShareCredential: FunctionComponent<{
       attributes={attributes}
       card={{
         ...card,
-        credentialId,
+        credentialId: request.id,
         onHeaderPress,
         width: cardWidth,
       }}

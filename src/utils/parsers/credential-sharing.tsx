@@ -145,16 +145,39 @@ const getDisplayedAttributes = (
 ): DisplayedAttribute[] => {
   const claims = credential ? spreadClaims(credential.claims) : undefined;
 
-  return request.fields.map((field) => {
+  let fields = request.fields;
+  if (credential) {
+    const fieldsWithNoKeyMapping = request.fields.filter((field) => !(credential.id in field.keyMap));
+    const fullyNestedFields = getFullyNestedFields(request.fields, credential.id);
+
+    fields = [...fieldsWithNoKeyMapping, ...fullyNestedFields];
+  }
+
+  return fields.map((field) => {
     const selected = !field.required && selectedFields?.includes(field.id);
-    const claim =
-      credential ?
-      claims?.find(({ key }) => {
+    const claim = credential
+      ? claims?.find(({ key }) => {
         return key === field.keyMap[credential.id];
-      }) : undefined;
-    const status = selectiveDisclosureSupported === false ? SelectorStatus.Required : getAttributeSelectorStatus(field, validityState, credential, claim, selected);
+        })
+      : undefined;
+    const status =
+      selectiveDisclosureSupported === false
+        ? SelectorStatus.Required
+        : getAttributeSelectorStatus(field, validityState, credential, claim, selected);
     return { claim, field, id: field.id, selected, status };
   });
+};
+
+const getFullyNestedFields = (
+  fields: PresentationDefinitionRequestedCredential['fields'],
+  credentialId: CredentialDetail['id'],
+) => {
+  const allKeys = fields.filter((field) => credentialId in field.keyMap).map((field) => field.keyMap[credentialId]);
+
+  return fields
+    .map((field) => ({ field, key: field.keyMap[credentialId] }))
+    .filter(({ key }) => key && allKeys.every((k) => !k.startsWith(`${key}/`)))
+    .map(({ field }) => field);
 };
 
 export const shareCredentialCardAttributeFromClaim = (

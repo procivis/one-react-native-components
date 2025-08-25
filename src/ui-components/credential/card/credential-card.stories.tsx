@@ -1,4 +1,5 @@
 import type { Meta, StoryContext, StoryObj } from '@storybook/react';
+import React from 'react';
 
 import CredentialCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import ColorSchemes from '../../../../storybook/colorScheme';
@@ -7,7 +8,7 @@ import CredentialCard, { CredentialCardProps } from './credential-card';
 
 const Render = (args: CredentialCardProps, context: StoryContext<CredentialCardProps>) => {
   const viewport = context.parameters.viewport.viewports[context.userGlobals.viewport];
-  const width = parseInt(viewport.styles.width.replace('px', ''));
+  const width = parseInt(viewport.styles.width.replace('px', ''), 10);
   const props = {
     ...args,
     width,
