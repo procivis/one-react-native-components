@@ -7,6 +7,7 @@ import { OneErrorCode } from './error-code';
 
 export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
+export const ATTESTATION_DID_NAME_PREFIX = 'holder-did-attestation-key';
 
 export const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
   const hwKeyId = await core
@@ -76,9 +77,21 @@ export const generateSwIdentifier = async (core: ONECore, organisationId: string
   });
 };
 
+export const generateAttestationKey = async (core: ONECore, organisationId: string) => {
+  return await core.generateKey({
+    keyParams: {},
+    keyType: 'ECDSA',
+    name: 'holder-key-attestation',
+    organisationId,
+    storageParams: {},
+    storageType: 'INTERNAL',
+  });
+};
+
 export interface IdentifiersInitializationConfig {
   generateHwKey: boolean;
   generateSwKey: boolean;
+  generateAttestationKey: boolean;
 }
 
 /**
@@ -86,7 +99,11 @@ export interface IdentifiersInitializationConfig {
  * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be created
  * @returns [hwIdentifierId, swIdentifierId]
  */
-export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
+export const useInitializeONECoreIdentifiers = ({
+  generateHwKey,
+  generateSwKey,
+  generateAttestationKey: shouldGenerateAttestationKey,
+}: IdentifiersInitializationConfig) => {
   const { core, organisationId } = useONECore();
 
   return useCallback(async () => {
@@ -102,11 +119,12 @@ export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }
         Promise.all([
           generateHwKey ? generateHwIdentifier(core, organisationId) : null,
           generateSwKey ? generateSwIdentifier(core, organisationId) : null,
+          shouldGenerateAttestationKey ? generateAttestationKey(core, organisationId) : null,
         ]),
       )
       .catch((err) => {
         reportException(err, 'Failed to create base identifiers');
         throw err;
       });
-  }, [core, organisationId, generateHwKey, generateSwKey]);
+  }, [core, organisationId, generateHwKey, generateSwKey, shouldGenerateAttestationKey]);
 };
