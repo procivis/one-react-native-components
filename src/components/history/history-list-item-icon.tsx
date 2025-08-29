@@ -68,6 +68,8 @@ const defaultIcons: {
     PROOF_SCHEMA: HistorySchemaIcon,
     TRUST_ANCHOR: HistoryTrustAnchorIcon,
     TRUST_ENTITY: HistoryTrustedEntityIcon,
+    WALLET_UNIT: HistoryTrustedEntityIcon,
+    WALLET_UNIT_ATTESTATION: HistoryTrustedEntityIcon,
   },
 };
 

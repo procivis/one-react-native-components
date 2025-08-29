@@ -1,6 +1,7 @@
 import {
   CredentialListQuery,
   CredentialStateEnum,
+  HandleInvitationRequest,
   InitiateIssuanceRequest,
   InvitationResult,
   OneError,
@@ -8,7 +9,6 @@ import {
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
-import { Transport } from '../connectivity/connectivity';
 import { useONECore } from './core-context';
 import { CREDENTIAL_SCHEMA_LIST_QUERY_KEY } from './credential-schemas';
 import { OneErrorCode } from './error-code';
@@ -83,8 +83,8 @@ export const useInvitationHandler = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async ({ invitationUrl, transport }: { invitationUrl: string; transport: Transport }) =>
-      core.handleInvitation(invitationUrl, organisationId, [transport]),
+    async (request: Omit<HandleInvitationRequest, 'organisationId'>) =>
+      core.handleInvitation({ organisationId, ...request }),
     {
       onSuccess: async (result: InvitationResult) => {
         if ('credentialIds' in result) {
