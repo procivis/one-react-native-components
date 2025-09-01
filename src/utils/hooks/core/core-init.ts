@@ -78,14 +78,22 @@ export const generateSwIdentifier = async (core: ONECore, organisationId: string
 };
 
 export const generateAttestationKey = async (core: ONECore, organisationId: string) => {
-  return await core.generateKey({
-    keyParams: {},
-    keyType: 'ECDSA',
-    name: 'holder-key-attestation',
-    organisationId,
-    storageParams: {},
-    storageType: 'INTERNAL',
-  });
+  return await core
+    .generateKey({
+      keyParams: {},
+      keyType: 'ECDSA',
+      name: 'holder-key-attestation',
+      organisationId,
+      storageParams: {},
+      storageType: 'SECURE_ELEMENT',
+    })
+    .catch((e) => {
+      // ignore if Attestation keys not supported by device
+      if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
+        return null;
+      }
+      throw e;
+    });
 };
 
 export interface IdentifiersInitializationConfig {
