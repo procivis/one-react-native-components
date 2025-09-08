@@ -131,15 +131,28 @@ export enum VerificationProtocol {
   SCAN_TO_VERIFY = 'SCAN_TO_VERIFY',
 }
 
+export enum VerificationEngagement {
+  QR_CODE = 'QR_CODE',
+  NFC = 'NFC',
+}
+
+export interface ProposeProofRequest {
+  exchange: VerificationProtocol;
+  engagement: VerificationEngagement[];
+}
+
 export const useProposeProof = () => {
   const queryClient = useQueryClient();
   const { core, organisationId } = useONECore();
 
-  return useMutation(async (exchange: VerificationProtocol) => core.proposeProof(exchange, organisationId), {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+  return useMutation(
+    async ({ exchange, engagement }: ProposeProofRequest) => core.proposeProof(exchange, organisationId, engagement),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
     },
-  });
+  );
 };
 
 export const useProofDelete = () => {
