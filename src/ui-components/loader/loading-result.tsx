@@ -7,6 +7,7 @@ import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-he
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 import LoaderView, { LoaderViewProps } from './loader';
+import ShareButton, { ShareButtonProps } from '../buttons/share-button';
 
 export type LoadingResultScreenProps = ViewProps & {
   button?: ButtonProps;
@@ -15,6 +16,7 @@ export type LoadingResultScreenProps = ViewProps & {
     label?: string;
   };
   secondaryButton?: ButtonProps;
+  shareButton?: ShareButtonProps;
   tertiaryButton?: ButtonProps;
 };
 
@@ -23,6 +25,7 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
   header,
   loader: { label, ...loaderProps },
   secondaryButton: button2,
+  shareButton,
   style,
   tertiaryButton: button3,
   ...viewProps
@@ -55,6 +58,7 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
         </Typography>
       </View>
       <View style={[styles.buttonWrapper, buttonsWrapperMarginStyle]}>
+        {shareButton && <ShareButton {...shareButton} style={styles.shareButton} />}
         {button && <Button {...button}>{button.title}</Button>}
         {button2 && <Button {...button2}>{button2.title}</Button>}
         {button3 && <Button {...button3}>{button3.title}</Button>}
@@ -91,6 +95,9 @@ const styles = StyleSheet.create({
   },
   modalHeaderWithoutHandle: {
     paddingTop: 15,
+  },
+  shareButton: {
+    alignSelf: 'center',
   },
 });
 

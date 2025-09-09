@@ -13,13 +13,15 @@ type Args = {
   withButton2: boolean;
   withButton3: boolean;
   withHeader: boolean;
+  withShareButton: boolean;
 };
 
-const Render = ({ label, state, withButton1, withButton2, withButton3, withHeader }: Args) => {
+const Render = ({ label, state, withButton1, withButton2, withButton3, withHeader, withShareButton }: Args) => {
   return (
     <LoadingResultScreen
       button={withButton1 ? { title: 'Button 1' } : undefined}
       secondaryButton={withButton2 ? { type: ButtonType.Secondary, title: 'Button 2' } : undefined}
+      shareButton={withShareButton ? { title: 'qr-code-date.com' } : undefined}
       tertiaryButton={withButton3 ? { type: ButtonType.Secondary, title: 'Button 3' } : undefined}
       header={
         withHeader
@@ -46,6 +48,7 @@ const Basic: StoryObj<Args> = {
     withButton2: false,
     withButton3: false,
     withHeader: true,
+    withShareButton: false,
   },
   render: Render,
 };

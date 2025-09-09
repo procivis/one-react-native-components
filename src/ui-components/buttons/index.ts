@@ -12,6 +12,8 @@ import type { HoldButtonProps } from './hold-button';
 import HoldButton from './hold-button';
 import type { ScanButtonProps } from './scan-button';
 import ScanButton from './scan-button';
+import type { ShareButtonProps } from './share-button';
+import ShareButton from './share-button';
 
 export {
   BackButton,
@@ -31,4 +33,6 @@ export {
   HoldButtonProps,
   ScanButton,
   ScanButtonProps,
+  ShareButton,
+  ShareButtonProps,
 };
