@@ -17,3 +17,4 @@ export * from './reporting';
 export * from './string';
 export * from './useMemoAsync';
 export * from './uuid';
+export * from './url';
