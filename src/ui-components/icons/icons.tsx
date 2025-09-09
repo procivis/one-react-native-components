@@ -230,3 +230,25 @@ export const StatusWarningIcon: FC<SvgProps> = ({ ...props }) => (
     />
   </Svg>
 );
+
+export const NFCIcon: FC<SvgProps> = ({ color, ...props }) => {
+  const colorScheme = useAppColorScheme();
+  const iconColor = color ?? colorScheme.black;
+
+  return (
+    <Svg fill="none" height={64} viewBox="0 0 65 64" width={65} {...props}>
+      <Path
+        d="M37.459 53.317c12.2-12.201 12.2-31.984 0-44.186A1.6 1.6 0 0139.72 6.87c13.451 13.45 13.451 35.26 0 48.71a1.601 1.601 0 01-2.262-2.262z"
+        fill={iconColor}
+      />
+      <Path
+        d="M31.653 47.508c8.994-8.994 8.994-23.576 0-32.57a1.6 1.6 0 012.262-2.263c10.245 10.244 10.244 26.852 0 37.096a1.6 1.6 0 11-2.262-2.263z"
+        fill={iconColor}
+      />
+      <Path
+        d="M25.847 41.705c5.788-5.789 5.788-15.174 0-20.962a1.6 1.6 0 012.262-2.263c7.038 7.038 7.038 18.45 0 25.487a1.6 1.6 0 01-2.262-2.262zM21.172 33.159a2.737 2.737 0 11-3.87-3.87 2.737 2.737 0 013.87 3.87z"
+        fill={iconColor}
+      />
+    </Svg>
+  );
+};
