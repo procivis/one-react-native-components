@@ -17,6 +17,20 @@ export const isUrlValid = (urlString: string): boolean => {
 };
 
 /**
+ * Check URL http(s) validity
+ * @param {string} urlString URL to validate.
+ * @returns {boolean}
+ */
+export const isValidHttpUrl = (urlString: string): boolean => {
+  try {
+    const url = new URL(urlString);
+    return url?.protocol === 'http:' || url?.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+/**
  * Share URL via share sheet
  * @param {string} url URL to share.
  * @param {string} title _(optional)_ title for iOS share sheet.
