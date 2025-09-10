@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionList, SectionListProps, StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, SectionList, SectionListProps, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useOnScrollHeaderState } from '../../utils/hooks/header/on-scroll-header-state';
@@ -14,18 +14,32 @@ export type SectionListScreenProps<ItemT, SectionT> = ViewProps & {
     title: string;
   };
   list: Omit<SectionListProps<ItemT, SectionT>, 'ListHeaderComponent' | 'onScroll'>;
+  modalPresentation?: boolean;
 };
 
 const SectionListScreen = <ItemT, SectionT>({
   header,
   list: { contentContainerStyle, stickySectionHeadersEnabled, ...listProps },
+  modalPresentation,
   style,
   ...viewProps
 }: SectionListScreenProps<ItemT, SectionT>) => {
   const colorScheme = useAppColorScheme();
-  const safeAreaInsets = useSafeAreaInsets();
-  const contentInsetsStyle = useListContentInset();
+  const { top } = useSafeAreaInsets();
+  const contentInsetsStyle = useListContentInset({
+    headerHeight: modalPresentation && Platform.OS === 'ios' ? 63 : 48,
+    modalPresentation,
+  });
   const { titleVisible, onScroll } = useOnScrollHeaderState();
+
+  let headerPaddingStyle: ViewStyle | undefined;
+  if (!modalPresentation || Platform.OS === 'android') {
+    headerPaddingStyle = {
+      paddingTop: top,
+    };
+  } else if (modalPresentation && !header.modalHandleVisible && Platform.OS === 'ios') {
+    headerPaddingStyle = styles.modalHeaderWithoutHandle;
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
@@ -40,7 +54,7 @@ const SectionListScreen = <ItemT, SectionT>({
       <NavigationHeader
         animate
         blurred
-        style={[styles.header, { paddingTop: safeAreaInsets.top }]}
+        style={[styles.header, headerPaddingStyle]}
         titleVisible={header.static || titleVisible}
         {...header}
       />
@@ -55,6 +69,9 @@ const styles = StyleSheet.create({
   header: {
     position: 'absolute',
     width: '100%',
+  },
+  modalHeaderWithoutHandle: {
+    paddingTop: 15,
   },
 });
 
