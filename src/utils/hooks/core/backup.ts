@@ -5,7 +5,6 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
 import {
-  generateAttestationKey,
   generateHwIdentifier,
   generateSwIdentifier,
   IdentifiersInitializationConfig,
@@ -74,7 +73,6 @@ export const useRollbackImport = () => {
 export const useBackupFinalizeImportProcedure = ({
   generateHwKey,
   generateSwKey,
-  generateAttestationKey: shouldGenerateAttestationKey,
 }: IdentifiersInitializationConfig) => {
   const { mutateAsync: finalizeImport } = useFinalizeImport();
   const { core, organisationId } = useONECore();
@@ -99,10 +97,9 @@ export const useBackupFinalizeImportProcedure = ({
     return Promise.all([
       generateHwKey ? generateHwIdentifier(core, organisationId) : null,
       !swIdentifierId && generateSwKey ? generateSwIdentifier(core, organisationId) : swIdentifierId,
-      shouldGenerateAttestationKey ? generateAttestationKey(core, organisationId) : null,
     ]).catch((err) => {
       reportException(err, 'Failed to create base identifiers');
       throw err;
     });
-  }, [finalizeImport, generateSwKey, generateHwKey, core, organisationId, shouldGenerateAttestationKey]);
+  }, [finalizeImport, generateSwKey, generateHwKey, core, organisationId]);
 };

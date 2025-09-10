@@ -77,29 +77,9 @@ export const generateSwIdentifier = async (core: ONECore, organisationId: string
   });
 };
 
-export const generateAttestationKey = async (core: ONECore, organisationId: string) => {
-  return await core
-    .generateKey({
-      keyParams: {},
-      keyType: 'ECDSA',
-      name: 'holder-key-attestation',
-      organisationId,
-      storageParams: {},
-      storageType: 'SECURE_ELEMENT',
-    })
-    .catch((e) => {
-      // ignore if Attestation keys not supported by device
-      if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
-        return null;
-      }
-      throw e;
-    });
-};
-
 export interface IdentifiersInitializationConfig {
   generateHwKey: boolean;
   generateSwKey: boolean;
-  generateAttestationKey: boolean;
 }
 
 /**
@@ -110,7 +90,6 @@ export interface IdentifiersInitializationConfig {
 export const useInitializeONECoreIdentifiers = ({
   generateHwKey,
   generateSwKey,
-  generateAttestationKey: shouldGenerateAttestationKey,
 }: IdentifiersInitializationConfig) => {
   const { core, organisationId } = useONECore();
 
@@ -127,12 +106,11 @@ export const useInitializeONECoreIdentifiers = ({
         Promise.all([
           generateHwKey ? generateHwIdentifier(core, organisationId) : null,
           generateSwKey ? generateSwIdentifier(core, organisationId) : null,
-          shouldGenerateAttestationKey ? generateAttestationKey(core, organisationId) : null,
         ]),
       )
       .catch((err) => {
         reportException(err, 'Failed to create base identifiers');
         throw err;
       });
-  }, [core, organisationId, generateHwKey, generateSwKey, shouldGenerateAttestationKey]);
+  }, [core, organisationId, generateHwKey, generateSwKey]);
 };
