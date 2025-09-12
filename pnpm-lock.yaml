@@ -241,6 +241,9 @@ importers:
       react-native-gesture-handler:
         specifier: 2.24.0
         version: 2.24.0(react-native@0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
+      react-native-nfc-manager:
+        specifier: ^3.16.3
+        version: 3.16.3
       react-native-reanimated:
         specifier: ^3.17.1
         version: 3.17.1(@babel/core@7.26.10)(react-native@0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
@@ -5787,6 +5790,14 @@ packages:
       '@react-native-community/datetimepicker': '>=6.7.0'
       react-native: '>=0.65.0'
 
+  react-native-nfc-manager@3.16.3:
+    resolution: {integrity: sha512-H9YcZdvbbNYCJbxfa1R7NjXymp+oQLJn+PB7aEPQECvBDz6e4lQUO9UCVZPyCw81RnUHtIMuhSOJvTc+Duql8g==}
+    peerDependencies:
+      '@expo/config-plugins': 9 || 10
+    peerDependenciesMeta:
+      '@expo/config-plugins':
+        optional: true
+
   react-native-reanimated-carousel@3.5.1:
     resolution: {integrity: sha512-9BBQV6JAYSQm2lV7MFtT4mzapXmW4IZO6s38gfiJL84Jg23ivGB1UykcNQauKgtHyhtW2NuZJzItb1s42lM+hA==}
     peerDependencies:
@@ -8877,9 +8888,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -13930,6 +13939,8 @@ snapshots:
       '@react-native-community/datetimepicker': 8.2.0(react-native@0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       prop-types: 15.8.1
       react-native: 0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1)
+
+  react-native-nfc-manager@3.16.3: {}
 
   react-native-reanimated-carousel@3.5.1(react-native-gesture-handler@2.24.0(react-native@0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.17.1(@babel/core@7.26.10)(react-native@0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(react-native@0.77.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@15.0.1)(@types/react@18.3.3)(react@18.3.1))(react@18.3.1):
     dependencies:
