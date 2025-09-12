@@ -94,7 +94,7 @@ export const missingCredentialCardFromRequest = (
 };
 
 interface DisplayedAttribute {
-  claim?: Claim;
+  claim?: FlatClaim;
   field?: PresentationDefinitionField;
   id: string;
   selected?: boolean;
@@ -128,27 +128,29 @@ type ClaimWithOptionalPath = Claim & {
   path?: string;
 };
 
-type ClaimWithPath = Claim & {
+type FlatClaim = Claim & {
   path: string;
+  isArrayElement?: boolean;
 };
 
 // Returns a spread list of all claims with their full JSON path as key, including all intermediate objects
-const spreadClaims = (claims: ClaimWithOptionalPath[]): ClaimWithPath[] => {
-  const claimsWithPath: ClaimWithPath[] = claims.map((c) => ({
+const spreadClaims = (claims: ClaimWithOptionalPath[]): FlatClaim[] => {
+  const claimsWithPath: FlatClaim[] = claims.map((c) => ({
     ...c,
     path: c.path ?? c.key,
   }));
   return claimsWithPath.reduce((acc, claim) => {
     const result = [claim];
     if (Array.isArray(claim.value)) {
-      const nestedClaimsWithPath: ClaimWithPath[] = claim.value.map((c, i) => ({
+      const nestedClaimsWithPath: FlatClaim[] = claim.value.map((c, i) => ({
         ...c,
         path: claim.array ? `${c.key}/${i}` : c.key,
+        isArrayElement: claim.array,
       }));
       result.push(...spreadClaims(nestedClaimsWithPath));
     }
     return [...acc, ...result];
-  }, [] as ClaimWithPath[]);
+  }, [] as FlatClaim[]);
 };
 
 const getDisplayedAttributes = (
@@ -159,10 +161,11 @@ const getDisplayedAttributes = (
   selectedFields?: string[],
 ): DisplayedAttribute[] => {
   const claims = credential ? spreadClaims(credential.claims) : undefined;
+  const isApplicable = credential ? request.applicableCredentials.includes(credential.id) : false;
 
   let fields = request.fields;
   if (credential) {
-    const fieldsWithNoKeyMapping = request.fields.filter((field) => !(credential.id in field.keyMap));
+    const fieldsWithNoKeyMapping = request.fields.filter((field) => !(credential.id in field.keyMap)).filter((field) => !isApplicable || !field.required);
     const fullyNestedFields = getFullyNestedFields(request.fields, credential.id);
 
     fields = [...fieldsWithNoKeyMapping, ...fullyNestedFields];
@@ -200,11 +203,11 @@ export const shareCredentialCardAttributeFromClaim = (
   config: Config,
   testID: string,
   labels: ShareCredentialCardLabels,
-  claim?: Claim,
+  claim?: FlatClaim,
   field?: PresentationDefinitionField,
 ): CredentialAttribute => {
   if (claim) {
-    return { ...detailsCardAttributeFromClaim(claim, config, testID), id };
+    return { ...detailsCardAttributeFromClaim(claim, config, testID), id, path: claim.path, listValue: claim.isArrayElement };
   }
   return {
     id,
@@ -330,7 +333,7 @@ export const selectCredentialCardAttributeFromClaim = (
   config: Config,
   testID: string,
   labels: ShareCredentialCardLabels,
-  claim?: Claim,
+  claim?: FlatClaim,
   field?: PresentationDefinitionField,
 ): CredentialAttribute => {
   const attribute = shareCredentialCardAttributeFromClaim(id, config, testID, labels, claim, field);
@@ -378,7 +381,7 @@ export const selectCredentialCardFromCredential = (
     },
     ...cardProps,
   };
-  const attributes: CredentialAttribute[] = request.fields.map((field) => {
+  const attributes: CredentialAttribute[] = getFullyNestedFields(request.fields, credential.id).map((field) => {
     const claim = spreadClaims(credential.claims).find(({ path }) => {
       return path === field.keyMap[credential.id];
     });

@@ -307,9 +307,9 @@ export const nestAttributes = (attributes: CredentialAttribute[]): CredentialAtt
       const [first, ...rest] = attributePath;
       const parent = result.find((a) => a.name === first);
       if (parent) {
-        insertAttributeInObject({ ...attribute, path: rest.join('/') }, parent);
+        insertAttributeInParent({ ...attribute, path: rest.join('/') }, parent);
       } else {
-        result.push(nestAttributeInDummyObject(attribute));
+        result.push(nestAttributeInDummyParent(attribute));
       }
     }
   }
@@ -319,7 +319,7 @@ export const nestAttributes = (attributes: CredentialAttribute[]): CredentialAtt
 
 // We nest the leaf node in a (one or more) nested object(s)
 // to make sure the tree structure is correctly rendered in proof request screens.
-const nestAttributeInDummyObject = (attribute: CredentialAttribute): CredentialAttribute => {
+const nestAttributeInDummyParent = (attribute: CredentialAttribute): CredentialAttribute => {
   const pathParts = attribute.path.split('/');
   const [first, ...rest] = pathParts;
   if (!rest.length) {
@@ -328,27 +328,41 @@ const nestAttributeInDummyObject = (attribute: CredentialAttribute): CredentialA
 
   // The dummy object is not selectable, and contains a placeholder ID
   // the user can't interact with it.
-  return {
-    attributes: [nestAttributeInDummyObject({ ...attribute, path: rest.join('/') })],
-    disabled: true,
-    id: `${attribute.id}/${first}`,
-    name: first,
-    path: attribute.path,
-  };
+  if (attribute.listValue) {
+    return {
+      values: [nestAttributeInDummyParent({ ...attribute, path: rest.join('/') })],
+      disabled: true,
+      id: `${attribute.id}/${first}`,
+      name: first,
+      path: first,
+    };
+  } else {
+    return {
+      attributes: [nestAttributeInDummyParent({ ...attribute, path: rest.join('/') })],
+      disabled: true,
+      id: `${attribute.id}/${first}`,
+      name: first,
+      path: first,
+    };
+  }
 };
 
-// Recursively insert an attribute into an object
-// Will create nested objects if necessary
-const insertAttributeInObject = (attribute: CredentialAttribute, object: CredentialAttribute) => {
+// Recursively insert an attribute into an parent
+// Will create nested parents if necessary
+const insertAttributeInParent = (attribute: CredentialAttribute, parent: CredentialAttribute) => {
   const pathParts = attribute.path.split('/');
   const [first, ...rest] = pathParts;
 
-  const nextParent = object.attributes?.find((a) => a.name === first);
+  const nextParent = parent.attributes?.find((a) => a.name === first);
 
   if (!nextParent) {
-    object.attributes?.push(nestAttributeInDummyObject(attribute));
+    if (attribute.listValue) {
+      parent.values?.push(nestAttributeInDummyParent(attribute));
+    } else {
+      parent.attributes?.push(nestAttributeInDummyParent(attribute));
+    }
   } else {
-    insertAttributeInObject({ ...attribute, path: rest.join('/') }, nextParent);
+    insertAttributeInParent({ ...attribute, path: rest.join('/') }, nextParent);
   }
 };
 
