@@ -124,16 +124,31 @@ const getAttributeSelectorStatus = (
   return selected ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty;
 };
 
+type ClaimWithOptionalPath = Claim & {
+  path?: string;
+};
+
+type ClaimWithPath = Claim & {
+  path: string;
+};
+
 // Returns a spread list of all claims with their full JSON path as key, including all intermediate objects
-const spreadClaims = (claims: Claim[], parentClaimPath = ''): Claim[] => {
-  return claims.reduce((acc, claim) => {
+const spreadClaims = (claims: ClaimWithOptionalPath[]): ClaimWithPath[] => {
+  const claimsWithPath: ClaimWithPath[] = claims.map((c) => ({
+    ...c,
+    path: c.path ?? c.key,
+  }));
+  return claimsWithPath.reduce((acc, claim) => {
     const result = [claim];
     if (Array.isArray(claim.value)) {
-      const claimPath = parentClaimPath ? `${parentClaimPath}/${claim.key}` : claim.key;
-      result.push(...spreadClaims(claim.value, claimPath));
+      const nestedClaimsWithPath: ClaimWithPath[] = claim.value.map((c, i) => ({
+        ...c,
+        path: claim.array ? `${c.key}/${i}` : c.key,
+      }));
+      result.push(...spreadClaims(nestedClaimsWithPath));
     }
     return [...acc, ...result];
-  }, [] as Claim[]);
+  }, [] as ClaimWithPath[]);
 };
 
 const getDisplayedAttributes = (
@@ -156,8 +171,8 @@ const getDisplayedAttributes = (
   return fields.map((field) => {
     const selected = !field.required && selectedFields?.includes(field.id);
     const claim = credential
-      ? claims?.find(({ key }) => {
-        return key === field.keyMap[credential.id];
+      ? claims?.find(({ path }) => {
+        return path === field.keyMap[credential.id];
         })
       : undefined;
     const status =
@@ -364,8 +379,8 @@ export const selectCredentialCardFromCredential = (
     ...cardProps,
   };
   const attributes: CredentialAttribute[] = request.fields.map((field) => {
-    const claim = spreadClaims(credential.claims).find(({ key }) => {
-      return key === field.keyMap[credential.id];
+    const claim = spreadClaims(credential.claims).find(({ path }) => {
+      return path === field.keyMap[credential.id];
     });
 
     const attribute = selectCredentialCardAttributeFromClaim(field.id, config, testID, labels, claim, field);
