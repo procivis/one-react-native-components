@@ -3,11 +3,11 @@ import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, ButtonProps } from '../buttons/button';
+import ShareButton, { ShareButtonProps } from '../buttons/share-button';
 import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 import LoaderView, { LoaderViewProps } from './loader';
-import ShareButton, { ShareButtonProps } from '../buttons/share-button';
 
 export type LoadingResultScreenProps = ViewProps & {
   button?: ButtonProps;

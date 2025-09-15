@@ -1,3 +1,4 @@
+export * from './app-state';
 export * from './connectivity/connectivity';
 export * from './core';
 export * from './credential-card/credential-card-expanding';

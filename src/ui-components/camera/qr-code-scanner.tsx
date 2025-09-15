@@ -1,7 +1,9 @@
+import { useIsFocused } from '@react-navigation/native';
 import React, { FunctionComponent, useMemo } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { Camera, Code, CodeType, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 
+import { useIsAppActive } from '../../utils';
 import CameraOverlay from './camera-overlay';
 
 export type QRCodeScannerProps = ViewProps & {
@@ -18,6 +20,8 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
   noCameraView = null,
   ...viewProps
 }) => {
+  const isFocused = useIsFocused();
+  const isAppActive = useIsAppActive();
   const qrCodeScanner = useCodeScanner({
     codeTypes,
     onCodeScanned: onQRCodeRead,
@@ -25,7 +29,7 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
 
   const device = useCameraDevice('back');
 
-  const cameraOverlayView: React.ReactElement | undefined = useMemo(() => {
+  const cameraOverlayView = useMemo(() => {
     if (!cameraOverlay) {
       return <CameraOverlay />;
     }
@@ -43,7 +47,12 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
 
   return (
     <View {...viewProps}>
-      <Camera codeScanner={qrCodeScanner} device={device} isActive={true} style={StyleSheet.absoluteFill} />
+      <Camera
+        codeScanner={qrCodeScanner}
+        device={device}
+        isActive={isFocused && isAppActive !== false}
+        style={StyleSheet.absoluteFill}
+      />
       {cameraOverlayView}
     </View>
   );

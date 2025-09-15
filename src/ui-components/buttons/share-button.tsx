@@ -3,9 +3,9 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../utils';
 import { TouchableHighlight } from '../accessibility';
+import { LinkIcon } from '../icons';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
-import { LinkIcon } from '../icons';
 
 export type ShareButtonProps = {
   onPress?: () => void;

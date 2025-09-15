@@ -15,6 +15,6 @@ export * from './parsers';
 export * from './ref';
 export * from './reporting';
 export * from './string';
+export * from './url';
 export * from './useMemoAsync';
 export * from './uuid';
-export * from './url';

@@ -1,6 +1,9 @@
 import {
   Config,
   CreateProofRequest,
+  HistoryActionEnum,
+  HistoryEntityTypeEnum,
+  HistoryErrorMetadata,
   IdentifierListQuery,
   OneError,
   PresentationSubmitCredentialRequest,
@@ -37,11 +40,31 @@ export const useProofDetail = (proofId: string | undefined) => {
 };
 
 export const useProofState = (proofId: string | undefined, isPolling: boolean) => {
-  const { core } = useONECore();
+  const { core, organisationId } = useONECore();
 
   return useQuery(
     [PROOF_STATE_QUERY_KEY, proofId],
-    () => (proofId ? core.getProof(proofId).then((proof) => proof.state) : undefined),
+    async () => {
+      if (!proofId) {
+        return undefined;
+      }
+
+      const state = await core.getProof(proofId).then((proof) => proof.state);
+      let metadata: HistoryErrorMetadata | undefined;
+      if (state === ProofStateEnum.ERROR) {
+        metadata = await core
+          .getHistory({
+            organisationId,
+            page: 0,
+            pageSize: 1,
+            entityId: proofId,
+            entityTypes: [HistoryEntityTypeEnum.PROOF],
+            actions: [HistoryActionEnum.ERRORED],
+          })
+          .then((result) => result.values[0]?.metadata as HistoryErrorMetadata);
+      }
+      return { state, metadata };
+    },
     {
       enabled: Boolean(proofId),
       refetchInterval: isPolling ? 1000 : false,
@@ -280,7 +303,7 @@ export const useProofForSchemaIdWithTransport = (
       return;
     }
 
-    if (proofState !== ProofStateEnum.CREATED && proofState !== ProofStateEnum.PENDING) {
+    if (proofState?.state !== ProofStateEnum.CREATED && proofState?.state !== ProofStateEnum.PENDING) {
       setProofId(undefined);
     } else {
       setDeleting(true);
@@ -352,7 +375,7 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
 
   // reset when proofId changes or the proof was retracted
   useEffect(() => {
-    if (!proofUrlProps?.proofId || proofState === ProofStateEnum.CREATED) {
+    if (!proofUrlProps?.proofId || proofState?.state === ProofStateEnum.CREATED) {
       setSharedProof(undefined);
     }
   }, [proofUrlProps?.proofId, proofState]);
