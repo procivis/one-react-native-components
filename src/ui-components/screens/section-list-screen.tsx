@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Platform, SectionList, SectionListProps, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,13 +13,15 @@ export type SectionListScreenProps<ItemT, SectionT> = ViewProps & {
     static?: boolean;
     title: string;
   };
-  list: Omit<SectionListProps<ItemT, SectionT>, 'ListHeaderComponent' | 'onScroll'>;
+  list: Omit<SectionListProps<ItemT, SectionT>, 'ListHeaderComponent' | 'onScroll'> & {
+    header?: React.ComponentType<any> | React.ReactElement;
+  };
   modalPresentation?: boolean;
 };
 
 const SectionListScreen = <ItemT, SectionT>({
   header,
-  list: { contentContainerStyle, stickySectionHeadersEnabled, ...listProps },
+  list: { contentContainerStyle, header: listHeader, stickySectionHeadersEnabled, ...listProps },
   modalPresentation,
   style,
   ...viewProps
@@ -41,10 +43,22 @@ const SectionListScreen = <ItemT, SectionT>({
     headerPaddingStyle = styles.modalHeaderWithoutHandle;
   }
 
+  const headerView: React.ReactElement | undefined = useMemo(() => {
+    if (!listHeader) {
+      return undefined;
+    }
+    if (React.isValidElement(listHeader)) {
+      return listHeader;
+    } else {
+      const HeaderComponent = listHeader as React.ComponentType<any>;
+      return <HeaderComponent />;
+    }
+  }, [listHeader]);
+
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
       <SectionList<ItemT, SectionT>
-        ListHeaderComponent={!header.static ? <ListTitleHeader title={header.title} /> : undefined}
+        ListHeaderComponent={!header.static ? <View><ListTitleHeader title={header.title} />{headerView}</View> : headerView}
         contentContainerStyle={[contentInsetsStyle, contentContainerStyle]}
         onScroll={onScroll}
         scrollEventThrottle={100}
