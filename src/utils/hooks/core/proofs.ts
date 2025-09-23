@@ -10,6 +10,7 @@ import {
   ProofListQuery,
   ProofSchema,
   ProofStateEnum,
+  ProposeProofRequest,
   ShareProofRequest,
 } from '@procivis/react-native-one-core';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -159,17 +160,12 @@ export enum VerificationEngagement {
   NFC = 'NFC',
 }
 
-export interface ProposeProofRequest {
-  exchange: VerificationProtocol;
-  engagement: VerificationEngagement[];
-}
-
 export const useProposeProof = () => {
   const queryClient = useQueryClient();
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async ({ exchange, engagement }: ProposeProofRequest) => core.proposeProof(exchange, organisationId, engagement),
+    async (request: Omit<ProposeProofRequest, 'organisationId'>) => core.proposeProof({ organisationId, ...request }),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
