@@ -12,6 +12,7 @@ export type FoldableHeaderProps = {
   searchBar?: Omit<AnimatedSearchBarProps, 'collapsed'>;
   // if true, the header won't fold / fade out on scroll
   staticHeader?: boolean;
+  withNotice?: boolean;
 };
 
 const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
@@ -19,11 +20,16 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
   scrollOffset,
   searchBar,
   header,
+  withNotice,
 }) => {
   const safeAreaInsets = useSafeAreaInsets();
   const colorScheme = useAppColorScheme();
   const [collapsed, setCollapsed] = useState(header ? false : true);
   const [headerHeight, setHeaderHeight] = useState<number>();
+
+  const containerPaddingStyle = {
+    paddingTop: withNotice ? 15 : safeAreaInsets.top,
+  };
 
   useEffect(() => {
     const id = scrollOffset.addListener(({ value }) => {
@@ -46,15 +52,11 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
 
   const scrollHeaderAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> | undefined = playHeaderFoldAnimation
     ? {
-        transform: [
-          {
-            translateY: scrollOffset.interpolate({
-              extrapolate: 'clamp',
-              inputRange: [0, headerHeight],
-              outputRange: [0, -headerHeight],
-            }),
-          },
-        ],
+        paddingTop: scrollOffset.interpolate({
+          extrapolate: 'clamp',
+          inputRange: [0, headerHeight],
+          outputRange: [headerHeight, 0]
+        })
       }
     : undefined;
 
@@ -79,28 +81,41 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
     <Animated.View
       style={[
         styles.headerContainer,
-        {
-          paddingTop: safeAreaInsets.top,
-        },
-        scrollHeaderAnimatedStyle,
+        containerPaddingStyle,
+        withNotice ? styles.noticeBorderRadius : undefined,
       ]}>
-      <BlurView blurStyle={'header'} color={colorScheme.background} style={StyleSheet.absoluteFill} />
+      <View style={[styles.blurWrapper, StyleSheet.absoluteFill]}>
+        <BlurView blurStyle={'header'} color={colorScheme.background} style={[
+          StyleSheet.absoluteFill,
+          withNotice ? styles.noticeBorderRadius : undefined,
+        ]} />
+      </View>
       <View>
+        <Animated.View style={scrollHeaderAnimatedStyle}>
+          {searchBar && <AnimatedSearchBar {...searchBar} collapsed={collapsed} />}
+        </Animated.View>
         {header && (
-          <Animated.View onLayout={onHeaderLayout} style={fadeHeaderOutAnimatedStyle}>
+          <Animated.View onLayout={onHeaderLayout} style={[styles.headerContainer, fadeHeaderOutAnimatedStyle]}>
             {header}
           </Animated.View>
         )}
-        {searchBar && <AnimatedSearchBar {...searchBar} collapsed={collapsed} />}
       </View>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  blurWrapper: {
+    overflow: 'hidden',
+  },
   headerContainer: {
     position: 'absolute',
     width: '100%',
+  },
+  noticeBorderRadius: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    overflow: 'hidden',
   },
 });
 
