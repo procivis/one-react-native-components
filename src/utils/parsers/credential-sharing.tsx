@@ -17,6 +17,7 @@ import {
 import { CredentialCardNotice } from '../../ui-components/credential/card/credential-card';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../ui-components/icons';
 import { concatTestID } from '../testID';
+import { WUAState } from '../wallet-unit';
 import {
   CardLabels,
   CredentialDetailsCardPropsWithoutWidth,
@@ -34,6 +35,7 @@ export const validityCheckedCardFromCredential = (
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
   config: Config,
+  wuaState: WUAState | undefined,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
@@ -62,7 +64,7 @@ export const validityCheckedCardFromCredential = (
     };
   }
 
-  const card = getCredentialCardPropsFromCredential(credential, credential.claims, config, notice, testID, labels);
+  const card = getCredentialCardPropsFromCredential(credential, credential.claims, config, wuaState, notice, testID, labels);
   return {
     ...card,
     header: {
@@ -267,6 +269,7 @@ export const shareCredentialCardFromCredential = (
   request: PresentationDefinitionRequestedCredential,
   selectedFields: string[] | undefined,
   config: Config,
+  wuaState: WUAState | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -289,6 +292,7 @@ export const shareCredentialCardFromCredential = (
       expanded,
       multipleCredentialsAvailable,
       config,
+      wuaState,
       notice,
       cardTestId,
       labels,
@@ -351,6 +355,7 @@ export const selectCredentialCardFromCredential = (
   selected: boolean,
   request: PresentationDefinitionRequestedCredential,
   config: Config,
+  wuaState: WUAState | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -370,6 +375,7 @@ export const selectCredentialCardFromCredential = (
     credential,
     credential.claims,
     config,
+    wuaState,
     notice,
     testID,
     labels,

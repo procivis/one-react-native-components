@@ -7,7 +7,10 @@ import {
   CredentialStateEnum,
   DataTypeEnum,
   FormatFeatureEnum,
+  WalletStorageType,
 } from '@procivis/react-native-one-core';
+import { FC } from 'react';
+import { SvgProps } from 'react-native-svg';
 
 import {
   CredentialAttribute,
@@ -20,6 +23,7 @@ import { CredentialCardNotice } from '../../ui-components/credential/card/creden
 import { CredentialErrorIcon, CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../ui-components/icons';
 import { formatDateLocalized, formatDateTimeLocalized } from '../date';
 import { concatTestID } from '../testID';
+import { WUAState } from '../wallet-unit';
 import { getCarouselImagesFromClaims } from './credential-images';
 
 export enum ValidityState {
@@ -82,62 +86,109 @@ export type CardHeaderLabels = {
   revoked: string;
   suspended: string;
   suspendedUntil: (date: string) => string;
+  wuaExpired: string;
+  wuaRevoked: string;
 };
+
+const credentialDetailFromCredential = (
+  credential: CredentialDetail,
+  claims: Claim[] = [],
+  config: Config,
+  wuaState: WUAState | undefined,
+  testID: string,
+  labels: CardHeaderLabels,
+): {
+  credentialDetailPrimary?: string;
+  credentialDetailSecondary?: string;
+  credentialDetailErrorColor?: boolean;
+  credentialDetailTestID?: string;
+  statusIcon?: FC<SvgProps>;
+} => {
+  const { layoutProperties } = credential.schema;
+
+  if (credential.schema.walletStorageType === WalletStorageType.EUDI_COMPLIANT && wuaState === WUAState.Revoked) {
+    return {
+      credentialDetailPrimary: labels.wuaRevoked,
+      credentialDetailErrorColor: true,
+      credentialDetailTestID: concatTestID(testID, 'wua', 'revoked'),
+      statusIcon: CredentialErrorIcon,
+    };
+  }
+
+  switch (credential.state) {
+    case CredentialStateEnum.SUSPENDED:
+      return {
+        credentialDetailPrimary: credential.suspendEndDate
+          ? labels.suspendedUntil(formatDateTimeLocalized(new Date(credential.suspendEndDate))!)
+          : labels.suspended,
+        credentialDetailTestID: concatTestID(testID, 'suspended'),
+        statusIcon: CredentialWarningIcon,
+      };
+    case CredentialStateEnum.REVOKED:
+      return {
+        credentialDetailPrimary: labels.revoked,
+        credentialDetailErrorColor: true,
+        credentialDetailTestID: concatTestID(testID, 'revoked'),
+        statusIcon: CredentialErrorIcon,
+      };
+  }
+
+  if (credential.schema.walletStorageType === WalletStorageType.EUDI_COMPLIANT && wuaState === WUAState.Expired) {
+    return {
+      credentialDetailPrimary: labels.wuaExpired,
+      credentialDetailTestID: concatTestID(testID, 'wua', 'suspended'),
+      statusIcon: CredentialWarningIcon,
+    };
+  }
+
+  if (hasMsoValidityIssues(credential)) {
+    return {
+      credentialDetailPrimary: labels.validityIssues,
+      credentialDetailTestID: concatTestID(testID, 'validity-issue'),
+      statusIcon: CredentialWarningIcon,
+    };
+  }
+
+  let credentialDetailPrimary =
+    formatDateTimeLocalized(new Date(credential.issuanceDate ?? credential.createdDate)) ?? '';
+  let credentialDetailSecondary: string | undefined;
+
+  const primary = findClaimByPath(layoutProperties?.primaryAttribute, claims);
+
+  if (primary) {
+    credentialDetailPrimary = formatCredentialDetail(primary, config, concatTestID(testID, 'primary'));
+  }
+
+  const secondary = findClaimByPath(layoutProperties?.secondaryAttribute, claims);
+
+  if (secondary) {
+    credentialDetailSecondary = formatCredentialDetail(secondary, config, concatTestID(testID, 'secondary'));
+  }
+
+  return {
+    credentialDetailPrimary,
+    credentialDetailSecondary,
+    credentialDetailTestID: concatTestID(testID, 'detail'),
+  }
+}
 
 export const cardHeaderFromCredential = (
   credential: CredentialDetail,
   claims: Claim[] = [],
   config: Config,
+  wuaState: WUAState | undefined,
   testID: string,
   labels: CardHeaderLabels,
 ): Omit<CredentialHeaderProps, 'style'> => {
-  let credentialDetailPrimary =
-    formatDateTimeLocalized(new Date(credential.issuanceDate ?? credential.createdDate)) ?? '';
-
-  let credentialDetailSecondary: string | undefined;
-  let credentialDetailErrorColor: boolean | undefined;
-  let credentialDetailTestID: string | undefined;
-  let statusIcon;
-
+  const {
+    credentialDetailPrimary,
+    credentialDetailSecondary,
+    credentialDetailErrorColor,
+    credentialDetailTestID,
+    statusIcon,
+  } = credentialDetailFromCredential(credential, claims, config, wuaState, testID, labels);
   const { layoutProperties } = credential.schema;
 
-  switch (credential.state) {
-    case CredentialStateEnum.SUSPENDED:
-      credentialDetailPrimary = credential.suspendEndDate
-        ? labels.suspendedUntil(formatDateTimeLocalized(new Date(credential.suspendEndDate))!)
-        : labels.suspended;
-      credentialDetailTestID = concatTestID(testID, 'suspended');
-      statusIcon = CredentialWarningIcon;
-      break;
-    case CredentialStateEnum.REVOKED:
-      credentialDetailPrimary = labels.revoked;
-      credentialDetailErrorColor = true;
-      credentialDetailTestID = concatTestID(testID, 'revoked');
-      statusIcon = CredentialErrorIcon;
-      break;
-    default: {
-      if (hasMsoValidityIssues(credential)) {
-        credentialDetailPrimary = labels.validityIssues;
-        credentialDetailTestID = concatTestID(testID, 'validity-issue');
-        statusIcon = CredentialWarningIcon;
-      } else {
-        const primary = findClaimByPath(layoutProperties?.primaryAttribute, claims);
-
-        if (primary) {
-          credentialDetailPrimary = formatCredentialDetail(primary, config, concatTestID(testID, 'primary'));
-        }
-
-        const secondary = findClaimByPath(layoutProperties?.secondaryAttribute, claims);
-
-        if (secondary) {
-          credentialDetailSecondary = formatCredentialDetail(secondary, config, concatTestID(testID, 'secondary'));
-        }
-
-        credentialDetailTestID = concatTestID(testID, 'detail');
-      }
-      break;
-    }
-  }
   return {
     color: layoutProperties?.logo?.backgroundColor,
     credentialDetailErrorColor,
@@ -166,6 +217,7 @@ export const getCredentialCardPropsFromCredential = (
   credential: CredentialDetail,
   claims: Claim[] = [],
   config: Config,
+  wuaState: WUAState | undefined,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: CardLabels,
@@ -185,7 +237,7 @@ export const getCredentialCardPropsFromCredential = (
       ? { imageSource: { uri: layoutProperties.background.image } }
       : undefined,
     color: layoutProperties?.background?.color,
-    header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels),
+    header: cardHeaderFromCredential(credential, claims, config, wuaState, concatTestID(testID, 'header'), labels),
     testID,
     notice,
   };
@@ -262,16 +314,18 @@ export type CredentialDetailsCardPropsWithoutWidth = Omit<CredentialDetailsCardP
 export const detailsCardFromCredential = (
   credential: CredentialDetail,
   config: Config,
+  wuaState: WUAState | undefined,
   testID: string,
   labels: CardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
-  return detailsCardFromCredentialWithClaims(credential, credential.claims, config, testID, labels);
+  return detailsCardFromCredentialWithClaims(credential, credential.claims, config, wuaState, testID, labels);
 };
 
 export const detailsCardFromCredentialWithClaims = (
   credential: CredentialDetail,
   claims: Claim[],
   config: Config,
+  wuaState: WUAState | undefined,
   testID: string,
   labels: CardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -283,6 +337,7 @@ export const detailsCardFromCredentialWithClaims = (
     credential,
     claims,
     config,
+    wuaState,
     undefined,
     concatTestID(testID, 'card'),
     labels,

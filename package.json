@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.3.78",
+  "version": "0.3.79",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "Common Procivis ONE UI components for react-native",
@@ -51,7 +51,7 @@
     "@babel/runtime": "^7.25.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@gorhom/bottom-sheet": "^5.1.2",
-    "@procivis/react-native-one-core": "1.62561.0",
+    "@procivis/react-native-one-core": "1.65154.1",
     "@procivis/react-native-picker": "5.0.3",
     "@react-native-async-storage/async-storage": "^1.17.3",
     "@react-native-community/blur": "^4.4.0",
@@ -259,7 +259,13 @@
       "import/newline-after-import": "warn",
       "import/no-duplicates": "warn",
       "import/no-absolute-path": "warn",
-      "no-console": "error"
+      "no-console": "error",
+      "no-void": [
+        "error",
+        {
+          "allowAsStatement": true
+        }
+      ]
     }
   },
   "eslintIgnore": [
