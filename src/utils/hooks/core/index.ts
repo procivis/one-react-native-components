@@ -12,3 +12,4 @@ export * from './proof-schemas';
 export * from './proofs';
 export * from './query';
 export * from './trust-entity';
+export * from './wallet-unit';

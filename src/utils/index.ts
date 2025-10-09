@@ -18,3 +18,4 @@ export * from './string';
 export * from './url';
 export * from './useMemoAsync';
 export * from './uuid';
+export * from './wallet-unit';

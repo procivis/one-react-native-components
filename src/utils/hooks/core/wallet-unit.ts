@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useONECore } from './core-context';
 
-
 export const ATTESTATION_QUERY_KEY = 'wallet-unit-attestation';
 
 export const useWalletUnitAttestation = (active = true) => {
