@@ -135,4 +135,18 @@ export enum IdentifierStateEnum {
   DEACTIVATED = 'DEACTIVATED',
 }
 
+export enum WalletUnitStatusEnum {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  REVOKED = 'REVOKED',
+  ERROR = 'ERROR',
+}
+
+export enum WalletStorageType {
+  HARDWARE = 'HARDWARE',
+  SOFTWARE = 'SOFTWARE',
+  REMOTE_SECURE_ELEMENT = 'REMOTE_SECURE_ELEMENT',
+  EUDI_COMPLIANT = 'EUDI_COMPLIANT',
+}
+
 export const initializeCore = fn;
