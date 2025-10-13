@@ -70,10 +70,7 @@ export const useRollbackImport = () => {
  * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be restored/created
  * @returns [hwIdentifierId, swIdentifierId]
  */
-export const useBackupFinalizeImportProcedure = ({
-  generateHwKey,
-  generateSwKey,
-}: IdentifiersInitializationConfig) => {
+export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
   const { mutateAsync: finalizeImport } = useFinalizeImport();
   const { core, organisationId } = useONECore();
 
@@ -84,7 +81,7 @@ export const useBackupFinalizeImportProcedure = ({
     let swIdentifierId: string | undefined;
     if (generateSwKey) {
       const identifiers = await core.getIdentifiers({
-        state: IdentifierStateEnum.ACTIVE,
+        states: [IdentifierStateEnum.ACTIVE],
         organisationId,
         page: 0,
         pageSize: 1,
