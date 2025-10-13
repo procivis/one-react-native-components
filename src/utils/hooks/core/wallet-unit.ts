@@ -2,6 +2,7 @@ import { WalletProvider, WalletUnitStatusEnum } from '@procivis/react-native-one
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
+import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
 
 export const ATTESTATION_QUERY_KEY = 'wallet-unit-attestation';
@@ -9,14 +10,11 @@ export const ATTESTATION_QUERY_KEY = 'wallet-unit-attestation';
 export const useWalletUnitAttestation = (active = true) => {
   const { core, organisationId } = useONECore();
 
-  return useQuery(
-    [ATTESTATION_QUERY_KEY, organisationId],
-    () => core.holderGetWalletUnitAttestation(organisationId),
-    {
-      enabled: active,
-      keepPreviousData: true,
-    },
-  );
+  return useQuery([ATTESTATION_QUERY_KEY, organisationId], () => core.holderGetWalletUnitAttestation(organisationId), {
+    enabled: active,
+    keepPreviousData: true,
+    retry: false,
+  });
 };
 
 export const useRegisterWalletUnit = () => {
@@ -34,8 +32,7 @@ export const useRegisterWalletUnit = () => {
       return result;
     },
     {
-      onSuccess: () =>
-        queryClient.invalidateQueries([ATTESTATION_QUERY_KEY, organisationId]),
+      onSuccess: () => queryClient.invalidateQueries([ATTESTATION_QUERY_KEY, organisationId]),
     },
   );
 };
@@ -51,21 +48,18 @@ export const useRefreshWalletUnit = () => {
         organisationId,
       }),
     {
-      onError: () =>
-        queryClient.invalidateQueries([ATTESTATION_QUERY_KEY, organisationId]),
-      onSuccess: () =>
-        queryClient.invalidateQueries([ATTESTATION_QUERY_KEY, organisationId]),
+      onError: async (err) => {
+        reportException(err, 'Refresh wallet unit failure');
+        await queryClient.invalidateQueries([ATTESTATION_QUERY_KEY, organisationId]);
+      },
+      onSuccess: () => queryClient.invalidateQueries([ATTESTATION_QUERY_KEY, organisationId]),
     },
   );
 };
 
 export const useWalletUnitCheck = (appIntegrityCheckRequired: boolean) => {
   const { data: walletUnitAttestation, isLoading } = useWalletUnitAttestation();
-  const {
-    mutateAsync: refreshWalletUnit,
-    isLoading: isRefreshing,
-    status: refreshStatus,
-  } = useRefreshWalletUnit();
+  const { mutateAsync: refreshWalletUnit, isLoading: isRefreshing, status: refreshStatus } = useRefreshWalletUnit();
 
   useEffect(() => {
     if (isLoading || refreshStatus !== 'idle') {
@@ -78,7 +72,6 @@ export const useWalletUnitCheck = (appIntegrityCheckRequired: boolean) => {
 
   return {
     isLoading: isLoading || isRefreshing,
-    walletUnitAttestation:
-      isLoading || isRefreshing ? undefined : walletUnitAttestation,
+    walletUnitAttestation: isLoading || isRefreshing ? undefined : walletUnitAttestation,
   };
 };
