@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, { FC, useCallback, useState } from 'react';
+import { LayoutChangeEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { CredentialCardRatio, CredentialCardShadow } from './credential-card';
 import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
@@ -17,64 +17,43 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
   style,
   ...props
 }) => {
-  const [cardWidth, setCardWidth] = useState<number>();
-  const [minHeight, setMinHeight] = useState<number>();
   const [detailsCardHeight, setDetailsCardHeight] = useState<number>();
-
-  const cardListItemHeight = useSharedValue<number | undefined>(undefined);
-
-  useEffect(() => {
-    if (!detailsCardHeight || !minHeight) {
-      return;
-    }
-    const newValue = expanded ? detailsCardHeight : minHeight;
-    if (cardListItemHeight.value === undefined) {
-      cardListItemHeight.value = newValue;
-      return;
-    }
-    cardListItemHeight.value = withTiming(newValue, {
-      duration: 250,
-    });
-  }, [cardListItemHeight, detailsCardHeight, minHeight, expanded]);
-
-  const animatedCardWrapperStyle = useAnimatedStyle(() => {
-    if (cardListItemHeight.value !== undefined) {
-      return {
-        height: cardListItemHeight.value,
-      };
-    }
-    if (lastItem || expanded) {
-      return {};
-    }
-    return {
-      height: 60,
-    };
-  }, [cardListItemHeight, lastItem, expanded]);
-
-  const cardWrapperStyle: ViewStyle = {
-    minHeight: cardWidth ? Math.ceil(cardWidth / CredentialCardRatio) : undefined,
-  }
+  const cardWidth = props.card.width;
+  const minHeight = lastItem ? Math.ceil(cardWidth / CredentialCardRatio) : 60;
 
   const onContentLayout = useCallback(
     (event: LayoutChangeEvent) => {
-      const { width, height } = event.nativeEvent.layout;
+      const { height } = event.nativeEvent.layout;
       const borderWidth = StyleSheet.flatten(style)?.borderWidth ?? 0;
       const cardHeight = Math.round(height) + 2 * borderWidth;
       if (cardHeight === detailsCardHeight) {
         return;
       }
-      setCardWidth(width);
-      if (!minHeight) {
-        setMinHeight(lastItem ? Math.ceil(width / CredentialCardRatio) : 60);
-      }
       setDetailsCardHeight(cardHeight);
     },
-    [lastItem, minHeight, style, detailsCardHeight],
+    [style, detailsCardHeight],
   );
 
   return (
-    <Animated.View style={[styles.animatedWrapper, animatedCardWrapperStyle, style]}>
-      <View style={[styles.cardWrapper, cardWrapperStyle]}>
+    <Animated.View
+      layout={LinearTransition}
+      style={[
+        styles.animatedWrapper,
+        // eslint-disable-next-line react-native/no-inline-styles
+        {
+          height: expanded ? 'auto' : minHeight,
+        },
+        style,
+      ]}>
+      <Animated.View
+        layout={LinearTransition}
+        style={[
+          styles.cardWrapper,
+          // eslint-disable-next-line react-native/no-inline-styles
+          {
+            height: expanded ? 'auto' : Math.ceil(cardWidth / CredentialCardRatio),
+          },
+        ]}>
         <CredentialDetailsCard
           animate={false}
           expanded={true}
@@ -82,7 +61,7 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
           style={detailsCardStyle}
           {...props}
         />
-      </View>
+      </Animated.View>
     </Animated.View>
   );
 };
@@ -93,7 +72,6 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     borderRadius: 10,
-    height: '100%',
     overflow: 'hidden',
   },
 });

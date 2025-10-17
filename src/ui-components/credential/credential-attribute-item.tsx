@@ -357,6 +357,8 @@ const styles = StyleSheet.create({
   },
   rightAccessory: {
     paddingHorizontal: 8,
+    position: 'absolute',
+    right: 0,
   },
   separator: {
     height: 1,

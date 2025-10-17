@@ -2,12 +2,15 @@ import { PresentationDefinitionRequestedCredential } from '@procivis/react-nativ
 import React, { FC, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType } from 'react-native';
 
-import { CredentialDetailsCardListItem } from '../../ui-components';
-import { useCoreConfig } from '../../utils/hooks/core/core-config';
-import { useCredentialDetail } from '../../utils/hooks/core/credentials';
-import { useWalletUnitAttestation } from '../../utils/hooks/core/wallet-unit';
-import { selectCredentialCardFromCredential, ShareCredentialCardLabels } from '../../utils/parsers/credential-sharing';
-import { walletUnitAttestationState } from '../../utils/wallet-unit';
+import { CredentialDetailsCardListItem } from '../../../ui-components';
+import { useCoreConfig } from '../../../utils/hooks/core/core-config';
+import { useCredentialDetail } from '../../../utils/hooks/core/credentials';
+import { useWalletUnitAttestation } from '../../../utils/hooks/core/wallet-unit';
+import {
+  selectCredentialCardFromCredential,
+  ShareCredentialCardLabels,
+} from '../../../utils/parsers/credential-sharing';
+import { walletUnitAttestationState } from '../../../utils/wallet-unit';
 
 export const SelectCredential: FC<{
   credentialId: string;

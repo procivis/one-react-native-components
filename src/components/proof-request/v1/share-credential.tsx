@@ -6,15 +6,20 @@ import {
   PresentationDefinitionRequestedCredential,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo } from 'react';
-import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { Button, ButtonType, CredentialDetailsCardListItem, Typography, useAppColorScheme } from '../../ui-components';
-import { concatTestID } from '../../utils';
-import { useCoreConfig } from '../../utils/hooks/core/core-config';
-import { useWalletUnitAttestation } from '../../utils/hooks/core/wallet-unit';
-import { getValidityState, ValidityState } from '../../utils/parsers/credential';
-import { shareCredentialCardFromCredential, ShareCredentialCardLabels } from '../../utils/parsers/credential-sharing';
-import { walletUnitAttestationState } from '../../utils/wallet-unit';
+import { CredentialDetailsCardListItem, useAppColorScheme } from '../../../ui-components';
+import { concatTestID } from '../../../utils';
+import { useCoreConfig } from '../../../utils/hooks/core/core-config';
+import { useWalletUnitAttestation } from '../../../utils/hooks/core/wallet-unit';
+import { getValidityState, ValidityState } from '../../../utils/parsers/credential';
+import {
+  shareCredentialCardFromCredential,
+  ShareCredentialCardLabels,
+} from '../../../utils/parsers/credential-sharing';
+import { walletUnitAttestationState } from '../../../utils/wallet-unit';
+import { SelectShareCredentialCardNotice } from '../select-share-credential-card-notice';
+import { ShareCredentialCardNotice } from '../share-credential-card-notice';
 
 export type ShareCredentialLabels = ShareCredentialCardLabels & {
   invalidCredentialNotice: string;
@@ -90,58 +95,41 @@ export const ShareCredential: FunctionComponent<{
     }
     if (validityState === ValidityState.Revoked) {
       return (
-        <View
-          style={[styles.notice, { backgroundColor: colorScheme.background }]}
-          testID={concatTestID(testID, 'notice.revoked')}>
-          <Typography align="center" color={colorScheme.text} preset="s/line-height-capped">
-            {labels.revokedCredentialNotice}
-          </Typography>
-        </View>
+        <ShareCredentialCardNotice
+          testID={concatTestID(testID, 'notice.revoked')}
+          text={labels.revokedCredentialNotice}
+        />
       );
     }
     if (validityState === ValidityState.Suspended) {
       return (
-        <View
-          style={[styles.notice, { backgroundColor: colorScheme.background }]}
-          testID={concatTestID(testID, 'notice.suspended')}>
-          <Typography align="center" color={colorScheme.text} preset="s/line-height-capped">
-            {labels.suspendedCredentialNotice}
-          </Typography>
-        </View>
+        <ShareCredentialCardNotice
+          testID={concatTestID(testID, 'notice.suspended')}
+          text={labels.suspendedCredentialNotice}
+        />
       );
     }
 
     if (invalid) {
       return (
-        <View
-          style={[styles.notice, { backgroundColor: colorScheme.background }]}
-          testID={concatTestID(testID, 'notice.invalid')}>
-          <Typography align="center" color={colorScheme.text} preset="s/line-height-capped">
-            {labels.invalidCredentialNotice}
-          </Typography>
-        </View>
+        <ShareCredentialCardNotice
+          testID={concatTestID(testID, 'notice.invalid')}
+          text={labels.invalidCredentialNotice}
+        />
       );
     }
 
     if (multipleCredentialsAvailable) {
       return (
-        <View
-          style={[styles.notice, { backgroundColor: colorScheme.background }]}
-          testID={concatTestID(testID, 'notice.multiple')}>
-          <Typography align="center" color={colorScheme.text} preset="s/line-height-capped">
-            {labels.multipleCredentialsNotice}
-          </Typography>
-          <Button
-            onPress={onSelectCredential}
-            style={styles.noticeButton}
-            testID={concatTestID(testID, 'notice.multiple.button')}
-            title={labels.multipleCredentialsSelect}
-            type={ButtonType.Secondary}
-          />
-        </View>
+        <SelectShareCredentialCardNotice
+          buttonTitle={labels.multipleCredentialsSelect}
+          onPress={onSelectCredential}
+          testID={concatTestID(testID, 'notice.multiple')}
+          text={labels.multipleCredentialsNotice}
+        />
       );
     }
-  }, [colorScheme, expanded, invalid, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
+  }, [expanded, invalid, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
 
   if (!config || isLoadingWUA) {
     return null;
@@ -185,14 +173,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     marginBottom: 8,
-  },
-  notice: {
-    marginBottom: 22,
-    marginHorizontal: 12,
-    padding: 12,
-  },
-  noticeButton: {
-    marginTop: 24,
-    paddingVertical: 11,
   },
 });

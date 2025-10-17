@@ -12,3 +12,4 @@ export { CredentialAttribute, CredentialAttributeItem, CredentialAttributeItemPr
 export { Barcode, Mrz, QrCode };
 export { Selector, SelectorStatus };
 export * from './card';
+export * from './group';

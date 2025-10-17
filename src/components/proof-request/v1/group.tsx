@@ -1,7 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useAppColorScheme } from '../../ui-components/theme';
+import { useAppColorScheme } from '../../../ui-components/theme';
 
 export const ProofRequestGroup: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const colorScheme = useAppColorScheme();
