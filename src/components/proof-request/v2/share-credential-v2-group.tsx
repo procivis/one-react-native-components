@@ -110,9 +110,12 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
 
   const onNestedCardHeaderPress = useCallback(
     (credentialId: string) => () => {
+      if (!selected) {
+        onGroupSelect?.(true);
+      }
       onHeaderPress(credentialId);
     },
-    [onHeaderPress],
+    [selected, onGroupSelect, onHeaderPress],
   );
 
   const credentialCards = useMemo(() => {
