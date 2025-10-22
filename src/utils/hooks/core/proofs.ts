@@ -84,6 +84,7 @@ export const useProofUrl = () => {
       core.shareProof(proofId, request ?? {}).then((proof) => proof.url),
     {
       onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
       },
@@ -112,9 +113,12 @@ export const useProofAccept = () => {
     {
       onError: async (err) => {
         reportException(err, 'Proof submission failure');
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
       onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
@@ -136,6 +140,7 @@ export const useProofReject = () => {
       }),
     {
       onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
@@ -168,6 +173,7 @@ export const useProposeProof = () => {
     async (request: Omit<ProposeProofRequest, 'organisationId'>) => core.proposeProof({ organisationId, ...request }),
     {
       onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
     },
@@ -226,8 +232,7 @@ export const useProofCreate = () => {
   return useMutation(async (data: CreateProofRequest) => core.createProof(data), {
     onSuccess: async () => {
       await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
-      await queryClient.invalidateQueries(PROOF_STATE_QUERY_KEY);
-      await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
 };

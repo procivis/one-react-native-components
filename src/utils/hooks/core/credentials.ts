@@ -10,9 +10,10 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-q
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
 import { useONECore } from './core-context';
-import { CREDENTIAL_SCHEMA_LIST_QUERY_KEY } from './credential-schemas';
+import { CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, CREDENTIAL_SCHEMA_LIST_QUERY_KEY } from './credential-schemas';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
+import { PROOF_LIST_QUERY_KEY } from './proofs';
 
 const PAGE_SIZE = 20;
 export const CREDENTIAL_LIST_QUERY_KEY = 'credential-list';
@@ -87,9 +88,12 @@ export const useInvitationHandler = () => {
       core.handleInvitation({ organisationId, ...request }),
     {
       onSuccess: async (result: InvitationResult) => {
-        if ('credentialIds' in result) {
+        if ('proofId' in result) {
+          await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
+        } else {
           await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
           await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+          await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY);
         }
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
@@ -115,6 +119,8 @@ export const useCredentialAccept = () => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
@@ -200,6 +206,7 @@ export const useContinueIssuance = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
       await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
