@@ -169,8 +169,8 @@ const credentialDetailFromCredential = (
     credentialDetailPrimary,
     credentialDetailSecondary,
     credentialDetailTestID: concatTestID(testID, 'detail'),
-  }
-}
+  };
+};
 
 export const cardHeaderFromCredential = (
   credential: CredentialDetail,
@@ -294,7 +294,8 @@ const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID
           value: formatDateLocalized(new Date(date)) ?? date,
         };
       }
-      case DataTypeEnum.File: {
+      case DataTypeEnum.Picture: // fallback
+      case DataTypeEnum.SwiyuPicture: {
         if (typeConfig.params?.showAs === 'IMAGE') {
           return { image: { uri: claim.value as string }, testID: testID };
         } else {
@@ -309,7 +310,7 @@ const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID
 
 export type CredentialDetailsCardPropsWithoutWidth = Omit<CredentialDetailsCardProps, 'expanded' | 'card'> & {
   card: Omit<CredentialCardProps, 'width'>;
-}
+};
 
 export const detailsCardFromCredential = (
   credential: CredentialDetail,
