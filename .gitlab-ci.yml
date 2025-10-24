@@ -38,7 +38,7 @@ stages:
 .app_settings: &app_settings
   - APP_VERSION=${APP_VERSION:-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA}
   - IMAGE_NAME=$CI_REGISTRY_IMAGE/storybook
-  - IMAGE_TAG=$IMAGE_NAME:$APP_VERSION
+  - IMAGE_TAG=$APP_VERSION
 
 .config_private_registry: &config_private_registry
   - npm config set -- @procivis:registry https://${CI_SERVER_HOST}/api/v4/packages/npm/
@@ -142,7 +142,7 @@ publish:storybook:
     - job: build:storybook
       artifacts: true
   extends:
-    - .docker_publish
+    - .release_docker_image
     - .only_main
 
 publish:npm:private:
