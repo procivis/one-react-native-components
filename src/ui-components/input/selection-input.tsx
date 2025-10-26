@@ -1,11 +1,9 @@
-import Picker from '@procivis/react-native-picker';
-import React, { forwardRef, useCallback, useMemo, useState } from 'react';
-import type { TouchableOpacityProps } from 'react-native';
+import WheelPicker from '@quidone/react-native-wheel-picker';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import { Modal, StyleSheet, TouchableOpacityProps, View } from 'react-native';
 
-import { useForwardedRef } from '../../utils/ref';
-import { focusAccessibility } from '../accessibility/accessibility';
-import { TouchableOpacity, TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
-import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
+import { Typography } from '..';
+import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import { useAppColorScheme } from '../theme';
 import TextInput, { TextInputAccessory } from './text-input';
 
@@ -28,12 +26,10 @@ export interface SelectionInputProps extends TouchableOpacityProps {
    */
   onChange?: (value: SelectionInputChoice) => boolean;
   pickerCancelLabel: string;
-
   pickerConfirmLabel: string;
   pickerTitle?: string;
   /** {@link SelectionInputChoice.label} of the selected choice */
   selectedValue?: string | number;
-
   values: SelectionInputChoice[];
 }
 
@@ -41,72 +37,96 @@ export interface SelectionInputProps extends TouchableOpacityProps {
  * Generic selection input component
  * @see https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=4%3A127&t=B2Y3PtJHH22XDPkx-0
  */
-const SelectionInput = forwardRef<TouchableOpacityRef, SelectionInputProps>(
-  (
-    { selectedValue, values, label, pickerTitle, pickerConfirmLabel, pickerCancelLabel, onChange, error, ...props },
-    ref,
-  ) => {
-    const t = useAccessibilityTranslation();
-    const colorScheme = useAppColorScheme();
-    const selectedChoice = useMemo(
-      () => (selectedValue !== undefined ? values.find(({ value }) => value === selectedValue) : undefined),
-      [selectedValue, values],
-    );
 
-    const [forwardedRef, refObject] = useForwardedRef(ref);
-    const [pickerOpen, setPickerOpen] = useState(false);
+const SelectionInput: FC<SelectionInputProps> = ({
+  selectedValue,
+  label,
+  values,
+  pickerCancelLabel,
+  pickerConfirmLabel,
+  onChange,
+  ...props
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [wheelPickerValue, setWheelPickerValue] = useState(selectedValue);
+  const colorScheme = useAppColorScheme();
 
-    const onOpen = useCallback(() => setPickerOpen(true), []);
-    const onConfirm = useCallback(
-      (valueLabel: any) => {
-        setPickerOpen(false);
-        const choice = values.find(({ label: choiceLabel }) => choiceLabel === valueLabel);
-        if (!choice || !onChange?.(choice)) {
-          setTimeout(() => focusAccessibility(refObject.current), 200);
-        }
-      },
-      [onChange, refObject, values],
-    );
-    const onCancel = useCallback(() => {
-      setPickerOpen(false);
-      requestAnimationFrame(() => focusAccessibility(refObject.current));
-    }, [refObject]);
+  const selectedChoice = useMemo(
+    () => (selectedValue !== undefined ? values.find(({ value }) => value === selectedValue) : undefined),
+    [selectedValue, values],
+  );
 
-    const accessibilityLabel = error ? `${label}, ${error}` : label;
-    return (
-      <TouchableOpacity
-        accessibilityHint={t('accessibility.control.combobox.tapToSelect')}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityRole="combobox"
-        accessibilityValue={{ text: selectedChoice?.label }}
-        onPress={onOpen}
-        ref={forwardedRef}
-        {...props}>
+  const onCancel = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
+  const onConfirm = useCallback(() => {
+    const choice = values.find(({ value }) => value === wheelPickerValue);
+    if (choice && onChange) {
+      onChange(choice);
+    }
+
+    setModalVisible(false);
+  }, [onChange, values, wheelPickerValue]);
+
+  return (
+    <>
+      <TouchableOpacity onPress={() => setModalVisible(true)} {...props}>
         <TextInput
           accessory={TextInputAccessory.Dropdown}
           disabled={true}
-          error={error}
           label={label}
           pointerEvents="none"
           value={selectedChoice?.shortLabel ?? selectedChoice?.label}
         />
-        <Picker
-          cancelText={pickerCancelLabel}
-          confirmText={pickerConfirmLabel}
-          items={values.map(({ label: itemLabel }) => itemLabel)}
-          modal
-          mode="list"
-          onCancel={onCancel}
-          onConfirm={onConfirm}
-          open={pickerOpen}
-          selectedValue={selectedChoice?.label}
-          textColor={colorScheme.text}
-          title={pickerTitle ?? label}
-        />
       </TouchableOpacity>
-    );
-  },
-);
+      <Modal
+        animationType="fade"
+        backdropColor={'rgba(0,0,0,0.1)'}
+        onDismiss={() => setModalVisible(false)}
+        onRequestClose={onCancel}
+        style={styles.modal}
+        visible={modalVisible}>
+        <View style={styles.modalContent}>
+          <WheelPicker
+            data={values}
+            onValueChanged={({ item: { value } }: { item: { value?: string | number } }) => setWheelPickerValue(value)}
+            value={wheelPickerValue || ''}
+            visibleItemCount={5}
+          />
+          <View style={styles.buttons}>
+            <TouchableOpacity onPress={onCancel}>
+              <Typography color={colorScheme.black} preset="s">
+                {pickerCancelLabel}
+              </Typography>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onConfirm}>
+              <Typography color={colorScheme.black} preset="s">
+                {pickerConfirmLabel}
+              </Typography>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </>
+  );
+};
 
-SelectionInput.displayName = 'SelectionInput';
-export default SelectionInput;
+const styles = StyleSheet.create({
+  buttons: {
+    flexDirection: 'row',
+    gap: 20,
+    justifyContent: 'flex-end',
+  },
+
+  modal: {},
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 2,
+    margin: 'auto',
+    padding: 20,
+    width: '80%',
+  },
+});
+
+export default memo(SelectionInput);
