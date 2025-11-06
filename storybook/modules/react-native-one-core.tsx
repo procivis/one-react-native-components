@@ -135,7 +135,7 @@ export enum IdentifierStateEnum {
   DEACTIVATED = 'DEACTIVATED',
 }
 
-export enum WalletUnitStatusEnum {
+export enum WalletUnitStatus {
   PENDING = 'PENDING',
   ACTIVE = 'ACTIVE',
   REVOKED = 'REVOKED',

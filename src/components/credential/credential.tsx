@@ -6,9 +6,7 @@ import { CredentialDetailsCardListItem, CredentialHeaderProps } from '../../ui-c
 import { concatTestID } from '../../utils';
 import { useCoreConfig } from '../../utils/hooks/core/core-config';
 import { useCredentialDetail } from '../../utils/hooks/core/credentials';
-import { useWalletUnitAttestation } from '../../utils/hooks/core/wallet-unit';
 import { CardLabels, detailsCardFromCredentialWithClaims } from '../../utils/parsers/credential';
-import { walletUnitAttestationState } from '../../utils/wallet-unit';
 
 export interface CredentialDetailsProps {
   claims?: Claim[];
@@ -33,10 +31,9 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
 }) => {
   const { data: credential } = useCredentialDetail(credentialId);
   const { data: config } = useCoreConfig();
-  const { data: walletUnitAttestation, isLoading: isLoadingWUA } = useWalletUnitAttestation();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
-  if (!credential || !config || isLoadingWUA) {
+  if (!credential || !config) {
     return null;
   }
   const testID = concatTestID('Credential.credential', credential.id);
@@ -45,7 +42,6 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
     credential,
     claims ?? credential.claims,
     config,
-    walletUnitAttestationState(walletUnitAttestation),
     testID,
     labels,
   );

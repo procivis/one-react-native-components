@@ -7,14 +7,7 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { CredentialDetailsCardListItem, useAppColorScheme } from '../../../ui-components';
-import {
-  concatTestID,
-  getValidityState,
-  useCoreConfig,
-  useWalletUnitAttestation,
-  ValidityState,
-  walletUnitAttestationState,
-} from '../../../utils';
+import { concatTestID, getValidityState, useCoreConfig, ValidityState } from '../../../utils';
 import { shareCredentialCardFromV2PresentationCredential } from '../../../utils/parsers/credential-sharing-v2';
 import { SelectShareCredentialCardNotice } from '../select-share-credential-card-notice';
 import { ShareCredentialCardNotice } from '../share-credential-card-notice';
@@ -67,7 +60,6 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
   const failureHint = 'failureHint' in credentialQuery ? credentialQuery.failureHint : undefined;
   const credential = applicableCredentials?.find((c) => c.id === selectedCredentialId) ?? applicableCredentials?.[0];
   const { data: config } = useCoreConfig();
-  const { data: walletUnitAttestation, isLoading: isLoadingWUA } = useWalletUnitAttestation();
   const cardWidth = useMemo(
     () => Dimensions.get('window').width - 32 - (grouped ? GroupedShareCredentialV2Padding * 2 : 0),
     [grouped],
@@ -148,7 +140,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
     [onSelectField, selectedCredentialId],
   );
 
-  if (!config || isLoadingWUA) {
+  if (!config) {
     return null;
   }
 
@@ -162,7 +154,6 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
     multipleCredentialsAvailable,
     selectedFields,
     config,
-    walletUnitAttestationState(walletUnitAttestation),
     testID,
     labels,
   );

@@ -3,12 +3,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType } from 'react-native';
 
 import { CredentialDetailsCardListItem } from '../../../ui-components';
-import {
-  ShareCredentialCardLabels,
-  useCoreConfig,
-  useWalletUnitAttestation,
-  walletUnitAttestationState,
-} from '../../../utils';
+import { ShareCredentialCardLabels, useCoreConfig } from '../../../utils';
 import { selectCredentialCardFromV2Credential } from '../../../utils/parsers/credential-sharing-v2';
 
 export const SelectCredentialV2: FC<{
@@ -22,14 +17,13 @@ export const SelectCredentialV2: FC<{
   testID: string;
 }> = ({ credential, labels, lastItem, multiple, onImagePreview, onSelected, selected, testID }) => {
   const { data: config } = useCoreConfig();
-  const { data: walletUnitAttestation, isLoading: isLoadingWUA } = useWalletUnitAttestation();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   const onHeaderPress = useCallback(() => {
     onSelected?.(credential.id, !selected);
   }, [credential.id, onSelected, selected]);
 
-  if (!credential || !config || isLoadingWUA) {
+  if (!credential || !config) {
     return null;
   }
 
@@ -38,7 +32,6 @@ export const SelectCredentialV2: FC<{
     selected,
     multiple,
     config,
-    walletUnitAttestationState(walletUnitAttestation),
     testID,
     labels,
   );

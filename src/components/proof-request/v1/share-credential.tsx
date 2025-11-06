@@ -11,13 +11,11 @@ import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } fro
 import { CredentialDetailsCardListItem, useAppColorScheme } from '../../../ui-components';
 import { concatTestID } from '../../../utils';
 import { useCoreConfig } from '../../../utils/hooks/core/core-config';
-import { useWalletUnitAttestation } from '../../../utils/hooks/core/wallet-unit';
 import { getValidityState, ValidityState } from '../../../utils/parsers/credential';
 import {
   shareCredentialCardFromCredential,
   ShareCredentialCardLabels,
 } from '../../../utils/parsers/credential-sharing';
-import { walletUnitAttestationState } from '../../../utils/wallet-unit';
 import { SelectShareCredentialCardNotice } from '../select-share-credential-card-notice';
 import { ShareCredentialCardNotice } from '../share-credential-card-notice';
 
@@ -61,7 +59,6 @@ export const ShareCredential: FunctionComponent<{
   const colorScheme = useAppColorScheme();
   const credential = allCredentials.find((c) => c.id === selectedCredentialId);
   const { data: config } = useCoreConfig();
-  const { data: walletUnitAttestation, isLoading: isLoadingWUA } = useWalletUnitAttestation();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   const selectionOptions = useMemo(
@@ -131,7 +128,7 @@ export const ShareCredential: FunctionComponent<{
     }
   }, [expanded, invalid, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
 
-  if (!config || isLoadingWUA) {
+  if (!config) {
     return null;
   }
 
@@ -143,7 +140,6 @@ export const ShareCredential: FunctionComponent<{
     request,
     selectedFields,
     config,
-    walletUnitAttestationState(walletUnitAttestation),
     testID,
     labels,
   );

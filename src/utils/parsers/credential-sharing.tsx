@@ -17,7 +17,6 @@ import {
 import { CredentialCardNotice } from '../../ui-components/credential/card/credential-card';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../ui-components/icons';
 import { concatTestID } from '../testID';
-import { WUAState } from '../wallet-unit';
 import {
   CardLabels,
   CredentialDetailsCardPropsWithoutWidth,
@@ -35,20 +34,19 @@ export const validityCheckedCardFromCredential = (
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
   config: Config,
-  wuaState: WUAState | undefined,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID' | 'width'> => {
   let credentialHeaderDetail:
     | Pick<
-      CredentialHeaderProps,
-      | 'credentialDetailPrimary'
-      | 'credentialDetailSecondary'
-      | 'credentialDetailErrorColor'
-      | 'credentialDetailTestID'
-      | 'statusIcon'
-    >
+        CredentialHeaderProps,
+        | 'credentialDetailPrimary'
+        | 'credentialDetailSecondary'
+        | 'credentialDetailErrorColor'
+        | 'credentialDetailTestID'
+        | 'statusIcon'
+      >
     | undefined;
   if (invalidLVVC) {
     credentialHeaderDetail = {
@@ -64,7 +62,7 @@ export const validityCheckedCardFromCredential = (
     };
   }
 
-  const card = getCredentialCardPropsFromCredential(credential, credential.claims, config, wuaState, notice, testID, labels);
+  const card = getCredentialCardPropsFromCredential(credential, credential.claims, config, notice, testID, labels);
   return {
     ...card,
     header: {
@@ -167,7 +165,9 @@ const getDisplayedAttributes = (
 
   let fields = request.fields;
   if (credential) {
-    const fieldsWithNoKeyMapping = request.fields.filter((field) => !(credential.id in field.keyMap)).filter((field) => !isApplicable || !field.required);
+    const fieldsWithNoKeyMapping = request.fields
+      .filter((field) => !(credential.id in field.keyMap))
+      .filter((field) => !isApplicable || !field.required);
     const fullyNestedFields = getFullyNestedFields(request.fields, credential.id);
 
     fields = [...fieldsWithNoKeyMapping, ...fullyNestedFields];
@@ -177,7 +177,7 @@ const getDisplayedAttributes = (
     const selected = !field.required && selectedFields?.includes(field.id);
     const claim = credential
       ? claims?.find(({ path }) => {
-        return path === field.keyMap[credential.id];
+          return path === field.keyMap[credential.id];
         })
       : undefined;
     const status =
@@ -209,7 +209,12 @@ export const shareCredentialCardAttributeFromClaim = (
   field?: PresentationDefinitionField,
 ): CredentialAttribute => {
   if (claim) {
-    return { ...detailsCardAttributeFromClaim(claim, config, testID), id, path: claim.path, listValue: claim.isArrayElement };
+    return {
+      ...detailsCardAttributeFromClaim(claim, config, testID),
+      id,
+      path: claim.path,
+      listValue: claim.isArrayElement,
+    };
   }
   return {
     id,
@@ -269,7 +274,6 @@ export const shareCredentialCardFromCredential = (
   request: PresentationDefinitionRequestedCredential,
   selectedFields: string[] | undefined,
   config: Config,
-  wuaState: WUAState | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -280,27 +284,24 @@ export const shareCredentialCardFromCredential = (
   const notice: CredentialCardNotice | undefined =
     selectiveDisclosureSupported === false
       ? {
-        text: labels.selectiveDisclosureNotice,
-        noticeIcon: CredentialNoticeWarningIcon,
-      }
+          text: labels.selectiveDisclosureNotice,
+          noticeIcon: CredentialNoticeWarningIcon,
+        }
       : undefined;
   const cardTestId = concatTestID(testID, 'card');
   const card = credential
     ? validityCheckedCardFromCredential(
-      credential,
-      invalidLVVC,
-      expanded,
-      multipleCredentialsAvailable,
-      config,
-      wuaState,
-      notice,
-      cardTestId,
-      labels,
-    )
+        credential,
+        invalidLVVC,
+        expanded,
+        multipleCredentialsAvailable,
+        config,
+        notice,
+        cardTestId,
+        labels,
+      )
     : missingCredentialCardFromRequest(request, notice, cardTestId, labels);
-  const validityState = getValidityState(
-    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
-  );
+  const validityState = getValidityState(credential ? { ...credential, issuer: credential.issuer?.id } : undefined);
   const displayedAttributes = getDisplayedAttributes(
     request,
     validityState,
@@ -355,7 +356,6 @@ export const selectCredentialCardFromCredential = (
   selected: boolean,
   request: PresentationDefinitionRequestedCredential,
   config: Config,
-  wuaState: WUAState | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -367,15 +367,14 @@ export const selectCredentialCardFromCredential = (
   const notice: CredentialCardNotice | undefined =
     selectiveDisclosureSupported === false
       ? {
-        text: labels.selectiveDisclosureNotice,
-        noticeIcon: CredentialNoticeWarningIcon,
-      }
+          text: labels.selectiveDisclosureNotice,
+          noticeIcon: CredentialNoticeWarningIcon,
+        }
       : undefined;
   const { header, ...cardProps } = getCredentialCardPropsFromCredential(
     credential,
     credential.claims,
     config,
-    wuaState,
     notice,
     testID,
     labels,

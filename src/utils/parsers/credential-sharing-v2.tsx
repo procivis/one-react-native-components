@@ -19,7 +19,6 @@ import {
   SelectorStatus,
 } from '../../ui-components';
 import { concatTestID } from '../testID';
-import { WUAState } from '../wallet-unit';
 import {
   CredentialDetailsCardPropsWithoutWidth,
   detailsCardAttributeFromClaim,
@@ -179,7 +178,6 @@ export const shareCredentialCardFromV2PresentationCredential = (
   multipleCredentialsAvailable: boolean,
   selectedFields: string[] | undefined,
   config: Config,
-  wuaState: WUAState | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -205,7 +203,6 @@ export const shareCredentialCardFromV2PresentationCredential = (
         expanded,
         multipleCredentialsAvailable,
         config,
-        wuaState,
         notice,
         cardTestId,
         labels,
@@ -226,7 +223,6 @@ export const selectCredentialCardFromV2Credential = (
   selected: boolean,
   multiple: boolean,
   config: Config,
-  wuaState: WUAState | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -250,7 +246,6 @@ export const selectCredentialCardFromV2Credential = (
     },
     credential.claims.map(v2PresentationClaimToClaim),
     config,
-    wuaState,
     notice,
     testID,
     labels,
