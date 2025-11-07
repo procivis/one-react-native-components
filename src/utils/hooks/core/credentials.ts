@@ -111,11 +111,12 @@ export const useCredentialAccept = () => {
     interactionId: string;
     keyId?: string;
     txCode?: string;
+    holderWalletUnitId?: string;
   };
 
   return useMutation(
-    async ({ interactionId, didId, identifierId, keyId, txCode }: CredentialAcceptHookParams) =>
-      core.holderAcceptCredential(interactionId, didId, identifierId, keyId, txCode),
+    async (credentialAcceptHookParams: CredentialAcceptHookParams) =>
+      core.holderAcceptCredential(credentialAcceptHookParams),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
