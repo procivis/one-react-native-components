@@ -66,6 +66,7 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
         labels={attributesLabels}
         onCopyToClipboard={onCopyToClipboard}
         entityType={entityType}
+        testID={testID}
       />
     </View>
   );

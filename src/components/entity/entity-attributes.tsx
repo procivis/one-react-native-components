@@ -14,6 +14,7 @@ interface EntityAttributesProps {
   labels: AttributesLabels;
   onCopyToClipboard: (value: string) => void;
   entityType: EntityType;
+  testID?: string;
 }
 
 const EntityAttributes: FC<EntityAttributesProps> = ({
@@ -23,6 +24,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
   trusted,
   labels,
   entityType,
+  testID,
   onCopyToClipboard,
 }) => {
   const didSections = did?.split(':') ?? [];
@@ -62,6 +64,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
           {...attribute}
           labels={labels}
           onCopyToClipboard={onCopyToClipboard}
+          testID={testID}
         />
       ))}
     </View>
