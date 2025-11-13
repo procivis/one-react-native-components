@@ -16,6 +16,9 @@ const cacheTypeToQueryKeys: Record<CacheType, string[]> = {
   [CacheType.VCT_METADATA]: CREDENTIAL_QUERY_KEYS,
   [CacheType.JSON_SCHEMA]: CREDENTIAL_QUERY_KEYS,
   [CacheType.TRUST_LIST]: [...TRUST_ENTITY_QUERY_KEYS, ...CREDENTIAL_QUERY_KEYS],
+  [CacheType.X509_CRL]: CREDENTIAL_QUERY_KEYS,
+  [CacheType.ANDROID_ATTESTATION_CRL]: CREDENTIAL_QUERY_KEYS,
+  [CacheType.OPEN_ID_METADATA]: CREDENTIAL_QUERY_KEYS,
 };
 
 export const useCacheClear = () => {
