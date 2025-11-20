@@ -100,16 +100,10 @@ export const useProofAccept = () => {
     async ({
       interactionId,
       credentials,
-      didId,
-      identifierId,
-      keyId,
     }: {
       credentials: Record<string, PresentationSubmitCredentialRequest>;
-      didId?: string;
-      identifierId?: string;
       interactionId: string;
-      keyId?: string;
-    }) => core.holderSubmitProof(interactionId, credentials, didId, identifierId, keyId),
+    }) => core.holderSubmitProof(interactionId, credentials),
     {
       onError: async (err) => {
         reportException(err, 'Proof submission failure');
@@ -296,7 +290,7 @@ export const useProofForSchemaIdWithTransport = (
         setProofId(undefined);
         setDeleting(false);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [proofIdRef, deleteProof, proofSchemaId, transport, setProofId]);
 
   useEffect(() => {
@@ -313,7 +307,7 @@ export const useProofForSchemaIdWithTransport = (
           setProofId(undefined);
           setDeleting(false);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [deleteProof, enabled, proofId, proofState, setProofId]);
 
@@ -340,7 +334,7 @@ export const useProofForSchemaIdWithTransport = (
       .then((id) => {
         setProofId(id);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [proofSchemaId, identifiers, identifierFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
 
   return deleting ? undefined : proofId;
