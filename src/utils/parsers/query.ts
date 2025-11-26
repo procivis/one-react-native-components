@@ -55,7 +55,7 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<Histo
     'page',
     'pageSize',
     'organisationId',
-    'entityId',
+    'entityIds',
     'actions',
     'entityTypes',
     'createdDateAfter',
@@ -65,7 +65,7 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<Histo
     'credentialSchemaId',
     'proofSchemaId',
     'search',
-    'user',
+    'users',
   ]);
 };
 

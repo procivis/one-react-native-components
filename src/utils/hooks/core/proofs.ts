@@ -58,7 +58,7 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
             organisationId,
             page: 0,
             pageSize: 1,
-            entityId: proofId,
+            entityIds: [proofId],
             entityTypes: [HistoryEntityTypeEnum.PROOF],
             actions: [HistoryActionEnum.ERRORED],
           })
@@ -290,7 +290,7 @@ export const useProofForSchemaIdWithTransport = (
         setProofId(undefined);
         setDeleting(false);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [proofIdRef, deleteProof, proofSchemaId, transport, setProofId]);
 
   useEffect(() => {
@@ -307,7 +307,7 @@ export const useProofForSchemaIdWithTransport = (
           setProofId(undefined);
           setDeleting(false);
         })
-        .catch(() => { });
+        .catch(() => {});
     }
   }, [deleteProof, enabled, proofId, proofState, setProofId]);
 
@@ -334,7 +334,7 @@ export const useProofForSchemaIdWithTransport = (
       .then((id) => {
         setProofId(id);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [proofSchemaId, identifiers, identifierFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
 
   return deleting ? undefined : proofId;
