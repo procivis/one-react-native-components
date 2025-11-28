@@ -1,0 +1,21 @@
+{
+  "accessibility.control.combobox.expanded": "Laajennettu",
+  "accessibility.control.combobox.tapToSelect": "Kaksoisnapauta valitaksesi",
+  "accessibility.control.order": "{current} / {length}",
+  "accessibility.control.progress": "{current} / {length}",
+  "accessibility.control.checked": "valittu",
+  "accessibility.control.unchecked": "ei valittu",
+  "accessibility.control.clear": "tyhjennä",
+  "accessibility.control.delete": "poista",
+  "accessibility.control.list.moveDown": "Siirrä alas",
+  "accessibility.control.list.moveUp": "Siirrä ylös",
+  "accessibility.nav.back": "takaisin",
+  "accessibility.nav.close": "sulje",
+  "accessibility.nav.next": "seuraava",
+  "accessibility.icon.edit": "muokkaa",
+  "accessibility.icon.add": "lisää",
+  "accessibility.icon.filter": "suodata",
+  "accessibility.icon.scan": "skannaa",
+  "accessibility.key.faceId": "faceId",
+  "accessibility.key.fingerprint": "sormenjälki"
+}

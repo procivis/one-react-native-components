@@ -1,9 +1,10 @@
 import de from './de.json';
 import en from './en.json';
+import fi from './fi.json';
 import fr from './fr.json';
 import it from './it.json';
 
-export const defaultLanguageFiles = { en, de, fr, it };
+export const defaultLanguageFiles = { en, de, fi, fr, it };
 
 export type SupportedAccessibilityLanguage = keyof typeof defaultLanguageFiles;
 export type AccessibilityLanguageFile = typeof en;
