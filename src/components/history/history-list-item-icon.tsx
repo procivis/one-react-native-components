@@ -55,6 +55,7 @@ const defaultIcons: {
     CSR_GENERATED: HistoryStatusAcceptedIcon,
     EXPIRED: HistoryStatusErrorIcon,
     INTERACTION_CREATED: HistoryStatusAcceptedIcon,
+    INTERACTION_ERRORED: HistoryStatusErrorIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,
@@ -70,10 +71,13 @@ const defaultIcons: {
     TRUST_ANCHOR: HistoryTrustAnchorIcon,
     TRUST_ENTITY: HistoryTrustedEntityIcon,
     WALLET_UNIT: HistoryTrustedEntityIcon,
+    WALLET_RELYING_PARTY: HistoryTrustedEntityIcon,
     USER: HistoryIdentifierIcon,
+    PROVIDER: HistoryIdentifierIcon,
     STS_ROLE: HistoryIdentifierIcon,
     STS_ORGANISATION: HistoryOrganisationIcon,
     STS_IAM_ROLE: HistoryIdentifierIcon,
+    STS_TOKEN: HistoryKeyIcon,
   },
 };
 
