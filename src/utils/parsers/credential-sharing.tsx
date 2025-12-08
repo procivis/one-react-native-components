@@ -124,28 +124,18 @@ const getAttributeSelectorStatus = (
   return selected ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty;
 };
 
-type ClaimWithOptionalPath = Claim & {
-  path?: string;
-};
-
 type FlatClaim = Claim & {
-  path: string;
   isArrayElement?: boolean;
 };
 
 // Returns a spread list of all claims with their full JSON path as key, including all intermediate objects
-const spreadClaims = (claims: ClaimWithOptionalPath[]): FlatClaim[] => {
-  const claimsWithPath: FlatClaim[] = claims.map((c) => ({
-    ...c,
-    path: c.path ?? c.key,
-  }));
-  return claimsWithPath.reduce((acc, claim) => {
+const spreadClaims = (claims: Claim[]): FlatClaim[] => {
+  return claims.reduce((acc, claim) => {
     const result = [claim];
     if (Array.isArray(claim.value)) {
-      const nestedClaimsWithPath: FlatClaim[] = claim.value.map((c, i) => ({
+      const nestedClaimsWithPath: FlatClaim[] = claim.value.map((c) => ({
         ...c,
-        path: claim.array ? `${c.key}/${i}` : c.key,
-        isArrayElement: claim.array,
+        isArrayElement: claim.schema.array && claim.path.split('/').pop() !== claim.schema.key,
       }));
       result.push(...spreadClaims(nestedClaimsWithPath));
     }

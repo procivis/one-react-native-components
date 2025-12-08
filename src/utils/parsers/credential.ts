@@ -47,21 +47,8 @@ export const supportsSelectiveDisclosure = (credential: CredentialListItem | und
     : undefined;
 };
 
-const findClaimByPathParts = (path: string[], claims?: Claim[]): Claim | undefined => {
-  if (!claims?.length) {
-    return undefined;
-  }
-  const [first, second, ...rest] = path;
-  const claim = claims.find((c) => c.key === first);
-  if (claim === undefined || second === undefined || claim.dataType !== DataTypeEnum.Object) {
-    return claim;
-  }
-
-  return findClaimByPathParts([`${first}/${second}`, ...rest], claim.value as Claim[]);
-};
-
 export const findClaimByPath = (path: string | undefined, claims: Claim[] | undefined) =>
-  path ? findClaimByPathParts(path.split('/'), claims) : undefined;
+  path ? claims?.find((claim) => claim.path === path) : undefined;
 
 const formatCredentialDetail = (claim: Claim, config: Config, testID: string): string => {
   const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID);
@@ -224,27 +211,20 @@ export const getCredentialCardPropsFromCredential = (
 export const detailsCardAttributeFromClaim = (claim: Claim, config: Config, testID: string): CredentialAttribute => {
   const value = detailsCardAttributeValueFromClaim(claim, config, testID);
   return {
-    id: claim.id,
-    name: claim.key.split('/').pop(),
-    path: claim.key,
+    id: claim.path,
+    name: claim.path.split('/').pop(),
+    path: claim.path,
     ...value,
   };
 };
 
 const detailsCardAttributeValueFromClaim = (claim: Claim, config: Config, testID: string): CredentialAttributeValue => {
-  const typeConfig = config?.datatype[claim.dataType];
+  const typeConfig = config?.datatype[claim.schema.datatype];
 
-  if (claim.array) {
+  if (claim.schema.array) {
     return {
-      values: (claim.value || []).map((arrayValue, index) => {
-        return detailsCardAttributeFromClaim(
-          {
-            ...arrayValue,
-            id: `${arrayValue.id}/${index}`,
-          },
-          config,
-          concatTestID(testID, index.toString()),
-        );
+      values: ((claim.value as Claim[]) || []).map((arrayValue, index) => {
+        return detailsCardAttributeFromClaim(arrayValue, config, concatTestID(testID, index.toString()));
       }),
     };
   } else {

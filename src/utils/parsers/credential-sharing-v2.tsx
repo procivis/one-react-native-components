@@ -1,7 +1,7 @@
 import {
   Claim,
+  ClaimValue,
   Config,
-  DataTypeEnum,
   FailureHint,
   PresentationDefinitionV2ClaimValue,
   PresentationDefinitionV2CredentialClaim,
@@ -27,7 +27,7 @@ import {
 } from '.';
 import { ShareCredentialCardLabels, validityCheckedCardFromCredential } from './credential-sharing';
 
-const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): string | number | boolean | Claim[] => {
+const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): ClaimValue => {
   if (!Array.isArray(value)) {
     return value;
   }
@@ -35,31 +35,10 @@ const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): st
 };
 
 const v2PresentationClaimToClaim = (claim: PresentationDefinitionV2CredentialClaim): Claim => {
-  if (Array.isArray(claim.value)) {
-    if (claim.schema.array) {
-      return {
-        array: claim.schema.array,
-        dataType: claim.schema.datatype,
-        id: claim.path,
-        key: claim.path,
-        value: v2ClaimValueToClaimValue(claim.value) as Claim[],
-      };
-    } else {
-      return {
-        array: claim.schema.array,
-        dataType: DataTypeEnum.Object,
-        id: claim.path,
-        key: claim.path,
-        value: v2ClaimValueToClaimValue(claim.value) as Claim[],
-      };
-    }
-  }
   return {
-    array: false,
-    dataType: claim.schema.datatype,
-    id: claim.path,
-    key: claim.path,
-    value: claim.value,
+    schema: claim.schema,
+    path: claim.path,
+    value: v2ClaimValueToClaimValue(claim.value),
   };
 };
 
