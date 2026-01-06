@@ -74,7 +74,7 @@ const EntityAttributes: FC<EntityAttributesProps> = ({
 const styles = StyleSheet.create({
   wrapper: {
     marginBottom: 20,
-  }
-})
+  },
+});
 
 export default memo(EntityAttributes);

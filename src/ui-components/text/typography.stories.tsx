@@ -1,4 +1,4 @@
-import type { Meta,StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React from 'react';
 import type { ColorValue } from 'react-native';
@@ -33,7 +33,7 @@ export default {
   title: 'base/Typography',
   component: Typography,
   args: {
-   onAnnouncementFinished: fn()
+    onAnnouncementFinished: fn(),
   },
   argTypes: {
     preset: {

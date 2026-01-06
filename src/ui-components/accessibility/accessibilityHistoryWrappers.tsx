@@ -20,7 +20,10 @@ interface OnPressProps {
   onPress?: RNOnPress | null;
 }
 
-const WithAccessibilityFocusHistory = <ComponentProps extends OnPressProps, RefType extends React.ElementType<any, any>>(
+const WithAccessibilityFocusHistory = <
+  ComponentProps extends OnPressProps,
+  RefType extends React.ElementType<any, any>,
+>(
   C: React.ComponentType<ComponentProps>,
   displayName: string,
 ) => {

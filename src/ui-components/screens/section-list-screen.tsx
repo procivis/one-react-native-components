@@ -58,7 +58,16 @@ const SectionListScreen = <ItemT, SectionT>({
   return (
     <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
       <SectionList<ItemT, SectionT>
-        ListHeaderComponent={!header.static ? <View><ListTitleHeader title={header.title} />{headerView}</View> : headerView}
+        ListHeaderComponent={
+          !header.static ? (
+            <View>
+              <ListTitleHeader title={header.title} />
+              {headerView}
+            </View>
+          ) : (
+            headerView
+          )
+        }
         contentContainerStyle={[contentInsetsStyle, contentContainerStyle]}
         onScroll={onScroll}
         scrollEventThrottle={100}

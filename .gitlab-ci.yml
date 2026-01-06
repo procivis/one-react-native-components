@@ -90,10 +90,8 @@ stages:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
 
-
 before_script:
   - *app_settings
-
 
 build_deps:
   stage: prepare

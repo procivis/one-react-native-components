@@ -1,6 +1,7 @@
 import React, { ComponentType, FunctionComponent, ReactElement, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
+import { concatTestID } from '../../utils';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
 import { NextIcon } from '../icons/wallet';
 import { useAppColorScheme } from '../theme/color-scheme-context';
@@ -50,7 +51,7 @@ const ButtonSetting: FunctionComponent<ButtonSettingProps> = ({
       onPress={onPress}
       style={styles.container}
       testID={testID}>
-      <SettingItem icon={icon} style={style} title={title}>
+      <SettingItem icon={icon} style={style} title={title} testID={concatTestID(testID, 'text')}>
         {accessoryView}
       </SettingItem>
     </TouchableOpacity>

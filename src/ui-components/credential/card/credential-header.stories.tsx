@@ -19,7 +19,6 @@ const Basic: StoryObj<typeof CredentialHeader> = {
   },
 };
 
-
 export { Basic as CredentialHeader };
 
 export default {

@@ -25,7 +25,7 @@ export const useOpenSettings = () => {
       Linking.sendIntent('android.settings.WIFI_SETTINGS').catch(() => {});
     }
   }, []);
-  
+
   const openAppPermissionSettings = useCallback(() => {
     Linking.openSettings().catch(() => {});
   }, []);

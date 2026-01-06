@@ -20,7 +20,7 @@ const Basic: StoryObj<typeof QRCodeScannerScreen> = {
     title: 'Scan QR Code to connect.',
   },
   render: Render,
-}
+};
 
 export { Basic as QRCodeScannerScreen };
 

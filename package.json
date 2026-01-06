@@ -1,6 +1,6 @@
 {
   "name": "@procivis/one-react-native-components",
-  "version": "0.3.95",
+  "version": "0.3.96",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "Common Procivis ONE UI components for react-native",
@@ -23,6 +23,8 @@
     "typescript": "tsc --noEmit",
     "lint:eslint": "eslint \"**/*.{js,ts,tsx}\"",
     "lint:eslint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
+    "lint:prettier": "prettier --check .",
+    "lint:prettier:fix": "prettier --write .",
     "lint:ts": "tsc --noEmit",
     "lint": "pnpm lint:eslint",
     "lint:fix": "pnpm lint:eslint:fix",

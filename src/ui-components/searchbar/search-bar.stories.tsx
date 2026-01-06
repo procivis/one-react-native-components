@@ -16,7 +16,6 @@ const Basic: StoryObj<Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChang
   render: Render,
 };
 
-
 export { Basic as SearchBar };
 
 export default {

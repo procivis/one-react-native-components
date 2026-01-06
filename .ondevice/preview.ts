@@ -4,7 +4,7 @@ import { withCommonLibs, withColorScheme } from '../storybook/decorator';
 import type { Preview } from '@storybook/react';
 
 const preview: Preview = {
-	decorators: [withBackgrounds, withCommonLibs, withColorScheme],
+  decorators: [withBackgrounds, withCommonLibs, withColorScheme],
   parameters: {
     backgrounds: Object.entries(ColorSchemes.procivis)
       .filter(([_, value]) => typeof value === 'string')

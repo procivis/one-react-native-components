@@ -36,7 +36,7 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
   ...viewProps
 }) => {
   const colorScheme = useAppColorScheme();
-  
+
   const opacity = useSharedValue<number>(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -58,14 +58,15 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
     if (isLoading) {
       return {
         avatar: {
-          component: 
+          component: (
             <View style={[styles.loaderWrapper, { backgroundColor: colorScheme.grayDark }]}>
               <View style={styles.loader}>
                 <LoaderView animate={true} state={LoaderViewState.InProgress} />
               </View>
             </View>
-        }
-      }
+          ),
+        },
+      };
     }
     const initials = entityName.split(' ', 3).map((word: string) => word[0]);
     const placeholderText = initials.length > 0 ? initials.join('') : '';
@@ -122,14 +123,14 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   loader: {
-    transform: [{scale: 0.5}],
+    transform: [{ scale: 0.5 }],
   },
   loaderWrapper: {
     height: 72,
     paddingLeft: 3,
     paddingTop: 4,
     width: 72,
-  }
+  },
 });
 
 export default EntityCluster;

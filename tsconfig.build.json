@@ -3,6 +3,6 @@
   "include": ["src"],
   "exclude": ["storybook", "storybook-static", "**/*.stories.tsx", "**/*.stories.mobile.tsx"],
   "compilerOptions": {
-    "noEmit": false,
+    "noEmit": false
   }
 }

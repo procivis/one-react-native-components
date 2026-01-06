@@ -7,8 +7,8 @@ const MINUTE = 60 * 1000;
 const DAY = 24 * 60 * MINUTE;
 
 // OS locale
-const systemLocale: string | undefined = I18nManager.getConstants().localeIdentifier
-  ?.replace(/_/g, '-')
+const systemLocale: string | undefined = I18nManager.getConstants()
+  .localeIdentifier?.replace(/_/g, '-')
   .split(/[#@]/)[0]
   .replace(/-$/, '');
 

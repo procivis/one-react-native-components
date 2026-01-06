@@ -14,11 +14,11 @@ jest.mock('../core/core-config', () => ({
 }));
 
 jest.mock('@react-native-community/netinfo', () => ({
-  addEventListener: () => { },
+  addEventListener: () => {},
 }));
 
 jest.mock('react-native-bluetooth-state-manager', () => ({
-  onStateChange: () => { },
+  onStateChange: () => {},
 }));
 
 describe('getInvitationUrlTransports', () => {

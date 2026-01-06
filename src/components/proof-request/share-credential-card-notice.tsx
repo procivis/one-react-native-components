@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Typography,useAppColorScheme } from '../../ui-components';
+import { Typography, useAppColorScheme } from '../../ui-components';
 
 export type ShareCredentialCardNoticeProps = {
   testID: string;

@@ -91,7 +91,6 @@ const globalTypes = {
   },
 };
 
-
 const preview: Preview = {
   decorators,
   parameters,

@@ -50,5 +50,5 @@ export const EntityNotTrustedIcon: FC<SvgProps> = ({ ...props }) => {
         fill={colorScheme.white}
       />
     </Svg>
-  )
-}
+  );
+};

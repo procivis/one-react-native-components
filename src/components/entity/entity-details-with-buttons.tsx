@@ -42,8 +42,8 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
 
   const trusted = Boolean(
     trustEntity &&
-    trustEntity.state === TrustEntityStateEnum.ACTIVE &&
-    (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role),
+      trustEntity.state === TrustEntityStateEnum.ACTIVE &&
+      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role),
   );
 
   return (

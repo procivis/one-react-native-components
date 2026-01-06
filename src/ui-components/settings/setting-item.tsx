@@ -36,9 +36,16 @@ export type SettingItemProps = {
   icon?: ComponentType<any> | ReactElement;
   style?: StyleProp<ViewStyle>;
   title: string;
+  testID?: string;
 };
 
-const SettingItem: FunctionComponent<PropsWithChildren<SettingItemProps>> = ({ title, icon, style, children }) => {
+const SettingItem: FunctionComponent<PropsWithChildren<SettingItemProps>> = ({
+  title,
+  icon,
+  style,
+  children,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   const iconView: React.ReactElement | undefined = useMemo(() => {
     if (!icon) {
@@ -56,7 +63,7 @@ const SettingItem: FunctionComponent<PropsWithChildren<SettingItemProps>> = ({ t
     <View style={[styles.wrapper, { backgroundColor: colorScheme.white }, style]}>
       <View style={styles.container}>
         {iconView && <View style={[styles.icon, { backgroundColor: colorScheme.background }]}>{iconView}</View>}
-        <Typography accessible={false} color={colorScheme.text} preset="s" style={styles.label}>
+        <Typography accessible={false} color={colorScheme.text} preset="s" style={styles.label} testID={testID}>
           {title}
         </Typography>
         {children}

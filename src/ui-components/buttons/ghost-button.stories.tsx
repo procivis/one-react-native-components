@@ -10,7 +10,6 @@ const Basic: StoryObj<typeof GhostButton> = {
   },
 };
 
-
 export { Basic as GhostButton };
 
 export default {

@@ -1,6 +1,7 @@
 import React, { ComponentType, FunctionComponent, ReactElement } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 
+import { concatTestID } from '../../utils';
 import { Switch } from '../control/switch';
 import SettingItem from './setting-item';
 
@@ -24,8 +25,14 @@ const SwitchSetting: FunctionComponent<SwitchSettingProps> = ({
   testID,
 }) => {
   return (
-    <SettingItem icon={icon} style={style} title={title}>
-      <Switch accessibilityLabel={title} disabled={disabled} onChange={onChange} testID={testID} value={value} />
+    <SettingItem icon={icon} style={style} title={title} testID={concatTestID(testID, 'text')}>
+      <Switch
+        accessibilityLabel={title}
+        disabled={disabled}
+        onChange={onChange}
+        testID={concatTestID(testID, 'switch')}
+        value={value}
+      />
     </SettingItem>
   );
 };

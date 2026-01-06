@@ -71,7 +71,7 @@ export default {
     },
   },
   args: {
-   onAccessibilityAnnounced: fn()
+    onAccessibilityAnnounced: fn(),
   },
   argTypes: {
     onBack: { action: 'onBack' },
