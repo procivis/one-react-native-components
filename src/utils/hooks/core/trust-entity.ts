@@ -1,10 +1,10 @@
 import {
-  CreateRemoteTrustEntityRequest,
-  IdentifierTypeEnum,
+  CreateRemoteTrustEntityRequestBindingDto,
+  GetTrustAnchorResponseBindingDto,
+  IdentifierTypeBindingEnum,
   ONECore,
   OneError,
-  TrustAnchor,
-  UpdateRemoteTrustEntityRequest,
+  UpdateRemoteTrustEntityFromDidRequestBindingDto,
 } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -24,14 +24,14 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
 
   return useCallback(
     async (core: ONECore) => {
-      const trustAnchors = await core.getTrustAnchors({
+      const trustAnchors = await core.listTrustAnchors({
         page: 0,
         pageSize: 1,
       });
       if (trustAnchors.values.length > 0) {
         return;
       }
-      const response = await httpClient.get<TrustAnchor>(publisherReference);
+      const response = await httpClient.get<GetTrustAnchorResponseBindingDto>(publisherReference);
       if (!response.ok || !response.data) {
         return;
       }
@@ -66,7 +66,7 @@ export const useTrustEntity = (identifierId: string | undefined) => {
               identifiers: [
                 {
                   certificateId:
-                    identifierDetail?.type === IdentifierTypeEnum.CERTIFICATE
+                    identifierDetail?.type === IdentifierTypeBindingEnum.CERTIFICATE
                       ? identifierDetail.certificates?.[0]?.id
                       : undefined,
                   id: identifierId,
@@ -110,7 +110,9 @@ export const useCreateRemoteTrustEntity = () => {
   const { core } = useONECore();
 
   return useMutation(
-    async (request: Omit<CreateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string; didId?: string }) => {
+    async (
+      request: Omit<CreateRemoteTrustEntityRequestBindingDto, 'didId'> & { identifierId?: string; didId?: string },
+    ) => {
       const { identifierId, didId } = request;
 
       let entityDidId = didId;
@@ -139,7 +141,12 @@ export const useUpdateRemoteTrustEntity = () => {
   const { core } = useONECore();
 
   return useMutation(
-    async (request: Omit<UpdateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string; didId?: string }) => {
+    async (
+      request: Omit<UpdateRemoteTrustEntityFromDidRequestBindingDto, 'didId'> & {
+        identifierId?: string;
+        didId?: string;
+      },
+    ) => {
       const { identifierId, didId } = request;
 
       let entityDidId = didId;

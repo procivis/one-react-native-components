@@ -1,4 +1,8 @@
-import { IdentifierListQuery, IdentifierStateEnum, IdentifierTypeEnum } from '@procivis/react-native-one-core';
+import {
+  IdentifierListQueryBindingDto,
+  IdentifierStateBindingEnum,
+  IdentifierTypeBindingEnum,
+} from '@procivis/react-native-one-core';
 import { useQuery } from 'react-query';
 
 import { getQueryKeyFromIdentifierListQueryParams } from '../../parsers';
@@ -21,17 +25,17 @@ export const useIdentifierDetails = (identifierId: string | undefined) => {
   );
 };
 
-export const useIdentifiers = (identifierFilter?: Partial<IdentifierListQuery>) => {
+export const useIdentifiers = (identifierFilter?: Partial<IdentifierListQueryBindingDto>) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
     [IDENTIFIER_LIST_QUERY_KEY, ...getQueryKeyFromIdentifierListQueryParams(identifierFilter)],
     ({ pageParam = 0 }) =>
-      core.getIdentifiers({
-        types: [IdentifierTypeEnum.DID],
+      core.listIdentifiers({
+        types: [IdentifierTypeBindingEnum.DID],
         isRemote: false,
         page: pageParam,
-        states: [IdentifierStateEnum.ACTIVE],
+        states: [IdentifierStateBindingEnum.ACTIVE],
         organisationId: organisationId,
         pageSize: PAGE_SIZE,
         ...identifierFilter,

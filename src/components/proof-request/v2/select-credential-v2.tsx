@@ -1,4 +1,7 @@
-import { CredentialListItem, PresentationDefinitionV2CredentialDetail } from '@procivis/react-native-one-core';
+import {
+  CredentialListItemBindingDto,
+  PresentationDefinitionV2CredentialDetailBindingDto,
+} from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType } from 'react-native';
 
@@ -7,12 +10,12 @@ import { ShareCredentialCardLabels, useCoreConfig } from '../../../utils';
 import { selectCredentialCardFromV2Credential } from '../../../utils/parsers/credential-sharing-v2';
 
 export const SelectCredentialV2: FC<{
-  credential: PresentationDefinitionV2CredentialDetail;
+  credential: PresentationDefinitionV2CredentialDetailBindingDto;
   labels: ShareCredentialCardLabels;
   lastItem: boolean;
   multiple: boolean;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
-  onSelected?: (credentialId: CredentialListItem['id'], selected: boolean) => void;
+  onSelected?: (credentialId: CredentialListItemBindingDto['id'], selected: boolean) => void;
   selected: boolean;
   testID: string;
 }> = ({ credential, labels, lastItem, multiple, onImagePreview, onSelected, selected, testID }) => {

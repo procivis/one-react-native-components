@@ -1,4 +1,4 @@
-import { TrustEntity } from '@procivis/react-native-one-core';
+import { GetTrustEntityResponseBindingDto } from '@procivis/react-native-one-core';
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 
@@ -12,7 +12,7 @@ export interface EntityButton {
 }
 
 interface EntityButtonsProps {
-  entity?: TrustEntity;
+  entity?: GetTrustEntityResponseBindingDto;
   labels: EntityLabels;
   testID?: string;
 }

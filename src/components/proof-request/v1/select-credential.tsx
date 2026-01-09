@@ -1,4 +1,4 @@
-import { PresentationDefinitionRequestedCredential } from '@procivis/react-native-one-core';
+import { PresentationDefinitionRequestedCredentialBindingDto } from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType } from 'react-native';
 
@@ -16,7 +16,7 @@ export const SelectCredential: FC<{
   lastItem: boolean;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
   onPress?: () => void;
-  request: PresentationDefinitionRequestedCredential;
+  request: PresentationDefinitionRequestedCredentialBindingDto;
   selected: boolean;
   testID: string;
 }> = ({ credentialId, labels, lastItem, onImagePreview, onPress, request, selected, testID }) => {

@@ -1,4 +1,4 @@
-import { DidListQuery, DidTypeEnum } from '@procivis/react-native-one-core';
+import { DidListQueryBindingDto, DidTypeBindingEnum } from '@procivis/react-native-one-core';
 import { useQuery } from 'react-query';
 
 import { getQueryKeyFromDidListQueryParams } from '../../parsers/query';
@@ -7,7 +7,7 @@ import { useONECore } from './core-context';
 const PAGE_SIZE = 20;
 export const DID_LIST_QUERY_KEY = 'did-list';
 
-export const useDids = (queryParams?: Partial<DidListQuery>) => {
+export const useDids = (queryParams?: Partial<DidListQueryBindingDto>) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
@@ -18,7 +18,7 @@ export const useDids = (queryParams?: Partial<DidListQuery>) => {
         organisationId,
         page: pageParam,
         pageSize: PAGE_SIZE,
-        type: DidTypeEnum.LOCAL,
+        type: DidTypeBindingEnum.LOCAL,
         ...queryParams,
       });
 

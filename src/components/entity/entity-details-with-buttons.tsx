@@ -1,4 +1,8 @@
-import { IdentifierListItem, TrustEntityRoleEnum, TrustEntityStateEnum } from '@procivis/react-native-one-core';
+import {
+  GetIdentifierListItemBindingDto,
+  TrustEntityRoleBindingEnum,
+  TrustEntityStateBindingEnum,
+} from '@procivis/react-native-one-core';
 import React, { FC, memo } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
@@ -10,10 +14,10 @@ import EntityAttributes from './entity-attributes';
 import EntityDetails from './entity-details';
 import EntityButtons from './EntityButtons';
 
-export type ContextRole = Exclude<TrustEntityRoleEnum, TrustEntityRoleEnum.BOTH>;
+export type ContextRole = Exclude<TrustEntityRoleBindingEnum, TrustEntityRoleBindingEnum.BOTH>;
 
 interface EntityDetailsWithButtonsProps {
-  identifier?: IdentifierListItem;
+  identifier?: GetIdentifierListItemBindingDto;
   entityLabels: EntityLabels;
   attributesLabels: AttributesLabels;
   style?: StyleProp<ViewStyle>;
@@ -42,8 +46,8 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
 
   const trusted = Boolean(
     trustEntity &&
-      trustEntity.state === TrustEntityStateEnum.ACTIVE &&
-      (trustEntity.role === TrustEntityRoleEnum.BOTH || trustEntity.role === role),
+      trustEntity.state === TrustEntityStateBindingEnum.ACTIVE &&
+      (trustEntity.role === TrustEntityRoleBindingEnum.BOTH || trustEntity.role === role),
   );
 
   return (
@@ -51,7 +55,8 @@ const EntityDetailsWithButtons: FC<EntityDetailsWithButtonsProps> = ({
       <EntityDetails
         identifier={identifier}
         labels={{
-          unknown: role === TrustEntityRoleEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier,
+          unknown:
+            role === TrustEntityRoleBindingEnum.ISSUER ? entityLabels.unknownIssuer : entityLabels.unknownVerifier,
         }}
         role={role}
         testID={testID}

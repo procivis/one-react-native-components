@@ -1,14 +1,14 @@
-import { HistoryListItem } from '@procivis/react-native-one-core';
+import { HistoryListItemBindingDto } from '@procivis/react-native-one-core';
 import moment, { Moment } from 'moment';
 
 export interface HistoryGroupByDaySection {
-  data: HistoryListItem[];
+  data: HistoryListItemBindingDto[];
   date: Moment;
   firstYearEntry: boolean;
 }
 
-export const groupEntriesByDay = (entries: HistoryListItem[]) => {
-  const groupedEntries = entries.reduce((result: HistoryGroupByDaySection[], entry: HistoryListItem) => {
+export const groupEntriesByDay = (entries: HistoryListItemBindingDto[]) => {
+  const groupedEntries = entries.reduce((result: HistoryGroupByDaySection[], entry: HistoryListItemBindingDto) => {
     const entryDate = moment(entry.createdDate);
 
     const matchingEntry = result.find(({ date }) => date.isSame(entryDate, 'day'));

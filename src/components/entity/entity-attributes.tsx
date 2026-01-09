@@ -1,4 +1,4 @@
-import { TrustEntity } from '@procivis/react-native-one-core';
+import { GetTrustEntityResponseBindingDto } from '@procivis/react-native-one-core';
 import React, { FC, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -9,7 +9,7 @@ import { addElementIf } from '../../utils/array';
 interface EntityAttributesProps {
   certificate?: string;
   did?: string;
-  trustEntity?: TrustEntity;
+  trustEntity?: GetTrustEntityResponseBindingDto;
   trusted: boolean;
   labels: AttributesLabels;
   onCopyToClipboard: (value: string) => void;

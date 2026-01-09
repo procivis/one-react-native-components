@@ -1,7 +1,7 @@
 import {
-  CredentialListItem,
-  PresentationDefinitionV2CredentialClaim,
-  PresentationDefinitionV2CredentialQuery,
+  ApplicableCredentialOrFailureHintBindingEnum,
+  CredentialListItemBindingDto,
+  PresentationDefinitionV2ClaimBindingDto,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
@@ -14,7 +14,7 @@ import { ShareCredentialCardNotice } from '../share-credential-card-notice';
 import { ShareCredentialLabels } from '../v1';
 
 export type ShareCredentialV2Props = {
-  credentialQuery: PresentationDefinitionV2CredentialQuery;
+  credentialQuery: ApplicableCredentialOrFailureHintBindingEnum;
   credentialRequestId: string;
   expanded?: boolean;
   grouped?: boolean;
@@ -25,12 +25,12 @@ export type ShareCredentialV2Props = {
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
   onSelectCredential?: () => void;
   onSelectField: (
-    credentialId: CredentialListItem['id'],
-    fieldPath: PresentationDefinitionV2CredentialClaim['path'],
+    credentialId: CredentialListItemBindingDto['id'],
+    fieldPath: PresentationDefinitionV2ClaimBindingDto['path'],
     selected: boolean,
   ) => void;
-  selectedCredentialId?: CredentialListItem['id'];
-  selectedFields?: Array<PresentationDefinitionV2CredentialClaim['path']>;
+  selectedCredentialId?: CredentialListItemBindingDto['id'];
+  selectedFields?: Array<PresentationDefinitionV2ClaimBindingDto['path']>;
   style?: StyleProp<ViewStyle>;
   testID: string;
 };
@@ -56,8 +56,8 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
 }) => {
   const colorScheme = useAppColorScheme();
   const applicableCredentials =
-    'applicableCredentials' in credentialQuery ? credentialQuery.applicableCredentials : undefined;
-  const failureHint = 'failureHint' in credentialQuery ? credentialQuery.failureHint : undefined;
+    credentialQuery.type_ === 'APPLICABLE_CREDENTIALS' ? credentialQuery.applicableCredentials : undefined;
+  const failureHint = credentialQuery.type_ === 'FAILURE_HINT' ? credentialQuery.failureHint : undefined;
   const credential = applicableCredentials?.find((c) => c.id === selectedCredentialId) ?? applicableCredentials?.[0];
   const { data: config } = useCoreConfig();
   const cardWidth = useMemo(
@@ -131,7 +131,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
   ]);
 
   const onAttributeSelected = useCallback(
-    (fieldPath: PresentationDefinitionV2CredentialClaim['path'], selected: boolean) => {
+    (fieldPath: PresentationDefinitionV2ClaimBindingDto['path'], selected: boolean) => {
       if (!selectedCredentialId) {
         return;
       }

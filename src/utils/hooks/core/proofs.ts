@@ -1,17 +1,17 @@
 import {
   Config,
-  CreateProofRequest,
-  HistoryActionEnum,
-  HistoryEntityTypeEnum,
-  HistoryErrorMetadata,
-  IdentifierListQuery,
+  CreateProofRequestBindingDto,
+  GetProofSchemaBindingDto,
+  HistoryActionBindingEnum,
+  HistoryEntityTypeBindingEnum,
+  HistoryErrorMetadataBindingDto,
+  IdentifierListQueryBindingDto,
   OneError,
-  PresentationSubmitCredentialRequest,
-  ProofListQuery,
-  ProofSchema,
-  ProofStateEnum,
-  ProposeProofRequest,
-  ShareProofRequest,
+  PresentationSubmitCredentialRequestBindingDto,
+  ProofListQueryBindingDto,
+  ProofStateBindingEnum,
+  ProposeProofRequestBindingDto,
+  ShareProofRequestBindingDto,
 } from '@procivis/react-native-one-core';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -51,18 +51,18 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
       }
 
       const state = await core.getProof(proofId).then((proof) => proof.state);
-      let metadata: HistoryErrorMetadata | undefined;
-      if (state === ProofStateEnum.ERROR) {
+      let metadata: HistoryErrorMetadataBindingDto | undefined;
+      if (state === ProofStateBindingEnum.ERROR) {
         metadata = await core
-          .getHistory({
+          .getHistoryList({
             organisationId,
             page: 0,
             pageSize: 1,
             entityIds: [proofId],
-            entityTypes: [HistoryEntityTypeEnum.PROOF],
-            actions: [HistoryActionEnum.ERRORED],
+            entityTypes: [HistoryEntityTypeBindingEnum.PROOF],
+            actions: [HistoryActionBindingEnum.ERRORED],
           })
-          .then((result) => result.values[0]?.metadata as HistoryErrorMetadata);
+          .then((result) => result.values[0]?.metadata?.value as HistoryErrorMetadataBindingDto);
       }
       return { state, metadata };
     },
@@ -73,7 +73,7 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
   );
 };
 
-type ProofUrlHookParams = { proofId: string; request?: ShareProofRequest };
+type ProofUrlHookParams = { proofId: string; request?: ShareProofRequestBindingDto };
 
 export const useProofUrl = () => {
   const queryClient = useQueryClient();
@@ -101,7 +101,7 @@ export const useProofAccept = () => {
       interactionId,
       credentials,
     }: {
-      credentials: Record<string, PresentationSubmitCredentialRequest>;
+      credentials: Record<string, PresentationSubmitCredentialRequestBindingDto[]>;
       interactionId: string;
     }) => core.holderSubmitProof(interactionId, credentials),
     {
@@ -164,7 +164,8 @@ export const useProposeProof = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<ProposeProofRequest, 'organisationId'>) => core.proposeProof({ organisationId, ...request }),
+    async (request: Omit<ProposeProofRequestBindingDto, 'organisationId'>) =>
+      core.proposeProof({ organisationId, ...request }),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
@@ -198,7 +199,7 @@ export const useProofDelete = () => {
   );
 };
 
-export const useProofs = (queryParams?: Partial<ProofListQuery>) => {
+export const useProofs = (queryParams?: Partial<ProofListQueryBindingDto>) => {
   const { core, organisationId } = useONECore();
 
   const queryKey = [PROOF_LIST_QUERY_KEY, ...getQueryKeyFromProofListQueryParams(queryParams)];
@@ -223,7 +224,7 @@ export const useProofCreate = () => {
 
   const { core } = useONECore();
 
-  return useMutation(async (data: CreateProofRequest) => core.createProof(data), {
+  return useMutation(async (data: CreateProofRequestBindingDto) => core.createProof(data), {
     onSuccess: async () => {
       await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
@@ -231,7 +232,10 @@ export const useProofCreate = () => {
   });
 };
 
-const getIdentifierFilterForProofSchema = (proofSchema: ProofSchema, config: Config): Partial<IdentifierListQuery> => {
+const getIdentifierFilterForProofSchema = (
+  proofSchema: GetProofSchemaBindingDto,
+  config: Config,
+): Partial<IdentifierListQueryBindingDto> => {
   const requestedFormats = proofSchema.proofInputSchemas.map((schema) => schema.credentialSchema.format);
   const requestedFormatsCapabilities = requestedFormats
     .map((format) => config.format[format]?.capabilities)
@@ -298,7 +302,7 @@ export const useProofForSchemaIdWithTransport = (
       return;
     }
 
-    if (proofState?.state !== ProofStateEnum.CREATED && proofState?.state !== ProofStateEnum.PENDING) {
+    if (proofState?.state !== ProofStateBindingEnum.CREATED && proofState?.state !== ProofStateBindingEnum.PENDING) {
       setProofId(undefined);
     } else {
       setDeleting(true);
@@ -345,7 +349,7 @@ export const useCleanupUnusedProofs = () => {
   const { data: proofs } = useProofs({
     page: 0,
     pageSize: 100,
-    proofStates: [ProofStateEnum.CREATED, ProofStateEnum.PENDING],
+    proofStates: [ProofStateBindingEnum.CREATED, ProofStateBindingEnum.PENDING],
   });
   const [cleaned, setCleaned] = useState(false);
 
@@ -370,7 +374,7 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
 
   // reset when proofId changes or the proof was retracted
   useEffect(() => {
-    if (!proofUrlProps?.proofId || proofState?.state === ProofStateEnum.CREATED) {
+    if (!proofUrlProps?.proofId || proofState?.state === ProofStateBindingEnum.CREATED) {
       setSharedProof(undefined);
     }
   }, [proofUrlProps?.proofId, proofState]);
@@ -442,7 +446,7 @@ export const useDeleteAllProofsData = (schemaId: string) => {
           page: 0,
           pageSize: 1000,
           proofSchemaIds: [schemaId],
-          proofStates: [ProofStateEnum.ACCEPTED],
+          proofStates: [ProofStateBindingEnum.ACCEPTED],
         })
         .then((result) => Promise.all(result.values.reverse().map((proof) => core.deleteProofClaims(proof.id)))),
     {

@@ -1,4 +1,8 @@
-import { HistoryActionEnum, HistoryEntityTypeEnum, HistoryListItem } from '@procivis/react-native-one-core';
+import {
+  HistoryActionBindingEnum,
+  HistoryEntityTypeBindingEnum,
+  HistoryListItemBindingDto,
+} from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
 
 import { HistoryItemView } from '../../ui-components';
@@ -6,18 +10,18 @@ import { formatTime, useTrustEntity } from '../../utils';
 import { HistoryListItemIcon } from './history-list-item-icon';
 
 export type HistoryListItemLabels = {
-  actions: { [key in keyof typeof HistoryActionEnum]: string };
-  entityTypes: { [key in keyof typeof HistoryEntityTypeEnum]: string };
+  actions: { [key in keyof typeof HistoryActionBindingEnum]: string };
+  entityTypes: { [key in keyof typeof HistoryEntityTypeBindingEnum]: string };
 };
 
 export interface HistoryListItemViewProps {
   dateFormatter?: (date: Date) => string;
   first?: boolean;
   infoLabelMode?: 'entity' | 'associatedLabel' | 'none';
-  item: HistoryListItem;
+  item: HistoryListItemBindingDto;
   labels: HistoryListItemLabels;
   last?: boolean;
-  onPress?: (item: HistoryListItem) => void;
+  onPress?: (item: HistoryListItemBindingDto) => void;
   testID?: string;
 }
 

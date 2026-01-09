@@ -1,9 +1,9 @@
 import {
-  CredentialListQuery,
-  CredentialStateEnum,
-  HandleInvitationRequest,
-  InitiateIssuanceRequest,
-  InvitationResult,
+  CredentialListQueryBindingDto,
+  CredentialStateBindingEnum,
+  HandleInvitationRequestBindingDto,
+  HandleInvitationResponseBindingEnum,
+  InitiateIssuanceRequestBindingDto,
   OneError,
 } from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
@@ -20,7 +20,7 @@ export const CREDENTIAL_LIST_QUERY_KEY = 'credential-list';
 export const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
 export const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
 
-export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
+export const useCredentials = (queryParams?: Partial<CredentialListQueryBindingDto>) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
@@ -31,7 +31,11 @@ export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
         page: 0,
         // TODO: workaround pagination for now, until it's supported by UI
         pageSize: 10000,
-        states: [CredentialStateEnum.ACCEPTED, CredentialStateEnum.SUSPENDED, CredentialStateEnum.REVOKED],
+        states: [
+          CredentialStateBindingEnum.ACCEPTED,
+          CredentialStateBindingEnum.SUSPENDED,
+          CredentialStateBindingEnum.REVOKED,
+        ],
         ...queryParams,
       });
       return values;
@@ -42,7 +46,7 @@ export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
   );
 };
 
-export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) => {
+export const usePagedCredentials = (queryParams?: Partial<CredentialListQueryBindingDto>) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
@@ -56,7 +60,11 @@ export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) 
         organisationId,
         page: pageParam,
         pageSize: PAGE_SIZE,
-        states: [CredentialStateEnum.ACCEPTED, CredentialStateEnum.SUSPENDED, CredentialStateEnum.REVOKED],
+        states: [
+          CredentialStateBindingEnum.ACCEPTED,
+          CredentialStateBindingEnum.SUSPENDED,
+          CredentialStateBindingEnum.REVOKED,
+        ],
         ...queryParams,
       }),
     {
@@ -84,11 +92,11 @@ export const useInvitationHandler = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<HandleInvitationRequest, 'organisationId'>) =>
+    async (request: Omit<HandleInvitationRequestBindingDto, 'organisationId'>) =>
       core.handleInvitation({ organisationId, ...request }),
     {
-      onSuccess: async (result: InvitationResult) => {
-        if ('proofId' in result) {
+      onSuccess: async (result: HandleInvitationResponseBindingEnum) => {
+        if (result.type_ === 'PROOF_REQUEST') {
           await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         } else {
           await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
@@ -189,7 +197,7 @@ export const useInitiateIssuance = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<InitiateIssuanceRequest, 'organisationId'>) =>
+    async (request: Omit<InitiateIssuanceRequestBindingDto, 'organisationId'>) =>
       core.initiateIssuance({ organisationId, ...request }),
     {
       onSuccess: async () => {

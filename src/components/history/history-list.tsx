@@ -1,4 +1,4 @@
-import { HistoryListItem, HistoryListQuery } from '@procivis/react-native-one-core';
+import { HistoryListItemBindingDto, HistoryListQueryBindingDto } from '@procivis/react-native-one-core';
 import { useIsFocused } from '@react-navigation/native';
 import React, { FC, useCallback, useMemo } from 'react';
 import { Animated, SectionListProps, StyleSheet } from 'react-native';
@@ -16,15 +16,15 @@ export type HistoryListLabels = {
 };
 
 export interface HistoryListViewProps
-  extends Omit<SectionListProps<HistoryListItem, HistoryGroupByDaySection>, 'sections'> {
+  extends Omit<SectionListProps<HistoryListItemBindingDto, HistoryGroupByDaySection>, 'sections'> {
   // optional customization of item props
-  getItemProps?: (item: HistoryListItem) => Partial<HistoryListItemViewProps> | undefined;
-  groupItems?: (entries: HistoryListItem[]) => HistoryGroupByDaySection[];
+  getItemProps?: (item: HistoryListItemBindingDto) => Partial<HistoryListItemViewProps> | undefined;
+  groupItems?: (entries: HistoryListItemBindingDto[]) => HistoryGroupByDaySection[];
   itemProps?: Partial<HistoryListItemViewProps>;
   labels: HistoryListLabels;
   // callback when empty list displayed
   onEmpty?: (empty: boolean) => void;
-  query: Partial<HistoryListQuery>;
+  query: Partial<HistoryListQueryBindingDto>;
 }
 
 export const HistoryListView: FC<HistoryListViewProps> = ({
@@ -72,7 +72,7 @@ export const HistoryListView: FC<HistoryListViewProps> = ({
   }
 
   return (
-    <Animated.SectionList<HistoryListItem, HistoryGroupByDaySection>
+    <Animated.SectionList<HistoryListItemBindingDto, HistoryGroupByDaySection>
       ListFooterComponent={
         isLoading ? <ListPageLoadingIndicator color={colorScheme.accent} style={styles.footer} /> : undefined
       }

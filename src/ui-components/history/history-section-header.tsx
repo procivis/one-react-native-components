@@ -5,7 +5,7 @@ import { concatTestID } from '../../utils/testID';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
-// component used on the history section lists (Settings->History, CredentialDetail->History)
+// component used on the history section lists (Settings->History, CredentialDetailBindingDto->History)
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=1246-51813&mode=dev
 
 const HistorySectionHeaderView: FC<{

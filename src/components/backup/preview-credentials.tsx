@@ -1,4 +1,4 @@
-import { CredentialListItem } from '@procivis/react-native-one-core';
+import { CredentialListItemBindingDto } from '@procivis/react-native-one-core';
 import React, { FC } from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 
@@ -7,7 +7,7 @@ import { CardLabels } from '../../utils/parsers/credential';
 import { CredentialDetails } from '../credential/credential';
 
 interface PreviewCredentialsProps {
-  credentials: CredentialListItem[] | undefined;
+  credentials: CredentialListItemBindingDto[] | undefined;
   labels: CardLabels;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
 }

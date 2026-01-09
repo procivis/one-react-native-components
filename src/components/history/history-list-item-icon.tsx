@@ -1,4 +1,8 @@
-import { HistoryActionEnum, HistoryEntityTypeEnum, HistoryListItem } from '@procivis/react-native-one-core';
+import {
+  HistoryActionBindingEnum,
+  HistoryEntityTypeBindingEnum,
+  HistoryListItemBindingDto,
+} from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { SvgProps } from 'react-native-svg';
 
@@ -26,8 +30,8 @@ import {
 } from '../../ui-components';
 
 const defaultIcons: {
-  actions: { [key in keyof typeof HistoryActionEnum]: FC<SvgProps> };
-  entityTypes: { [key in keyof typeof HistoryEntityTypeEnum]: FC<SvgProps> };
+  actions: { [key in keyof typeof HistoryActionBindingEnum]: FC<SvgProps> };
+  entityTypes: { [key in keyof typeof HistoryEntityTypeBindingEnum]: FC<SvgProps> };
 } = {
   actions: {
     ACCEPTED: HistoryStatusAcceptedIcon,
@@ -56,6 +60,9 @@ const defaultIcons: {
     EXPIRED: HistoryStatusErrorIcon,
     INTERACTION_CREATED: HistoryStatusAcceptedIcon,
     INTERACTION_ERRORED: HistoryStatusErrorIcon,
+    INTERACTION_EXPIRED: HistoryStatusErrorIcon,
+    REGISTRATION_CERTIFICATE_CREATED: HistoryStatusAcceptedIcon,
+    REGISTRATION_CERTIFICATE_REVOKED: HistoryStatusErrorIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,
@@ -78,36 +85,37 @@ const defaultIcons: {
     STS_ORGANISATION: HistoryOrganisationIcon,
     STS_IAM_ROLE: HistoryIdentifierIcon,
     STS_TOKEN: HistoryKeyIcon,
+    SIGNATURE: HistoryCertificateIcon,
   },
 };
 
-export const getHistoryItemActionIcon = (action: HistoryActionEnum) => {
+export const getHistoryItemActionIcon = (action: HistoryActionBindingEnum) => {
   return defaultIcons.actions[action] ?? HistoryStatusAcceptedIcon;
 };
 
 export type HistoryListItemIconProps = {
-  item: HistoryListItem;
+  item: HistoryListItemBindingDto;
 };
 
 export const HistoryListItemIcon: FC<HistoryListItemIconProps> = ({ item }) => {
   const statusIcon = getHistoryItemActionIcon(item.action);
   const typeIcon = useMemo(() => {
     switch (item.entityType) {
-      case HistoryEntityTypeEnum.BACKUP:
+      case HistoryEntityTypeBindingEnum.BACKUP:
         switch (item.action) {
-          case HistoryActionEnum.CREATED:
+          case HistoryActionBindingEnum.CREATED:
             return HistoryBackupCreatedIcon;
-          case HistoryActionEnum.RESTORED:
+          case HistoryActionBindingEnum.RESTORED:
             return HistoryBackupRestoredIcon;
           default:
             break;
         }
         break;
-      case HistoryEntityTypeEnum.CREDENTIAL:
+      case HistoryEntityTypeBindingEnum.CREDENTIAL:
         switch (item.action) {
-          case HistoryActionEnum.REVOKED:
+          case HistoryActionBindingEnum.REVOKED:
             return HistoryRevokeIcon;
-          case HistoryActionEnum.SUSPENDED:
+          case HistoryActionBindingEnum.SUSPENDED:
             return HistorySuspendIcon;
           default:
             break;

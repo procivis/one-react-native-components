@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 import HistoryItemView, { HistoryItemViewProps } from './history-item';
 
-// component used on the history section lists (Settings->History, CredentialDetail->History)
+// component used on the history section lists (Settings->History, CredentialDetailBindingDto->History)
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=1246-51813&mode=dev
 
 export interface HistorySectionListItemProps extends HistoryItemViewProps {
