@@ -29,19 +29,19 @@ const defaultContextValue: ContextValue = {
 export type ONECoreContextProviderProps = {
   config?: Record<string, unknown>;
   organisationId?: string;
-  publisherReference: string;
+  publisherReference?: string;
 };
 
 const ONECoreContext = createContext<ContextValue>(defaultContextValue);
 
 export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({
   children,
-  organisationId = '11111111-2222-3333-a444-ffffffffffff',
+  organisationId = defaultContextValue.organisationId,
   publisherReference,
   config,
 }) => {
   const [core, setCore] = useState<ONECore>();
-  const createTrustAnchor = useCreateTrustAnchor(publisherReference);
+  const createTrustAnchor = useCreateTrustAnchor();
 
   const initialize = useCallback(
     async (force?: boolean) => {
@@ -77,7 +77,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
   );
 
   useEffect(() => {
-    if (!core) {
+    if (!core || !publisherReference) {
       return;
     }
 
@@ -89,11 +89,11 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
         );
 
         if (trustManagementEnabled) {
-          createTrustAnchor(core).catch(() => {});
+          createTrustAnchor(core, publisherReference).catch(() => {});
         }
       })
       .catch(() => {});
-  }, [core, createTrustAnchor]);
+  }, [core, createTrustAnchor, publisherReference]);
 
   const contextValue = useMemo(
     () => ({

@@ -19,11 +19,11 @@ import { useIdentifierDetails } from './identifiers';
 export const TRUST_ENTITY_DETAIL_QUERY_KEY = 'trust-entity-detail';
 export const REMOTE_TRUST_ENTITY_DETAIL_QUERY_KEY = 'remote-trust-entity-detail';
 
-export const useCreateTrustAnchor = (publisherReference: string) => {
+export const useCreateTrustAnchor = () => {
   const httpClient = useHTTPClient();
 
   return useCallback(
-    async (core: ONECore) => {
+    async (core: ONECore, publisherReference: string) => {
       const trustAnchors = await core.listTrustAnchors({
         page: 0,
         pageSize: 1,
@@ -48,7 +48,7 @@ export const useCreateTrustAnchor = (publisherReference: string) => {
           throw err;
         });
     },
-    [publisherReference, httpClient],
+    [httpClient],
   );
 };
 
