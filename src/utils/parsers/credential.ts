@@ -50,8 +50,23 @@ export const supportsSelectiveDisclosure = (
     : undefined;
 };
 
-export const findClaimByPath = (path: string | undefined, claims: ClaimBindingDto[] | undefined) =>
-  path ? claims?.find((claim) => claim.path === path) : undefined;
+export const findClaimByPath = (path: string | undefined, claims: ClaimBindingDto[]): ClaimBindingDto | undefined => {
+  if (!path) {
+    return undefined;
+  }
+
+  const exactClaim = claims.find((claim) => claim.path === path);
+  if (exactClaim) {
+    return exactClaim;
+  }
+
+  const parentClaim = claims.find((claim) => path.startsWith(`${claim.path}/`));
+  if (parentClaim && parentClaim.value.type_ === 'NESTED') {
+    return findClaimByPath(path, parentClaim.value.value);
+  }
+
+  return undefined;
+};
 
 const formatCredentialDetail = (claim: ClaimBindingDto, config: Config, testID: string): string => {
   const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID);
