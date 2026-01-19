@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
     borderRadius: 12,
+    borderWidth: 0,
     height: 24,
     justifyContent: 'center',
     overflow: 'hidden',

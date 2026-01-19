@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     borderRadius: 10,
+    borderWidth: 0,
     overflow: 'hidden',
   },
 });

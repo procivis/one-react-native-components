@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   },
   emptyNotice: {
     borderRadius: 12,
+    borderWidth: 0,
     marginHorizontal: 16,
     paddingBottom: 20,
     paddingHorizontal: 12,

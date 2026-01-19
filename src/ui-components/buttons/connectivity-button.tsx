@@ -76,6 +76,7 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
+    borderWidth: 0,
     overflow: 'hidden',
   },
   container: {

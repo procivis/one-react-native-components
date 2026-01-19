@@ -40,12 +40,14 @@ export default ScanButton;
 const styles = StyleSheet.create({
   blurWrapper: {
     borderRadius: 28,
+    borderWidth: 0,
     height: 80,
     padding: 8,
     width: 104,
   },
   button: {
     borderRadius: 28,
+    borderWidth: 0,
     height: 80,
     left: '50%',
     marginLeft: -52,
@@ -59,6 +61,7 @@ const styles = StyleSheet.create({
   iconWrapper: {
     alignItems: 'center',
     borderRadius: 20,
+    borderWidth: 0,
     height: '100%',
     justifyContent: 'center',
     width: '100%',

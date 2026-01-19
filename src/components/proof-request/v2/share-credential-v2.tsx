@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
   },
   credential: {
     borderRadius: 10,
+    borderWidth: 0,
     marginBottom: 8,
   },
   groupedCredential: {

@@ -317,6 +317,7 @@ export const HistoryItemIcon: FC<HistoryItemIconProps> = (props) => {
 const styles = StyleSheet.create({
   round: {
     borderRadius: 24,
+    borderWidth: 0,
     overflow: 'hidden',
   },
   status: {

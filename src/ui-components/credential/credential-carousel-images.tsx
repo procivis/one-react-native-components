@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 5,
+    borderWidth: 0,
   },
   barcodeContent: {
     margin: 12,

@@ -223,9 +223,11 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 0,
+    borderWidth: 0,
   },
   detailsCard: {
     borderRadius: 10,
+    borderWidth: 0,
     overflow: 'hidden',
   },
   footer: {

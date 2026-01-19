@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   key: {
     alignItems: 'center',
     borderRadius: KEY_SIZE / 2,
+    borderWidth: 0,
     height: KEY_SIZE,
     justifyContent: 'center',
     width: KEY_SIZE,

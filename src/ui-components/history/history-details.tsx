@@ -222,6 +222,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
 const styles = StyleSheet.create({
   assetsHeader: {
     borderRadius: 8,
+    borderWidth: 0,
   },
   content: {
     paddingHorizontal: 16,
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
   },
   section: {
     borderRadius: 8,
+    borderWidth: 0,
     marginBottom: 12,
     padding: 12,
   },

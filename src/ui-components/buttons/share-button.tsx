@@ -39,6 +39,7 @@ const ShareButton: FC<ShareButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 5,
+    borderWidth: 0,
     overflow: 'hidden',
   },
   container: {

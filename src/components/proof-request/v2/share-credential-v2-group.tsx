@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
   },
   groupedCredentialsWrapper: {
     borderRadius: 10 + GroupedShareCredentialV2Padding,
+    borderWidth: 0,
     overflow: 'hidden',
     paddingBottom: GroupedShareCredentialV2Padding,
   },

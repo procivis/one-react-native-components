@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     borderRadius: 12,
+    borderWidth: 0,
     height: 24,
     justifyContent: 'center',
     width: 24,

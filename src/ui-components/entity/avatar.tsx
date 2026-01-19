@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     borderRadius: 36,
+    borderWidth: 0,
     height: '100%',
     overflow: 'hidden',
     width: '100%',

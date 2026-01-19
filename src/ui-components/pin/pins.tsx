@@ -37,6 +37,7 @@ export const Pins: FC<PinsProps> = ({ enteredLength, maxLength, style, ...props 
 const styles = StyleSheet.create({
   pin: {
     borderRadius: 3,
+    borderWidth: 0,
     height: 10,
     width: 10,
   },

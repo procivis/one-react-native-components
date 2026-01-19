@@ -14,6 +14,7 @@ const SettingsButton: FC<SettingsButtonProps> = ({ style, ...props }) => {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 12,
+    borderWidth: 0,
     height: 68,
     marginHorizontal: 0,
     paddingHorizontal: 12,

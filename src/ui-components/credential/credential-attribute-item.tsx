@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
   },
   touchableAttribute: {
     borderRadius: 8,
+    borderWidth: 0,
     flex: 1,
     paddingVertical: 11,
   },

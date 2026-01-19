@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   },
   modalHandle: {
     borderRadius: 2.5,
+    borderWidth: 0,
     height: 5,
     marginVertical: 5,
     width: 36,

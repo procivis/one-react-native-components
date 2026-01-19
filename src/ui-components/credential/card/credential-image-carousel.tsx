@@ -78,7 +78,7 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
 
 const styles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
-  Barcode: { borderRadius: 4, height: '50%', width: '80%' },
+  Barcode: { borderRadius: 4, borderWidth: 0, height: '50%', width: '80%' },
   // eslint-disable-next-line react-native/no-unused-styles
   MRZ: {
     height: '50%',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  QrCode: { aspectRatio: 1, borderRadius: 4, height: '70%' },
+  QrCode: { aspectRatio: 1, borderRadius: 4, borderWidth: 0, height: '70%' },
   carouselItem: {
     alignItems: 'center',
     height: '100%',

@@ -235,6 +235,7 @@ HoldButton.displayName = 'HoldButton';
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
+    borderWidth: 0,
     height: 68,
     overflow: 'hidden',
   },

@@ -138,6 +138,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
+    borderWidth: 0,
     overflow: 'hidden',
   },
   cardButton: {
