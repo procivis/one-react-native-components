@@ -61,8 +61,6 @@ const defaultIcons: {
     INTERACTION_CREATED: HistoryStatusAcceptedIcon,
     INTERACTION_ERRORED: HistoryStatusErrorIcon,
     INTERACTION_EXPIRED: HistoryStatusErrorIcon,
-    REGISTRATION_CERTIFICATE_CREATED: HistoryStatusAcceptedIcon,
-    REGISTRATION_CERTIFICATE_REVOKED: HistoryStatusErrorIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,
