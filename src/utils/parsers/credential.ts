@@ -3,7 +3,7 @@ import {
   Config,
   CredentialDetailBindingDto,
   CredentialListItemBindingDto,
-  CredentialSchemaDetailBindingDto,
+  CredentialSchemaBindingDto,
   CredentialStateBindingEnum,
   DataTypeEnum,
   FormatFeatureEnum,
@@ -402,7 +402,7 @@ function parseBase64Image(image: string | undefined) {
   return image ? '__BASE64IMAGE__' : '';
 }
 
-export function getCredentialSchemaWithoutImages(credentialSchema: CredentialSchemaDetailBindingDto) {
+export function getCredentialSchemaWithoutImages<T extends CredentialSchemaBindingDto>(credentialSchema: T): T {
   return {
     ...credentialSchema,
     layoutProperties: {
