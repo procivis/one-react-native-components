@@ -284,6 +284,15 @@ export const useProofForSchemaIdWithTransport = (
     setProofIdState(id);
   }, []);
 
+  const retract = useCallback(async () => {
+    const id = proofIdRef.current;
+    if (!id) {
+      return;
+    }
+    setProofId(undefined);
+    await deleteProof(id).catch(() => {});
+  }, [deleteProof, setProofId]);
+
   useEffect(() => {
     if (!proofIdRef.current) {
       return;
@@ -341,7 +350,7 @@ export const useProofForSchemaIdWithTransport = (
       .catch(() => {});
   }, [proofSchemaId, identifiers, identifierFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
 
-  return deleting ? undefined : proofId;
+  return { proofId: deleting ? undefined : proofId, retract };
 };
 
 export const useCleanupUnusedProofs = () => {
