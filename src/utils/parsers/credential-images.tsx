@@ -54,7 +54,7 @@ export const getCarouselImagesFromClaims = (
 
     let claimValue = '';
 
-    if (claim && (claim.value.type_ === 'FLOAT' || claim.value.type_ === 'INTEGER')) {
+    if (claim && (claim.value.type_ === 'FLOAT' || claim.value.type_ === 'INTEGER' || claim.value.type_ === 'STRING')) {
       claimValue = String(claim.value.value);
     }
 
