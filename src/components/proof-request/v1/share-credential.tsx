@@ -81,13 +81,6 @@ export const ShareCredential: FunctionComponent<{
       : undefined,
   );
 
-  const invalid = useMemo(() => {
-    if (!credential?.lvvcIssuanceDate || !request.validityCredentialNbf) {
-      return false;
-    }
-    return new Date(credential.lvvcIssuanceDate) < new Date(request.validityCredentialNbf);
-  }, [credential, request]);
-
   const footer = useMemo(() => {
     if (!expanded) {
       return;
@@ -109,15 +102,6 @@ export const ShareCredential: FunctionComponent<{
       );
     }
 
-    if (invalid) {
-      return (
-        <ShareCredentialCardNotice
-          testID={concatTestID(testID, 'notice.invalid')}
-          text={labels.invalidCredentialNotice}
-        />
-      );
-    }
-
     if (multipleCredentialsAvailable) {
       return (
         <SelectShareCredentialCardNotice
@@ -128,7 +112,7 @@ export const ShareCredential: FunctionComponent<{
         />
       );
     }
-  }, [expanded, invalid, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
+  }, [expanded, labels, multipleCredentialsAvailable, onSelectCredential, testID, validityState]);
 
   if (!config) {
     return null;
@@ -136,7 +120,6 @@ export const ShareCredential: FunctionComponent<{
 
   const { card, attributes } = shareCredentialCardFromCredential(
     credential,
-    invalid,
     Boolean(expanded),
     multipleCredentialsAvailable,
     request,

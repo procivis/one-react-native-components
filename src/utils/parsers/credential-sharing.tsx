@@ -30,7 +30,6 @@ import {
 
 export const validityCheckedCardFromCredential = (
   credential: CredentialDetailBindingDto,
-  invalidLVVC: boolean,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
   config: Config,
@@ -48,13 +47,7 @@ export const validityCheckedCardFromCredential = (
         | 'statusIcon'
       >
     | undefined;
-  if (invalidLVVC) {
-    credentialHeaderDetail = {
-      credentialDetailErrorColor: true,
-      credentialDetailPrimary: labels.revoked,
-      credentialDetailTestID: concatTestID(testID, 'header.invalid'),
-    };
-  } else if (!expanded && multipleCredentialsAvailable) {
+  if (!expanded && multipleCredentialsAvailable) {
     credentialHeaderDetail = {
       credentialDetailPrimary: labels.multipleCredentials,
       credentialDetailTestID: concatTestID(testID, 'header.multiple'),
@@ -258,7 +251,6 @@ export type ShareCredentialCardLabels = CardLabels & {
 
 export const shareCredentialCardFromCredential = (
   credential: CredentialDetailBindingDto | undefined,
-  invalidLVVC: boolean,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
   request: PresentationDefinitionRequestedCredentialBindingDto,
@@ -282,7 +274,6 @@ export const shareCredentialCardFromCredential = (
   const card = credential
     ? validityCheckedCardFromCredential(
         credential,
-        invalidLVVC,
         expanded,
         multipleCredentialsAvailable,
         config,

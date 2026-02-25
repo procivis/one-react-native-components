@@ -61,6 +61,7 @@ const defaultIcons: {
     INTERACTION_CREATED: HistoryStatusAcceptedIcon,
     INTERACTION_ERRORED: HistoryStatusErrorIcon,
     INTERACTION_EXPIRED: HistoryStatusErrorIcon,
+    DELIVERED: HistoryStatusAcceptedIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,
@@ -84,6 +85,9 @@ const defaultIcons: {
     STS_IAM_ROLE: HistoryIdentifierIcon,
     STS_TOKEN: HistoryKeyIcon,
     SIGNATURE: HistoryCertificateIcon,
+    STS_SESSION: HistoryIdentifierIcon,
+    NOTIFICATION: HistoryCredentialIcon,
+    SUPERVISORY_AUTHORITY: HistoryCertificateIcon,
   },
 };
 

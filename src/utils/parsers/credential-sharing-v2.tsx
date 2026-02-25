@@ -181,7 +181,6 @@ export const shareCredentialCardFromV2PresentationCredential = (
           ...credential,
           claims: [],
         },
-        false,
         expanded,
         multipleCredentialsAvailable,
         config,
