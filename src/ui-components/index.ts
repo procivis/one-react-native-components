@@ -17,6 +17,7 @@ export * from './list';
 export * from './loader';
 export * from './nerd-view';
 export * from './nfc';
+export * from './notice';
 export * from './pin';
 export * from './proof-request';
 export * from './screens';
