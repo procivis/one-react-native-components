@@ -1,8 +1,4 @@
-import {
-  ClaimBindingDto,
-  CredentialSchemaCodeTypeBindingDto,
-  CredentialSchemaLayoutPropertiesBindingDto,
-} from '@procivis/react-native-one-core';
+import { Claim, CredentialSchemaCodeType, CredentialSchemaLayoutProperties } from '@procivis/react-native-one-core';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -21,8 +17,8 @@ const styles = StyleSheet.create({
 });
 
 export const getCarouselImagesFromClaims = (
-  claims: ClaimBindingDto[],
-  layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto,
+  claims: Claim[],
+  layoutProperties?: CredentialSchemaLayoutProperties,
   testID?: string,
 ): CarouselImage[] => {
   const result: CarouselImage[] = [];
@@ -62,17 +58,17 @@ export const getCarouselImagesFromClaims = (
       return result;
     }
 
-    if (code.type === CredentialSchemaCodeTypeBindingDto.QR_CODE) {
+    if (code.type === CredentialSchemaCodeType.QR_CODE) {
       result.push({
         element: <QrCode content={claimValue} testID={concatTestID(testID, CarouselImageType.QrCode)} />,
         type: CarouselImageType.QrCode,
       });
-    } else if (code.type === CredentialSchemaCodeTypeBindingDto.BARCODE && isASCII(claimValue)) {
+    } else if (code.type === CredentialSchemaCodeType.BARCODE && isASCII(claimValue)) {
       result.push({
         element: <Barcode content={claimValue} testID={concatTestID(testID, CarouselImageType.Barcode)} />,
         type: CarouselImageType.Barcode,
       });
-    } else if (code.type === CredentialSchemaCodeTypeBindingDto.MRZ) {
+    } else if (code.type === CredentialSchemaCodeType.MRZ) {
       result.push({
         element: <Mrz content={claimValue} testID={concatTestID(testID, CarouselImageType.MRZ)} />,
         type: CarouselImageType.MRZ,

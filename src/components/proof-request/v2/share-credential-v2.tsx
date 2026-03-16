@@ -1,7 +1,7 @@
 import {
-  ApplicableCredentialOrFailureHintBindingEnum,
-  CredentialListItemBindingDto,
-  PresentationDefinitionV2ClaimBindingDto,
+  ApplicableCredentialOrFailureHint,
+  CredentialListItem,
+  PresentationDefinitionV2Claim,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
@@ -14,7 +14,7 @@ import { ShareCredentialCardNotice } from '../share-credential-card-notice';
 import { ShareCredentialLabels } from '../v1';
 
 export type ShareCredentialV2Props = {
-  credentialQuery: ApplicableCredentialOrFailureHintBindingEnum;
+  credentialQuery: ApplicableCredentialOrFailureHint;
   credentialRequestId: string;
   expanded?: boolean;
   grouped?: boolean;
@@ -25,12 +25,12 @@ export type ShareCredentialV2Props = {
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
   onSelectCredential?: () => void;
   onSelectField: (
-    credentialId: CredentialListItemBindingDto['id'],
-    fieldPath: PresentationDefinitionV2ClaimBindingDto['path'],
+    credentialId: CredentialListItem['id'],
+    fieldPath: PresentationDefinitionV2Claim['path'],
     selected: boolean,
   ) => void;
-  selectedCredentialId?: CredentialListItemBindingDto['id'];
-  selectedFields?: Array<PresentationDefinitionV2ClaimBindingDto['path']>;
+  selectedCredentialId?: CredentialListItem['id'];
+  selectedFields?: Array<PresentationDefinitionV2Claim['path']>;
   style?: StyleProp<ViewStyle>;
   testID: string;
 };
@@ -131,7 +131,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
   ]);
 
   const onAttributeSelected = useCallback(
-    (fieldPath: PresentationDefinitionV2ClaimBindingDto['path'], selected: boolean) => {
+    (fieldPath: PresentationDefinitionV2Claim['path'], selected: boolean) => {
       if (!selectedCredentialId) {
         return;
       }

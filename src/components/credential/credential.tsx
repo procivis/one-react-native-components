@@ -1,4 +1,4 @@
-import { ClaimBindingDto } from '@procivis/react-native-one-core';
+import { Claim } from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleSheet } from 'react-native';
 
@@ -9,7 +9,7 @@ import { useCredentialDetail } from '../../utils/hooks/core/credentials';
 import { CardLabels, detailsCardFromCredentialWithClaims } from '../../utils/parsers/credential';
 
 export interface CredentialDetailsProps {
-  claims?: ClaimBindingDto[];
+  claims?: Claim[];
   credentialId: string;
   expanded?: boolean;
   headerAccessory?: CredentialHeaderProps['accessory'];

@@ -1,9 +1,9 @@
 import {
-  ClaimBindingDto,
-  Config,
-  CredentialDetailBindingDto,
-  PresentationDefinitionFieldBindingDto,
-  PresentationDefinitionRequestedCredentialBindingDto,
+  Claim,
+  CoreConfig,
+  CredentialDetail,
+  PresentationDefinitionField,
+  PresentationDefinitionRequestedCredential,
 } from '@procivis/react-native-one-core';
 import React from 'react';
 
@@ -29,10 +29,10 @@ import {
 } from './credential';
 
 export const validityCheckedCardFromCredential = (
-  credential: CredentialDetailBindingDto,
+  credential: CredentialDetail,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
-  config: Config,
+  config: CoreConfig,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
@@ -66,7 +66,7 @@ export const validityCheckedCardFromCredential = (
 };
 
 export const missingCredentialCardFromRequest = (
-  request: PresentationDefinitionRequestedCredentialBindingDto,
+  request: PresentationDefinitionRequestedCredential,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
@@ -88,17 +88,17 @@ export const missingCredentialCardFromRequest = (
 
 interface DisplayedAttribute {
   claim?: FlatClaim;
-  field?: PresentationDefinitionFieldBindingDto;
+  field?: PresentationDefinitionField;
   id: string;
   selected?: boolean;
   status: SelectorStatus;
 }
 
 const getAttributeSelectorStatus = (
-  field: PresentationDefinitionFieldBindingDto,
+  field: PresentationDefinitionField,
   validityState: ValidityState,
-  credential?: CredentialDetailBindingDto,
-  claim?: ClaimBindingDto,
+  credential?: CredentialDetail,
+  claim?: Claim,
   selected?: boolean,
 ): SelectorStatus => {
   if (!credential || validityState !== ValidityState.Valid) {
@@ -117,12 +117,12 @@ const getAttributeSelectorStatus = (
   return selected ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty;
 };
 
-type FlatClaim = ClaimBindingDto & {
+type FlatClaim = Claim & {
   isArrayElement?: boolean;
 };
 
 // Returns a spread list of all claims with their full JSON path as key, including all intermediate objects
-const spreadClaims = (claims: ClaimBindingDto[]): FlatClaim[] => {
+const spreadClaims = (claims: Claim[]): FlatClaim[] => {
   return claims.reduce((acc, claim) => {
     const result = [claim];
     if (claim.value.type_ === 'NESTED') {
@@ -137,9 +137,9 @@ const spreadClaims = (claims: ClaimBindingDto[]): FlatClaim[] => {
 };
 
 const getDisplayedAttributes = (
-  request: PresentationDefinitionRequestedCredentialBindingDto,
+  request: PresentationDefinitionRequestedCredential,
   validityState: ValidityState,
-  credential?: CredentialDetailBindingDto,
+  credential?: CredentialDetail,
   selectiveDisclosureSupported?: boolean,
   selectedFields?: string[],
 ): DisplayedAttribute[] => {
@@ -172,8 +172,8 @@ const getDisplayedAttributes = (
 };
 
 const getFullyNestedFields = (
-  fields: PresentationDefinitionRequestedCredentialBindingDto['fields'],
-  credentialId: CredentialDetailBindingDto['id'],
+  fields: PresentationDefinitionRequestedCredential['fields'],
+  credentialId: CredentialDetail['id'],
 ) => {
   const allKeys = fields.filter((field) => credentialId in field.keyMap).map((field) => field.keyMap[credentialId]);
 
@@ -185,11 +185,11 @@ const getFullyNestedFields = (
 
 export const shareCredentialCardAttributeFromClaim = (
   id: string,
-  config: Config,
+  config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
   claim?: FlatClaim,
-  field?: PresentationDefinitionFieldBindingDto,
+  field?: PresentationDefinitionField,
 ): CredentialAttribute => {
   if (claim) {
     return {
@@ -250,12 +250,12 @@ export type ShareCredentialCardLabels = CardLabels & {
 };
 
 export const shareCredentialCardFromCredential = (
-  credential: CredentialDetailBindingDto | undefined,
+  credential: CredentialDetail | undefined,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
-  request: PresentationDefinitionRequestedCredentialBindingDto,
+  request: PresentationDefinitionRequestedCredential,
   selectedFields: string[] | undefined,
-  config: Config,
+  config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -316,11 +316,11 @@ export const shareCredentialCardFromCredential = (
 
 export const selectCredentialCardAttributeFromClaim = (
   id: string,
-  config: Config,
+  config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
   claim?: FlatClaim,
-  field?: PresentationDefinitionFieldBindingDto,
+  field?: PresentationDefinitionField,
 ): CredentialAttribute => {
   const attribute = shareCredentialCardAttributeFromClaim(id, config, testID, labels, claim, field);
   if (!claim) {
@@ -333,10 +333,10 @@ export const selectCredentialCardAttributeFromClaim = (
 };
 
 export const selectCredentialCardFromCredential = (
-  credential: CredentialDetailBindingDto,
+  credential: CredentialDetail,
   selected: boolean,
-  request: PresentationDefinitionRequestedCredentialBindingDto,
-  config: Config,
+  request: PresentationDefinitionRequestedCredential,
+  config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {

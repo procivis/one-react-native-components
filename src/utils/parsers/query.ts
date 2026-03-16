@@ -1,11 +1,11 @@
 import {
-  CredentialListQueryBindingDto,
-  CredentialSchemaListQueryBindingDto,
-  DidListQueryBindingDto,
-  HistoryListQueryBindingDto,
-  IdentifierListQueryBindingDto,
-  ListProofSchemasFiltersBindingDto,
-  ProofListQueryBindingDto,
+  CredentialListQuery,
+  CredentialSchemaListQuery,
+  DidListQuery,
+  HistoryListQuery,
+  IdentifierListQuery,
+  ProofListQuery,
+  ProofSchemaListQuery,
 } from '@procivis/react-native-one-core';
 
 type QueryKey<ListQuery, ParamList> = ParamList extends ReadonlyArray<keyof ListQuery> // all params are inside the ListQuery
@@ -22,7 +22,7 @@ function getQueryKey<ListQuery extends {}, ParamList extends ReadonlyArray<keyof
   return params.map((param) => queryParams[param]) as QueryKey<ListQuery, ParamList>;
 }
 
-export const getQueryKeyFromCredentialListQueryParams = (queryParams: Partial<CredentialListQueryBindingDto> = {}) => {
+export const getQueryKeyFromCredentialListQueryParams = (queryParams: Partial<CredentialListQuery> = {}) => {
   return getQueryKey(queryParams, [
     'page',
     'pageSize',
@@ -50,7 +50,7 @@ export const getQueryKeyFromCredentialListQueryParams = (queryParams: Partial<Cr
   ]);
 };
 
-export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<HistoryListQueryBindingDto> = {}) => {
+export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<HistoryListQuery> = {}) => {
   return getQueryKey(queryParams, [
     'page',
     'pageSize',
@@ -70,7 +70,7 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<Histo
 };
 
 export const getQueryKeyFromCredentialSchemaListQueryParams = (
-  queryParams: Partial<CredentialSchemaListQueryBindingDto> = {},
+  queryParams: Partial<CredentialSchemaListQuery> = {},
 ) => {
   return getQueryKey(queryParams, [
     'page',
@@ -91,9 +91,7 @@ export const getQueryKeyFromCredentialSchemaListQueryParams = (
   ]);
 };
 
-export const getQueryKeyFromProofSchemaListQueryParams = (
-  queryParams: Partial<ListProofSchemasFiltersBindingDto> = {},
-) => {
+export const getQueryKeyFromProofSchemaListQueryParams = (queryParams: Partial<ProofSchemaListQuery> = {}) => {
   return getQueryKey(queryParams, [
     'page',
     'pageSize',
@@ -111,7 +109,7 @@ export const getQueryKeyFromProofSchemaListQueryParams = (
   ]);
 };
 
-export const getQueryKeyFromProofListQueryParams = (queryParams: Partial<ProofListQueryBindingDto> = {}) => {
+export const getQueryKeyFromProofListQueryParams = (queryParams: Partial<ProofListQuery> = {}) => {
   return getQueryKey(queryParams, [
     'page',
     'pageSize',
@@ -136,7 +134,7 @@ export const getQueryKeyFromProofListQueryParams = (queryParams: Partial<ProofLi
   ]);
 };
 
-export const getQueryKeyFromDidListQueryParams = (queryParams: Partial<DidListQueryBindingDto> = {}) => {
+export const getQueryKeyFromDidListQueryParams = (queryParams: Partial<DidListQuery> = {}) => {
   return getQueryKey(queryParams, [
     'page',
     'pageSize',
@@ -156,7 +154,7 @@ export const getQueryKeyFromDidListQueryParams = (queryParams: Partial<DidListQu
   ]);
 };
 
-export const getQueryKeyFromIdentifierListQueryParams = (queryParams: Partial<IdentifierListQueryBindingDto> = {}) => {
+export const getQueryKeyFromIdentifierListQueryParams = (queryParams: Partial<IdentifierListQuery> = {}) => {
   return getQueryKey(queryParams, [
     'page',
     'pageSize',

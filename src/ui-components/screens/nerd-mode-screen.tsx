@@ -1,4 +1,4 @@
-import { GetIdentifierListItemBindingDto } from '@procivis/react-native-one-core';
+import { IdentifierListItem } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -34,7 +34,7 @@ export interface AttributesLabels {
 }
 
 interface SectionEntityCluster {
-  identifier?: GetIdentifierListItemBindingDto;
+  identifier?: IdentifierListItem;
   subline?: string;
   entityLabels: EntityLabels;
   role: ContextRole;

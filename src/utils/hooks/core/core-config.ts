@@ -1,4 +1,4 @@
-import { Config, ConfigEntities } from '@procivis/react-native-one-core';
+import { ConfigEntities,CoreConfig } from '@procivis/react-native-one-core';
 import { useQuery } from 'react-query';
 
 import { useONECore } from './core-context';
@@ -13,7 +13,7 @@ export const useCoreConfig = () => {
   });
 };
 
-export const getEnabledTransports = (config: Config): string[] => {
+export const getEnabledTransports = (config: CoreConfig): string[] => {
   return Object.values(config?.transport ?? {})
     .filter((t) => t.enabled !== false)
     .map((transport) => transport.type);
@@ -25,7 +25,7 @@ export const getEnabledExchangeProtocols = (exchangeProtocol: ConfigEntities<any
     .map((exchange) => exchange.type);
 };
 
-export const getEnabledTrustManagement = (config: Config): string[] => {
+export const getEnabledTrustManagement = (config: CoreConfig): string[] => {
   return Object.values(config?.trustManagement ?? {})
     .filter((t) => t.enabled !== false)
     .map((trustManagement) => trustManagement.type);

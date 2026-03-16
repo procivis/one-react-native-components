@@ -1,8 +1,8 @@
 import {
-  CreateProofSchemaRequestDto,
-  GetProofSchemaListItemBindingDto,
-  ImportProofSchemaBindingDto,
-  ListProofSchemasFiltersBindingDto,
+  CreateProofSchemaRequest,
+  ImportProofSchema,
+  ProofSchemaListItem,
+  ProofSchemaListQuery,
 } from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -18,14 +18,14 @@ export const PROOF_SCHEMA_IMPORT_DETAIL_QUERY_KEY = 'proof-schema-import';
 export const PROOF_SCHEMA_DETAIL_QUERY_KEY = 'proof-schema-detail';
 export const PROOF_SCHEMA_SHARE_QUERY_KEY = 'proof-schema-share';
 
-export const useProofSchemas = (queryParams?: Partial<ListProofSchemasFiltersBindingDto>, keepPreviousData = true) => {
+export const useProofSchemas = (queryParams?: Partial<ProofSchemaListQuery>, keepPreviousData = true) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
     [PROOF_SCHEMA_LIST_QUERY_KEY, ...getQueryKeyFromProofSchemaListQueryParams(queryParams)],
     ({ pageParam = 0 }) =>
       core
-        .getProofSchemas({
+        .listProofSchemas({
           organisationId,
           page: pageParam,
           pageSize: PAGE_SIZE,
@@ -39,10 +39,7 @@ export const useProofSchemas = (queryParams?: Partial<ListProofSchemasFiltersBin
   );
 };
 
-export const useProofSchemaDetail = (
-  proofSchemaId: GetProofSchemaListItemBindingDto['id'] | undefined,
-  active = true,
-) => {
+export const useProofSchemaDetail = (proofSchemaId: ProofSchemaListItem['id'] | undefined, active = true) => {
   const { core } = useONECore();
 
   return useQuery(
@@ -65,7 +62,7 @@ export const useProofSchemaImportDetail = (url: string) => {
         if (!response.ok) {
           throw response.originalError;
         }
-        return response.data as ImportProofSchemaBindingDto;
+        return response.data as ImportProofSchema;
       }),
     {
       keepPreviousData: true,
@@ -78,7 +75,7 @@ export const useProofSchemaAccept = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async ({ schema }: { schema: ImportProofSchemaBindingDto }) =>
+    async ({ schema }: { schema: ImportProofSchema }) =>
       core.importProofSchema({
         organisationId,
         schema,
@@ -97,7 +94,7 @@ export const useProofSchemaCreate = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (proofSchema: CreateProofSchemaRequestDto) => core.createProofSchema(proofSchema), {
+  return useMutation(async (proofSchema: CreateProofSchemaRequest) => core.createProofSchema(proofSchema), {
     onSuccess: async () => {
       await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
@@ -109,16 +106,13 @@ export const useProofSchemaDelete = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(
-    async (proofSchemaId: GetProofSchemaListItemBindingDto['id']) => core.deleteProofSchema(proofSchemaId),
-    {
-      onSuccess: async (_, proofSchemaId) => {
-        await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
-        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
-        await queryClient.removeQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
-      },
+  return useMutation(async (proofSchemaId: ProofSchemaListItem['id']) => core.deleteProofSchema(proofSchemaId), {
+    onSuccess: async (_, proofSchemaId) => {
+      await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      await queryClient.removeQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
     },
-  );
+  });
 };
 
 export const useShareProofSchema = (schemaId?: string) => {

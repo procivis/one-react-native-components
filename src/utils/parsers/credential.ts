@@ -1,12 +1,12 @@
 import {
-  ClaimBindingDto,
-  Config,
-  CredentialDetailBindingDto,
-  CredentialListItemBindingDto,
-  CredentialSchemaBindingDto,
-  CredentialStateBindingEnum,
-  DataTypeEnum,
-  FormatFeatureEnum,
+  Claim,
+  CoreConfig,
+  CredentialDetail,
+  CredentialListItem,
+  CredentialSchemaListItem,
+  CredentialState,
+  DataType,
+  FormatFeature,
 } from '@procivis/react-native-one-core';
 import { FC } from 'react';
 import { SvgProps } from 'react-native-svg';
@@ -30,27 +30,27 @@ export enum ValidityState {
   Valid = 'valid',
 }
 
-export const getValidityState = (credential: CredentialListItemBindingDto | undefined) => {
-  if (credential?.state === CredentialStateBindingEnum.REVOKED) {
+export const getValidityState = (credential: CredentialListItem | undefined) => {
+  if (credential?.state === CredentialState.REVOKED) {
     return ValidityState.Revoked;
   }
-  if (credential?.state === CredentialStateBindingEnum.SUSPENDED) {
+  if (credential?.state === CredentialState.SUSPENDED) {
     return ValidityState.Suspended;
   }
   return ValidityState.Valid;
 };
 
 export const supportsSelectiveDisclosure = (
-  credential: CredentialListItemBindingDto | undefined,
-  config: Config | undefined,
+  credential: CredentialListItem | undefined,
+  config: CoreConfig | undefined,
 ) => {
   const formatConfig = credential && config?.format[credential.schema.format];
   return formatConfig
-    ? Boolean(formatConfig.capabilities?.features?.includes(FormatFeatureEnum.SelectiveDisclosure))
+    ? Boolean(formatConfig.capabilities?.features?.includes(FormatFeature.SelectiveDisclosure))
     : undefined;
 };
 
-export const findClaimByPath = (path: string | undefined, claims: ClaimBindingDto[]): ClaimBindingDto | undefined => {
+export const findClaimByPath = (path: string | undefined, claims: Claim[]): Claim | undefined => {
   if (!path) {
     return undefined;
   }
@@ -68,12 +68,12 @@ export const findClaimByPath = (path: string | undefined, claims: ClaimBindingDt
   return undefined;
 };
 
-const formatCredentialDetail = (claim: ClaimBindingDto, config: Config, testID: string): string => {
+const formatCredentialDetail = (claim: Claim, config: CoreConfig, testID: string): string => {
   const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID);
   return attributeValue.value ?? '';
 };
 
-export const hasMsoValidityIssues = (credential: CredentialDetailBindingDto): boolean => {
+export const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
   const mdocMsoValidityIssue = Boolean(
     credential.mdocMsoValidity?.nextUpdate && new Date(credential.mdocMsoValidity.nextUpdate) < new Date(),
   );
@@ -89,9 +89,9 @@ export type CardHeaderLabels = {
 };
 
 const credentialDetailFromCredential = (
-  credential: CredentialDetailBindingDto,
-  claims: ClaimBindingDto[] = [],
-  config: Config,
+  credential: CredentialDetail,
+  claims: Claim[] = [],
+  config: CoreConfig,
   testID: string,
   labels: CardHeaderLabels,
 ): {
@@ -104,7 +104,7 @@ const credentialDetailFromCredential = (
   const { layoutProperties } = credential.schema;
 
   switch (credential.state) {
-    case CredentialStateBindingEnum.SUSPENDED:
+    case CredentialState.SUSPENDED:
       return {
         credentialDetailPrimary: credential.suspendEndDate
           ? labels.suspendedUntil(formatDateTimeLocalized(new Date(credential.suspendEndDate))!)
@@ -112,7 +112,7 @@ const credentialDetailFromCredential = (
         credentialDetailTestID: concatTestID(testID, 'suspended'),
         statusIcon: CredentialWarningIcon,
       };
-    case CredentialStateBindingEnum.REVOKED:
+    case CredentialState.REVOKED:
       return {
         credentialDetailPrimary: labels.revoked,
         credentialDetailErrorColor: true,
@@ -153,9 +153,9 @@ const credentialDetailFromCredential = (
 };
 
 export const cardHeaderFromCredential = (
-  credential: CredentialDetailBindingDto,
-  claims: ClaimBindingDto[] = [],
-  config: Config,
+  credential: CredentialDetail,
+  claims: Claim[] = [],
+  config: CoreConfig,
   testID: string,
   labels: CardHeaderLabels,
 ): Omit<CredentialHeaderProps, 'style'> => {
@@ -193,9 +193,9 @@ export type CardLabels = CardHeaderLabels & {
 };
 
 export const getCredentialCardPropsFromCredential = (
-  credential: CredentialDetailBindingDto,
-  claims: ClaimBindingDto[] = [],
-  config: Config,
+  credential: CredentialDetail,
+  claims: Claim[] = [],
+  config: CoreConfig,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: CardLabels,
@@ -224,8 +224,8 @@ export const getCredentialCardPropsFromCredential = (
 };
 
 export const detailsCardAttributeFromClaim = (
-  claim: ClaimBindingDto,
-  config: Config,
+  claim: Claim,
+  config: CoreConfig,
   testID: string,
 ): CredentialAttribute => {
   const value = detailsCardAttributeValueFromClaim(claim, config, testID);
@@ -238,21 +238,21 @@ export const detailsCardAttributeFromClaim = (
 };
 
 const detailsCardAttributeValueFromClaim = (
-  claim: ClaimBindingDto,
-  config: Config,
+  claim: Claim,
+  config: CoreConfig,
   testID: string,
 ): CredentialAttributeValue => {
   const typeConfig = config?.datatype[claim.schema.datatype];
 
   if (claim.schema.array) {
     return {
-      values: ((claim.value.value as ClaimBindingDto[]) || []).map((arrayValue, index) => {
+      values: ((claim.value.value as Claim[]) || []).map((arrayValue, index) => {
         return detailsCardAttributeFromClaim(arrayValue, config, concatTestID(testID, index.toString()));
       }),
     };
   } else {
     switch (typeConfig?.type) {
-      case DataTypeEnum.Object: {
+      case DataType.Object: {
         if (claim.value.type_ !== 'NESTED') {
           return { attributes: [] };
         }
@@ -262,7 +262,7 @@ const detailsCardAttributeValueFromClaim = (
           ),
         };
       }
-      case DataTypeEnum.Date: {
+      case DataType.Date: {
         if (!claim.value.value) {
           // Don't try to parse empty values (which will return "Invalid Date")
           return { testID: testID, value: String(claim.value.value) };
@@ -273,8 +273,8 @@ const detailsCardAttributeValueFromClaim = (
           value: formatDateLocalized(new Date(date)) ?? date,
         };
       }
-      case DataTypeEnum.Picture: // fallback
-      case DataTypeEnum.SwiyuPicture: {
+      case DataType.Picture: // fallback
+      case DataType.SwiyuPicture: {
         if (typeConfig.params?.showAs === 'IMAGE') {
           return { image: { uri: claim.value.value as string }, testID: testID };
         } else {
@@ -292,8 +292,8 @@ export type CredentialDetailsCardPropsWithoutWidth = Omit<CredentialDetailsCardP
 };
 
 export const detailsCardFromCredential = (
-  credential: CredentialDetailBindingDto,
-  config: Config,
+  credential: CredentialDetail,
+  config: CoreConfig,
   testID: string,
   labels: CardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -301,9 +301,9 @@ export const detailsCardFromCredential = (
 };
 
 export const detailsCardFromCredentialWithClaims = (
-  credential: CredentialDetailBindingDto,
-  claims: ClaimBindingDto[],
-  config: Config,
+  credential: CredentialDetail,
+  claims: Claim[],
+  config: CoreConfig,
   testID: string,
   labels: CardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -402,7 +402,7 @@ function parseBase64Image(image: string | undefined) {
   return image ? '__BASE64IMAGE__' : '';
 }
 
-export function getCredentialSchemaWithoutImages<T extends CredentialSchemaBindingDto>(credentialSchema: T): T {
+export function getCredentialSchemaWithoutImages<T extends CredentialSchemaListItem>(credentialSchema: T): T {
   return {
     ...credentialSchema,
     layoutProperties: {

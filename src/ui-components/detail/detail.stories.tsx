@@ -19,7 +19,7 @@ const Render = ({ onRightAction, contentHeight, headerProps }: Args) => {
       headerProps={{
         ...headerProps,
         rightButtons: [
-          <TouchableOpacity onPress={onRightAction} hitSlop={hitSlop}>
+          <TouchableOpacity key="R" onPress={onRightAction} hitSlop={hitSlop}>
             <Placeholder id="R" style={styles.rightButton} />
           </TouchableOpacity>,
         ],

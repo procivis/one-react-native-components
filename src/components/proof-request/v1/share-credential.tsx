@@ -1,9 +1,9 @@
 import {
-  CredentialDetailBindingDto,
-  CredentialListItemBindingDto,
-  CredentialStateBindingEnum,
-  PresentationDefinitionFieldBindingDto,
-  PresentationDefinitionRequestedCredentialBindingDto,
+  CredentialDetail,
+  CredentialListItem,
+  CredentialState,
+  PresentationDefinitionField,
+  PresentationDefinitionRequestedCredential,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
@@ -28,17 +28,17 @@ export type ShareCredentialLabels = ShareCredentialCardLabels & {
 };
 
 export const ShareCredential: FunctionComponent<{
-  allCredentials: CredentialDetailBindingDto[];
+  allCredentials: CredentialDetail[];
   expanded?: boolean;
   labels: ShareCredentialLabels;
   lastItem?: boolean;
   onHeaderPress?: (_credentialId?: string) => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
   onSelectCredential?: () => void;
-  onSelectField: (_id: PresentationDefinitionFieldBindingDto['id'], _selected: boolean) => void;
-  request: PresentationDefinitionRequestedCredentialBindingDto;
-  selectedCredentialId?: CredentialListItemBindingDto['id'];
-  selectedFields?: Array<PresentationDefinitionFieldBindingDto['id']>;
+  onSelectField: (_id: PresentationDefinitionField['id'], _selected: boolean) => void;
+  request: PresentationDefinitionRequestedCredential;
+  selectedCredentialId?: CredentialListItem['id'];
+  selectedFields?: Array<PresentationDefinitionField['id']>;
   style?: StyleProp<ViewStyle>;
   testID: string;
 }> = ({
@@ -64,9 +64,7 @@ export const ShareCredential: FunctionComponent<{
   const selectionOptions = useMemo(
     () =>
       request.applicableCredentials.filter((applicableCredentialId) =>
-        allCredentials.some(
-          ({ id, state }) => id === applicableCredentialId && state === CredentialStateBindingEnum.ACCEPTED,
-        ),
+        allCredentials.some(({ id, state }) => id === applicableCredentialId && state === CredentialState.ACCEPTED),
       ),
     [allCredentials, request],
   );

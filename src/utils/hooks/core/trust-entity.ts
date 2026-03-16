@@ -1,10 +1,10 @@
 import {
-  CreateRemoteTrustEntityRequestBindingDto,
-  GetTrustAnchorResponseBindingDto,
-  IdentifierTypeBindingEnum,
+  CreateRemoteTrustEntityRequest,
+  IdentifierType,
   ONECore,
   OneError,
-  UpdateRemoteTrustEntityFromDidRequestBindingDto,
+  TrustAnchorDetail,
+  UpdateRemoteTrustEntityRequest,
 } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -31,7 +31,7 @@ export const useCreateTrustAnchor = () => {
       if (trustAnchors.values.length > 0) {
         return;
       }
-      const response = await httpClient.get<GetTrustAnchorResponseBindingDto>(publisherReference);
+      const response = await httpClient.get<TrustAnchorDetail>(publisherReference);
       if (!response.ok || !response.data) {
         return;
       }
@@ -66,7 +66,7 @@ export const useTrustEntity = (identifierId: string | undefined) => {
               identifiers: [
                 {
                   certificateId:
-                    identifierDetail?.type === IdentifierTypeBindingEnum.CERTIFICATE
+                    identifierDetail?.type === IdentifierType.CERTIFICATE
                       ? identifierDetail.certificates?.[0]?.id
                       : undefined,
                   id: identifierId,
@@ -110,9 +110,7 @@ export const useCreateRemoteTrustEntity = () => {
   const { core } = useONECore();
 
   return useMutation(
-    async (
-      request: Omit<CreateRemoteTrustEntityRequestBindingDto, 'didId'> & { identifierId?: string; didId?: string },
-    ) => {
+    async (request: Omit<CreateRemoteTrustEntityRequest, 'didId'> & { identifierId?: string; didId?: string }) => {
       const { identifierId, didId } = request;
 
       let entityDidId = didId;
@@ -142,7 +140,7 @@ export const useUpdateRemoteTrustEntity = () => {
 
   return useMutation(
     async (
-      request: Omit<UpdateRemoteTrustEntityFromDidRequestBindingDto, 'didId'> & {
+      request: Omit<UpdateRemoteTrustEntityRequest, 'didId'> & {
         identifierId?: string;
         didId?: string;
       },

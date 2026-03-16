@@ -1,4 +1,4 @@
-import { IdentifierStateBindingEnum, IdentifierTypeBindingEnum } from '@procivis/react-native-one-core';
+import { IdentifierState, IdentifierType } from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -81,11 +81,11 @@ export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey 
     let swIdentifierId: string | undefined;
     if (generateSwKey) {
       const identifiers = await core.listIdentifiers({
-        states: [IdentifierStateBindingEnum.ACTIVE],
+        states: [IdentifierState.ACTIVE],
         organisationId,
         page: 0,
         pageSize: 1,
-        types: [IdentifierTypeBindingEnum.DID],
+        types: [IdentifierType.DID],
         isRemote: false,
       });
       swIdentifierId = identifiers.values.find((identifier) => identifier.name.startsWith(SW_DID_NAME_PREFIX))?.id;

@@ -1,8 +1,8 @@
 import {
-  CredentialListItemBindingDto,
-  PresentationDefinitionV2ClaimBindingDto,
-  PresentationDefinitionV2ResponseBindingDto,
-  PresentationSubmitV2CredentialRequestBindingDto,
+  CredentialListItem,
+  PresentationDefinitionV2,
+  PresentationDefinitionV2Claim,
+  PresentationSubmitV2CredentialRequest,
 } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
 import { ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
@@ -24,7 +24,7 @@ import { GroupedShareCredentialV2Padding, ShareCredentialV2 } from './share-cred
 
 export type CredentialQuerySelection = Record<
   string,
-  PresentationSubmitV2CredentialRequestBindingDto | PresentationSubmitV2CredentialRequestBindingDto[]
+  PresentationSubmitV2CredentialRequest | PresentationSubmitV2CredentialRequest[]
 >;
 
 export type ShareCredentialGroupLabels = ShareCredentialLabels & {
@@ -40,11 +40,11 @@ export type ShareCredentialV2GroupProps = {
   onSelectField: (
     requestCredentialId: string,
   ) => (
-    credentialId: CredentialListItemBindingDto['id'],
-    fieldPath: PresentationDefinitionV2ClaimBindingDto['path'],
+    credentialId: CredentialListItem['id'],
+    fieldPath: PresentationDefinitionV2Claim['path'],
     selected: boolean,
   ) => void;
-  presentationDefinition: PresentationDefinitionV2ResponseBindingDto;
+  presentationDefinition: PresentationDefinitionV2;
   requestGroup: string[];
   selected?: boolean;
   selectedCredentials?: CredentialQuerySelection;
@@ -61,7 +61,7 @@ const multipleCredentialsSelected = (
     selectedCredentials &&
     selectedCredentials[credentialRequestId] &&
     Array.isArray(selectedCredentials[credentialRequestId]) &&
-    (selectedCredentials[credentialRequestId] as PresentationSubmitV2CredentialRequestBindingDto[]).length > 1
+    (selectedCredentials[credentialRequestId] as PresentationSubmitV2CredentialRequest[]).length > 1
   );
 };
 
@@ -123,7 +123,7 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
       const lastQuery = credentialRequestIndex === credentialRequestsLength - 1;
 
       const credentialQuery = presentationDefinition.credentialQueries[credentialRequestId].credentialOrFailureHint;
-      let defaultSelection: PresentationSubmitV2CredentialRequestBindingDto;
+      let defaultSelection: PresentationSubmitV2CredentialRequest;
       if (credentialQuery.type_ === 'APPLICABLE_CREDENTIALS') {
         defaultSelection = credentialQuery.applicableCredentials?.[0]
           ? {

@@ -1,4 +1,4 @@
-import { HistoryActionBindingEnum, HistoryListItemBindingDto } from '@procivis/react-native-one-core';
+import { HistoryAction, HistoryListItem } from '@procivis/react-native-one-core';
 import React, { FC, ReactElement } from 'react';
 import { ImageSourcePropType } from 'react-native';
 
@@ -12,19 +12,19 @@ import { capitalizeFirstLetter, concatTestID, formatDateTimeLocalized } from '..
 import { HistoryListItemLabels } from './history-list-item';
 import { getHistoryItemActionIcon } from './history-list-item-icon';
 
-const getStatusTextColor = (action: HistoryActionBindingEnum, colorScheme: Readonly<ColorScheme>) => {
+const getStatusTextColor = (action: HistoryAction, colorScheme: Readonly<ColorScheme>) => {
   switch (action) {
-    case HistoryActionBindingEnum.CLAIMS_REMOVED:
-    case HistoryActionBindingEnum.DEACTIVATED:
-    case HistoryActionBindingEnum.DELETED:
-    case HistoryActionBindingEnum.REJECTED:
-    case HistoryActionBindingEnum.REVOKED:
-    case HistoryActionBindingEnum.ERRORED:
+    case HistoryAction.CLAIMS_REMOVED:
+    case HistoryAction.DEACTIVATED:
+    case HistoryAction.DELETED:
+    case HistoryAction.REJECTED:
+    case HistoryAction.REVOKED:
+    case HistoryAction.ERRORED:
       return colorScheme.errorText;
-    case HistoryActionBindingEnum.SUSPENDED:
-    case HistoryActionBindingEnum.OFFERED:
-    case HistoryActionBindingEnum.PENDING:
-    case HistoryActionBindingEnum.REQUESTED:
+    case HistoryAction.SUSPENDED:
+    case HistoryAction.OFFERED:
+    case HistoryAction.PENDING:
+    case HistoryAction.REQUESTED:
       return colorScheme.text;
     default:
       return colorScheme.successText;
@@ -39,7 +39,7 @@ export type HistoryDetailsScreenProps = {
   assets: HistoryDetailsViewProps['assets'];
   dataHeader: HistoryDetailsViewProps['data']['header'];
   headerButton?: ReactElement;
-  item: HistoryListItemBindingDto;
+  item: HistoryListItem;
   labels: HistoryDetailsScreenLabels;
   onBackPressed: () => void;
   onInfoPressed?: () => void;

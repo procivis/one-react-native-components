@@ -2,7 +2,7 @@ import { fn } from '@storybook/test';
 
 export default {};
 
-export enum CacheTypeBindingDto {
+export enum CacheType {
   DID_DOCUMENT = 'DID_DOCUMENT',
   JSON_LD_CONTEXT = 'JSON_LD_CONTEXT',
   STATUS_LIST_CREDENTIAL = 'STATUS_LIST_CREDENTIAL',
@@ -26,7 +26,7 @@ export class OneError extends Error {
   }
 }
 
-export enum HistoryEntityTypeBindingEnum {
+export enum HistoryEntityType {
   KEY = 'KEY',
   DID = 'DID',
   CREDENTIAL = 'CREDENTIAL',
@@ -37,7 +37,7 @@ export enum HistoryEntityTypeBindingEnum {
   BACKUP = 'BACKUP',
 }
 
-export enum HistoryActionBindingEnum {
+export enum HistoryAction {
   ACCEPTED = 'ACCEPTED',
   CREATED = 'CREATED',
   DEACTIVATED = 'DEACTIVATED',
@@ -64,12 +64,12 @@ export enum HistoryActionBindingEnum {
   EXPIRED = 'EXPIRED',
 }
 
-export enum DidTypeBindingEnum {
+export enum DidType {
   LOCAL = 'LOCAL',
   REMOTE = 'REMOTE',
 }
 
-export enum CredentialStateBindingEnum {
+export enum CredentialState {
   CREATED = 'CREATED',
   PENDING = 'PENDING',
   OFFERED = 'OFFERED',
@@ -80,7 +80,7 @@ export enum CredentialStateBindingEnum {
   ERROR = 'ERROR',
 }
 
-export enum ProofStateBindingEnum {
+export enum ProofState {
   CREATED = 'CREATED',
   PENDING = 'PENDING',
   REQUESTED = 'REQUESTED',
@@ -90,13 +90,13 @@ export enum ProofStateBindingEnum {
   ERROR = 'ERROR',
 }
 
-export enum CredentialSchemaCodeTypeBindingDto {
+export enum CredentialSchemaCodeType {
   BARCODE = 'BARCODE',
   MRZ = 'MRZ',
   QR_CODE = 'QR_CODE',
 }
 
-export enum DataTypeEnum {
+export enum DataType {
   String = 'STRING',
   Number = 'NUMBER',
   Date = 'DATE',
@@ -105,37 +105,37 @@ export enum DataTypeEnum {
   Object = 'OBJECT',
 }
 
-export enum FormatFeatureEnum {
+export enum FormatFeature {
   SelectiveDisclosure = 'SELECTIVE_DISCLOSURE',
   SupportsCredentialDesign = 'SUPPORTS_CREDENTIAL_DESIGN',
   RequiresSchemaId = 'REQUIRES_SCHEMA_ID',
 }
 
-export enum TrustEntityRoleBindingEnum {
+export enum TrustEntityRole {
   ISSUER = 'ISSUER',
   VERIFIER = 'VERIFIER',
   BOTH = 'BOTH',
 }
 
-export enum TrustEntityStateBindingEnum {
+export enum TrustEntityState {
   ACTIVE = 'ACTIVE',
   REMOVED = 'REMOVED',
   WITHDRAWN = 'WITHDRAWN',
   REMOVED_AND_WITHDRAWN = 'REMOVED_AND_WITHDRAWN',
 }
 
-export enum IdentifierTypeBindingEnum {
+export enum IdentifierType {
   KEY = 'KEY',
   DID = 'DID',
   CERTIFICATE = 'CERTIFICATE',
 }
 
-export enum IdentifierStateBindingEnum {
+export enum IdentifierState {
   ACTIVE = 'ACTIVE',
   DEACTIVATED = 'DEACTIVATED',
 }
 
-export enum WalletUnitStatusBindingEnum {
+export enum WalletUnitStatus {
   PENDING = 'PENDING',
   ACTIVE = 'ACTIVE',
   REVOKED = 'REVOKED',

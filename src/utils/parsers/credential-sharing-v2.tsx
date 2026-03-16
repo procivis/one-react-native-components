@@ -1,11 +1,11 @@
 import {
-  ClaimBindingDto,
-  ClaimValueBindingDto,
-  Config,
-  CredentialQueryFailureHintResponseBindingDto,
-  PresentationDefinitionV2ClaimBindingDto,
-  PresentationDefinitionV2ClaimValueBindingDto,
-  PresentationDefinitionV2CredentialDetailBindingDto,
+  Claim,
+  ClaimValue,
+  CoreConfig,
+  CredentialQueryFailureHint,
+  PresentationDefinitionV2Claim,
+  PresentationDefinitionV2ClaimValue,
+  PresentationDefinitionV2Credential,
 } from '@procivis/react-native-one-core';
 import React from 'react';
 
@@ -27,7 +27,7 @@ import {
 } from '.';
 import { ShareCredentialCardLabels, validityCheckedCardFromCredential } from './credential-sharing';
 
-const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValueBindingDto): ClaimValueBindingDto => {
+const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): ClaimValue => {
   if (value.type_ !== 'NESTED') {
     return value;
   }
@@ -37,7 +37,7 @@ const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValueBindi
   };
 };
 
-const v2PresentationClaimToClaim = (claim: PresentationDefinitionV2ClaimBindingDto): ClaimBindingDto => {
+const v2PresentationClaimToClaim = (claim: PresentationDefinitionV2Claim): Claim => {
   return {
     schema: claim.schema,
     path: claim.path,
@@ -46,7 +46,7 @@ const v2PresentationClaimToClaim = (claim: PresentationDefinitionV2ClaimBindingD
 };
 
 const getAttributeSelectorStatus = (
-  claim: PresentationDefinitionV2ClaimBindingDto,
+  claim: PresentationDefinitionV2Claim,
   selected: boolean,
   force: boolean,
 ): SelectorStatus | undefined => {
@@ -66,11 +66,11 @@ const getAttributeSelectorStatus = (
 };
 
 export const shareCredentialCardAttributeFromV2Claim = (
-  claim: PresentationDefinitionV2ClaimBindingDto,
+  claim: PresentationDefinitionV2Claim,
   selection: string[] | undefined,
   parentShared: boolean,
   parentUserSelected: boolean,
-  config: Config,
+  config: CoreConfig,
   testID: string,
   nested?: boolean,
   listValue?: boolean,
@@ -133,7 +133,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
 };
 
 export const missingCredentialCardFromFailureHint = (
-  failureHint: CredentialQueryFailureHintResponseBindingDto | undefined,
+  failureHint: CredentialQueryFailureHint | undefined,
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
@@ -154,12 +154,12 @@ export const missingCredentialCardFromFailureHint = (
 };
 
 export const shareCredentialCardFromV2PresentationCredential = (
-  credential: PresentationDefinitionV2CredentialDetailBindingDto | undefined,
-  failureHint: CredentialQueryFailureHintResponseBindingDto | undefined,
+  credential: PresentationDefinitionV2Credential | undefined,
+  failureHint: CredentialQueryFailureHint | undefined,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
   selectedFields: string[] | undefined,
-  config: Config,
+  config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -200,10 +200,10 @@ export const shareCredentialCardFromV2PresentationCredential = (
 };
 
 export const selectCredentialCardFromV2Credential = (
-  credential: PresentationDefinitionV2CredentialDetailBindingDto,
+  credential: PresentationDefinitionV2Credential,
   selected: boolean,
   multiple: boolean,
-  config: Config,
+  config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
 ): CredentialDetailsCardPropsWithoutWidth => {
@@ -247,15 +247,13 @@ export const selectCredentialCardFromV2Credential = (
   };
 };
 
-export const getV2CredentialClaimAllSubpaths = (claim: PresentationDefinitionV2ClaimBindingDto): string[] => {
+export const getV2CredentialClaimAllSubpaths = (claim: PresentationDefinitionV2Claim): string[] => {
   if (claim.value.type_ !== 'NESTED') {
     return [claim.path];
   }
   return [claim.path, ...claim.value.value.flatMap(getV2CredentialClaimAllSubpaths)];
 };
 
-export const getV2CredentialAvailablePaths = (
-  credential: PresentationDefinitionV2CredentialDetailBindingDto,
-): string[] => {
+export const getV2CredentialAvailablePaths = (credential: PresentationDefinitionV2Credential): string[] => {
   return credential.claims.flatMap(getV2CredentialClaimAllSubpaths);
 };

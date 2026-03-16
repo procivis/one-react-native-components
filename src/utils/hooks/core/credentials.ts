@@ -1,9 +1,9 @@
 import {
-  CredentialListQueryBindingDto,
-  CredentialStateBindingEnum,
-  HandleInvitationRequestBindingDto,
-  HandleInvitationResponseBindingEnum,
-  InitiateIssuanceRequestBindingDto,
+  CredentialListQuery,
+  CredentialState,
+  HandleInvitationRequest,
+  HandleInvitationResponse,
+  InitiateIssuanceRequest,
   OneError,
 } from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
@@ -20,22 +20,18 @@ export const CREDENTIAL_LIST_QUERY_KEY = 'credential-list';
 export const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
 export const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
 
-export const useCredentials = (queryParams?: Partial<CredentialListQueryBindingDto>) => {
+export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
     [CREDENTIAL_LIST_QUERY_KEY, ...getQueryKeyFromCredentialListQueryParams(queryParams)],
     async () => {
-      const { values } = await core.getCredentials({
+      const { values } = await core.listCredentials({
         organisationId,
         page: 0,
         // TODO: workaround pagination for now, until it's supported by UI
         pageSize: 10000,
-        states: [
-          CredentialStateBindingEnum.ACCEPTED,
-          CredentialStateBindingEnum.SUSPENDED,
-          CredentialStateBindingEnum.REVOKED,
-        ],
+        states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED, CredentialState.REVOKED],
         ...queryParams,
       });
       return values;
@@ -46,7 +42,7 @@ export const useCredentials = (queryParams?: Partial<CredentialListQueryBindingD
   );
 };
 
-export const usePagedCredentials = (queryParams?: Partial<CredentialListQueryBindingDto>) => {
+export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
@@ -56,15 +52,11 @@ export const usePagedCredentials = (queryParams?: Partial<CredentialListQueryBin
       ...getQueryKeyFromCredentialListQueryParams(queryParams),
     ],
     ({ pageParam = 0 }) =>
-      core.getCredentials({
+      core.listCredentials({
         organisationId,
         page: pageParam,
         pageSize: PAGE_SIZE,
-        states: [
-          CredentialStateBindingEnum.ACCEPTED,
-          CredentialStateBindingEnum.SUSPENDED,
-          CredentialStateBindingEnum.REVOKED,
-        ],
+        states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED, CredentialState.REVOKED],
         ...queryParams,
       }),
     {
@@ -92,10 +84,10 @@ export const useInvitationHandler = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<HandleInvitationRequestBindingDto, 'organisationId'>) =>
+    async (request: Omit<HandleInvitationRequest, 'organisationId'>) =>
       core.handleInvitation({ organisationId, ...request }),
     {
-      onSuccess: async (result: HandleInvitationResponseBindingEnum) => {
+      onSuccess: async (result: HandleInvitationResponse) => {
         if (result.type_ === 'PROOF_REQUEST') {
           await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
         } else {
@@ -197,7 +189,7 @@ export const useInitiateIssuance = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<InitiateIssuanceRequestBindingDto, 'organisationId'>) =>
+    async (request: Omit<InitiateIssuanceRequest, 'organisationId'>) =>
       core.initiateIssuance({ organisationId, ...request }),
     {
       onSuccess: async () => {

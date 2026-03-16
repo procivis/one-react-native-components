@@ -1,10 +1,10 @@
 import {
-  CertificateResponseBindingDto,
-  GetIdentifierListItemBindingDto,
-  GetTrustEntityResponseBindingDto,
-  IdentifierTypeBindingEnum,
-  TrustEntityRoleBindingEnum,
-  TrustEntityStateBindingEnum,
+  CertificateDetail,
+  IdentifierListItem,
+  IdentifierType,
+  TrustEntityDetail,
+  TrustEntityRole,
+  TrustEntityState,
 } from '@procivis/react-native-one-core';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
@@ -21,22 +21,22 @@ export type EntityDetailsLabels = {
 
 export type EntityDetailsProps = {
   labels: EntityDetailsLabels;
-  renderMore?: (trustEntity: GetTrustEntityResponseBindingDto) => ReactNode;
-  role: Exclude<TrustEntityRoleBindingEnum, TrustEntityRoleBindingEnum.BOTH>;
+  renderMore?: (trustEntity: TrustEntityDetail) => ReactNode;
+  role: Exclude<TrustEntityRole, TrustEntityRole.BOTH>;
   style?: StyleProp<ViewStyle>;
   sublineColor?: string;
   textColor?: string;
   testID?: string;
 } & (
   | {
-      identifier?: GetIdentifierListItemBindingDto;
+      identifier?: IdentifierListItem;
     }
   | {
-      entity: GetTrustEntityResponseBindingDto;
+      entity: TrustEntityDetail;
     }
 );
 
-const getCertificateCommonName = (certificate: CertificateResponseBindingDto): string | undefined => {
+const getCertificateCommonName = (certificate: CertificateDetail): string | undefined => {
   return certificate.x509Attributes.subject
     .split(', ')
     .find((s) => s.startsWith('CN'))
@@ -57,16 +57,15 @@ const EntityDetails: FC<EntityDetailsProps> = ({
   const { data, isLoading: isLoadingTrustEntity } = useTrustEntity(
     'identifier' in props ? props.identifier?.id : undefined,
   );
-  const trustEntity: GetTrustEntityResponseBindingDto | undefined =
-    'entity' in props ? props.entity : data ?? undefined;
+  const trustEntity = 'entity' in props ? props.entity : data ?? undefined;
   const { data: identifierDetail, isLoading: isLoadingIdentifier } = useIdentifierDetails(
     'identifier' in props ? props.identifier?.id : undefined,
   );
 
   const trusted =
     trustEntity &&
-    trustEntity.state === TrustEntityStateBindingEnum.ACTIVE &&
-    (trustEntity.role === TrustEntityRoleBindingEnum.BOTH || trustEntity.role === role);
+    trustEntity.state === TrustEntityState.ACTIVE &&
+    (trustEntity.role === TrustEntityRole.BOTH || trustEntity.role === role);
 
   const isLoading = isLoadingIdentifier || isLoadingTrustEntity;
 
@@ -81,7 +80,7 @@ const EntityDetails: FC<EntityDetailsProps> = ({
         : undefined;
 
     const placeholderText =
-      identifierDetail?.type === IdentifierTypeBindingEnum.CERTIFICATE && identifierDetail.certificates?.[0]
+      identifierDetail?.type === IdentifierType.CERTIFICATE && identifierDetail.certificates?.[0]
         ? getCertificateCommonName(identifierDetail.certificates[0])?.substring(0, 1)
         : 'D';
 
@@ -111,7 +110,7 @@ const EntityDetails: FC<EntityDetailsProps> = ({
     if (isLoading) {
       return '';
     }
-    if (identifierDetail?.type === IdentifierTypeBindingEnum.CERTIFICATE && identifierDetail.certificates?.[0]) {
+    if (identifierDetail?.type === IdentifierType.CERTIFICATE && identifierDetail.certificates?.[0]) {
       const commonName = getCertificateCommonName(identifierDetail.certificates[0]);
       if (commonName) {
         return commonName;

@@ -1,4 +1,4 @@
-import { CredentialStateBindingEnum } from '@procivis/react-native-one-core';
+import { CredentialState } from '@procivis/react-native-one-core';
 import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useRef } from 'react';
 
@@ -18,7 +18,7 @@ export const useCredentialStatusCheck = (credentialIds?: string[], forceRefresh 
   const { mutateAsync: check } = useCredentialRevocationCheck(forceRefresh);
   const { data: credentials } = useCredentials({
     ids: credentialIds,
-    states: [CredentialStateBindingEnum.ACCEPTED, CredentialStateBindingEnum.SUSPENDED],
+    states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED],
   });
 
   const checkCredentialsStatus = useCallback(async () => {

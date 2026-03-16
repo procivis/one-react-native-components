@@ -1,4 +1,4 @@
-import { HistoryListItemBindingDto, HistoryListQueryBindingDto } from '@procivis/react-native-one-core';
+import { HistoryListItem, HistoryListQuery } from '@procivis/react-native-one-core';
 import { debounce } from 'lodash';
 import React, { FC, PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -24,14 +24,14 @@ export type HistoryListScreenLabels = {
 };
 
 export type HistoryListScreenProps = {
-  groupItems?: (entries: HistoryListItemBindingDto[]) => HistoryGroupByDaySection[];
+  groupItems?: (entries: HistoryListItem[]) => HistoryGroupByDaySection[];
   itemInfoLabelMode?: HistoryListItemViewProps['infoLabelMode'];
   labels: HistoryListScreenLabels;
   onBackPressed: () => void;
-  onHistoryItemPressed: (historyItem: HistoryListItemBindingDto) => void;
+  onHistoryItemPressed: (historyItem: HistoryListItem) => void;
   onOpenFilter?: () => void;
   onSearchPhraseChange: (searchPhrase: string | undefined) => void;
-  queryParams: Partial<HistoryListQueryBindingDto>;
+  queryParams: Partial<HistoryListQuery>;
   testID?: string;
 };
 

@@ -1,7 +1,4 @@
-import {
-  CredentialSchemaListQueryBindingDto,
-  ImportCredentialSchemaRequestSchemaBindingDto,
-} from '@procivis/react-native-one-core';
+import { CredentialSchemaListQuery, ImportCredentialSchemaRequestSchema } from '@procivis/react-native-one-core';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromCredentialSchemaListQueryParams } from '../../parsers/query';
@@ -15,14 +12,14 @@ export const CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY = 'credential-schema-detail';
 export const CREDENTIAL_SCHEMA_PREVIEW_QUERY_KEY = 'credential-schema-preview';
 export const CREDENTIAL_SCHEMA_SHARE_QUERY_KEY = 'credential-schema-share';
 
-export const useCredentialSchemas = (queryParams?: Partial<CredentialSchemaListQueryBindingDto>) => {
+export const useCredentialSchemas = (queryParams?: Partial<CredentialSchemaListQuery>) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
     [CREDENTIAL_SCHEMA_LIST_QUERY_KEY, ...getQueryKeyFromCredentialSchemaListQueryParams(queryParams)],
     ({ pageParam = 0 }) =>
       core
-        .getCredentialSchemas({
+        .listCredentialSchemas({
           organisationId,
           page: pageParam,
           pageSize: PAGE_SIZE,
@@ -46,7 +43,7 @@ export const useCredentialSchemaPreview = (url: string) => {
         if (!response.ok) {
           throw response.originalError;
         }
-        return response.data as ImportCredentialSchemaRequestSchemaBindingDto;
+        return response.data as ImportCredentialSchemaRequestSchema;
       }),
     {
       keepPreviousData: true,
@@ -59,7 +56,7 @@ export const useCredentialSchemaAccept = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (schema: ImportCredentialSchemaRequestSchemaBindingDto) =>
+    async (schema: ImportCredentialSchemaRequestSchema) =>
       core.importCredentialSchema({
         organisationId,
         schema,
