@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Insets, Platform, StyleSheet, Switch as RNSwitch, SwitchProps as RNSwitchProps } from 'react-native';
+import { Insets, Platform, StyleSheet, Switch as RNSwitch, SwitchProps as RNSwitchProps, View } from 'react-native';
 
 import { useAppColorScheme } from '../theme';
 
@@ -15,26 +15,28 @@ const hitSlop: Insets = { top: 10, bottom: 10, left: 10, right: 10 };
 export const Switch = forwardRef<RNSwitch, SwitchProps>(({ value, disabled, style, onChange, ...props }, ref) => {
   const colorScheme = useAppColorScheme();
   return (
-    <RNSwitch
-      ref={ref}
-      value={value}
-      disabled={disabled}
-      hitSlop={hitSlop}
-      style={[disabled && styles.disabled, style]}
-      onValueChange={onChange}
-      trackColor={Platform.select({
-        default: { true: colorScheme.grayDark, false: colorScheme.grayDark },
-        ios: { true: colorScheme.accent, false: colorScheme.grayDark },
-      })}
-      thumbColor={Platform.select({
-        default: value ? colorScheme.accent : disabled ? colorScheme.background : colorScheme.white,
-        ios: colorScheme.white,
-      })}
-      ios_backgroundColor={colorScheme.grayDark}
-      // @ts-ignore: web only prop
-      activeThumbColor={colorScheme.accent}
-      {...props}
-    />
+    <View>
+      <RNSwitch
+        ref={ref}
+        value={value}
+        disabled={disabled}
+        hitSlop={hitSlop}
+        style={[disabled && styles.disabled, style]}
+        onValueChange={onChange}
+        trackColor={Platform.select({
+          default: { true: colorScheme.grayDark, false: colorScheme.grayDark },
+          ios: { true: colorScheme.accent, false: colorScheme.grayDark },
+        })}
+        thumbColor={Platform.select({
+          default: value ? colorScheme.accent : disabled ? colorScheme.background : colorScheme.white,
+          ios: colorScheme.white,
+        })}
+        ios_backgroundColor={colorScheme.grayDark}
+        // @ts-ignore: web only prop
+        activeThumbColor={colorScheme.accent}
+        {...props}
+      />
+    </View>
   );
 });
 
