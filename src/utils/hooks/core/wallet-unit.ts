@@ -11,6 +11,7 @@ import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
 
 export const WALLET_UNIT_QUERY_KEY = 'wallet-unit';
+export const WALLET_UNIT_TRUST_COLLECTIONS_QUERY_KEY = 'wallet-unit-trust-collections';
 
 export const useWalletUnitDetail = (walletUnitId: HolderWalletUnit['id'] | undefined, active = true) => {
   const { core } = useONECore();
@@ -18,6 +19,19 @@ export const useWalletUnitDetail = (walletUnitId: HolderWalletUnit['id'] | undef
   return useQuery(
     [WALLET_UNIT_QUERY_KEY, walletUnitId],
     () => (walletUnitId ? core.holderGetWalletUnit(walletUnitId) : undefined),
+    {
+      enabled: active && Boolean(walletUnitId),
+      keepPreviousData: true,
+    },
+  );
+};
+
+export const useWalletUnitTrustCollections = (walletUnitId: HolderWalletUnit['id'] | undefined, active = true) => {
+  const { core } = useONECore();
+
+  return useQuery(
+    [WALLET_UNIT_TRUST_COLLECTIONS_QUERY_KEY, walletUnitId],
+    () => (walletUnitId ? core.holderGetWalletUnitTrustCollections(walletUnitId) : undefined),
     {
       enabled: active && Boolean(walletUnitId),
       keepPreviousData: true,
