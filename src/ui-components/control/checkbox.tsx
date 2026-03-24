@@ -9,7 +9,7 @@ import { useAppColorScheme } from '../theme';
 
 export interface CheckboxProps extends TouchableOpacityProps {
   value: boolean;
-  text: ReactNode;
+  text?: ReactNode;
   onValueChanged: (value: boolean) => void;
   disabled?: boolean;
 }
@@ -45,15 +45,17 @@ export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onVa
           ]}
         />
       )}
-      <View style={[styles.text, disabled && styles.disabled]}>
-        {typeof text === 'string' ? (
-          <Typography preset="xs/line-height-small" color={colorScheme.text}>
-            {text}
-          </Typography>
-        ) : (
-          text
-        )}
-      </View>
+      {text && (
+        <View style={[styles.text, disabled && styles.disabled]}>
+          {typeof text === 'string' ? (
+            <Typography preset="xs/line-height-small" color={colorScheme.text}>
+              {text}
+            </Typography>
+          ) : (
+            text
+          )}
+        </View>
+      )}
     </TouchableOpacity>
   );
 };

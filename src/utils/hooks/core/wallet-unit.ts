@@ -1,4 +1,9 @@
-import { HolderWalletUnit, WalletProvider, WalletUnitStatus } from '@procivis/react-native-one-core';
+import {
+  HolderWalletUnit,
+  HolderWalletUnitUpdateRequest,
+  WalletProvider,
+  WalletUnitStatus,
+} from '@procivis/react-native-one-core';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -49,6 +54,23 @@ export const useWalletUnitStatus = () => {
     },
     onSuccess: () => queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY),
   });
+};
+
+export const useWalletUnitUpdate = () => {
+  const queryClient = useQueryClient();
+  const { core } = useONECore();
+
+  return useMutation(
+    async ({ walletUnitId, update }: { walletUnitId: HolderWalletUnit['id']; update: HolderWalletUnitUpdateRequest }) =>
+      core.holderWalletUnitUpdate(walletUnitId, update),
+    {
+      onError: async (err) => {
+        reportException(err, 'Update wallet unit failure');
+        await queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY);
+      },
+      onSuccess: () => queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY),
+    },
+  );
 };
 
 export const useWalletUnitCheck = (walletUnitId: HolderWalletUnit['id'] | undefined) => {
