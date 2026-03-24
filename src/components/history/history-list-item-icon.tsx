@@ -85,6 +85,8 @@ const defaultIcons: {
     NOTIFICATION: HistoryCredentialIcon,
     SUPERVISORY_AUTHORITY: HistoryCertificateIcon,
     TRUST_LIST_PUBLICATION: HistoryTrustAnchorIcon,
+    TRUST_COLLECTION: HistoryTrustAnchorIcon,
+    TRUST_LIST_SUBSCRIPTION: HistoryTrustAnchorIcon,
   },
 };
 

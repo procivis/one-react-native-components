@@ -417,7 +417,7 @@ export const useRetainProofCheck = (proofId?: string) => {
 
   const { core } = useONECore();
 
-  return useMutation(async () => core.runTask('RETAIN_PROOF_CHECK'), {
+  return useMutation(async () => core.runTask('RETAIN_PROOF_CHECK', undefined), {
     onSuccess: async () => {
       if (proofId) {
         await queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
