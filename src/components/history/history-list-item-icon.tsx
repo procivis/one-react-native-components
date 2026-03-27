@@ -87,6 +87,7 @@ const defaultIcons: {
     TRUST_LIST_PUBLICATION: HistoryTrustAnchorIcon,
     TRUST_COLLECTION: HistoryTrustAnchorIcon,
     TRUST_LIST_SUBSCRIPTION: HistoryTrustAnchorIcon,
+    VERIFIER_INSTANCE: HistoryTrustedEntityIcon,
   },
 };
 

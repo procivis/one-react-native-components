@@ -13,4 +13,5 @@ export * from './proofs';
 export * from './query';
 export * from './trust-entity';
 export * from './trust-list';
+export * from './verifier-instance';
 export * from './wallet-unit';

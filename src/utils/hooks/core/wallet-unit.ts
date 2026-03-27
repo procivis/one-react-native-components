@@ -52,7 +52,10 @@ export const useRegisterWalletUnit = () => {
       }),
 
     {
-      onSuccess: () => queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY),
+      onSuccess: () => {
+        queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY);
+        queryClient.invalidateQueries(WALLET_UNIT_TRUST_COLLECTIONS_QUERY_KEY);
+      },
     },
   );
 };
@@ -81,8 +84,12 @@ export const useWalletUnitUpdate = () => {
       onError: async (err) => {
         reportException(err, 'Update wallet unit failure');
         await queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_UNIT_TRUST_COLLECTIONS_QUERY_KEY);
       },
-      onSuccess: () => queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY),
+      onSuccess: () => {
+        queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY);
+        queryClient.invalidateQueries(WALLET_UNIT_TRUST_COLLECTIONS_QUERY_KEY);
+      },
     },
   );
 };
