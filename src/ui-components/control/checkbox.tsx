@@ -24,7 +24,7 @@ export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onVa
     <TouchableOpacity
       activeOpacity={0.8}
       accessibilityRole="checkbox"
-      accessibilityState={{ disabled }}
+      accessibilityState={{ checked: value, disabled }}
       accessibilityValue={
         disabled ? undefined : { text: t(value ? 'accessibility.control.checked' : 'accessibility.control.unchecked') }
       }
