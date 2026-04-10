@@ -1,8 +1,8 @@
+import { HolderWalletUnit } from '@procivis/react-native-one-core';
 import { useMutation } from 'react-query';
 
 import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
-import { HolderWalletUnit } from '@procivis/react-native-one-core';
 
 export const useTrustCollectionSync = () => {
   const { core } = useONECore();

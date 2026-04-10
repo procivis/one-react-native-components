@@ -1,4 +1,4 @@
-import { UpdateVerifierInstanceRequest } from '@procivis/react-native-one-core';
+import { RegisterVerifierInstanceRequest, UpdateVerifierInstanceRequest } from '@procivis/react-native-one-core';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { reportException } from '../../reporting';
@@ -24,11 +24,10 @@ export const useRegisterVerifierInstance = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async ({ verifierProviderUrl, type }: { verifierProviderUrl: string; type: string }) =>
+    async (request: Omit<RegisterVerifierInstanceRequest, 'organisationId'>) =>
       core.registerVerifierInstance({
         organisationId,
-        verifierProviderUrl,
-        type,
+        ...request,
       }),
 
     {

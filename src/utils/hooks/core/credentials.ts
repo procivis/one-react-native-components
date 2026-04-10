@@ -3,6 +3,7 @@ import {
   CredentialState,
   HandleInvitationRequest,
   HandleInvitationResponse,
+  HolderAcceptCredentialRequest,
   InitiateIssuanceRequest,
   OneError,
 } from '@procivis/react-native-one-core';
@@ -105,17 +106,8 @@ export const useCredentialAccept = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  type CredentialAcceptHookParams = {
-    didId?: string;
-    identifierId?: string;
-    interactionId: string;
-    keyId?: string;
-    txCode?: string;
-    holderWalletUnitId?: string;
-  };
-
   return useMutation(
-    async (credentialAcceptHookParams: CredentialAcceptHookParams) =>
+    async (credentialAcceptHookParams: HolderAcceptCredentialRequest) =>
       core.holderAcceptCredential(credentialAcceptHookParams),
     {
       onSuccess: async () => {

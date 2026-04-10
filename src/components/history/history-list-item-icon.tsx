@@ -58,6 +58,8 @@ const defaultIcons: {
     INTERACTION_ERRORED: HistoryStatusErrorIcon,
     INTERACTION_EXPIRED: HistoryStatusErrorIcon,
     DELIVERED: HistoryStatusAcceptedIcon,
+    WRP_AC_RECEIVED: HistoryStatusAcceptedIcon,
+    WRP_RC_RECEIVED: HistoryStatusAcceptedIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,

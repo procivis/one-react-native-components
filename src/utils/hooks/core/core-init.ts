@@ -43,6 +43,7 @@ export const generateHwIdentifier = async (core: ONECore, organisationId: string
       },
       name: HW_DID_NAME_PREFIX,
       organisationId,
+      trustInformation: [],
     });
   }
 
@@ -74,6 +75,7 @@ export const generateSwIdentifier = async (core: ONECore, organisationId: string
     },
     name: SW_DID_NAME_PREFIX,
     organisationId,
+    trustInformation: [],
   });
 };
 
@@ -87,10 +89,7 @@ export interface IdentifiersInitializationConfig {
  * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be created
  * @returns [hwIdentifierId, swIdentifierId]
  */
-export const useInitializeONECoreIdentifiers = ({
-  generateHwKey,
-  generateSwKey,
-}: IdentifiersInitializationConfig) => {
+export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
   const { core, organisationId } = useONECore();
 
   return useCallback(async () => {
