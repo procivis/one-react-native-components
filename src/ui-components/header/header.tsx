@@ -2,11 +2,12 @@ import React, { FC, ReactNode } from 'react';
 import { Insets, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../utils';
-import { BackButton } from '../buttons';
+import { BackButton, BackButtonIcon } from '../buttons';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
 export interface HeaderProps extends ViewProps {
+  backIcon?: BackButtonIcon;
   onBack?: () => void;
   rightButtons?: ReactNode[];
   style?: StyleProp<ViewStyle>;
@@ -22,14 +23,19 @@ const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
  * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624
  * states (Default + Dashboard)
  */
-const Header: FC<HeaderProps> = ({ onBack, rightButtons, style, titleRowStyle, testID, title, ...viewProps }) => {
+const Header: FC<HeaderProps> = ({ backIcon, onBack, rightButtons, style, titleRowStyle, testID, title, ...viewProps }) => {
   const colorScheme = useAppColorScheme();
 
   return (
     <View style={[styles.container, style]} testID={testID} {...viewProps}>
       {onBack && (
         <View style={styles.backButtonRow}>
-          <BackButton hitSlop={backButtonHitSlop} onPress={onBack} testID={concatTestID(testID, 'back')} />
+          <BackButton
+            hitSlop={backButtonHitSlop}
+            icon={backIcon}
+            onPress={onBack}
+            testID={concatTestID(testID, 'back')}
+          />
           <View />
           {rightButtons}
         </View>
