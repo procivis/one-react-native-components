@@ -1,4 +1,5 @@
 export * from './connectivity';
+export * from './contact';
 export * from './credential';
 export * from './entity';
 export * from './history';

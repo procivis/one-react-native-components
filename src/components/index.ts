@@ -4,3 +4,4 @@ export * from './entity';
 export * from './history';
 export * from './navigation';
 export * from './proof-request';
+export * from './trust-info';

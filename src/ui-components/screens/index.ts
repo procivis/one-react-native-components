@@ -10,6 +10,8 @@ import type { ScrollViewScreenProps } from './scroll-view-screen';
 import ScrollViewScreen from './scroll-view-screen';
 import type { SectionListScreenProps } from './section-list-screen';
 import SectionListScreen from './section-list-screen';
+import type { TrustInfoDetailsScreenLabels, TrustInfoDetailsScreenProps } from './trust-info-details-screen';
+import TrustInfoDetailsScreen from './trust-info-details-screen';
 
 export { BackupScreen, BackupScreenMode, BackupScreenProps };
 export { ImagePreviewScreen, ImagePreviewScreenProps };
@@ -17,3 +19,4 @@ export { NerdModeScreen, NerdModeScreenProps, NerdModeSection };
 export { QRCodeScannerScreen, QRCodeScannerScreenProps };
 export { ScrollViewScreen, ScrollViewScreenProps };
 export { SectionListScreen, SectionListScreenProps };
+export { TrustInfoDetailsScreen, TrustInfoDetailsScreenLabels, TrustInfoDetailsScreenProps };

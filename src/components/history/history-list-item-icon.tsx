@@ -60,6 +60,7 @@ const defaultIcons: {
     DELIVERED: HistoryStatusAcceptedIcon,
     WRP_AC_RECEIVED: HistoryStatusAcceptedIcon,
     WRP_RC_RECEIVED: HistoryStatusAcceptedIcon,
+    WRP_NR_RECEIVED: HistoryStatusAcceptedIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,
