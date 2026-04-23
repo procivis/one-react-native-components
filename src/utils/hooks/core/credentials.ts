@@ -7,7 +7,7 @@ import {
   InitiateIssuanceRequest,
   OneError,
 } from '@procivis/react-native-one-core';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQueries, useQuery, useQueryClient } from 'react-query';
 
 import { getQueryKeyFromCredentialListQueryParams } from '../../parsers/query';
 import { useONECore } from './core-context';
@@ -216,5 +216,20 @@ export const useCredentialTrustInformation = (credentialId: string | undefined) 
       enabled: Boolean(credentialId),
       keepPreviousData: true,
     },
+  );
+};
+
+export const useCredentialsTrustInformation = (credentialIds: string[]) => {
+  const { core } = useONECore();
+
+  return useQueries(
+    credentialIds.map((id) => ({
+      keepPreviousData: true,
+      meta: {
+        id,
+      },
+      queryFn: () => core.getCredentialTrustInformation(id),
+      queryKey: [CREDENTIAL_TRUST_INFORMATION_QUERY_KEY, id],
+    })),
   );
 };
