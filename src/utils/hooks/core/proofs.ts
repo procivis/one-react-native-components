@@ -30,6 +30,7 @@ const PAGE_SIZE = 10;
 export const PROOF_DETAIL_QUERY_KEY = 'proof-detail';
 export const PROOF_STATE_QUERY_KEY = 'proof-state';
 export const PROOF_LIST_QUERY_KEY = 'proof-list';
+export const PROOF_REQUEST_TRUST_INFORMATION_QUERY_KEY = 'proof-request-trust-information';
 
 export const useProofDetail = (proofId: string | undefined) => {
   const { core } = useONECore();
@@ -461,6 +462,19 @@ export const useDeleteAllProofsData = (schemaId: string) => {
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
+    },
+  );
+};
+
+export const useProofRequestTrustInformation = (credentialId: string | undefined) => {
+  const { core } = useONECore();
+
+  return useQuery(
+    [PROOF_REQUEST_TRUST_INFORMATION_QUERY_KEY, credentialId],
+    () => (credentialId ? core.getProofTrustInformation(credentialId) : undefined),
+    {
+      enabled: Boolean(credentialId),
+      keepPreviousData: true,
     },
   );
 };

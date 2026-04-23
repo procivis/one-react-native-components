@@ -20,6 +20,7 @@ const PAGE_SIZE = 20;
 export const CREDENTIAL_LIST_QUERY_KEY = 'credential-list';
 export const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
 export const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
+export const CREDENTIAL_TRUST_INFORMATION_QUERY_KEY = 'credential-trust-information';
 
 export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
   const { core, organisationId } = useONECore();
@@ -203,4 +204,17 @@ export const useContinueIssuance = () => {
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
+};
+
+export const useCredentialTrustInformation = (credentialId: string | undefined) => {
+  const { core } = useONECore();
+
+  return useQuery(
+    [CREDENTIAL_TRUST_INFORMATION_QUERY_KEY, credentialId],
+    () => (credentialId ? core.getCredentialTrustInformation(credentialId) : undefined),
+    {
+      enabled: Boolean(credentialId),
+      keepPreviousData: true,
+    },
+  );
 };
