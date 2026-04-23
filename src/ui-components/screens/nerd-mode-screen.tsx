@@ -1,9 +1,10 @@
-import { IdentifierListItem } from '@procivis/react-native-one-core';
-import React, { FunctionComponent, useState } from 'react';
+import { IdentifierListItem, TrustInformationDetail } from '@procivis/react-native-one-core';
+import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { TrustInfo, TrustInfoLabels } from '../../components';
 import EntityDetailsWithButtons, { ContextRole } from '../../components/entity/entity-details-with-buttons';
 import ContrastingStatusBar from '../../utils/contrasting-status-bar';
 import { concatTestID } from '../../utils/testID';
@@ -37,8 +38,11 @@ interface SectionEntityCluster {
   identifier?: IdentifierListItem;
   subline?: string;
   entityLabels: EntityLabels;
+  legacyTrustManagementEnabled: boolean;
   role: ContextRole;
   testID?: string;
+  trustInfoLabels: TrustInfoLabels;
+  trustInformation?: TrustInformationDetail;
 }
 
 type SectionAttribute = Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>;
@@ -55,6 +59,7 @@ export type NerdModeScreenProps = {
   labels: AttributesLabels;
   onClose: () => void;
   onCopyToClipboard: (value: string) => void;
+  onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetail) => void;
   sections: NerdModeSection[];
   testID: string;
   title: string;
@@ -76,6 +81,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
   labels,
   onClose,
   onCopyToClipboard,
+  onOpenTrustInfoDetails,
   entityCluster,
   testID,
   title,
@@ -105,6 +111,58 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     };
   }, {} as Record<string, string>);
 
+  const listHeader = useMemo(() => {
+    if (!entityCluster) {
+      return null;
+    }
+    if (entityCluster.legacyTrustManagementEnabled) {
+      return (
+        <EntityDetailsWithButtons
+          {...entityCluster}
+          entityType={EntityType.ProofEntity}
+          entityLabels={entityCluster.entityLabels}
+          attributesLabels={labels}
+          style={[
+            styles.entityCluster,
+            {
+              backgroundColor: colorScheme.nerdView.background,
+            },
+          ]}
+          onCopyToClipboard={onCopyToClipboard}
+          testID={entityCluster.testID ?? concatTestID(testID, 'entityCluster')}
+          textColor={colorScheme.white}
+        />
+      );
+    }
+    return (
+      <TrustInfo
+        labels={entityCluster.trustInfoLabels}
+        onPress={
+          onOpenTrustInfoDetails && entityCluster.trustInformation
+            ? () => onOpenTrustInfoDetails(entityCluster.trustInformation!)
+            : undefined
+        }
+        style={[
+          styles.entityCluster,
+          {
+            backgroundColor: colorScheme.nerdView.background,
+          },
+        ]}
+        testID={entityCluster.testID ?? concatTestID(testID, 'trustInfo')}
+        textColor={colorScheme.white}
+        trustInformation={entityCluster.trustInformation?.eudiEcosystem}
+      />
+    );
+  }, [
+    entityCluster,
+    colorScheme.nerdView.background,
+    colorScheme.white,
+    labels,
+    onCopyToClipboard,
+    onOpenTrustInfoDetails,
+    testID,
+  ]);
+
   return (
     <>
       <ContrastingStatusBar backgroundColor={colorScheme.nerdView.background} />
@@ -122,29 +180,11 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         titleColor={colorScheme.white}
       />
       <AnimatedSectionList
-        ListHeaderComponent={
-          entityCluster ? (
-            <EntityDetailsWithButtons
-              {...entityCluster}
-              entityType={EntityType.ProofEntity}
-              entityLabels={entityCluster.entityLabels}
-              attributesLabels={labels}
-              style={[
-                styles.entityCluster,
-                {
-                  backgroundColor: colorScheme.nerdView.background,
-                },
-              ]}
-              onCopyToClipboard={onCopyToClipboard}
-              testID={entityCluster.testID ?? concatTestID(testID, 'entityCluster')}
-              textColor={colorScheme.white}
-            />
-          ) : null
-        }
+        ListHeaderComponent={listHeader}
         onScroll={onScroll}
         renderItem={({ item, section, index }) => {
           if (isSectionEntityCluster(item)) {
-            return (
+            return item.legacyTrustManagementEnabled ? (
               <EntityDetailsWithButtons
                 {...item}
                 entityType={EntityType.CredentialEntity}
@@ -159,6 +199,24 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 onCopyToClipboard={onCopyToClipboard}
                 testID={item.testID ?? concatTestID(testID, 'sectionEntityCluster', index.toString())}
                 textColor={colorScheme.white}
+              />
+            ) : (
+              <TrustInfo
+                labels={item.trustInfoLabels}
+                onPress={
+                  onOpenTrustInfoDetails && item.trustInformation
+                    ? () => onOpenTrustInfoDetails(item.trustInformation!)
+                    : undefined
+                }
+                style={[
+                  styles.entityCluster,
+                  {
+                    backgroundColor: colorScheme.nerdView.background,
+                  },
+                ]}
+                testID={item.testID ?? concatTestID(testID, 'trustInfo')}
+                textColor={colorScheme.white}
+                trustInformation={item.trustInformation?.eudiEcosystem}
               />
             );
           } else {

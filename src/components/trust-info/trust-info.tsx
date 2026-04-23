@@ -60,7 +60,7 @@ const TrustInfo: FC<TrustInfoProps> = ({
         testID={testID}
         textColor={textColor}
       />
-      {onPress && trustInformation && <UpIcon style={styles.chevron} />}
+      {onPress && trustInformation && <UpIcon color={textColor} style={styles.chevron} />}
     </TouchableOpacity>
   );
 };
