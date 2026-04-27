@@ -23,7 +23,16 @@ const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
  * Following the design: https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624
  * states (Default + Dashboard)
  */
-const Header: FC<HeaderProps> = ({ backIcon, onBack, rightButtons, style, titleRowStyle, testID, title, ...viewProps }) => {
+const Header: FC<HeaderProps> = ({
+  backIcon,
+  onBack,
+  rightButtons,
+  style,
+  titleRowStyle,
+  testID,
+  title,
+  ...viewProps
+}) => {
   const colorScheme = useAppColorScheme();
 
   return (

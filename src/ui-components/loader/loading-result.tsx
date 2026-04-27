@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { concatTestID } from '../../utils';
 import { Button, ButtonProps } from '../buttons/button';
 import ShareButton, { ShareButtonProps } from '../buttons/share-button';
 import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
@@ -53,7 +54,12 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
       </View>
       <View style={styles.loaderWrapper}>
         <LoaderView {...loaderProps} />
-        <Typography align="center" color={colorScheme.text} preset="regular" style={styles.label}>
+        <Typography
+          testID={concatTestID(viewProps.testID, 'label')}
+          align="center"
+          color={colorScheme.text}
+          preset="regular"
+          style={styles.label}>
           {label}
         </Typography>
       </View>

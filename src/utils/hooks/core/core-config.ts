@@ -1,4 +1,4 @@
-import { ConfigEntities,CoreConfig } from '@procivis/react-native-one-core';
+import { ConfigEntities, CoreConfig } from '@procivis/react-native-one-core';
 import { useQuery } from 'react-query';
 
 import { useONECore } from './core-context';

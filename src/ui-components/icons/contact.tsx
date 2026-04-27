@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Svg, { Path,SvgProps } from 'react-native-svg';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
 export const MailIcon: FC<SvgProps> = ({ color, ...props }) => {
   return (

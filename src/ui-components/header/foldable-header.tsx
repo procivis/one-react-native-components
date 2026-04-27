@@ -53,13 +53,15 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
 
   const scrollHeaderAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> | undefined = playHeaderFoldAnimation
     ? {
-        transform: [{
-          translateY: scrollOffset.interpolate({
-            extrapolate: 'clamp',
-            inputRange: [0, headerHeight],
-            outputRange: [0, -headerHeight],
-          }),
-        }],
+        transform: [
+          {
+            translateY: scrollOffset.interpolate({
+              extrapolate: 'clamp',
+              inputRange: [0, headerHeight],
+              outputRange: [0, -headerHeight],
+            }),
+          },
+        ],
       }
     : undefined;
 
@@ -84,8 +86,7 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
     <Animated.View
       style={[styles.headerContainer, containerPaddingStyle, withNotice ? styles.noticeBorderRadius : undefined]}>
       <Animated.View style={scrollHeaderAnimatedStyle}>
-        <View
-          style={[styles.blurFill, { top: -containerPaddingTop }]}>
+        <View style={[styles.blurFill, { top: -containerPaddingTop }]}>
           <BlurView
             blurStyle={'header'}
             color={colorScheme.background}
