@@ -33,6 +33,7 @@ export type ShareCredentialGroupLabels = ShareCredentialLabels & {
 
 export type ShareCredentialV2GroupProps = {
   labels: ShareCredentialGroupLabels;
+  language: string;
   lastGroup: boolean;
   onGroupSelect?: (selected: boolean) => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
@@ -83,6 +84,7 @@ const heightForNumberOfCards = (numberOfCards: number) => 60 * (numberOfCards + 
 
 export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
   labels,
+  language,
   lastGroup,
   onGroupSelect,
   onImagePreview,
@@ -165,6 +167,7 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
             headerAccessory={headerAccessory}
             key={credentialRequestId}
             labels={labels}
+            language={language}
             lastItem={lastItem}
             onHeaderPress={singleCredentialGroup ? headerPressHandler : onNestedCardHeaderPress(cardId)}
             onImagePreview={onImagePreview}
@@ -181,6 +184,7 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
   }, [
     expandedCredential,
     labels,
+    language,
     lastGroup,
     headerPressHandler,
     onImagePreview,

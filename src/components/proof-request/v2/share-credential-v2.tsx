@@ -20,6 +20,7 @@ export type ShareCredentialV2Props = {
   grouped?: boolean;
   headerAccessory?: React.ComponentType<any> | React.ReactElement;
   labels: ShareCredentialLabels;
+  language: string;
   lastItem?: boolean;
   onHeaderPress?: (_credentialId?: string) => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
@@ -44,6 +45,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
   grouped,
   headerAccessory,
   labels,
+  language,
   lastItem,
   onHeaderPress,
   onImagePreview,
@@ -64,6 +66,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
     () => Dimensions.get('window').width - 32 - (grouped ? GroupedShareCredentialV2Padding * 2 : 0),
     [grouped],
   );
+  const purpose = credentialQuery.type_ === 'APPLICABLE_CREDENTIALS' ? credentialQuery.purpose?.[language] : undefined;
 
   const multipleCredentialsAvailable = Boolean(applicableCredentials?.length && applicableCredentials.length > 1);
 
@@ -152,6 +155,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
     failureHint,
     Boolean(expanded),
     multipleCredentialsAvailable,
+    purpose,
     selectedFields,
     config,
     testID,

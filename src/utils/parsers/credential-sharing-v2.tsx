@@ -15,6 +15,7 @@ import {
   CredentialCardProps,
   CredentialNoticeWarningIcon,
   CredentialWarningIcon,
+  PurposeInfoIcon,
   Selector,
   SelectorStatus,
 } from '../../ui-components';
@@ -158,6 +159,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
   failureHint: CredentialQueryFailureHint | undefined,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
+  purpose: string | undefined,
   selectedFields: string[] | undefined,
   config: CoreConfig,
   testID: string,
@@ -167,13 +169,12 @@ export const shareCredentialCardFromV2PresentationCredential = (
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
     config,
   );
-  const notice: CredentialCardNotice | undefined =
-    selectiveDisclosureSupported === false
-      ? {
-          noticeIcon: CredentialNoticeWarningIcon,
-          text: labels.selectiveDisclosureNotice,
-        }
-      : undefined;
+  const notice: CredentialCardNotice | undefined = purpose
+    ? {
+        noticeIcon: PurposeInfoIcon,
+        text: purpose,
+      }
+    : undefined;
   const cardTestId = concatTestID(testID, 'card');
   const card = credential
     ? validityCheckedCardFromCredential(
@@ -182,6 +183,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
           claims: [],
         },
         expanded,
+        selectiveDisclosureSupported,
         multipleCredentialsAvailable,
         config,
         notice,
@@ -217,7 +219,7 @@ export const selectCredentialCardFromV2Credential = (
     selectiveDisclosureSupported === false
       ? {
           noticeIcon: CredentialNoticeWarningIcon,
-          text: labels.selectiveDisclosureNotice,
+          text: labels.selectiveDisclosure,
         }
       : undefined;
   const { header, ...cardProps } = getCredentialCardPropsFromCredential(

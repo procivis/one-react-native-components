@@ -31,6 +31,7 @@ import {
 export const validityCheckedCardFromCredential = (
   credential: CredentialDetail,
   expanded: boolean,
+  selectiveDisclosureSupported: boolean | undefined,
   multipleCredentialsAvailable: boolean,
   config: CoreConfig,
   notice: CredentialCardNotice | undefined,
@@ -47,7 +48,13 @@ export const validityCheckedCardFromCredential = (
         | 'statusIcon'
       >
     | undefined;
-  if (!expanded && multipleCredentialsAvailable) {
+  if (selectiveDisclosureSupported === false) {
+    credentialHeaderDetail = {
+      credentialDetailPrimary: labels.selectiveDisclosure,
+      credentialDetailTestID: concatTestID(testID, 'header.nonSelectiveDisclosure'),
+      statusIcon: CredentialWarningIcon,
+    };
+  } else if (!expanded && multipleCredentialsAvailable) {
     credentialHeaderDetail = {
       credentialDetailPrimary: labels.multipleCredentials,
       credentialDetailTestID: concatTestID(testID, 'header.multiple'),
@@ -243,7 +250,7 @@ const setStatusForNestedObjectOrArrayFields = (
 };
 
 export type ShareCredentialCardLabels = CardLabels & {
-  selectiveDisclosureNotice: string;
+  selectiveDisclosure: string;
   missingAttribute: string;
   missingCredential: string;
   multipleCredentials: string;
@@ -263,25 +270,19 @@ export const shareCredentialCardFromCredential = (
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
     config,
   );
-  const notice: CredentialCardNotice | undefined =
-    selectiveDisclosureSupported === false
-      ? {
-          text: labels.selectiveDisclosureNotice,
-          noticeIcon: CredentialNoticeWarningIcon,
-        }
-      : undefined;
   const cardTestId = concatTestID(testID, 'card');
   const card = credential
     ? validityCheckedCardFromCredential(
         credential,
         expanded,
+        selectiveDisclosureSupported,
         multipleCredentialsAvailable,
         config,
-        notice,
+        undefined,
         cardTestId,
         labels,
       )
-    : missingCredentialCardFromRequest(request, notice, cardTestId, labels);
+    : missingCredentialCardFromRequest(request, undefined, cardTestId, labels);
   const validityState = getValidityState(credential ? { ...credential, issuer: credential.issuer?.id } : undefined);
   const displayedAttributes = getDisplayedAttributes(
     request,
@@ -348,7 +349,7 @@ export const selectCredentialCardFromCredential = (
   const notice: CredentialCardNotice | undefined =
     selectiveDisclosureSupported === false
       ? {
-          text: labels.selectiveDisclosureNotice,
+          text: labels.selectiveDisclosure,
           noticeIcon: CredentialNoticeWarningIcon,
         }
       : undefined;
