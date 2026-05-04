@@ -61,6 +61,7 @@ const defaultIcons: {
     WRP_AC_RECEIVED: HistoryStatusAcceptedIcon,
     WRP_RC_RECEIVED: HistoryStatusAcceptedIcon,
     WRP_NR_RECEIVED: HistoryStatusAcceptedIcon,
+    TRUST_RESOLVED: HistoryStatusAcceptedIcon,
   },
   entityTypes: {
     BACKUP: HistoryRevokeIcon,

@@ -1,7 +1,7 @@
 import {
+  HolderRegisterWalletUnitRequest,
   HolderWalletUnit,
   HolderWalletUnitUpdateRequest,
-  WalletProvider,
   WalletUnitStatus,
 } from '@procivis/react-native-one-core';
 import { useEffect } from 'react';
@@ -44,11 +44,11 @@ export const useRegisterWalletUnit = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (walletProvider: WalletProvider) =>
+    async (request: Omit<HolderRegisterWalletUnitRequest, 'organisationId' | 'keyType'>) =>
       core.holderRegisterWalletUnit({
         keyType: 'ECDSA',
         organisationId,
-        walletProvider,
+        ...request,
       }),
 
     {
