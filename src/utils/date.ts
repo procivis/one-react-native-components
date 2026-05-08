@@ -7,10 +7,11 @@ const MINUTE = 60 * 1000;
 const DAY = 24 * 60 * MINUTE;
 
 // OS locale
-const systemLocale: string | undefined = I18nManager.getConstants()
-  .localeIdentifier?.replace(/_/g, '-')
-  .split(/[#@]/)[0]
-  .replace(/-$/, '');
+const systemLocale: string | undefined = (
+  Platform.OS === 'ios' ? Settings.get('AppleLocale') : I18nManager.getConstants().localeIdentifier
+)
+  ?.match(/[a-zA-Z]+_[a-zA-Z]+/)[0]
+  ?.replaceAll('_', '-');
 
 /**
  * Date only format
@@ -136,18 +137,10 @@ export const formatDateOnlyFromUTCTimestamp = (utcTimestamp: number): string => 
   );
 };
 
-const locale = (
-  Platform.OS === 'ios'
-    ? Settings.get('AppleLocale')
-    : I18nManager.getConstants().localeIdentifier
-)
-  ?.split('@')[0]
-  .replace('_', '-');
-
 export const formatDateTimeLocalized = (date: Date) => {
-  return formatDateTime(date, locale);
+  return formatDateTime(date, systemLocale);
 };
 
 export const formatDateLocalized = (date: Date) => {
-  return formatDate(date, locale);
+  return formatDate(date, systemLocale);
 };
