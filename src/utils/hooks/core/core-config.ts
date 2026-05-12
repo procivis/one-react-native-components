@@ -25,8 +25,3 @@ export const getEnabledExchangeProtocols = (exchangeProtocol: ConfigEntities<any
     .map((exchange) => exchange.type);
 };
 
-export const getEnabledTrustManagement = (config: CoreConfig): string[] => {
-  return Object.values(config?.trustManagement ?? {})
-    .filter((t) => t.enabled !== false)
-    .map((trustManagement) => trustManagement.type);
-};

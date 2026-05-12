@@ -2,7 +2,7 @@ import { HistoryAction, HistoryEntityType, HistoryListItem } from '@procivis/rea
 import React, { FC, useCallback, useMemo } from 'react';
 
 import { HistoryItemView } from '../../ui-components';
-import { formatTime, useTrustEntity } from '../../utils';
+import { formatTime } from '../../utils';
 import { HistoryListItemIcon } from './history-list-item-icon';
 
 export type HistoryListItemLabels = {
@@ -13,7 +13,7 @@ export type HistoryListItemLabels = {
 export interface HistoryListItemViewProps {
   dateFormatter?: (date: Date) => string;
   first?: boolean;
-  infoLabelMode?: 'entity' | 'associatedLabel' | 'none';
+  infoLabelMode?: 'associatedLabel' | 'none';
   item: HistoryListItem;
   labels: HistoryListItemLabels;
   last?: boolean;
@@ -24,28 +24,23 @@ export interface HistoryListItemViewProps {
 export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
   dateFormatter = formatTime,
   first,
-  infoLabelMode = 'entity',
+  infoLabelMode = 'associatedLabel',
   item,
   labels,
   last,
   onPress,
   testID,
 }) => {
-  const identifierId = infoLabelMode === 'entity' ? item.target : undefined;
-  const { data: trustEntity } = useTrustEntity(identifierId);
-
   const label = `${labels.entityTypes[item.entityType]} ${labels.actions[item.action]}`;
 
   const info = useMemo(() => {
     switch (infoLabelMode) {
-      case 'entity':
-        return trustEntity?.name;
       case 'associatedLabel':
         return item.name;
       case 'none':
         return undefined;
     }
-  }, [infoLabelMode, item, trustEntity]);
+  }, [infoLabelMode, item]);
 
   const icon = <HistoryListItemIcon item={item} />;
 

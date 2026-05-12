@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, ReactElement, useEffect, useMemo } from 'react';
 import { ColorValue, Dimensions, ImageSourcePropType, StyleSheet, View } from 'react-native';
 
-import { CredentialDetails, CredentialDetailsProps, EntityDetails, EntityDetailsProps } from '../../components';
+import { CredentialDetails, CredentialDetailsProps, TrustInfo, TrustInfoProps } from '../../components';
 import { HeaderInfoButton } from '../../components/navigation/header-buttons';
 import { CardLabels, concatTestID, useCredentialListExpandedCard } from '../../utils';
 import { TouchableOpacity } from '../accessibility';
@@ -59,7 +59,7 @@ export type HistoryDetailsViewProps = {
   data: {
     header?:
       | {
-          entity: EntityDetailsProps;
+          entity: TrustInfoProps;
         }
       | {
           credentialHeader: CredentialHeaderProps;
@@ -141,9 +141,9 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
       testID={testID}>
       <View style={[styles.section, { backgroundColor: colorScheme.white }]}>
         {data.header && 'entity' in data.header && (
-          <EntityDetails
+          <TrustInfo
             {...data.header.entity}
-            style={[styles.entity, { borderColor: colorScheme.background }, data.header.entity.style]}
+            style={[styles.entity, { borderBottomColor: colorScheme.background }, data.header.entity.style]}
           />
         )}
         {data.header && 'credentialHeader' in data.header && (

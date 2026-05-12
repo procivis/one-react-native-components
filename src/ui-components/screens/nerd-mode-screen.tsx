@@ -5,7 +5,6 @@ import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TrustInfo, TrustInfoLabels } from '../../components';
-import EntityDetailsWithButtons, { ContextRole } from '../../components/entity/entity-details-with-buttons';
 import ContrastingStatusBar from '../../utils/contrasting-status-bar';
 import { concatTestID } from '../../utils/testID';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
@@ -15,15 +14,6 @@ import { CloseIcon } from '../icons/icons';
 import NerdModeItem, { NerdModeItemProps } from '../nerd-view/nerd-mode-item';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
-
-export interface EntityLabels {
-  trusted: string;
-  unknownIssuer: string;
-  unknownVerifier: string;
-  visitWebsite: string;
-  termsAndServices: string;
-  privacyPolicy: string;
-}
 
 export interface AttributesLabels {
   trustRegistry: string;
@@ -37,9 +27,6 @@ export interface AttributesLabels {
 interface SectionEntityCluster {
   identifier?: IdentifierListItem;
   subline?: string;
-  entityLabels: EntityLabels;
-  legacyTrustManagementEnabled: boolean;
-  role: ContextRole;
   testID?: string;
   trustInfoLabels: TrustInfoLabels;
   trustInformation?: TrustInformationDetail;
@@ -115,25 +102,6 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     if (!entityCluster) {
       return null;
     }
-    if (entityCluster.legacyTrustManagementEnabled) {
-      return (
-        <EntityDetailsWithButtons
-          {...entityCluster}
-          entityType={EntityType.ProofEntity}
-          entityLabels={entityCluster.entityLabels}
-          attributesLabels={labels}
-          style={[
-            styles.entityCluster,
-            {
-              backgroundColor: colorScheme.nerdView.background,
-            },
-          ]}
-          onCopyToClipboard={onCopyToClipboard}
-          testID={entityCluster.testID ?? concatTestID(testID, 'entityCluster')}
-          textColor={colorScheme.white}
-        />
-      );
-    }
     return (
       <TrustInfo
         labels={entityCluster.trustInfoLabels}
@@ -157,8 +125,6 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     entityCluster,
     colorScheme.nerdView.background,
     colorScheme.white,
-    labels,
-    onCopyToClipboard,
     onOpenTrustInfoDetails,
     testID,
   ]);
@@ -184,23 +150,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         onScroll={onScroll}
         renderItem={({ item, section, index }) => {
           if (isSectionEntityCluster(item)) {
-            return item.legacyTrustManagementEnabled ? (
-              <EntityDetailsWithButtons
-                {...item}
-                entityType={EntityType.CredentialEntity}
-                entityLabels={item!.entityLabels}
-                attributesLabels={labels}
-                style={[
-                  styles.entityCluster,
-                  {
-                    backgroundColor: colorScheme.nerdView.background,
-                  },
-                ]}
-                onCopyToClipboard={onCopyToClipboard}
-                testID={item.testID ?? concatTestID(testID, 'sectionEntityCluster', index.toString())}
-                textColor={colorScheme.white}
-              />
-            ) : (
+            return (
               <TrustInfo
                 labels={item.trustInfoLabels}
                 onPress={

@@ -74,8 +74,6 @@ const defaultIcons: {
     ORGANISATION: HistoryOrganisationIcon,
     PROOF: HistoryProofRequestIcon,
     PROOF_SCHEMA: HistorySchemaIcon,
-    TRUST_ANCHOR: HistoryTrustAnchorIcon,
-    TRUST_ENTITY: HistoryTrustedEntityIcon,
     WALLET_UNIT: HistoryTrustedEntityIcon,
     WALLET_RELYING_PARTY: HistoryTrustedEntityIcon,
     USER: HistoryIdentifierIcon,
