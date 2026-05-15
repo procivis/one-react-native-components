@@ -148,7 +148,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
       <AnimatedSectionList
         ListHeaderComponent={listHeader}
         onScroll={onScroll}
-        renderItem={({ item, section, index }) => {
+        renderItem={({ item, section }) => {
           if (isSectionEntityCluster(item)) {
             return (
               <TrustInfo
