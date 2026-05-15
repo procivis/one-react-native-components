@@ -48,6 +48,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const cardHeight = Math.ceil(card.width / CredentialCardRatio);
   const currentHeight = useSharedValue<number | undefined>(undefined);
+  const [animatedHeightSet, setAnimatedHeightSet] = useState(false);
 
   const previewAttributes = attributes ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT) : [];
   const extraAttributes = useMemo(() => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []), [attributes]);
@@ -76,6 +77,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     const additionalHeight = allAttributesRendered ? additionalAttributesHeight : buttonViewHeight;
     const fullHeight = previewAttributesHeight + additionalHeight;
 
+    setAnimatedHeightSet(true);
     if (!animate) {
       currentHeight.value = fullHeight;
       return;
@@ -139,8 +141,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const { header, ...cardProps } = card;
 
-  const renderExtraAttributes =
-    allAttributesRendered || (previewAttributesHeight !== undefined && currentHeight.value !== undefined);
+  const renderExtraAttributes = allAttributesRendered || (previewAttributesHeight !== undefined && animatedHeightSet);
 
   const ContainerComponent = animate ? Animated.View : View;
   return (
