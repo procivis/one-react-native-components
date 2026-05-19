@@ -170,6 +170,19 @@ export const useCredentialDelete = () => {
   });
 };
 
+export const useCredentialRefresh = () => {
+  const queryClient = useQueryClient();
+  const { core } = useONECore();
+
+  return useMutation(async (interactionId: string) => core.holderRefreshCredential(interactionId), {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+      await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
+      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+    },
+  });
+};
+
 export const useInvalidateCredentialDetails = () => {
   const queryClient = useQueryClient();
 
