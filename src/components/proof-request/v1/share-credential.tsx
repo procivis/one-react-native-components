@@ -31,6 +31,7 @@ export const ShareCredential: FunctionComponent<{
   allCredentials: CredentialDetail[];
   expanded?: boolean;
   labels: ShareCredentialLabels;
+  language?: string;
   lastItem?: boolean;
   onHeaderPress?: (_credentialId?: string) => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
@@ -45,6 +46,7 @@ export const ShareCredential: FunctionComponent<{
   allCredentials,
   expanded,
   labels,
+  language,
   lastItem,
   onHeaderPress,
   onImagePreview,
@@ -125,6 +127,7 @@ export const ShareCredential: FunctionComponent<{
     config,
     testID,
     labels,
+    language,
   );
 
   return (

@@ -9,13 +9,14 @@ import { selectCredentialCardFromV2Credential } from '../../../utils/parsers/cre
 export const SelectCredentialV2: FC<{
   credential: PresentationDefinitionV2Credential;
   labels: ShareCredentialCardLabels;
+  language?: string;
   lastItem: boolean;
   multiple: boolean;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
   onSelected?: (credentialId: CredentialListItem['id'], selected: boolean) => void;
   selected: boolean;
   testID: string;
-}> = ({ credential, labels, lastItem, multiple, onImagePreview, onSelected, selected, testID }) => {
+}> = ({ credential, labels, language, lastItem, multiple, onImagePreview, onSelected, selected, testID }) => {
   const { data: config } = useCoreConfig();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
@@ -34,6 +35,7 @@ export const SelectCredentialV2: FC<{
     config,
     testID,
     labels,
+    language,
   );
 
   return (

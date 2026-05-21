@@ -73,6 +73,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
   parentUserSelected: boolean,
   config: CoreConfig,
   testID: string,
+  language: string | undefined,
   nested?: boolean,
   listValue?: boolean,
 ): CredentialAttribute => {
@@ -83,7 +84,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
   const status = selection
     ? getAttributeSelectorStatus(claim, attributeShared, parentUserSelected || (attributeShared && !userSelected))
     : undefined;
-  const attribute = detailsCardAttributeFromClaim(v2PresentationClaimToClaim(claim), config, testID);
+  const attribute = detailsCardAttributeFromClaim(v2PresentationClaimToClaim(claim), config, testID, language);
   const disabledStatus = [SelectorStatus.Disabled, SelectorStatus.Rejected, SelectorStatus.Required];
   const disabled = attribute.disabled || !status || disabledStatus.includes(status);
   const credentialAttribute: CredentialAttribute = {
@@ -112,6 +113,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
             userSelected,
             config,
             testID,
+            language,
             true,
             false,
           ),
@@ -121,7 +123,16 @@ export const shareCredentialCardAttributeFromV2Claim = (
       return {
         ...credentialAttribute,
         attributes: claim.value.value.map((v) =>
-          shareCredentialCardAttributeFromV2Claim(v, selection, attributeShared, userSelected, config, testID, true),
+          shareCredentialCardAttributeFromV2Claim(
+            v,
+            selection,
+            attributeShared,
+            userSelected,
+            config,
+            testID,
+            language,
+            true,
+          ),
         ),
         image: undefined,
         value: undefined,
@@ -164,6 +175,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
   config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
@@ -189,13 +201,14 @@ export const shareCredentialCardFromV2PresentationCredential = (
         notice,
         cardTestId,
         labels,
+        language,
       )
     : missingCredentialCardFromFailureHint(failureHint, notice, cardTestId, labels);
 
   return {
     attributes:
       credential?.claims.map((v) =>
-        shareCredentialCardAttributeFromV2Claim(v, selectedFields ?? [], true, false, config, testID),
+        shareCredentialCardAttributeFromV2Claim(v, selectedFields ?? [], true, false, config, testID, language),
       ) ?? [],
     card,
   };
@@ -208,6 +221,7 @@ export const selectCredentialCardFromV2Credential = (
   config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
@@ -232,6 +246,7 @@ export const selectCredentialCardFromV2Credential = (
     notice,
     testID,
     labels,
+    language,
   );
   const card = {
     header: {
@@ -243,7 +258,7 @@ export const selectCredentialCardFromV2Credential = (
   return {
     attributes:
       credential?.claims.map((v) =>
-        shareCredentialCardAttributeFromV2Claim(v, undefined, false, false, config, testID),
+        shareCredentialCardAttributeFromV2Claim(v, undefined, false, false, config, testID, language),
       ) ?? [],
     card,
   };

@@ -160,6 +160,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
     config,
     testID,
     labels,
+    language,
   );
 
   if (headerAccessory) {

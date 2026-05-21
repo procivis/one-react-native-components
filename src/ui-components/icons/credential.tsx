@@ -44,7 +44,7 @@ export const CredentialWarningIcon: FC<SvgProps> = ({ ...props }) => (
 );
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=542-90920&m=dev
-export const CredentialNoticInfoIcon: FC<SvgProps> = ({ ...props }) => {
+export const CredentialNoticeInfoIcon: FC<SvgProps> = ({ ...props }) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>

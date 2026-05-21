@@ -14,6 +14,7 @@ export interface CredentialDetailsProps {
   expanded?: boolean;
   headerAccessory?: CredentialHeaderProps['accessory'];
   labels: CardLabels;
+  language?: string;
   lastItem?: boolean;
   onHeaderPress?: (credentialId?: string) => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
@@ -24,6 +25,7 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
   credentialId,
   expanded = false,
   labels,
+  language,
   lastItem,
   onHeaderPress,
   onImagePreview,
@@ -44,6 +46,7 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
     config,
     testID,
     labels,
+    language,
   );
   if (headerAccessory) {
     card.header.accessory = headerAccessory;

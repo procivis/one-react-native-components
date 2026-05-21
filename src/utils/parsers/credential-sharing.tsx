@@ -37,6 +37,7 @@ export const validityCheckedCardFromCredential = (
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
 ): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID' | 'width'> => {
   let credentialHeaderDetail:
     | Pick<
@@ -62,7 +63,15 @@ export const validityCheckedCardFromCredential = (
     };
   }
 
-  const card = getCredentialCardPropsFromCredential(credential, credential.claims, config, notice, testID, labels);
+  const card = getCredentialCardPropsFromCredential(
+    credential,
+    credential.claims,
+    config,
+    notice,
+    testID,
+    labels,
+    language,
+  );
   return {
     ...card,
     header: {
@@ -195,12 +204,13 @@ export const shareCredentialCardAttributeFromClaim = (
   config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
   claim?: FlatClaim,
   field?: PresentationDefinitionField,
 ): CredentialAttribute => {
   if (claim) {
     return {
-      ...detailsCardAttributeFromClaim(claim, config, testID),
+      ...detailsCardAttributeFromClaim(claim, config, testID, language),
       id,
       path: claim.path,
       listValue: claim.isArrayElement,
@@ -265,6 +275,7 @@ export const shareCredentialCardFromCredential = (
   config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
@@ -281,6 +292,7 @@ export const shareCredentialCardFromCredential = (
         undefined,
         cardTestId,
         labels,
+        language,
       )
     : missingCredentialCardFromRequest(request, undefined, cardTestId, labels);
   const validityState = getValidityState(credential ? { ...credential, issuer: credential.issuer?.id } : undefined);
@@ -300,6 +312,7 @@ export const shareCredentialCardFromCredential = (
         config,
         concatTestID(testID, 'attribute', `${index}`),
         labels,
+        language,
         claim,
         field,
       ),
@@ -320,10 +333,11 @@ export const selectCredentialCardAttributeFromClaim = (
   config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
   claim?: FlatClaim,
   field?: PresentationDefinitionField,
 ): CredentialAttribute => {
-  const attribute = shareCredentialCardAttributeFromClaim(id, config, testID, labels, claim, field);
+  const attribute = shareCredentialCardAttributeFromClaim(id, config, testID, labels, language, claim, field);
   if (!claim) {
     return attribute;
   }
@@ -340,6 +354,7 @@ export const selectCredentialCardFromCredential = (
   config: CoreConfig,
   testID: string,
   labels: ShareCredentialCardLabels,
+  language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
     credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
@@ -360,6 +375,7 @@ export const selectCredentialCardFromCredential = (
     notice,
     testID,
     labels,
+    language,
   );
   const card = {
     header: {
@@ -373,7 +389,7 @@ export const selectCredentialCardFromCredential = (
       return path === field.keyMap[credential.id];
     });
 
-    const attribute = selectCredentialCardAttributeFromClaim(field.id, config, testID, labels, claim, field);
+    const attribute = selectCredentialCardAttributeFromClaim(field.id, config, testID, labels, language, claim, field);
     return {
       ...attribute,
       rightAccessory: (

@@ -19,9 +19,15 @@ import {
   CredentialHeaderProps,
 } from '../../ui-components/credential';
 import { CredentialCardNotice } from '../../ui-components/credential/card/credential-card';
-import { CredentialErrorIcon, CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../ui-components/icons';
+import {
+  CredentialErrorIcon,
+  CredentialNoticeInfoIcon,
+  CredentialNoticeWarningIcon,
+  CredentialWarningIcon,
+} from '../../ui-components/icons';
 import { formatDateLocalized, formatDateTimeLocalized } from '../date';
 import { concatTestID } from '../testID';
+import { getTranslatedLabel } from '../translations';
 import { getCarouselImagesFromClaims } from './credential-images';
 
 export enum ValidityState {
@@ -68,8 +74,13 @@ export const findClaimByPath = (path: string | undefined, claims: Claim[]): Clai
   return undefined;
 };
 
-const formatCredentialDetail = (claim: Claim, config: CoreConfig, testID: string): string => {
-  const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID);
+const formatCredentialDetail = (
+  claim: Claim,
+  config: CoreConfig,
+  testID: string,
+  language: string | undefined,
+): string => {
+  const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID, language);
   return attributeValue.value ?? '';
 };
 
@@ -94,6 +105,7 @@ const credentialDetailFromCredential = (
   config: CoreConfig,
   testID: string,
   labels: CardHeaderLabels,
+  language: string | undefined,
 ): {
   credentialDetailPrimary?: string;
   credentialDetailSecondary?: string;
@@ -136,13 +148,13 @@ const credentialDetailFromCredential = (
   const primary = findClaimByPath(layoutProperties?.primaryAttribute, claims);
 
   if (primary) {
-    credentialDetailPrimary = formatCredentialDetail(primary, config, concatTestID(testID, 'primary'));
+    credentialDetailPrimary = formatCredentialDetail(primary, config, concatTestID(testID, 'primary'), language);
   }
 
   const secondary = findClaimByPath(layoutProperties?.secondaryAttribute, claims);
 
   if (secondary) {
-    credentialDetailSecondary = formatCredentialDetail(secondary, config, concatTestID(testID, 'secondary'));
+    credentialDetailSecondary = formatCredentialDetail(secondary, config, concatTestID(testID, 'secondary'), language);
   }
 
   return {
@@ -158,6 +170,7 @@ export const cardHeaderFromCredential = (
   config: CoreConfig,
   testID: string,
   labels: CardHeaderLabels,
+  language: string | undefined,
 ): Omit<CredentialHeaderProps, 'style'> => {
   const {
     credentialDetailPrimary,
@@ -165,8 +178,9 @@ export const cardHeaderFromCredential = (
     credentialDetailErrorColor,
     credentialDetailTestID,
     statusIcon,
-  } = credentialDetailFromCredential(credential, claims, config, testID, labels);
+  } = credentialDetailFromCredential(credential, claims, config, testID, labels, language);
   const { layoutProperties } = credential.schema;
+  const defaultLanguage = config.defaultLanguage;
 
   return {
     color: layoutProperties?.logo?.backgroundColor,
@@ -174,7 +188,8 @@ export const cardHeaderFromCredential = (
     credentialDetailPrimary,
     credentialDetailSecondary,
     credentialDetailTestID,
-    credentialName: credential.schema.name,
+    credentialName:
+      getTranslatedLabel(credential.schema.translations?.name, language, defaultLanguage) ?? credential.schema.name,
     icon: layoutProperties?.logo?.image
       ? {
           imageSource: {
@@ -199,14 +214,24 @@ export const getCredentialCardPropsFromCredential = (
   notice: CredentialCardNotice | undefined,
   testID: string,
   labels: CardLabels,
+  language: string | undefined,
 ): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> => {
   const { layoutProperties } = credential.schema;
+  const defaultLanguage = config.defaultLanguage;
 
   if (hasMsoValidityIssues(credential)) {
     notice = {
       text: labels.validityIssuesNotice,
       noticeIcon: CredentialNoticeWarningIcon,
     };
+  } else if (!notice) {
+    let description = getTranslatedLabel(credential.schema.translations?.description, language, defaultLanguage);
+    if (description) {
+      notice = {
+        text: description,
+        noticeIcon: CredentialNoticeInfoIcon,
+      };
+    }
   }
 
   const result: Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> = {
@@ -215,7 +240,7 @@ export const getCredentialCardPropsFromCredential = (
       ? { imageSource: { uri: layoutProperties.background.image } }
       : undefined,
     color: layoutProperties?.background?.color,
-    header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels),
+    header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels, language),
     testID,
     notice,
   };
@@ -227,11 +252,13 @@ export const detailsCardAttributeFromClaim = (
   claim: Claim,
   config: CoreConfig,
   testID: string,
+  language: string | undefined,
 ): CredentialAttribute => {
-  const value = detailsCardAttributeValueFromClaim(claim, config, testID);
+  const value = detailsCardAttributeValueFromClaim(claim, config, testID, language);
+  const defaultLanguage = config.defaultLanguage;
   return {
     id: claim.path,
-    name: claim.path.split('/').pop(),
+    name: getTranslatedLabel(claim.schema.translations.name, language, defaultLanguage) ?? claim.path.split('/').pop(),
     path: claim.path,
     ...value,
   };
@@ -241,13 +268,14 @@ const detailsCardAttributeValueFromClaim = (
   claim: Claim,
   config: CoreConfig,
   testID: string,
+  language: string | undefined,
 ): CredentialAttributeValue => {
   const typeConfig = config?.datatype[claim.schema.datatype];
 
   if (claim.schema.array) {
     return {
       values: ((claim.value.value as Claim[]) || []).map((arrayValue, index) => {
-        return detailsCardAttributeFromClaim(arrayValue, config, concatTestID(testID, index.toString()));
+        return detailsCardAttributeFromClaim(arrayValue, config, concatTestID(testID, index.toString()), language);
       }),
     };
   } else {
@@ -258,7 +286,7 @@ const detailsCardAttributeValueFromClaim = (
         }
         return {
           attributes: claim.value.value.map((nestedClaim, index) =>
-            detailsCardAttributeFromClaim(nestedClaim, config, concatTestID(testID, index.toString())),
+            detailsCardAttributeFromClaim(nestedClaim, config, concatTestID(testID, index.toString()), language),
           ),
         };
       }
@@ -296,8 +324,9 @@ export const detailsCardFromCredential = (
   config: CoreConfig,
   testID: string,
   labels: CardLabels,
+  language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
-  return detailsCardFromCredentialWithClaims(credential, credential.claims, config, testID, labels);
+  return detailsCardFromCredentialWithClaims(credential, credential.claims, config, testID, labels, language);
 };
 
 export const detailsCardFromCredentialWithClaims = (
@@ -306,9 +335,10 @@ export const detailsCardFromCredentialWithClaims = (
   config: CoreConfig,
   testID: string,
   labels: CardLabels,
+  language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const attributes: CredentialAttribute[] = claims.map((claim, index) =>
-    detailsCardAttributeFromClaim(claim, config, concatTestID(testID, 'attribute', index.toString())),
+    detailsCardAttributeFromClaim(claim, config, concatTestID(testID, 'attribute', index.toString()), language),
   );
 
   const card = getCredentialCardPropsFromCredential(
@@ -318,6 +348,7 @@ export const detailsCardFromCredentialWithClaims = (
     undefined,
     concatTestID(testID, 'card'),
     labels,
+    language,
   );
 
   return {

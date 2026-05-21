@@ -13,13 +13,14 @@ import {
 export const SelectCredential: FC<{
   credentialId: string;
   labels: ShareCredentialCardLabels;
+  language?: string;
   lastItem: boolean;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
   onPress?: () => void;
   request: PresentationDefinitionRequestedCredential;
   selected: boolean;
   testID: string;
-}> = ({ credentialId, labels, lastItem, onImagePreview, onPress, request, selected, testID }) => {
+}> = ({ credentialId, labels, language, lastItem, onImagePreview, onPress, request, selected, testID }) => {
   const { data: credential } = useCredentialDetail(credentialId);
   const { data: config } = useCoreConfig();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
@@ -35,6 +36,7 @@ export const SelectCredential: FC<{
     config,
     testID,
     labels,
+    language,
   );
 
   return (
