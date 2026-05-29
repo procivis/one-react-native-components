@@ -143,3 +143,9 @@ export enum WalletUnitStatus {
 }
 
 export const initializeCore = fn;
+
+export enum CredentialType {
+  SINGLE = 'SINGLE',
+  BATCH_PARENT = 'BATCH_PARENT',
+  BATCH_ITEM = 'BATCH_ITEM',
+}
