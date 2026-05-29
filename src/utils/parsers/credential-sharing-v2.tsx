@@ -3,6 +3,7 @@ import {
   ClaimValue,
   CoreConfig,
   CredentialQueryFailureHint,
+  CredentialType,
   PresentationDefinitionV2Claim,
   PresentationDefinitionV2ClaimValue,
   PresentationDefinitionV2Credential,
@@ -178,7 +179,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
+    credential ? { ...credential, issuer: credential.issuer?.id, type: CredentialType.SINGLE } : undefined,
     config,
   );
   const notice: CredentialCardNotice | undefined = purpose
@@ -193,6 +194,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
         {
           ...credential,
           claims: [],
+          type: CredentialType.SINGLE,
         },
         expanded,
         selectiveDisclosureSupported,
@@ -224,7 +226,7 @@ export const selectCredentialCardFromV2Credential = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
+    credential ? { ...credential, issuer: credential.issuer?.id, type: CredentialType.SINGLE } : undefined,
     config,
   );
   const selectedStatus = multiple ? SelectorStatus.SelectedCheckmark : SelectorStatus.SelectedRadio;
@@ -240,6 +242,7 @@ export const selectCredentialCardFromV2Credential = (
     {
       ...credential,
       claims: credential.claims.map(v2PresentationClaimToClaim),
+      type: CredentialType.SINGLE,
     },
     credential.claims.map(v2PresentationClaimToClaim),
     config,

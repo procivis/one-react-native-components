@@ -1,6 +1,7 @@
 import {
   ApplicableCredentialOrFailureHint,
   CredentialListItem,
+  CredentialType,
   PresentationDefinitionV2Claim,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
@@ -75,6 +76,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
       ? {
           ...credential,
           issuer: credential?.issuer?.id,
+          type: CredentialType.SINGLE,
         }
       : undefined,
   );

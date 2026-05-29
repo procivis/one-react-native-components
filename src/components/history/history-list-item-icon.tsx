@@ -42,6 +42,7 @@ const defaultIcons: {
     OFFERED: HistoryStatusAcceptedIcon,
     PENDING: HistoryStatusAcceptedIcon,
     REJECTED: HistoryStatusErrorIcon,
+    REFRESHED: HistoryStatusAcceptedIcon,
     REMOVED: HistoryStatusDeleteIcon,
     REQUESTED: HistoryStatusAcceptedIcon,
     RESTORED: HistoryStatusAcceptedIcon,

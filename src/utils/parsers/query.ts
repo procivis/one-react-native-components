@@ -47,6 +47,8 @@ export const getQueryKeyFromCredentialListQueryParams = (queryParams: Partial<Cr
     'issuanceDateBefore',
     'revocationDateAfter',
     'revocationDateBefore',
+    'types',
+    'parentId',
   ]);
 };
 
