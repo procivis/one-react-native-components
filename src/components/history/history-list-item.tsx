@@ -1,7 +1,7 @@
 import { HistoryAction, HistoryEntityType, HistoryListItem } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
 
-import { HistoryItemView } from '../../ui-components';
+import { ListItemView } from '../../ui-components';
 import { formatTime } from '../../utils';
 import { HistoryListItemIcon } from './history-list-item-icon';
 
@@ -49,7 +49,8 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
   }, [onPress, item]);
 
   return (
-    <HistoryItemView
+    <ListItemView
+      accessory={dateFormatter(new Date(item.createdDate))}
       first={first}
       icon={icon}
       info={info}
@@ -57,7 +58,6 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
       last={last}
       onPress={pressHandler}
       testID={testID}
-      time={dateFormatter(new Date(item.createdDate)) ?? ''}
     />
   );
 };

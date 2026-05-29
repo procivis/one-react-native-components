@@ -6,7 +6,8 @@ import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers'
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
-export type HistoryItemViewProps = {
+export type ListItemViewProps = {
+  accessory?: string | ComponentType<any> | ReactElement;
   first?: boolean;
   icon: ComponentType<any> | ReactElement;
   info?: string;
@@ -15,21 +16,30 @@ export type HistoryItemViewProps = {
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
-  time: string;
 };
 
-const HistoryItemView: FC<HistoryItemViewProps> = ({
-  first,
-  icon,
-  label,
-  info,
-  last,
-  style,
-  time,
-  onPress,
-  testID,
-}) => {
+const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, info, last, style, onPress, testID }) => {
   const colorScheme = useAppColorScheme();
+
+  const accessoryView: ReactElement | undefined = useMemo(() => {
+    if (typeof accessory === 'string') {
+      return (
+        <Typography
+          color={colorScheme.text}
+          numberOfLines={1}
+          preset="xs/line-height-small"
+          style={styles.time}
+          testID={concatTestID(testID, 'timeLabel')}>
+          {accessory}
+        </Typography>
+      );
+    } else if (React.isValidElement(accessory)) {
+      return accessory;
+    } else if (accessory) {
+      const AccessoryComponent = accessory as ComponentType<any>;
+      return <AccessoryComponent />;
+    }
+  }, [accessory, colorScheme.text, testID]);
 
   const iconView: ReactElement | undefined = useMemo(() => {
     if (React.isValidElement(icon)) {
@@ -45,7 +55,7 @@ const HistoryItemView: FC<HistoryItemViewProps> = ({
       disabled={!onPress}
       onPress={() => onPress?.()}
       style={[
-        styles.historyItemContainer,
+        styles.listItemContainer,
         {
           backgroundColor: colorScheme.white,
         },
@@ -56,7 +66,7 @@ const HistoryItemView: FC<HistoryItemViewProps> = ({
       testID={testID}>
       <View
         style={[
-          styles.historyItemWrapper,
+          styles.listItemWrapper,
           {
             backgroundColor: colorScheme.white,
             borderColor: colorScheme.background,
@@ -84,14 +94,7 @@ const HistoryItemView: FC<HistoryItemViewProps> = ({
             </Typography>
           )}
         </View>
-        <Typography
-          color={colorScheme.text}
-          numberOfLines={1}
-          preset="xs/line-height-small"
-          style={styles.time}
-          testID={concatTestID(testID, 'timeLabel')}>
-          {time}
-        </Typography>
+        {accessoryView}
       </View>
     </TouchableOpacity>
   );
@@ -110,21 +113,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 12,
   },
-  historyItemContainer: {
-    paddingHorizontal: 12,
-  },
-  historyItemWrapper: {
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    paddingVertical: 12,
-  },
   label: {
     marginBottom: 2,
   },
   labelAndInfo: {
     flex: 1,
     marginHorizontal: 12,
+  },
+  listItemContainer: {
+    paddingHorizontal: 12,
+  },
+  listItemWrapper: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    paddingVertical: 12,
   },
   shaded: {
     opacity: 0.7,
@@ -138,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HistoryItemView;
+export default ListItemView;
