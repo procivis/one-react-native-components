@@ -43,12 +43,34 @@ export const useCredentialSchemaPreview = (url: string) => {
         if (!response.ok) {
           throw response.originalError;
         }
-        return response.data as ImportCredentialSchemaRequestSchema;
+        return prepareImportCredentialSchema(response.data);
       }),
     {
       keepPreviousData: true,
     },
   );
+};
+
+const prepareImportCredentialSchema = (data: unknown): ImportCredentialSchemaRequestSchema => {
+  if (!data || typeof data !== 'object') {
+    throw Error('Invalid credential schema data');
+  }
+
+  if ('formats' in data) {
+    // v2 schema: just return
+    return data as ImportCredentialSchemaRequestSchema;
+  }
+
+  // v1 schema: convert format
+  const schema = data as Record<string, any>;
+  const format = schema.format;
+  const schemaId = schema.schemaId;
+  const revocationMethod = schema.revocationMethod;
+  return {
+    ...schema,
+    formats: [{ format, schemaId }],
+    allowRevocation: Boolean(revocationMethod),
+  } as unknown as ImportCredentialSchemaRequestSchema;
 };
 
 export const useCredentialSchemaAccept = () => {
