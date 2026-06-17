@@ -1,4 +1,5 @@
 import {
+  HolderActivateWalletUnitRequest,
   HolderRegisterWalletUnitRequest,
   HolderWalletUnit,
   HolderWalletUnitUpdateRequest,
@@ -49,6 +50,26 @@ export const useRegisterWalletUnit = () => {
         keyType: 'ECDSA',
         organisationId,
         ...request,
+      }),
+
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(WALLET_UNIT_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_UNIT_TRUST_COLLECTIONS_QUERY_KEY);
+      },
+    },
+  );
+};
+
+export const useActivateWalletUnit = () => {
+  const queryClient = useQueryClient();
+  const { core } = useONECore();
+
+  return useMutation(
+    async ({ id, userIdToken }: { id: string; userIdToken: HolderActivateWalletUnitRequest['userIdToken'] }) =>
+      core.holderActivateWalletUnit(id, {
+        keyType: 'ECDSA',
+        userIdToken,
       }),
 
     {
