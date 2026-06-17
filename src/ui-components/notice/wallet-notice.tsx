@@ -45,10 +45,12 @@ const WalletNotice: FunctionComponent<WalletNoticeProps> = ({ accessory, icon, s
   }, [accessory]);
 
   return (
-    <View style={[styles.noticeContainer, style]}>
+    <View style={[styles.noticeContainer, style]} testID={testID}>
       <View style={styles.title}>
         {iconView}
-        <Typography color={colorScheme.white}>{text}</Typography>
+        <Typography color={colorScheme.white} testID={concatTestID(testID, 'label')}>
+          {text}
+        </Typography>
         {accessoryView}
       </View>
       {onClose && (
