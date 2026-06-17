@@ -22,7 +22,7 @@ const SCAN_WIDTH = 104;
 const SCAN_HEIGHT = 80;
 const SIDE_WIDTH = 94;
 const SIDE_HEIGHT = 64;
-const OVERLAP = 30;
+const OVERLAP = 50;
 
 const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
   ({ style, onSignPress, onIssuePress, onScanPress, testID }, ref) => {
@@ -38,8 +38,6 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
 
     return (
       <View style={[styles.wrapper, { bottom: bottomOffset }, style as object]}>
-        <BlurView blurStyle="soft" style={styles.pillBlur} />
-
         <View
           pointerEvents={showLeftButton ? 'auto' : 'none'}
           style={[styles.sideButtonContainer, { opacity: leftButtonOpacity }]}>
@@ -95,15 +93,6 @@ ScanButton.displayName = 'ScanButton';
 export default ScanButton;
 
 const styles = StyleSheet.create({
-  pillBlur: {
-    borderRadius: 32,
-    bottom: 0,
-    left: '50%',
-    marginLeft: -(SIDE_WIDTH * 2 + SCAN_WIDTH - OVERLAP * 2) / 2,
-    position: 'absolute',
-    top: (SCAN_HEIGHT - SIDE_HEIGHT) / 2,
-    width: SIDE_WIDTH * 2 + SCAN_WIDTH - OVERLAP * 2,
-  },
   scanBlurWrapper: {
     borderRadius: 28,
     flex: 1,
@@ -143,6 +132,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     flex: 1,
     justifyContent: 'center',
+    paddingRight: 10,
   },
   sideInnerRight: {
     alignItems: 'center',
@@ -152,6 +142,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 22,
     flex: 1,
     justifyContent: 'center',
+    paddingLeft: 10,
   },
   sideLabel: {
     fontSize: 14,
