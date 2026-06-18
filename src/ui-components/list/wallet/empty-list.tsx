@@ -9,8 +9,8 @@ import { Typography } from '../../text';
 import { useAppColorScheme } from '../../theme';
 
 type WalletEmptyListProps = {
-  onScanPress: () => void;
-  scanButtonTitle: string;
+  onScanPress?: () => void;
+  scanButtonTitle?: string;
   subtitle: string;
   testID: string;
   title: string;
@@ -19,6 +19,7 @@ type WalletEmptyListProps = {
 const WalletEmptyList: FC<WalletEmptyListProps> = ({ onScanPress, scanButtonTitle, subtitle, testID, title }) => {
   const safeAreaInsets = useSafeAreaInsets();
   const colorScheme = useAppColorScheme();
+  const showButton = Boolean(onScanPress && scanButtonTitle);
 
   return (
     <View style={styles.empty}>
@@ -38,12 +39,14 @@ const WalletEmptyList: FC<WalletEmptyListProps> = ({ onScanPress, scanButtonTitl
         {subtitle}
       </Typography>
       <NoCredentialsIcon style={styles.emptyIcon} />
-      <Button
-        onPress={onScanPress}
-        style={[styles.emptyButton, { bottom: Math.max(24, safeAreaInsets.bottom) }]}
-        testID={concatTestID(testID, 'scanQrCode')}
-        title={scanButtonTitle}
-      />
+      {showButton && (
+        <Button
+          onPress={onScanPress}
+          style={[styles.emptyButton, { bottom: Math.max(24, safeAreaInsets.bottom) }]}
+          testID={concatTestID(testID, 'scanQrCode')}
+          title={scanButtonTitle!}
+        />
+      )}
     </View>
   );
 };
