@@ -191,11 +191,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
   const cardTestId = concatTestID(testID, 'card');
   const card = credential
     ? validityCheckedCardFromCredential(
-        {
-          ...credential,
-          claims: [],
-          type: CredentialType.SINGLE,
-        },
+        credential,
         expanded,
         selectiveDisclosureSupported,
         multipleCredentialsAvailable,

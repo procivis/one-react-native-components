@@ -5,8 +5,10 @@ import {
   CredentialListItem,
   CredentialSchemaListItem,
   CredentialState,
+  CredentialType,
   DataType,
   FormatFeature,
+  PresentationDefinitionV2Credential,
 } from '@procivis/react-native-one-core';
 import { FC } from 'react';
 import { SvgProps } from 'react-native-svg';
@@ -447,5 +449,14 @@ export function getCredentialSchemaWithoutImages<T extends CredentialSchemaListI
         image: parseBase64Image(credentialSchema.layoutProperties?.logo?.image),
       },
     },
+  };
+}
+
+export function credentialDetailFromPresentationV2Credential(
+  presentationCredential: CredentialDetail | PresentationDefinitionV2Credential,
+): CredentialDetail {
+  return {
+    type: CredentialType.SINGLE,
+    ...presentationCredential,
   };
 }

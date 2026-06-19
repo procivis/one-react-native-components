@@ -2,8 +2,11 @@ import {
   Claim,
   CoreConfig,
   CredentialDetail,
+  CredentialListItem,
+  CredentialType,
   PresentationDefinitionField,
   PresentationDefinitionRequestedCredential,
+  PresentationDefinitionV2Credential,
 } from '@procivis/react-native-one-core';
 import React from 'react';
 
@@ -19,6 +22,7 @@ import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIc
 import { concatTestID } from '../testID';
 import {
   CardLabels,
+  credentialDetailFromPresentationV2Credential,
   CredentialDetailsCardPropsWithoutWidth,
   detailsCardAttributeFromClaim,
   getCredentialCardPropsFromCredential,
@@ -29,7 +33,7 @@ import {
 } from './credential';
 
 export const validityCheckedCardFromCredential = (
-  credential: CredentialDetail,
+  credential: CredentialDetail | PresentationDefinitionV2Credential,
   expanded: boolean,
   selectiveDisclosureSupported: boolean | undefined,
   multipleCredentialsAvailable: boolean,
@@ -55,6 +59,12 @@ export const validityCheckedCardFromCredential = (
       credentialDetailTestID: concatTestID(testID, 'header.nonSelectiveDisclosure'),
       statusIcon: CredentialWarningIcon,
     };
+  } else if ('embeddedDisclosurePolicyViolation' in credential) {
+    credentialHeaderDetail = {
+      credentialDetailPrimary: labels.disclosurePolicyViolation,
+      credentialDetailTestID: concatTestID(testID, 'header.dislosurePolicyViolation'),
+      statusIcon: CredentialWarningIcon,
+    };
   } else if (!expanded && multipleCredentialsAvailable) {
     credentialHeaderDetail = {
       credentialDetailPrimary: labels.multipleCredentials,
@@ -64,7 +74,7 @@ export const validityCheckedCardFromCredential = (
   }
 
   const card = getCredentialCardPropsFromCredential(
-    credential,
+    credentialDetailFromPresentationV2Credential(credential),
     credential.claims,
     config,
     notice,
@@ -264,10 +274,11 @@ export type ShareCredentialCardLabels = CardLabels & {
   missingAttribute: string;
   missingCredential: string;
   multipleCredentials: string;
+  disclosurePolicyViolation: string;
 };
 
 export const shareCredentialCardFromCredential = (
-  credential: CredentialDetail | undefined,
+  credential: CredentialDetail | PresentationDefinitionV2Credential | undefined,
   expanded: boolean,
   multipleCredentialsAvailable: boolean,
   request: PresentationDefinitionRequestedCredential,
@@ -277,10 +288,10 @@ export const shareCredentialCardFromCredential = (
   labels: ShareCredentialCardLabels,
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
-  const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuer: credential.issuer?.id } : undefined,
-    config,
-  );
+  const credentialAsListItem: CredentialListItem | undefined = credential
+    ? { type: CredentialType.SINGLE, ...credential, issuer: credential.issuer?.id }
+    : undefined;
+  const selectiveDisclosureSupported = supportsSelectiveDisclosure(credentialAsListItem, config);
   const cardTestId = concatTestID(testID, 'card');
   const card = credential
     ? validityCheckedCardFromCredential(
@@ -295,11 +306,11 @@ export const shareCredentialCardFromCredential = (
         language,
       )
     : missingCredentialCardFromRequest(request, undefined, cardTestId, labels);
-  const validityState = getValidityState(credential ? { ...credential, issuer: credential.issuer?.id } : undefined);
+  const validityState = getValidityState(credentialAsListItem);
   const displayedAttributes = getDisplayedAttributes(
     request,
     validityState,
-    credential,
+    credential ? credentialDetailFromPresentationV2Credential(credential) : undefined,
     selectiveDisclosureSupported,
     selectedFields,
   );
