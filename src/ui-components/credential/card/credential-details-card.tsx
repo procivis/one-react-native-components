@@ -18,6 +18,9 @@ export type CredentialDetailsCardProps = ViewProps & {
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   onAttributeSelected?: (id: string, selected: boolean) => void;
   showAllButtonLabel?: string;
+  showLessButtonLabel?: string;
+  moreLabel?: string;
+  lessLabel?: string;
 };
 
 const PREVIEW_ATTRIBUTES_COUNT = 3;
@@ -32,7 +35,10 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   onImagePreview,
   onAttributeSelected,
   style,
-  showAllButtonLabel,
+  showAllButtonLabel = 'Show all',
+  showLessButtonLabel = 'Show less',
+  moreLabel = 'More',
+  lessLabel = 'Less',
   testID,
   ...viewProps
 }) => {
@@ -43,15 +49,14 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const [allAttributesRendered, setAllAttributesRendered] = useState<boolean>(
     (attributes && attributes.length <= PREVIEW_ATTRIBUTES_COUNT) || !showAllButtonLabel,
   );
-
   const CaretIcon = expanded ? UpIcon : DownIcon;
-
   const cardHeight = Math.ceil(card.width / CredentialCardRatio);
   const currentHeight = useSharedValue<number | undefined>(undefined);
   const [animatedHeightSet, setAnimatedHeightSet] = useState(false);
-
   const previewAttributes = attributes ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT) : [];
   const extraAttributes = useMemo(() => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []), [attributes]);
+  const showSeeAllButton = extraAttributes.length > 0;
+  const isExpanded = allAttributesRendered;
 
   useEffect(() => {
     if (extraAttributes.length === 0) {
@@ -72,9 +77,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
       return;
     }
 
-    const buttonViewHeight = !extraAttributes || allAttributesRendered ? 0 : SEE_ALL_BUTTON_HEIGHT;
+    const buttonViewHeight = showSeeAllButton ? SEE_ALL_BUTTON_HEIGHT : 0;
     const additionalAttributesHeight = fullAttributesHeight ?? 0;
-    const additionalHeight = allAttributesRendered ? additionalAttributesHeight : buttonViewHeight;
+    const additionalHeight = allAttributesRendered ? additionalAttributesHeight + buttonViewHeight : buttonViewHeight;
     const fullHeight = previewAttributesHeight + additionalHeight;
 
     setAnimatedHeightSet(true);
@@ -103,6 +108,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     fullAttributesHeight,
     previewAttributes.length,
     previewAttributesHeight,
+    showSeeAllButton,
   ]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -160,39 +166,52 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
             <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
               {previewAttributes.map((attribute, idx) => (
                 <CredentialAttributeItem
+                  moreLabel={moreLabel}
+                  lessLabel={lessLabel}
                   key={attribute.id}
-                  last={!footerView && !extraAttributes.length && idx === previewAttributes.length - 1}
+                  last={!footerView && !showSeeAllButton && idx === previewAttributes.length - 1}
                   testID={concatTestID(testID, 'attribute', idx.toString())}
                   onImagePreview={onImagePreview}
                   onPress={onAttributeSelected}
+                  isExpanded={isExpanded}
                   {...attribute}
                 />
               ))}
             </View>
-            {!allAttributesRendered && extraAttributes.length > 0 && (
-              <View style={styles.buttonWrapper}>
-                <Button
-                  onPress={() => setAllAttributesRendered(true)}
-                  type={ButtonType.Secondary}
-                  testID={concatTestID(testID, 'showAllAttributesButton')}
-                  title={showAllButtonLabel!}
-                />
-              </View>
-            )}
+
             {renderExtraAttributes && (
               <View
-                style={[styles.allAttributesWrapper, footerView && styles.allAttributesWrapperWithFooter]}
+                style={[
+                  styles.allAttributesWrapper,
+                  footerView && styles.allAttributesWrapperWithFooter,
+                  showSeeAllButton && styles.allAttributesWrapperWithButton,
+                  !allAttributesRendered && styles.hidden,
+                ]}
                 onLayout={onFullAttrContentLayout}>
                 {extraAttributes.map((attribute, index, { length }) => (
                   <CredentialAttributeItem
+                    moreLabel={moreLabel}
+                    lessLabel={lessLabel}
                     key={attribute.id}
-                    last={!footerView && index === length - 1}
+                    last={!footerView && !showSeeAllButton && index === length - 1}
                     testID={concatTestID(testID, 'attribute', index.toString())}
                     onImagePreview={onImagePreview}
                     onPress={onAttributeSelected}
+                    isExpanded={isExpanded}
                     {...attribute}
                   />
                 ))}
+              </View>
+            )}
+
+            {showSeeAllButton && (
+              <View style={styles.buttonWrapper}>
+                <Button
+                  onPress={() => setAllAttributesRendered((prev) => !prev)}
+                  type={ButtonType.Secondary}
+                  testID={concatTestID(testID, 'showAllAttributesButton')}
+                  title={isExpanded ? showLessButtonLabel : showAllButtonLabel}
+                />
               </View>
             )}
           </View>
@@ -209,6 +228,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     width: '100%',
   },
+  allAttributesWrapperWithButton: {
+    paddingBottom: 0,
+  },
   allAttributesWrapperWithFooter: {
     paddingBottom: 0,
   },
@@ -218,8 +240,10 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     height: SEE_ALL_BUTTON_HEIGHT,
+    justifyContent: 'flex-end',
     paddingBottom: 12,
     paddingHorizontal: 4,
+    paddingTop: 0,
     width: '100%',
   },
   card: {
@@ -233,6 +257,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginTop: 12,
+  },
+  hidden: {
+    display: 'none',
   },
   previewAttributesWrapper: {
     paddingHorizontal: 4,

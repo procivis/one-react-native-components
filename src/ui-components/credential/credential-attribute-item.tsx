@@ -4,6 +4,7 @@ import { Image, ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle } fr
 import { colorWithAlphaComponent } from '../../utils/color';
 import { concatTestID } from '../../utils/testID';
 import { TouchableHighlight, TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
+import ExpandableTypography from '../text/expandableTypography';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
@@ -109,6 +110,9 @@ export type CredentialAttributeItemProps = CredentialAttribute & {
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   onPress?: (id: string, selected: boolean) => void;
   style?: StyleProp<ViewStyle>;
+  isExpanded?: boolean;
+  moreLabel?: string;
+  lessLabel?: string;
 };
 
 const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
@@ -129,6 +133,9 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   value,
   values,
   valueErrorColor,
+  isExpanded,
+  moreLabel,
+  lessLabel,
 }) => {
   const colorScheme = useAppColorScheme();
 
@@ -214,14 +221,18 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                 </TouchableOpacity>
               )}
               {value && (
-                <Typography
+                <ExpandableTypography
                   color={valueErrorColor ? colorScheme.error : colorScheme.text}
-                  numberOfLines={10}
+                  numberOfLines={3}
+                  ellipsizeMode="tail"
                   preset="s"
+                  hideExpandButton={!isExpanded && !listValue && !nested}
                   style={listValue ? styles.listValue : undefined}
+                  moreLabel={moreLabel}
+                  lessLabel={lessLabel}
                   testID={concatTestID(testID, 'value')}>
                   {value}
-                </Typography>
+                </ExpandableTypography>
               )}
               {isObject &&
                 attributes.map((attribute, index, { length }) => (
@@ -263,6 +274,7 @@ const styles = StyleSheet.create({
   attributeItem: {
     flex: 1,
     paddingLeft: 8,
+    paddingRight: 8,
   },
   attributeItemContainer: {
     marginTop: 2,
