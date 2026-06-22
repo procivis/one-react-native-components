@@ -182,7 +182,7 @@ export const cardHeaderFromCredential = (
     statusIcon,
   } = credentialDetailFromCredential(credential, claims, config, testID, labels, language);
   const { layoutProperties } = credential.schema;
-  const defaultLanguage = config.defaultLanguage;
+  const defaultLanguage = config.globalSettings.defaultLanguage;
 
   return {
     color: layoutProperties?.logo?.backgroundColor,
@@ -219,7 +219,7 @@ export const getCredentialCardPropsFromCredential = (
   language: string | undefined,
 ): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> => {
   const { layoutProperties } = credential.schema;
-  const defaultLanguage = config.defaultLanguage;
+  const defaultLanguage = config.globalSettings.defaultLanguage;
 
   if (hasMsoValidityIssues(credential)) {
     notice = {
@@ -257,7 +257,7 @@ export const detailsCardAttributeFromClaim = (
   language: string | undefined,
 ): CredentialAttribute => {
   const value = detailsCardAttributeValueFromClaim(claim, config, testID, language);
-  const defaultLanguage = config.defaultLanguage;
+  const defaultLanguage = config.globalSettings.defaultLanguage;
   return {
     id: claim.path,
     name: getTranslatedLabel(claim.schema.translations.name, language, defaultLanguage) ?? claim.path.split('/').pop(),
