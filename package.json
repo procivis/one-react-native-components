@@ -72,7 +72,7 @@
     "@react-native/typescript-config": "0.77.1",
     "@react-navigation/native": "^6.0.6",
     "@release-it/conventional-changelog": "^2.0.0",
-    "@sentry/react-native": "^5.24.1",
+    "@sentry/react-native": "^7.8.0",
     "@storybook/addon-actions": "^8.6.7",
     "@storybook/addon-controls": "^8.6.7",
     "@storybook/addon-designs": "^8.2.1",
@@ -292,6 +292,7 @@
   "packageManager": "pnpm@10.5.2",
   "pnpm": {
     "patchedDependencies": {
+      "react-native": "patches/react-native.patch",
       "react-native-web": "patches/react-native-web.patch"
     }
   }

@@ -1256,7 +1256,9 @@ PODS:
     - Yoga
   - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-one-core (1.42873.0):
+  - react-native-nfc-manager (3.16.3):
+    - React-Core
+  - react-native-one-core (1.112373.0):
     - React-Core
   - react-native-picker (5.0.3):
     - React-Core
@@ -1868,7 +1870,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSentry (5.34.0):
+  - RNSentry (7.13.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1889,7 +1891,28 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.37.0)
+    - Sentry/HybridSDK (= 8.58.0)
+    - Yoga
+  - RNShare (12.2.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
     - Yoga
   - RNSVG (15.11.2):
     - DoubleConversion
@@ -1936,7 +1959,7 @@ PODS:
     - Yoga
   - RNSystemtime (1.0.4):
     - React
-  - Sentry/HybridSDK (8.37.0)
+  - Sentry/HybridSDK (8.58.0)
   - SocketRocket (0.7.1)
   - VisionCamera (4.6.4):
     - VisionCamera/Core (= 4.6.4)
@@ -1988,6 +2011,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-nfc-manager (from `../node_modules/react-native-nfc-manager`)
   - "react-native-one-core (from `../node_modules/@procivis/react-native-one-core`)"
   - "react-native-picker (from `../node_modules/@procivis/react-native-picker`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -2028,6 +2052,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
+  - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNSystemtime (from `../node_modules/react-native-system-time`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
@@ -2119,6 +2144,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-nfc-manager:
+    :path: "../node_modules/react-native-nfc-manager"
   react-native-one-core:
     :path: "../node_modules/@procivis/react-native-one-core"
   react-native-picker:
@@ -2199,6 +2226,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSentry:
     :path: "../node_modules/@sentry/react-native"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNSystemtime:
@@ -2213,7 +2242,7 @@ SPEC CHECKSUMS:
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 79c4b7ec726447eec5f8593379466bd9fde1aa14
-  fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
+  fmt: ef0a98103bd75695e5734efe6b9016b2675ffcd5
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: ccc24d29d650ea725d582a9a53d57cd417fbdb53
   lottie-ios: a881093fab623c467d3bce374367755c272bdd59
@@ -2249,7 +2278,8 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: d03753688e2abf135edcd4160ab3ce7526da8b0d
   react-native-blur: 3b7e13f0882ad9af5d7027924f813f037b4b52c3
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
-  react-native-one-core: e73df1d5992ba2f8b57e7db54fe3b4919e7a541d
+  react-native-nfc-manager: 66a00e5ddab9704efebe19d605b1b8afb0bb1bd7
+  react-native-one-core: 19cfdc694aa114917da4194db0d1f56df77cddb6
   react-native-picker: 0ca464c49154538aef350db861bb73e3245f9578
   react-native-safe-area-context: 0f14bce545abcdfbff79ce2e3c78c109f0be283e
   react-native-slider: bb7eb4732940fab78217e1c096bb647d8b0d1cf3
@@ -2286,12 +2316,13 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 357676e1dc19095208c80d4271066c407cd02ed1
   RNDateTimePicker: b49449a7da91211c6fcc60acd346a0ddf0d25256
   RNGestureHandler: 8b1080a6db0be82dbca18550d6212b885bfab6b2
-  RNReanimated: 9a1d086344e3cc8827d5a42fefafc2acc431c6d7
+  RNReanimated: 86aaf0407803b713a7aa47ac086730f409672b91
   RNScreens: b32d0d59b53acb574fa795a9343591ef4e7ab7c2
-  RNSentry: f0b4e85c8c79fc86239f085caaa8d7c50ab169c7
+  RNSentry: 556c7efc2146a82ba947b93dc90369d73a988e6d
+  RNShare: 5c9203066d6787db5fb8b2dc97781fd9e381fbb4
   RNSVG: 877cd57c2db63dc9f1fd1bbb5e95506ccd481df6
   RNSystemtime: 523d06484dee4e0caf04fb71047c377675210a81
-  Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
+  Sentry: d587a8fe91ca13503ecd69a1905f3e8a0fcf61be
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: f56eaedde0d3fa095143b78374d29e89e71735f9
   Yoga: 1fd059161b449018342943b095a6d4e69bcaa719
