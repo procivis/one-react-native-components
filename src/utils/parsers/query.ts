@@ -87,7 +87,6 @@ export const getQueryKeyFromCredentialSchemaListQueryParams = (
     'exact',
     'ids',
     'include',
-    'schemaId',
     'schemaIds',
     'formats',
     'usesBatchIssuance',

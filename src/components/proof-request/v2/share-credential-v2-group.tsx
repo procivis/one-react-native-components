@@ -18,14 +18,21 @@ import {
   UpIcon,
 } from '../../../ui-components';
 import CredentialGroupHeader from '../../../ui-components/credential/group/credential-group-header';
-import { concatTestID, useCredentialListExpandedCard } from '../../../utils';
-import { ShareCredentialLabels } from '../v1/share-credential';
+import { concatTestID, ShareCredentialCardLabels, useCredentialListExpandedCard } from '../../../utils';
 import { GroupedShareCredentialV2Padding, ShareCredentialV2 } from './share-credential-v2';
 
 export type CredentialQuerySelection = Record<
   string,
   PresentationSubmitV2CredentialRequest | PresentationSubmitV2CredentialRequest[]
 >;
+
+export type ShareCredentialLabels = ShareCredentialCardLabels & {
+  invalidCredentialNotice: string;
+  multipleCredentialsNotice: string;
+  multipleCredentialsSelect: string;
+  revokedCredentialNotice: string;
+  suspendedCredentialNotice: string;
+};
 
 export type ShareCredentialGroupLabels = ShareCredentialLabels & {
   groupHeader: string;

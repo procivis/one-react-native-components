@@ -2,6 +2,7 @@ import {
   Claim,
   ClaimValue,
   CoreConfig,
+  CredentialDetail,
   CredentialQueryFailureHint,
   CredentialType,
   PresentationDefinitionV2Claim,
@@ -14,6 +15,7 @@ import {
   CredentialAttribute,
   CredentialCardNotice,
   CredentialCardProps,
+  CredentialHeaderProps,
   CredentialNoticeWarningIcon,
   CredentialWarningIcon,
   PurposeInfoIcon,
@@ -27,7 +29,74 @@ import {
   getCredentialCardPropsFromCredential,
   supportsSelectiveDisclosure,
 } from '.';
-import { ShareCredentialCardLabels, validityCheckedCardFromCredential } from './credential-sharing';
+import { CardLabels, credentialDetailFromPresentationV2Credential } from './credential';
+
+export type ShareCredentialCardLabels = CardLabels & {
+  selectiveDisclosure: string;
+  missingAttribute: string;
+  missingCredential: string;
+  multipleCredentials: string;
+  disclosurePolicyViolation: string;
+};
+
+export const validityCheckedCardFromCredential = (
+  credential: CredentialDetail | PresentationDefinitionV2Credential,
+  expanded: boolean,
+  selectiveDisclosureSupported: boolean | undefined,
+  multipleCredentialsAvailable: boolean,
+  config: CoreConfig,
+  notice: CredentialCardNotice | undefined,
+  testID: string,
+  labels: ShareCredentialCardLabels,
+  language: string | undefined,
+): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID' | 'width'> => {
+  let credentialHeaderDetail:
+    | Pick<
+        CredentialHeaderProps,
+        | 'credentialDetailPrimary'
+        | 'credentialDetailSecondary'
+        | 'credentialDetailErrorColor'
+        | 'credentialDetailTestID'
+        | 'statusIcon'
+      >
+    | undefined;
+  if (selectiveDisclosureSupported === false) {
+    credentialHeaderDetail = {
+      credentialDetailPrimary: labels.selectiveDisclosure,
+      credentialDetailTestID: concatTestID(testID, 'header.nonSelectiveDisclosure'),
+      statusIcon: CredentialWarningIcon,
+    };
+  } else if ('embeddedDisclosurePolicyViolation' in credential) {
+    credentialHeaderDetail = {
+      credentialDetailPrimary: labels.disclosurePolicyViolation,
+      credentialDetailTestID: concatTestID(testID, 'header.dislosurePolicyViolation'),
+      statusIcon: CredentialWarningIcon,
+    };
+  } else if (!expanded && multipleCredentialsAvailable) {
+    credentialHeaderDetail = {
+      credentialDetailPrimary: labels.multipleCredentials,
+      credentialDetailTestID: concatTestID(testID, 'header.multiple'),
+      statusIcon: CredentialWarningIcon,
+    };
+  }
+
+  const card = getCredentialCardPropsFromCredential(
+    credentialDetailFromPresentationV2Credential(credential),
+    credential.claims,
+    config,
+    notice,
+    testID,
+    labels,
+    language,
+  );
+  return {
+    ...card,
+    header: {
+      ...card.header,
+      ...credentialHeaderDetail,
+    },
+  };
+};
 
 const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): ClaimValue => {
   if (value.type_ !== 'NESTED') {

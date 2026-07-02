@@ -6,7 +6,7 @@ import {
   HistoryErrorMetadata,
   IdentifierListQuery,
   OneError,
-  PresentationSubmitCredentialRequest,
+  PresentationSubmitV2CredentialRequest,
   ProofListQuery,
   ProofSchemaDetail,
   ProofState,
@@ -102,9 +102,9 @@ export const useProofAccept = () => {
       interactionId,
       credentials,
     }: {
-      credentials: Record<string, PresentationSubmitCredentialRequest[]>;
+      credentials: Record<string, PresentationSubmitV2CredentialRequest[]>;
       interactionId: string;
-    }) => core.holderSubmitProof(interactionId, credentials),
+    }) => core.holderSubmitProofV2(interactionId, credentials),
     {
       onError: async (err) => {
         reportException(err, 'Proof submission failure');

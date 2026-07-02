@@ -12,7 +12,7 @@ import { concatTestID, getValidityState, useCoreConfig, ValidityState } from '..
 import { shareCredentialCardFromV2PresentationCredential } from '../../../utils/parsers/credential-sharing-v2';
 import { SelectShareCredentialCardNotice } from '../select-share-credential-card-notice';
 import { ShareCredentialCardNotice } from '../share-credential-card-notice';
-import { ShareCredentialLabels } from '../v1';
+import { ShareCredentialLabels } from './share-credential-v2-group';
 
 export type ShareCredentialV2Props = {
   credentialQuery: ApplicableCredentialOrFailureHint;
