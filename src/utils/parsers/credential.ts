@@ -19,6 +19,7 @@ import {
   CredentialCardProps,
   CredentialDetailsCardProps,
   CredentialHeaderProps,
+  CredentialLogoProps,
 } from '../../ui-components/credential';
 import { CredentialCardNotice } from '../../ui-components/credential/card/credential-card';
 import {
@@ -84,6 +85,30 @@ const formatCredentialDetail = (
 ): string => {
   const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID, language);
   return attributeValue.value ?? '';
+};
+
+export const credentialLogoFromCredential = (
+  credential: CredentialDetail,
+  config: CoreConfig,
+  testID: string,
+  language: string | undefined,
+): Omit<CredentialLogoProps, 'size'> => {
+  const { layoutProperties } = credential.schema;
+  const defaultLanguage = config.globalSettings.defaultLanguage;
+  return {
+    color: layoutProperties?.logo?.backgroundColor,
+    credentialName:
+      getTranslatedLabel(credential.schema.translations?.name, language, defaultLanguage) ?? credential.schema.name,
+    icon: layoutProperties?.logo?.image
+      ? {
+          imageSource: {
+            uri: layoutProperties.logo.image,
+          },
+        }
+      : undefined,
+    iconLabelColor: layoutProperties?.logo?.fontColor,
+    testID,
+  };
 };
 
 export const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
@@ -174,6 +199,7 @@ export const cardHeaderFromCredential = (
   labels: CardHeaderLabels,
   language: string | undefined,
 ): Omit<CredentialHeaderProps, 'style'> => {
+  const logoProps = credentialLogoFromCredential(credential, config, '', language);
   const {
     credentialDetailPrimary,
     credentialDetailSecondary,
@@ -181,25 +207,13 @@ export const cardHeaderFromCredential = (
     credentialDetailTestID,
     statusIcon,
   } = credentialDetailFromCredential(credential, claims, config, testID, labels, language);
-  const { layoutProperties } = credential.schema;
-  const defaultLanguage = config.globalSettings.defaultLanguage;
 
   return {
-    color: layoutProperties?.logo?.backgroundColor,
+    ...logoProps,
     credentialDetailErrorColor,
     credentialDetailPrimary,
     credentialDetailSecondary,
     credentialDetailTestID,
-    credentialName:
-      getTranslatedLabel(credential.schema.translations?.name, language, defaultLanguage) ?? credential.schema.name,
-    icon: layoutProperties?.logo?.image
-      ? {
-          imageSource: {
-            uri: layoutProperties.logo.image,
-          },
-        }
-      : undefined,
-    iconLabelColor: layoutProperties?.logo?.fontColor,
     statusIcon,
     testID,
   };

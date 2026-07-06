@@ -3,9 +3,10 @@ import { AccessibilityProps, ColorValue, StyleProp, StyleSheet, View, ViewStyle 
 
 import { concatTestID } from '../../../utils/testID';
 import BlurView from '../../blur/blur-view';
-import ImageOrComponent, { ImageOrComponentSource } from '../../image/image-or-component';
+import { ImageOrComponentSource } from '../../image/image-or-component';
 import Typography, { TypographyProps } from '../../text/typography';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
+import CredentialLogo from './credential-logo';
 
 export interface CredentialHeaderProps extends AccessibilityProps {
   accessory?: React.ComponentType<any> | React.ReactElement;
@@ -104,23 +105,13 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
   return (
     <View style={[styles.container, { backgroundColor: blur ? undefined : colorScheme.white }, style]} testID={testID}>
       {blur && <BlurView blurStyle="strong" style={StyleSheet.absoluteFill} />}
-      <View style={[styles.imageContainer, { backgroundColor: color }]}>
-        {icon ? (
-          <ImageOrComponent testID={concatTestID(testID, 'logoIcon')} source={icon} style={styles.image} />
-        ) : (
-          <View testID={concatTestID(testID, 'logoBackgroundColor', String(color))}>
-            <View testID={concatTestID(testID, 'logoTextColor', String(iconLabelColor))}>
-              <Typography
-                testID={concatTestID(testID, 'logoName')}
-                color={iconLabelColor}
-                preset="m"
-                style={styles.imagePlaceholder}>
-                {credentialName.substring(0, 1)}
-              </Typography>
-            </View>
-          </View>
-        )}
-      </View>
+      <CredentialLogo
+        color={color}
+        icon={icon}
+        iconLabelColor={iconLabelColor}
+        credentialName={credentialName}
+        testID={concatTestID(testID, 'logo')}
+      />
       {statusIconView && <View style={styles.statusIconWrapper}>{statusIconView}</View>}
       <View style={styles.text}>
         <Typography
@@ -159,25 +150,6 @@ const styles = StyleSheet.create({
   detailTextContainer: {
     flexDirection: 'row',
     marginTop: -1,
-  },
-  image: {
-    height: 44,
-    width: 44,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 0,
-    height: 44,
-    justifyContent: 'center',
-    marginRight: 8,
-    overflow: 'hidden',
-    width: 44,
-  },
-  imagePlaceholder: {
-    paddingLeft: 1,
-    paddingTop: 3,
-    textTransform: 'uppercase',
   },
   interpunct: {
     marginHorizontal: 12,
