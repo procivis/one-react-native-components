@@ -138,15 +138,18 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
           ? {
               credentialId: credentialQuery.applicableCredentials[0].id,
               userSelections: [],
+              transactionDataIds: [],
             }
           : {
               credentialId: '',
               userSelections: [],
+              transactionDataIds: [],
             };
       } else {
         defaultSelection = {
           credentialId: '',
           userSelections: [],
+          transactionDataIds: [],
         };
       }
       const request = selectedCredentials[credentialRequestId];

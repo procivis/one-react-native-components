@@ -71,6 +71,7 @@ export const getQueryKeyFromHistoryListQueryParams = (queryParams: Partial<Histo
     'proofSchemaId',
     'search',
     'users',
+    'trustCollectionId',
   ]);
 };
 
