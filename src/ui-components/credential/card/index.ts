@@ -8,7 +8,7 @@ import type { CredentialHeaderProps } from './credential-header';
 import CredentialHeader from './credential-header';
 import type { CarouselImage } from './credential-image-carousel';
 import { CarouselImageType } from './credential-image-carousel';
-import type { CredentialLogoProps } from './credential-logo';
+import type { CredentialLogoProps, CredentialLogoSize } from './credential-logo';
 import CredentialLogo from './credential-logo';
 
 export { CarouselImage, CarouselImageType };
@@ -16,4 +16,4 @@ export { CredentialCard, CredentialCardNotice, CredentialCardProps, CredentialCa
 export { CredentialDetailsCard, CredentialDetailsCardProps };
 export { CredentialDetailsCardListItem, CredentialDetailsCardListItemProps };
 export { CredentialHeader, CredentialHeaderProps };
-export { CredentialLogo, CredentialLogoProps };
+export { CredentialLogo, CredentialLogoProps, CredentialLogoSize };
