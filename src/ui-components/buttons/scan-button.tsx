@@ -8,7 +8,13 @@ import BlurView from '../blur/blur-view';
 import { IssueIcon, ScanIcon, SignIcon } from '../icons';
 import { useAppColorScheme } from '../theme';
 
+export type ScanButtonLabels = {
+  sign: string;
+  issue: string;
+};
+
 export type ScanButtonProps = {
+  labels: ScanButtonLabels;
   onSignPress?: () => void;
   onIssuePress?: () => void;
   onScanPress: () => void;
@@ -25,7 +31,7 @@ const SIDE_HEIGHT = 64;
 const OVERLAP = 50;
 
 const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
-  ({ style, onSignPress, onIssuePress, onScanPress, testID }, ref) => {
+  ({ labels, style, onSignPress, onIssuePress, onScanPress, testID }, ref) => {
     const t = useAccessibilityTranslation();
     const colorScheme = useAppColorScheme();
     const insets = useSafeAreaInsets();
@@ -49,7 +55,7 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
             style={styles.sideButton}>
             <View style={[styles.sideInnerLeft, { backgroundColor: colorScheme.white }]}>
               <SignIcon color={colorScheme.black} />
-              <Text style={[styles.sideLabel, { color: colorScheme.black }]}>Sign</Text>
+              <Text style={[styles.sideLabel, { color: colorScheme.black }]}>{labels.sign}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -80,7 +86,7 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
             style={styles.sideButton}>
             <View style={[styles.sideInnerRight, { backgroundColor: colorScheme.white }]}>
               <IssueIcon color={colorScheme.black} />
-              <Text style={[styles.sideLabel, { color: colorScheme.black }]}>Issue</Text>
+              <Text style={[styles.sideLabel, { color: colorScheme.black }]}>{labels.issue}</Text>
             </View>
           </TouchableOpacity>
         </View>
