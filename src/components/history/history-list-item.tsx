@@ -1,5 +1,6 @@
 import { HistoryAction, HistoryEntityType, HistoryListItem } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
+import { validate as isUuid } from 'uuid';
 
 import { ListItemView } from '../../ui-components';
 import { formatTime } from '../../utils';
@@ -36,7 +37,7 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
   const info = useMemo(() => {
     switch (infoLabelMode) {
       case 'associatedLabel':
-        return item.name;
+        return isUuid(item.name) ? undefined : item.name;
       case 'none':
         return undefined;
     }
