@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ColorValue, StyleSheet, View } from 'react-native';
+import { ColorValue, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../../utils/testID';
 import ImageOrComponent, { ImageOrComponentSource } from '../../image/image-or-component';
@@ -16,6 +16,7 @@ export type CredentialLogoProps = {
   icon?: ImageOrComponentSource;
   iconLabelColor?: ColorValue;
   size?: CredentialLogoSize;
+  style?: StyleProp<ViewStyle>;
   testID?: string;
 };
 
@@ -25,6 +26,7 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
   icon,
   iconLabelColor = '#FFFFFF',
   size = CredentialLogoSize.Regular,
+  style,
   testID,
 }) => {
   const sizeStyle = {
@@ -32,7 +34,7 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
     width: size,
   };
   return (
-    <View style={[styles.imageContainer, sizeStyle, { backgroundColor: color }]} testID={testID}>
+    <View style={[styles.logo, sizeStyle, { backgroundColor: color }, style]} testID={testID}>
       {icon ? (
         <ImageOrComponent testID={concatTestID(testID, 'icon')} source={icon} style={sizeStyle} />
       ) : (
@@ -56,14 +58,6 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
 };
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 0,
-    justifyContent: 'center',
-    marginRight: 8,
-    overflow: 'hidden',
-  },
   imagePlaceholder: {
     textTransform: 'uppercase',
   },
@@ -73,6 +67,13 @@ const styles = StyleSheet.create({
   },
   imagePlaceholderSmall: {
     paddingTop: 1,
+  },
+  logo: {
+    alignItems: 'center',
+    borderRadius: 5,
+    borderWidth: 0,
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
 });
 
