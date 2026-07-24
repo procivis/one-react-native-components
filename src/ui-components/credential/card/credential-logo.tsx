@@ -15,6 +15,7 @@ export type CredentialLogoProps = {
   credentialName: string;
   icon?: ImageOrComponentSource;
   iconLabelColor?: ColorValue;
+  showFullName?: boolean;
   size?: CredentialLogoSize;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -25,6 +26,7 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
   credentialName,
   icon,
   iconLabelColor = '#FFFFFF',
+  showFullName,
   size = CredentialLogoSize.Regular,
   style,
   testID,
@@ -48,7 +50,7 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
                 styles.imagePlaceholder,
                 size === CredentialLogoSize.Regular ? styles.imagePlaceholderRegular : styles.imagePlaceholderSmall,
               ]}>
-              {credentialName.substring(0, 1)}
+              {showFullName ? credentialName : credentialName.substring(0, 1)}
             </Typography>
           </View>
         </View>
@@ -63,10 +65,10 @@ const styles = StyleSheet.create({
   },
   imagePlaceholderRegular: {
     paddingLeft: 1,
-    paddingTop: 3,
+    paddingTop: 1,
   },
   imagePlaceholderSmall: {
-    paddingTop: 1,
+    marginTop: -1,
   },
   logo: {
     alignItems: 'center',
