@@ -13,4 +13,5 @@ export * from './organisation';
 export * from './proof-schemas';
 export * from './proofs';
 export * from './query';
+export * from './transaction';
 export * from './trust-list';
