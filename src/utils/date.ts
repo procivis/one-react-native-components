@@ -10,7 +10,7 @@ const DAY = 24 * 60 * MINUTE;
 const systemLocale: string | undefined = (
   Platform.OS === 'ios' ? Settings.get('AppleLocale') : I18nManager.getConstants().localeIdentifier
 )
-  ?.match(/[a-zA-Z]+_[a-zA-Z]+/)[0]
+  ?.match(/[a-zA-Z]+_[a-zA-Z]+/)?.[0]
   ?.replaceAll('_', '-');
 
 /**
