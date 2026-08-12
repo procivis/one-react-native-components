@@ -33,7 +33,7 @@ export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
         page: 0,
         // TODO: workaround pagination for now, until it's supported by UI
         pageSize: 10000,
-        states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED, CredentialState.REVOKED],
+        states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED, CredentialState.REVOKED, CredentialState.EXPIRED],
         ...queryParams,
       });
       return values;
@@ -58,7 +58,7 @@ export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) 
         organisationId,
         page: pageParam,
         pageSize: PAGE_SIZE,
-        states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED, CredentialState.REVOKED],
+        states: [CredentialState.ACCEPTED, CredentialState.SUSPENDED, CredentialState.REVOKED, CredentialState.EXPIRED],
         ...queryParams,
       }),
     {

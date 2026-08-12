@@ -124,6 +124,8 @@ export type CardHeaderLabels = {
   revoked: string;
   suspended: string;
   suspendedUntil: (date: string) => string;
+  expired: string;
+  expiredAt: (date: string) => string;
 };
 
 const credentialDetailFromCredential = (
@@ -156,6 +158,13 @@ const credentialDetailFromCredential = (
         credentialDetailPrimary: labels.revoked,
         credentialDetailErrorColor: true,
         credentialDetailTestID: concatTestID(testID, 'revoked'),
+        statusIcon: CredentialErrorIcon,
+      };
+    case CredentialState.EXPIRED:
+      return {
+        credentialDetailPrimary: labels.expired,
+        credentialDetailErrorColor: true,
+        credentialDetailTestID: concatTestID(testID, 'expired'),
         statusIcon: CredentialErrorIcon,
       };
   }
