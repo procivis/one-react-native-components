@@ -24,6 +24,7 @@ export function useAccessibleAfterTransition<
   TNavigationProp extends NavigationProp<
     Record<string, any>,
     string,
+    string | undefined,
     NavigationState<Record<string, any>>,
     {},
     { transitionEnd: {} }
@@ -58,6 +59,7 @@ export function useIsOutsideTransition<
   TNavigationProp extends NavigationProp<
     Record<string, any>,
     string,
+    string | undefined,
     NavigationState<Record<string, any>>,
     {},
     { transitionStart: {}; transitionEnd: {} }

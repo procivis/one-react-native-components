@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { InteractionManager, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
   Easing,
@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { concatTestID } from '../../utils';
+import { useRunAfterTransition } from '../../utils/hooks/navigation/run-after-transition';
 import { LoaderError, LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
 
 export enum LoaderViewState {
@@ -27,6 +28,7 @@ export type LoaderViewProps = {
 };
 
 const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
+  const runAfterTransition = useRunAfterTransition();
   const [initialDelayPassed, setInitialDelayPassed] = useState(false);
   const rotationIsAnimating = useRef(false);
   const rotation = useSharedValue(0);
@@ -66,13 +68,13 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
 
   const stopRotationAnimation = useCallback(() => {
     Promise.resolve(
-      InteractionManager.runAfterInteractions(() => {
+      runAfterTransition(() => {
         rotationIsAnimating.current = false;
         cancelAnimation(rotation);
         rotation.value = 0;
       }),
     ).catch(() => {});
-  }, [rotation]);
+  }, [rotation, runAfterTransition]);
 
   useEffect(() => {
     if (animate) {

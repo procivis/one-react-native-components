@@ -1,4 +1,4 @@
-import { NavigationContainer, NavigationRouteContext } from '@react-navigation/native';
+import { NavigationContainer, NavigationIndependentTree, NavigationRouteContext } from '@react-navigation/native';
 import type { StoryContext } from '@storybook/react';
 import React from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
@@ -35,10 +35,12 @@ export const withCommonLibs = (Story: () => JSX.Element) => {
     <AccessibilityLanguageProvider language="en">
       <GestureHandlerRootView style={styles.fullScreen}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <NavigationContainer independent={true}>
-            <NavigationRouteContext.Provider value={mockRoute}>
-              <Story />
-            </NavigationRouteContext.Provider>
+          <NavigationContainer>
+            <NavigationIndependentTree>
+              <NavigationRouteContext.Provider value={mockRoute}>
+                <Story />
+              </NavigationRouteContext.Provider>
+            </NavigationIndependentTree>
           </NavigationContainer>
         </SafeAreaProvider>
       </GestureHandlerRootView>
