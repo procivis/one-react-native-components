@@ -43,3 +43,7 @@ export const NavigationRouteContext = createContext<Route<string, object | undef
 export const NavigationContainer: FC<PropsWithChildren> = ({ children }) => {
   return <>{children}</>;
 };
+
+export const NavigationIndependentTree: FC<PropsWithChildren> = ({ children }) => {
+  return <>{children}</>;
+};
