@@ -47,7 +47,11 @@ const ScrollViewScreen: FC<PropsWithChildren<ScrollViewScreenProps>> = ({
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} testID={testID} {...viewProps}>
+    <View
+      collapsable={false} // ONE-10889: avoid view flattening which can cause issues with form sheets
+      style={[styles.container, { backgroundColor: colorScheme.background }, style]}
+      testID={testID}
+      {...viewProps}>
       <ScrollView
         contentContainerStyle={[styles.contentContainer, contentInsetsStyle, contentContainerStyle]}
         onScroll={onScroll}
