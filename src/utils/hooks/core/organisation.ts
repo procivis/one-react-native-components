@@ -19,14 +19,10 @@ export const useOrganisationDetail = (active = true) => {
 export const useOrganisationTrustCollections = (active = true) => {
   const { core, organisationId } = useONECore();
 
-  return useQuery(
-    [ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY],
-    () => core.getOrganisationTrustCollections(organisationId),
-    {
-      enabled: active,
-      keepPreviousData: true,
-    },
-  );
+  return useQuery([ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY], () => core.getOrganisationEcosystems(organisationId), {
+    enabled: active,
+    keepPreviousData: true,
+  });
 };
 
 export const useOrganisationUpdate = () => {

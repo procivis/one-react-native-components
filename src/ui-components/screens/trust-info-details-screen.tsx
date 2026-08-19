@@ -1,4 +1,4 @@
-import { TrustInformationDetail } from '@procivis/react-native-one-core';
+import { TrustInformationDetailInfo } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useState } from 'react';
 import { Linking, SectionList, SectionListData, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -190,7 +190,7 @@ export type TrustInfoDetailsScreenProps = {
   language: string;
   onClose: () => void;
   testID: string;
-  trustInformation: TrustInformationDetail;
+  trustInformation: TrustInformationDetailInfo;
 };
 
 const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
@@ -214,7 +214,7 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
     [],
   );
 
-  const trustDetails = trustInformation.eudiEcosystem;
+  const trustDetails = trustInformation.value[0];
   if (!trustDetails) {
     return null;
   }

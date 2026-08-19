@@ -1,4 +1,4 @@
-import { IdentifierListItem, TrustInformationDetail } from '@procivis/react-native-one-core';
+import { IdentifierListItem, TrustInformationDetailInfo } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -29,7 +29,7 @@ interface SectionEntityCluster {
   subline?: string;
   testID?: string;
   trustInfoLabels: TrustInfoLabels;
-  trustInformation?: TrustInformationDetail;
+  trustInformation?: TrustInformationDetailInfo;
 }
 
 type SectionAttribute = Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>;
@@ -46,7 +46,7 @@ export type NerdModeScreenProps = {
   labels: AttributesLabels;
   onClose: () => void;
   onCopyToClipboard: (value: string) => void;
-  onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetail) => void;
+  onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetailInfo) => void;
   sections: NerdModeSection[];
   testID: string;
   title: string;
@@ -118,16 +118,10 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         ]}
         testID={entityCluster.testID ?? concatTestID(testID, 'trustInfo')}
         textColor={colorScheme.white}
-        trustInformation={entityCluster.trustInformation?.eudiEcosystem}
+        trustInformation={entityCluster.trustInformation?.value[0]}
       />
     );
-  }, [
-    entityCluster,
-    colorScheme.nerdView.background,
-    colorScheme.white,
-    onOpenTrustInfoDetails,
-    testID,
-  ]);
+  }, [entityCluster, colorScheme.nerdView.background, colorScheme.white, onOpenTrustInfoDetails, testID]);
 
   return (
     <>
@@ -166,7 +160,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 ]}
                 testID={item.testID ?? concatTestID(testID, 'trustInfo')}
                 textColor={colorScheme.white}
-                trustInformation={item.trustInformation?.eudiEcosystem}
+                trustInformation={item.trustInformation?.value[0]}
               />
             );
           } else {

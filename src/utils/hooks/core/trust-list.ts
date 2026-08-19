@@ -8,9 +8,9 @@ export const useTrustCollectionSync = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async () => core.runTask('TRUST_COLLECTION_SYNC', undefined), {
+  return useMutation(async () => core.runTask('ECOSYSTEM_SYNC', undefined), {
     onError: async (err) => {
-      reportException(err, 'TRUST_COLLECTION_SYNC error');
+      reportException(err, 'ECOSYSTEM_SYNC error');
       await queryClient.invalidateQueries(ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY);
     },
     onSuccess: async () => {
