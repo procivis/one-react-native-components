@@ -24,6 +24,7 @@ import { useONECore } from './core-context';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 import { useIdentifiers } from './identifiers';
+import { useOrganisationEcosystems } from './organisation';
 import { useProofSchemaDetail } from './proof-schemas';
 
 const PAGE_SIZE = 10;
@@ -262,6 +263,7 @@ export const useProofForSchemaIdWithTransport = (
 ) => {
   const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
   const { data: config } = useCoreConfig();
+  const { data: ecosystems, isLoading: isLoadingEcosystems } = useOrganisationEcosystems();
 
   const identifierFilter = useMemo(
     () => (proofSchema && config ? getIdentifierFilterForProofSchema(proofSchema, config) : undefined),
@@ -332,12 +334,14 @@ export const useProofForSchemaIdWithTransport = (
       !identifierFilter ||
       !identifiers.values.length ||
       !transport ||
-      transport.length === 0
+      transport.length === 0 ||
+      isLoadingEcosystems
     ) {
       return;
     }
 
     createProof({
+      ecosystem: ecosystems?.[0]?.name,
       protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       proofSchemaId,
       transport,
@@ -347,7 +351,19 @@ export const useProofForSchemaIdWithTransport = (
         setProofId(id);
       })
       .catch(() => {});
-  }, [proofSchemaId, identifiers, identifierFilter, createProof, enabled, transport, proofId, setProofId, deleting]);
+  }, [
+    proofSchemaId,
+    identifiers,
+    identifierFilter,
+    createProof,
+    enabled,
+    transport,
+    proofId,
+    setProofId,
+    deleting,
+    isLoadingEcosystems,
+    ecosystems,
+  ]);
 
   return { proofId: deleting ? undefined : proofId, retract };
 };
