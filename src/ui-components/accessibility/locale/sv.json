@@ -1,0 +1,21 @@
+{
+  "accessibility.control.combobox.expanded": "Expanderad",
+  "accessibility.control.combobox.tapToSelect": "Dubbeltryck för att välja",
+  "accessibility.control.order": "{current} av {length}",
+  "accessibility.control.progress": "{current} av {length}",
+  "accessibility.control.checked": "markerad",
+  "accessibility.control.unchecked": "inte markerad",
+  "accessibility.control.clear": "rensa",
+  "accessibility.control.delete": "radera",
+  "accessibility.control.list.moveDown": "Flytta ned",
+  "accessibility.control.list.moveUp": "Flytta upp",
+  "accessibility.nav.back": "tillbaka",
+  "accessibility.nav.close": "stäng",
+  "accessibility.nav.next": "nästa",
+  "accessibility.icon.edit": "redigera",
+  "accessibility.icon.add": "lägg till",
+  "accessibility.icon.filter": "filtrera",
+  "accessibility.icon.scan": "skanna",
+  "accessibility.key.faceId": "Face ID",
+  "accessibility.key.fingerprint": "fingeravtryck"
+}
