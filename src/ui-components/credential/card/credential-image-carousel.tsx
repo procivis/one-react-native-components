@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
+import { Carousel } from 'react-native-reanimated-carousel';
 import Svg, { Circle } from 'react-native-svg';
 
 import { concatTestID } from '../../../utils';
@@ -40,16 +40,15 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
   return (
     <View style={[styles.container, style]}>
       <Carousel
-        width={carouselSize.width}
         onSnapToItem={setSelectedDot}
-        height={carouselSize.height}
-        enabled={numberOfSlides >= 2}
+        scrollEnabled={numberOfSlides >= 2}
         data={imagesToRender}
         testID={testID}
-        panGestureHandlerProps={{
-          activeOffsetX: [-10, 10],
-          failOffsetY: [-10, 10],
+        onConfigurePanGesture={(gesture) => {
+          gesture.activeOffsetX([-10, 10]);
+          gesture.failOffsetY([-10, 10]);
         }}
+        style={carouselSize}
         renderItem={({ item: { type, element } }) => (
           <View style={styles.carouselItem}>
             <View style={[styles[type]]}>{element}</View>
