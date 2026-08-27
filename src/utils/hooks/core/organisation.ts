@@ -19,10 +19,14 @@ export const useOrganisationDetail = (active = true) => {
 export const useOrganisationEcosystems = (active = true) => {
   const { core, organisationId } = useONECore();
 
-  return useQuery([ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY], () => core.getOrganisationEcosystems(organisationId), {
-    enabled: active,
-    keepPreviousData: true,
-  });
+  return useQuery(
+    [ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY],
+    () => core.getOrganisation(organisationId).then((organisation) => organisation.ecosystems),
+    {
+      enabled: active,
+      keepPreviousData: true,
+    },
+  );
 };
 
 export const useOrganisationUpdate = () => {

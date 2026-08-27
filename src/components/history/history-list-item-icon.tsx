@@ -56,6 +56,7 @@ const defaultIcons: {
     REACTIVATED: HistoryStatusAcceptedIcon,
     CSR_GENERATED: HistoryStatusAcceptedIcon,
     EXPIRED: HistoryStatusErrorIcon,
+    EXPIRING: HistoryStatusErrorIcon,
     INTERACTION_CREATED: HistoryStatusAcceptedIcon,
     INTERACTION_ERRORED: HistoryStatusErrorIcon,
     INTERACTION_EXPIRED: HistoryStatusErrorIcon,
