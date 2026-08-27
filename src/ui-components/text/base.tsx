@@ -1,5 +1,13 @@
 import React, { PropsWithChildren, useEffect } from 'react';
-import { ColorValue, StyleProp, Text, TextProps, TextStyle } from 'react-native';
+import {
+  ColorValue,
+  NativeSyntheticEvent,
+  StyleProp,
+  Text,
+  TextLayoutEventData,
+  TextProps,
+  TextStyle,
+} from 'react-native';
 
 import { useAccessibilityAnnouncementCumulative } from '../accessibility/accessibility';
 
@@ -7,6 +15,7 @@ export type BaseTextProps = TextProps & {
   align?: 'center' | 'left' | 'right';
   color: ColorValue;
   style?: StyleProp<TextStyle>;
+  onTextLayout?: (e: NativeSyntheticEvent<TextLayoutEventData>) => void;
 
   /* accessibility automatic voice-over */
   announcementActive?: boolean;
