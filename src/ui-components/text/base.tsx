@@ -16,6 +16,7 @@ export type BaseTextProps = TextProps & {
   color: ColorValue;
   style?: StyleProp<TextStyle>;
   onTextLayout?: (e: NativeSyntheticEvent<TextLayoutEventData>) => void;
+  className?: string;
 
   /* accessibility automatic voice-over */
   announcementActive?: boolean;
