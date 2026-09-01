@@ -29,7 +29,7 @@ import {
   getCredentialCardPropsFromCredential,
   supportsSelectiveDisclosure,
 } from '.';
-import { CardLabels, credentialDetailFromPresentationV2Credential } from './credential';
+import { AttributesLabels, CardLabels, credentialDetailFromPresentationV2Credential } from './credential';
 
 export type ShareCredentialCardLabels = CardLabels & {
   selectiveDisclosure: string;
@@ -143,6 +143,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
   parentUserSelected: boolean,
   config: CoreConfig,
   testID: string,
+  labels: AttributesLabels,
   language: string | undefined,
   nested?: boolean,
   listValue?: boolean,
@@ -154,7 +155,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
   const status = selection
     ? getAttributeSelectorStatus(claim, attributeShared, parentUserSelected || (attributeShared && !userSelected))
     : undefined;
-  const attribute = detailsCardAttributeFromClaim(v2PresentationClaimToClaim(claim), config, testID, language);
+  const attribute = detailsCardAttributeFromClaim(v2PresentationClaimToClaim(claim), config, testID, labels, language);
   const disabledStatus = [SelectorStatus.Disabled, SelectorStatus.Rejected, SelectorStatus.Required];
   const disabled = attribute.disabled || !status || disabledStatus.includes(status);
   const credentialAttribute: CredentialAttribute = {
@@ -183,6 +184,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
             userSelected,
             config,
             testID,
+            labels,
             language,
             true,
             false,
@@ -200,6 +202,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
             userSelected,
             config,
             testID,
+            labels,
             language,
             true,
           ),
@@ -275,7 +278,7 @@ export const shareCredentialCardFromV2PresentationCredential = (
   return {
     attributes:
       credential?.claims.map((v) =>
-        shareCredentialCardAttributeFromV2Claim(v, selectedFields ?? [], true, false, config, testID, language),
+        shareCredentialCardAttributeFromV2Claim(v, selectedFields ?? [], true, false, config, testID, labels, language),
       ) ?? [],
     card,
   };
@@ -326,7 +329,7 @@ export const selectCredentialCardFromV2Credential = (
   return {
     attributes:
       credential?.claims.map((v) =>
-        shareCredentialCardAttributeFromV2Claim(v, undefined, false, false, config, testID, language),
+        shareCredentialCardAttributeFromV2Claim(v, undefined, false, false, config, testID, labels, language),
       ) ?? [],
     card,
   };

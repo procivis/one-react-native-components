@@ -81,9 +81,10 @@ const formatCredentialDetail = (
   claim: Claim,
   config: CoreConfig,
   testID: string,
+  labels: AttributesLabels,
   language: string | undefined,
 ): string => {
-  const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID, language);
+  const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID, labels, language);
   return attributeValue.value ?? '';
 };
 
@@ -119,7 +120,12 @@ export const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
   return mdocMsoValidityIssue;
 };
 
-export type CardHeaderLabels = {
+export type AttributesLabels = {
+  true: string;
+  false: string;
+};
+
+export type CardHeaderLabels = AttributesLabels & {
   validityIssues: string;
   revoked: string;
   suspended: string;
@@ -184,13 +190,25 @@ const credentialDetailFromCredential = (
   const primary = findClaimByPath(layoutProperties?.primaryAttribute, claims);
 
   if (primary) {
-    credentialDetailPrimary = formatCredentialDetail(primary, config, concatTestID(testID, 'primary'), language);
+    credentialDetailPrimary = formatCredentialDetail(
+      primary,
+      config,
+      concatTestID(testID, 'primary'),
+      labels,
+      language,
+    );
   }
 
   const secondary = findClaimByPath(layoutProperties?.secondaryAttribute, claims);
 
   if (secondary) {
-    credentialDetailSecondary = formatCredentialDetail(secondary, config, concatTestID(testID, 'secondary'), language);
+    credentialDetailSecondary = formatCredentialDetail(
+      secondary,
+      config,
+      concatTestID(testID, 'secondary'),
+      labels,
+      language,
+    );
   }
 
   return {
@@ -230,6 +248,8 @@ export const cardHeaderFromCredential = (
 
 export type CardLabels = CardHeaderLabels & {
   validityIssuesNotice: string;
+  true: string;
+  false: string;
 };
 
 export const getCredentialCardPropsFromCredential = (
@@ -277,9 +297,10 @@ export const detailsCardAttributeFromClaim = (
   claim: Claim,
   config: CoreConfig,
   testID: string,
+  labels: AttributesLabels,
   language: string | undefined,
 ): CredentialAttribute => {
-  const value = detailsCardAttributeValueFromClaim(claim, config, testID, language);
+  const value = detailsCardAttributeValueFromClaim(claim, config, testID, labels, language);
   const defaultLanguage = config.globalSettings.defaultLanguage;
   return {
     id: claim.path,
@@ -293,6 +314,7 @@ const detailsCardAttributeValueFromClaim = (
   claim: Claim,
   config: CoreConfig,
   testID: string,
+  labels: AttributesLabels,
   language: string | undefined,
 ): CredentialAttributeValue => {
   const typeConfig = config?.datatype[claim.schema.datatype];
@@ -300,7 +322,13 @@ const detailsCardAttributeValueFromClaim = (
   if (claim.schema.array) {
     return {
       values: ((claim.value.value as Claim[]) || []).map((arrayValue, index) => {
-        return detailsCardAttributeFromClaim(arrayValue, config, concatTestID(testID, index.toString()), language);
+        return detailsCardAttributeFromClaim(
+          arrayValue,
+          config,
+          concatTestID(testID, index.toString()),
+          labels,
+          language,
+        );
       }),
     };
   } else {
@@ -311,7 +339,13 @@ const detailsCardAttributeValueFromClaim = (
         }
         return {
           attributes: claim.value.value.map((nestedClaim, index) =>
-            detailsCardAttributeFromClaim(nestedClaim, config, concatTestID(testID, index.toString()), language),
+            detailsCardAttributeFromClaim(
+              nestedClaim,
+              config,
+              concatTestID(testID, index.toString()),
+              labels,
+              language,
+            ),
           ),
         };
       }
@@ -334,6 +368,8 @@ const detailsCardAttributeValueFromClaim = (
           return { testID: testID, value: claim.value.value as string };
         }
       }
+      case DataType.Boolean:
+        return { testID: testID, value: claim.value.value === 'true' ? labels.true : labels.false };
       default:
         return { testID: testID, value: String(claim.value.value) };
     }
@@ -363,7 +399,7 @@ export const detailsCardFromCredentialWithClaims = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const attributes: CredentialAttribute[] = claims.map((claim, index) =>
-    detailsCardAttributeFromClaim(claim, config, concatTestID(testID, 'attribute', index.toString()), language),
+    detailsCardAttributeFromClaim(claim, config, concatTestID(testID, 'attribute', index.toString()), labels, language),
   );
 
   const card = getCredentialCardPropsFromCredential(
