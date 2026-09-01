@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
-import { ORGANISATION_DETAIL_QUERY_KEY, ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY } from './organisation';
+import { ORGANISATION_DETAIL_QUERY_KEY, VERIFIER_INSTANCE_QUERY_KEY, WALLET_INSTANCE_QUERY_KEY } from './organisation';
 
 const INSTANCE_KEY_TYPE = 'ECDSA';
 
@@ -27,7 +27,8 @@ export const useRegisterInstance = () => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.invalidateQueries(ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY);
+        await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },
     },
   );
@@ -65,11 +66,13 @@ export const useActivateInstance = () => {
       onError: async (err) => {
         reportException(err, 'Activate instance failure');
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.invalidateQueries(ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY);
+        await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },
       onSuccess: async () => {
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.invalidateQueries(ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY);
+        await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },
     },
   );

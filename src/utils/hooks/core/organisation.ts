@@ -5,7 +5,9 @@ import { reportException } from '../../reporting';
 import { useONECore } from './core-context';
 
 export const ORGANISATION_DETAIL_QUERY_KEY = 'organisation-detail';
-export const ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY = 'organisation-trust-collections';
+export const ORGANISATION_ECOSYSTEMS_QUERY_KEY = 'organisation-ecosystems';
+export const VERIFIER_INSTANCE_QUERY_KEY = 'verifier-instance';
+export const WALLET_INSTANCE_QUERY_KEY = 'wallet-instance';
 
 export const useOrganisationDetail = (active = true) => {
   const { core, organisationId } = useONECore();
@@ -20,11 +22,13 @@ export const useOrganisationEcosystems = (active = true) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
-    [ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY],
-    () => core.getOrganisation(organisationId).then((organisation) => organisation.ecosystems),
+    [ORGANISATION_ECOSYSTEMS_QUERY_KEY],
+    async () => {
+      const ecosystems = await core.getOrganisation(organisationId).then((organisation) => organisation.ecosystems);
+      return ecosystems;
+    },
     {
       enabled: active,
-      keepPreviousData: true,
     },
   );
 };
@@ -40,11 +44,15 @@ export const useOrganisationUpdate = () => {
       onError: async (err) => {
         reportException(err, 'Update organisation failure');
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.invalidateQueries(ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY);
+        await queryClient.removeQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+        await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },
       onSuccess: async () => {
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.invalidateQueries(ORGANISATION_TRUST_COLLECTIONS_QUERY_KEY);
+        await queryClient.removeQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+        await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
+        await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },
     },
   );
@@ -54,7 +62,7 @@ export const useVerifierInstance = (active = true) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
-    [ORGANISATION_DETAIL_QUERY_KEY],
+    [VERIFIER_INSTANCE_QUERY_KEY],
     () => core.getOrganisation(organisationId).then((org) => org.verifierInstance),
     {
       enabled: active,
@@ -67,7 +75,7 @@ export const useWalletInstance = (active = true) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
-    [ORGANISATION_DETAIL_QUERY_KEY],
+    [WALLET_INSTANCE_QUERY_KEY],
     () => core.getOrganisation(organisationId).then((org) => org.walletInstance),
     {
       enabled: active,
