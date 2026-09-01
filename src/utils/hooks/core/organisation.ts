@@ -18,7 +18,7 @@ export const useOrganisationDetail = (active = true) => {
   });
 };
 
-export const useOrganisationEcosystems = (active = true) => {
+export const useOrganisationEcosystems = (enabled = true, keepPreviousData = false) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
@@ -28,7 +28,8 @@ export const useOrganisationEcosystems = (active = true) => {
       return ecosystems;
     },
     {
-      enabled: active,
+      enabled,
+      keepPreviousData,
     },
   );
 };
