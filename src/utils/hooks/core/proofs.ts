@@ -24,7 +24,7 @@ import { useONECore } from './core-context';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 import { useIdentifiers } from './identifiers';
-import { useOrganisationEcosystems } from './organisation';
+import { useOrganisationDetail, useOrganisationEcosystems } from './organisation';
 import { useProofSchemaDetail } from './proof-schemas';
 
 const PAGE_SIZE = 10;
@@ -263,6 +263,7 @@ export const useProofForSchemaIdWithTransport = (
 ) => {
   const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
   const { data: config } = useCoreConfig();
+  const { data: orgDetail, isLoading: isLoadingOrg } = useOrganisationDetail();
   const { data: ecosystems, isLoading: isLoadingEcosystems } = useOrganisationEcosystems();
 
   const identifierFilter = useMemo(
@@ -335,13 +336,14 @@ export const useProofForSchemaIdWithTransport = (
       !identifiers.values.length ||
       !transport ||
       transport.length === 0 ||
-      isLoadingEcosystems
+      isLoadingEcosystems ||
+      isLoadingOrg
     ) {
       return;
     }
 
     createProof({
-      ecosystem: ecosystems?.[0]?.name,
+      ecosystem: orgDetail?.configuration?.enforceEcosystemAsVerifier ? ecosystems?.[0]?.name : undefined,
       protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       proofSchemaId,
       transport,
@@ -362,6 +364,8 @@ export const useProofForSchemaIdWithTransport = (
     setProofId,
     deleting,
     isLoadingEcosystems,
+    isLoadingOrg,
+    orgDetail,
     ecosystems,
   ]);
 
