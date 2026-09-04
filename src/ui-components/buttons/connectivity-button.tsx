@@ -14,9 +14,9 @@ import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
 export enum ConnectivityTransport {
-  Internet = 'Internet',
-  Bluetooth = 'Bluetooth',
   All = 'All',
+  Bluetooth = 'Bluetooth',
+  Internet = 'Internet'
 }
 
 export type ConnectivityButtonProps = {
@@ -24,9 +24,9 @@ export type ConnectivityButtonProps = {
   disabled?: boolean;
   onPress?: () => void;
   status?: boolean;
+  testID?: string;
   title?: string;
   transport: ConnectivityTransport;
-  testID?: string;
 };
 
 const ConnectivityButton: FC<ConnectivityButtonProps> = ({
@@ -63,7 +63,7 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
       <View style={[styles.container, { backgroundColor, opacity }]}>
         {icons}
         {title && (
-          <Typography testID={concatTestID(testID, 'title')} color={colorScheme.text} preset="s">
+          <Typography color={colorScheme.text} preset="s" testID={concatTestID(testID, 'title')}>
             {title}
           </Typography>
         )}

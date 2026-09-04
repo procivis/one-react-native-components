@@ -57,16 +57,16 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
       if (state === ProofState.ERROR) {
         metadata = await core
           .listHistory({
+            actions: [HistoryAction.ERRORED],
+            entityIds: [proofId],
+            entityTypes: [HistoryEntityType.PROOF],
             organisationId,
             page: 0,
             pageSize: 1,
-            entityIds: [proofId],
-            entityTypes: [HistoryEntityType.PROOF],
-            actions: [HistoryAction.ERRORED],
           })
           .then((result) => result.values[0]?.metadata?.value as HistoryErrorMetadata);
       }
-      return { state, metadata };
+      return { metadata, state };
     },
     {
       enabled: Boolean(proofId),
@@ -129,7 +129,7 @@ export const useProofReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectProof(interactionId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
           return;
         }
         throw e;
@@ -156,8 +156,8 @@ export enum VerificationProtocol {
 }
 
 export enum VerificationEngagement {
-  QR_CODE = 'QR_CODE',
   NFC = 'NFC',
+  QR_CODE = 'QR_CODE'
 }
 
 export const useProposeProof = () => {
@@ -182,7 +182,7 @@ export const useProofDelete = () => {
   return useMutation(
     async (proofId: string) => {
       return core.deleteProof(proofId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
           return;
         }
         throw e;
@@ -206,7 +206,7 @@ export const useProofs = (queryParams?: Partial<ProofListQuery>) => {
 
   return useQuery(
     queryKey,
-    ({ pageParam = 0 }) =>
+    ({ pageParam = 0 }: { pageParam?: number }) =>
       core.listProofs({
         organisationId,
         page: pageParam,
@@ -344,8 +344,8 @@ export const useProofForSchemaIdWithTransport = (
 
     createProof({
       ecosystem: orgDetail?.configuration?.enforceEcosystemAsVerifier ? ecosystems?.[0]?.name : undefined,
-      protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       proofSchemaId,
+      protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       transport,
       verifierIdentifierId: identifiers.values[0].id,
     })
@@ -386,6 +386,7 @@ export const useCleanupUnusedProofs = () => {
       return;
     }
     setCleaned(true);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     proofs.values.forEach((proof) => deleteProof(proof.id));
   }, [cleaned, deleteProof, proofs]);
 };
@@ -396,8 +397,8 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
 
   const [sharedProof, setSharedProof] = useState<{
     bleAdapterDisabled: boolean;
-    url?: string;
     error?: unknown;
+    url?: string;
   }>();
 
   // reset when proofId changes or the proof was retracted
@@ -425,7 +426,7 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
             bleAdapterDisabled: true,
           });
         } else {
-          setSharedProof({ error, bleAdapterDisabled: false });
+          setSharedProof({ bleAdapterDisabled: false, error });
         }
       });
   }, [enabled, proofUrlProps, shareProof, sharedProof]);
@@ -441,7 +442,7 @@ export const useRetainProofCheck = (proofId?: string) => {
   return useMutation(async () => core.runTask('RETAIN_PROOF_CHECK', undefined), {
     onSuccess: async () => {
       if (proofId) {
-        await queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
+        queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       }
     },
@@ -455,7 +456,7 @@ export const useDeleteProofData = (proofId: string) => {
 
   return useMutation(async () => core.deleteProofClaims(proofId), {
     onSuccess: async () => {
-      await queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
+      queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });

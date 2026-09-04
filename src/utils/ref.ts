@@ -1,6 +1,6 @@
-import React, { useMemo, useRef } from 'react';
+import React, { RefCallback, useMemo, useRef } from 'react';
 
-const isWritable = <T extends Object>(obj: T, key: keyof T) => {
+const isWritable = <T extends object>(obj: T, key: keyof T) => {
   const desc =
     Object.getOwnPropertyDescriptor(obj, key) || Object.getOwnPropertyDescriptor(Object.getPrototypeOf(obj), key) || {};
   return Boolean(desc.writable);
@@ -16,7 +16,7 @@ const isWritable = <T extends Object>(obj: T, key: keyof T) => {
  * }
  */
 export const useForwardedRef = <Component extends React.ElementType<any, any>>(
-  passedRef?: React.Ref<Component>,
+  passedRef?: React.MutableRefObject<Component | null>,
 ) => {
   const localRef = useRef<Component>(null);
   return useMemo<[React.Ref<Component>, React.RefObject<Component>]>(() => {
@@ -25,15 +25,17 @@ export const useForwardedRef = <Component extends React.ElementType<any, any>>(
       ref.current = instance;
       if (passedRef) {
         if (passedRef instanceof Function) {
-          passedRef(instance);
+          (passedRef as unknown as RefCallback<Component>)(instance);
         } else if (isWritable(passedRef, 'current')) {
           try {
-            (passedRef as any).current = instance;
-          } catch (e) {}
+            passedRef.current = instance;
+          } catch {
+            // do nothing
+          }
         }
       }
     };
 
-    return [forwardedRef, ref as React.RefObject<Component>];
+    return [forwardedRef, ref];
   }, [passedRef]);
 };

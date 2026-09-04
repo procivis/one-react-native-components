@@ -11,8 +11,8 @@ import { HistoryListItemLabels, HistoryListItemView, HistoryListItemViewProps } 
 import { HistoryListSectionHeaderLabels, HistoryListSectionHeaderView } from './history-list-section-header';
 
 export type HistoryListLabels = {
-  sectionHeader: HistoryListSectionHeaderLabels;
   item: HistoryListItemLabels;
+  sectionHeader: HistoryListSectionHeaderLabels;
 };
 
 export interface HistoryListViewProps

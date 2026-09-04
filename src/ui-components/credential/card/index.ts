@@ -1,15 +1,9 @@
-import type { CredentialCardNotice, CredentialCardProps } from './credential-card';
-import CredentialCard, { CredentialCardRatio, CredentialCardShadow } from './credential-card';
-import type { CredentialDetailsCardProps } from './credential-details-card';
-import CredentialDetailsCard from './credential-details-card';
-import type { CredentialDetailsCardListItemProps } from './credential-details-list-item';
-import CredentialDetailsCardListItem from './credential-details-list-item';
-import type { CredentialHeaderProps } from './credential-header';
-import CredentialHeader from './credential-header';
-import type { CarouselImage } from './credential-image-carousel';
-import { CarouselImageType } from './credential-image-carousel';
-import type { CredentialLogoProps, CredentialLogoSize } from './credential-logo';
-import CredentialLogo from './credential-logo';
+import CredentialCard, { type CredentialCardNotice, type CredentialCardProps, CredentialCardRatio, CredentialCardShadow } from './credential-card';
+import CredentialDetailsCard, { type CredentialDetailsCardProps } from './credential-details-card';
+import CredentialDetailsCardListItem, { type CredentialDetailsCardListItemProps } from './credential-details-list-item';
+import CredentialHeader, { type CredentialHeaderProps } from './credential-header';
+import { type CarouselImage, CarouselImageType } from './credential-image-carousel';
+import CredentialLogo, { type CredentialLogoProps, CredentialLogoSize } from './credential-logo';
 
 export { CarouselImage, CarouselImageType };
 export { CredentialCard, CredentialCardNotice, CredentialCardProps, CredentialCardRatio, CredentialCardShadow };

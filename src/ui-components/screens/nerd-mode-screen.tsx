@@ -8,7 +8,6 @@ import { TrustInfo, TrustInfoLabels } from '../../components';
 import ContrastingStatusBar from '../../utils/contrasting-status-bar';
 import { concatTestID } from '../../utils/testID';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
-import SectionEntityCluster from '../entity/entity-cluster';
 import NavigationHeader from '../header/navigation-header';
 import { CloseIcon } from '../icons/icons';
 import NerdModeItem, { NerdModeItemProps } from '../nerd-view/nerd-mode-item';
@@ -16,12 +15,12 @@ import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export interface AttributesLabels {
-  trustRegistry: string;
-  issuerIdentifier: string;
-  entityIdentifier: string;
-  role: string;
-  expand: string;
   collapse: string;
+  entityIdentifier: string;
+  expand: string;
+  issuerIdentifier: string;
+  role: string;
+  trustRegistry: string;
 }
 
 interface SectionEntityCluster {
@@ -61,7 +60,7 @@ function isSectionEntityCluster(item: NerdModeSectionItem): item is SectionEntit
   return (item as SectionEntityCluster).identifier !== undefined;
 }
 
-const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdModeSectionItem>);
+const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdModeSectionItem, NerdModeSection>);
 
 const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
   sections,
@@ -100,7 +99,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
 
   const listHeader = useMemo(() => {
     if (!entityCluster) {
-      return null;
+      return undefined;
     }
     return (
       <TrustInfo
@@ -169,7 +168,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 {...item}
                 expandedAttributes={expandedAttributes}
                 labels={labels}
-                last={lastElementsForSection[section.title] === item.attributeKey}
+                last={section.title ? lastElementsForSection[section.title] === item.attributeKey : false}
                 onCopyToClipboard={onCopyToClipboard}
                 onExpand={onExpand}
                 scrollOffset={scrollOffset}

@@ -39,8 +39,8 @@ const Selector: FC<SelectorProps> = ({ status, style, testID }) => {
   const rejected = status === SelectorStatus.Rejected;
 
   return (
-    <View testID={testID} style={[styles.wrapper, statusStyle, style]}>
-      {(checked || rejected) && <SelectorIcon testID={concatTestID(testID, 'status', status)} status={status} />}
+    <View style={[styles.wrapper, statusStyle, style]} testID={testID}>
+      {(checked || rejected) && <SelectorIcon status={status} testID={concatTestID(testID, 'status', status)} />}
     </View>
   );
 };

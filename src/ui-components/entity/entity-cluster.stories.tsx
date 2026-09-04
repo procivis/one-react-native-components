@@ -5,8 +5,8 @@ import { EntityTrustedIcon } from '../icons/entity';
 import EntityCluster, { EntityClusterProps } from './entity-cluster';
 
 type Args = EntityClusterProps & {
-  withStatusIcon: boolean;
   withImage: boolean;
+  withStatusIcon: boolean;
 };
 
 const Render = ({ withStatusIcon, withImage, ...args }: Args) => {
@@ -25,8 +25,8 @@ const Basic: StoryObj<Args> = {
   args: {
     entityName: 'Entity name',
     subline: 'entity detail',
-    withStatusIcon: true,
     withImage: true,
+    withStatusIcon: true,
   },
   render: Render,
 };
@@ -34,7 +34,6 @@ const Basic: StoryObj<Args> = {
 export { Basic as EntityCluster };
 
 export default {
-  title: 'component/entity/EntityCluster',
   component: EntityCluster,
   parameters: {
     design: {
@@ -42,4 +41,5 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25595&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
+  title: 'component/entity/EntityCluster',
 } as Meta<typeof EntityCluster>;

@@ -41,9 +41,9 @@ const ImagePreviewScreen: FC<ImagePreviewScreenProps> = ({ image, onClose, title
         style={{
           paddingTop: insets.top,
         }}
+        testID={concatTestID(testID, 'header')}
         title={title}
         titleColor={colorScheme.white}
-        testID={concatTestID(testID, 'header')}
       />
 
       <View onLayout={layoutHandler} style={styles.imageContainer}>

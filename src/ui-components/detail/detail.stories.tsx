@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Insets, StyleSheet } from 'react-native';
+import { fn } from 'storybook/test';
 
 import { Placeholder } from '../../../storybook/placeholder';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
@@ -11,7 +12,7 @@ type Args = DetailScreenProps & {
   onRightAction?: () => void;
 };
 
-const hitSlop: Insets = { top: 8, bottom: 12, left: 24, right: 24 };
+const hitSlop: Insets = { bottom: 12, left: 24, right: 24, top: 8 };
 
 const Render = ({ onRightAction, contentHeight, headerProps }: Args) => {
   return (
@@ -19,23 +20,24 @@ const Render = ({ onRightAction, contentHeight, headerProps }: Args) => {
       headerProps={{
         ...headerProps,
         rightButtons: [
-          <TouchableOpacity key="R" onPress={onRightAction} hitSlop={hitSlop}>
+          <TouchableOpacity hitSlop={hitSlop} key="R" onPress={onRightAction}>
             <Placeholder id="R" style={styles.rightButton} />
           </TouchableOpacity>,
         ],
       }}>
-      <Placeholder id="Content" style={[contentHeight ? { height: contentHeight } : styles.content]} />
+      <Placeholder id="Content" style={contentHeight ? { height: contentHeight } : styles.content} />
     </DetailScreen>
   );
 };
 
 const Basic: StoryObj<Args> = {
   args: {
-    headerProps: {
-      title: 'Title',
-      onBack: () => {},
-    },
     contentHeight: 0,
+    headerProps: {
+       
+      onBack: fn(),
+      title: 'Title',
+    },
   },
   render: Render,
 };
@@ -43,18 +45,18 @@ const Basic: StoryObj<Args> = {
 export { Basic as DetailScreen };
 
 export default {
-  title: 'view/Detail Screen',
+  argTypes: {
+    onRightAction: { action: 'onRightAction' },
+  },
   component: DetailScreen,
   parameters: {
-    noSafeArea: true,
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=466-138689',
     },
+    noSafeArea: true,
   },
-  argTypes: {
-    onRightAction: { action: 'onRightAction' },
-  },
+  title: 'view/Detail Screen',
 } as Meta<typeof DetailScreen>;
 
 const styles = StyleSheet.create({

@@ -81,12 +81,12 @@ export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey 
     let swIdentifierId: string | undefined;
     if (generateSwKey) {
       const identifiers = await core.listIdentifiers({
-        states: [IdentifierState.ACTIVE],
+        isRemote: false,
         organisationId,
         page: 0,
         pageSize: 1,
+        states: [IdentifierState.ACTIVE],
         types: [IdentifierType.DID],
-        isRemote: false,
       });
       swIdentifierId = identifiers.values.find((identifier) => identifier.name.startsWith(SW_DID_NAME_PREFIX))?.id;
     }

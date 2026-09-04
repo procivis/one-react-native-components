@@ -8,17 +8,17 @@ import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
 export interface ErrorScreenButton {
-  testID?: string;
-  label: string;
   disabled?: boolean;
+  label: string;
   onPress?: () => void;
+  testID?: string;
 }
 
 export interface ErrorScreenProps {
+  button: ErrorScreenButton;
+  subtitle: string;
   testID?: string;
   title: string;
-  subtitle: string;
-  button: ErrorScreenButton;
 }
 
 const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({ testID, title, subtitle, button }) => {

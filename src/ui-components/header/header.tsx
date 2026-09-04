@@ -11,11 +11,11 @@ export interface HeaderProps extends ViewProps {
   onBack?: () => void;
   rightButtons?: ReactNode[];
   style?: StyleProp<ViewStyle>;
-  titleRowStyle?: StyleProp<ViewStyle>;
   title: ReactNode;
+  titleRowStyle?: StyleProp<ViewStyle>;
 }
 
-const backButtonHitSlop: Insets = { top: 12, bottom: 12, left: 20, right: 20 };
+const backButtonHitSlop: Insets = { bottom: 12, left: 20, right: 20, top: 12 };
 
 /**
  * Unified screen header

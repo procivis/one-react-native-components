@@ -51,8 +51,8 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
     <TouchableHighlight
       disabled={disabled}
       onPress={pressHandler}
-      underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}
-      style={styles.touchableAttribute}>
+      style={styles.touchableAttribute}
+      underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}>
       {children}
     </TouchableHighlight>
   );
@@ -64,55 +64,55 @@ export type CredentialAttributeValue =
   | {
       attributes: CredentialAttribute[];
       image?: never;
-      value?: never;
-      values?: never;
-      valueErrorColor?: never;
       testID?: string;
+      value?: never;
+      valueErrorColor?: never;
+      values?: never;
     }
   | {
       attributes?: never;
       image: ImageSourcePropType;
+      testID?: string;
       value?: never;
-      values?: never;
       valueErrorColor?: never;
-      testID?: string;
-    }
-  | {
-      attributes?: never;
-      image?: never;
-      value: string;
       values?: never;
-      valueErrorColor?: boolean;
-      testID?: string;
     }
   | {
       attributes?: never;
       image?: never;
-      value?: never;
-      values: CredentialAttribute[];
-      valueErrorColor?: boolean;
       testID?: string;
+      value: string;
+      valueErrorColor?: boolean;
+      values?: never;
+    }
+  | {
+      attributes?: never;
+      image?: never;
+      testID?: string;
+      value?: never;
+      valueErrorColor?: boolean;
+      values: CredentialAttribute[];
     };
 
 export type CredentialAttribute = CredentialAttributeValue & {
   disabled?: boolean;
-  selected?: boolean;
-  nested?: boolean;
-  listValue?: boolean;
   id: string;
+  listValue?: boolean;
   name?: string;
+  nested?: boolean;
   path: string;
   rightAccessory?: ComponentType<any> | ReactElement;
+  selected?: boolean;
 };
 
 export type CredentialAttributeItemProps = CredentialAttribute & {
+  isExpanded?: boolean;
   last: boolean | undefined;
+  lessLabel?: string;
+  moreLabel?: string;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   onPress?: (id: string, selected: boolean) => void;
   style?: StyleProp<ViewStyle>;
-  isExpanded?: boolean;
-  moreLabel?: string;
-  lessLabel?: string;
 };
 
 const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
@@ -161,11 +161,15 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   const isObject = attributes && attributes.length > 0;
   const isArray = values && values.length > 0;
 
+  const dataItemBorderStyle: ViewStyle = {
+    borderColor: '#0004',
+  };
+
   return (
     <View style={[!nested && styles.attributeItemContainer, style]} testID={testID}>
       <View style={styles.attributeItemRow}>
         <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
-          <View style={[styles.dataItemButtonChildren]}>
+          <View style={styles.dataItemButtonChildren}>
             {(isObject || isArray || listValue) && (
               <View style={styles.decorator}>
                 <View
@@ -211,25 +215,25 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                 <TouchableOpacity
                   disabled={!onImagePreview}
                   onPress={imagePreviewHandler}
-                  style={[styles.dataItemImageWrapper, listValue ? styles.listValue : undefined]}>
+                  style={[styles.dataItemImageWrapper, dataItemBorderStyle, listValue ? styles.listValue : undefined]}>
                   <Image
                     resizeMode="cover"
-                    testID={concatTestID(testID, 'image')}
                     source={image}
                     style={styles.dataItemImage}
+                    testID={concatTestID(testID, 'image')}
                   />
                 </TouchableOpacity>
               )}
               {value && (
                 <ExpandableTypography
                   color={valueErrorColor ? colorScheme.error : colorScheme.text}
-                  numberOfLines={3}
                   ellipsizeMode="tail"
-                  preset="s"
                   hideExpandButton={!isExpanded && !listValue && !nested}
-                  style={listValue ? styles.listValue : undefined}
-                  moreLabel={moreLabel}
                   lessLabel={lessLabel}
+                  moreLabel={moreLabel}
+                  numberOfLines={3}
+                  preset="s"
+                  style={listValue ? styles.listValue : undefined}
                   testID={concatTestID(testID, 'value')}>
                   {value}
                 </ExpandableTypography>
@@ -237,11 +241,11 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
               {isObject &&
                 attributes.map((attribute, index, { length }) => (
                   <CredentialAttributeItem
-                    nested={true}
                     key={attribute.id}
-                    onPress={onPress}
                     last={index === length - 1}
+                    nested={true}
                     onImagePreview={onImagePreview}
+                    onPress={onPress}
                     {...attribute}
                   />
                 ))}
@@ -249,10 +253,10 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                 values.map((arrayValue, index, { length }) => (
                   <CredentialAttributeItem
                     key={arrayValue.id}
-                    onPress={onPress}
                     last={index === length - 1}
-                    onImagePreview={onImagePreview}
                     listValue={true}
+                    onImagePreview={onImagePreview}
+                    onPress={onPress}
                     {...arrayValue}
                     name={undefined}
                   />
@@ -291,7 +295,6 @@ const styles = StyleSheet.create({
     width: IMAGE_SIZE,
   },
   dataItemImageWrapper: {
-    borderColor: '#0004',
     borderRadius: 4,
     borderWidth: 0.5,
     height: IMAGE_SIZE,

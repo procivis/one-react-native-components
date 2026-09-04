@@ -24,8 +24,8 @@ export const CredentialCardShadow: Pick<ViewStyle, 'shadowColor' | 'shadowOffset
 export const CredentialCardRatio = 18 / 11;
 
 export type CredentialCardNotice = {
-  text: string;
   noticeIcon?: React.ComponentType<any> | React.ReactElement;
+  text: string;
 };
 
 export type CredentialCardProps = {
@@ -57,8 +57,8 @@ const CredentialCard: FC<CredentialCardProps> = ({
 }) => {
   const colorScheme = useAppColorScheme();
   const cardSize = {
-    width,
     height: Math.ceil(width / CredentialCardRatio),
+    width,
   };
 
   const headerPressHandler = useCallback(() => {
@@ -87,26 +87,26 @@ const CredentialCard: FC<CredentialCardProps> = ({
       {cardImage ? (
         'imageSource' in cardImage ? (
           <View style={cardSize}>
-            <Image testID={concatTestID(testID, 'imageSource')} source={cardImage.imageSource} style={styles.image} />
+            <Image source={cardImage.imageSource} style={styles.image} testID={concatTestID(testID, 'imageSource')} />
           </View>
         ) : (
-          <ImageOrComponent testID={concatTestID(testID, 'cardImage')} source={cardImage} style={cardSize} />
+          <ImageOrComponent source={cardImage} style={cardSize} testID={concatTestID(testID, 'cardImage')} />
         )
       ) : (
         <View
-          testID={concatTestID(testID, 'cardBackgroundColor', String(color))}
           style={[cardSize, { backgroundColor: color }]}
+          testID={concatTestID(testID, 'cardBackgroundColor', String(color))}
         />
       )}
-      {onCardPress && <TouchableOpacity style={styles.cardButton} onPress={cardPressHandler} />}
+      {onCardPress && <TouchableOpacity onPress={cardPressHandler} style={styles.cardButton} />}
       {shouldShowCarousel ? (
         <CarouselComponent
-          style={styles.carousel}
-          imagesToRender={cardCarouselImages ?? []}
           carouselSize={{
-            width: cardSize.width,
             height: cardSize.height - 60,
+            width: cardSize.width,
           }}
+          imagesToRender={cardCarouselImages ?? []}
+          style={styles.carousel}
           testID={concatTestID(testID, 'carousel')}
         />
       ) : null}
@@ -118,7 +118,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
         <CredentialHeader {...header} color={header.color ?? color} testID={concatTestID(testID, 'header')} />
       </TouchableOpacity>
       {notice && (
-        <BlurView blurStyle="soft" style={[styles.notice]} testID={concatTestID(testID, 'notice')}>
+        <BlurView blurStyle="soft" style={styles.notice} testID={concatTestID(testID, 'notice')}>
           {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
           <View style={styles.noticeTextWrapper}>
             <Typography

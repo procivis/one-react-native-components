@@ -20,23 +20,23 @@ export interface HoldButtonProps
     TouchableWithoutFeedbackProps,
     'children' | 'onLayout' | 'onPress' | 'onLongPress' | 'onPressIn' | 'onPressOut'
   > {
-  title: string;
-  subtitlePrefix: string;
-  subtitleSuffix: string;
   holdTimeoutSecs?: number;
   onFinished: () => void;
+  subtitlePrefix: string;
+  subtitleSuffix: string;
+  title: string;
 }
 
 interface ContentProps {
-  title: string;
+  disabled?: boolean;
+  height: number;
+  holdTimeoutSecs: number;
+  progress: SharedValue<number>;
   subtitlePrefix: string;
   subtitleSuffix: string;
-  width: number;
-  height: number;
   textColor: ColorValue;
-  progress: SharedValue<number>;
-  holdTimeoutSecs: number;
-  disabled?: boolean;
+  title: string;
+  width: number;
 }
 
 const Content = ({
@@ -69,25 +69,25 @@ const Content = ({
   }), [translateY]);
 
   return (
-    <View style={[styles.contentWrapper, disabled && styles.contentDisabled, { width, height }]} pointerEvents="none">
+    <View pointerEvents="none" style={[styles.contentWrapper, disabled && styles.contentDisabled, { height, width }]}>
       <Typography color={textColor} numberOfLines={1}>
         {title}
       </Typography>
 
       <View style={[styles.subtitle, disabled && styles.subtitleDisabled]}>
-        <Typography onLayout={onSubtitleLayout} preset="s/line-height-capped" color={textColor} numberOfLines={1}>
+        <Typography color={textColor} numberOfLines={1} onLayout={onSubtitleLayout} preset="s/line-height-capped">
           {subtitlePrefix}
         </Typography>
         <View style={[styles.subtitleSecsWrapper, { height: subtitleHeight }]}>
           <Animated.View style={[styles.subtitleSecs, movingUpStyle]}>
             {nums.map((val) => (
-              <Typography key={val} preset="s/line-height-capped" color={textColor} numberOfLines={1}>
+              <Typography color={textColor} key={val} numberOfLines={1} preset="s/line-height-capped">
                 {val}
               </Typography>
             ))}
           </Animated.View>
         </View>
-        <Typography preset="s/line-height-capped" color={textColor} numberOfLines={1}>
+        <Typography color={textColor} numberOfLines={1} preset="s/line-height-capped">
           {subtitleSuffix}
         </Typography>
       </View>
@@ -96,9 +96,9 @@ const Content = ({
 };
 
 interface HoldButtonLayoutedProps extends Omit<HoldButtonProps, 'style'> {
+  height: number;
   ref: React.ForwardedRef<TouchableOpacityRef>;
   width: number;
-  height: number;
 }
 
 const HoldButtonLayouted = ({
@@ -167,13 +167,13 @@ const HoldButtonLayouted = ({
   }), [translateX]);
 
   const contentProps = useMemo(
-    () => ({ title, subtitlePrefix, subtitleSuffix, progress, holdTimeoutSecs, width, height }),
+    () => ({ height, holdTimeoutSecs, progress, subtitlePrefix, subtitleSuffix, title, width }),
     [title, subtitlePrefix, subtitleSuffix, progress, holdTimeoutSecs, width, height],
   );
 
   return (
     <>
-      <Content textColor={colorScheme.accent} disabled={disabled} {...contentProps} />
+      <Content disabled={disabled} textColor={colorScheme.accent} {...contentProps} />
       {!disabled && (
         <Animated.View style={[styles.movingLayer, { backgroundColor: colorScheme.accent }, movingRightStyle]}>
           <Animated.View style={movingLeftStyle}>
@@ -184,14 +184,14 @@ const HoldButtonLayouted = ({
       <View style={styles.pressableLayer}>
         <TouchableOpacity
           accessibilityRole="button"
-          ref={ref}
+          activeOpacity={1}
           disabled={isFinished || disabled}
           onLongPress={onLongPress}
           onPressIn={isFinished ? undefined : onPressIn}
           onPressOut={isFinished ? undefined : onPressOut}
-          activeOpacity={1}
+          ref={ref}
           {...props}>
-          <View style={{ width, height }} />
+          <View style={{ height, width }} />
         </TouchableOpacity>
       </View>
     </>
@@ -207,9 +207,9 @@ const HoldButton = React.forwardRef<TouchableOpacityRef, HoldButtonProps>(
   ({ style, disabled, ...props }, ref) => {
     const colorScheme = useAppColorScheme();
 
-    const [layout, setLayout] = useState<{ width: number; height: number }>();
+    const [layout, setLayout] = useState<{ height: number, width: number; }>();
     const onContainerLayout = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
-      setLayout({ width: nativeEvent.layout.width, height: nativeEvent.layout.height });
+      setLayout({ height: nativeEvent.layout.height, width: nativeEvent.layout.width });
     }, []);
 
     return (
@@ -224,7 +224,7 @@ const HoldButton = React.forwardRef<TouchableOpacityRef, HoldButtonProps>(
           },
           style,
         ]}>
-        {layout && <HoldButtonLayouted ref={ref} disabled={disabled} {...props} {...layout} />}
+        {layout && <HoldButtonLayouted disabled={disabled} ref={ref} {...props} {...layout} />}
       </View>
     );
   },

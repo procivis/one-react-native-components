@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 import { OneError } from '@procivis/react-native-one-core';
 import * as Sentry from '@sentry/react-native';
 
@@ -6,7 +6,7 @@ export function reportError(message: string) {
   if (!__DEV__) {
     try {
       Sentry.captureException(new Error(message));
-    } catch (error) {
+    } catch {
       // do nothing
     }
   } else {
@@ -52,7 +52,7 @@ export function reportException(e: unknown, message?: string) {
           Sentry.captureException(e);
         }
       });
-    } catch (error) {
+    } catch {
       // do nothing
     }
   } else {
@@ -70,7 +70,7 @@ export function reportTraceInfo(category: string, message?: string, data?: Sentr
         level: 'log',
         message,
       });
-    } catch (error) {
+    } catch {
       // do nothing
     }
   } else {

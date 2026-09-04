@@ -3,26 +3,43 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Carousel } from 'react-native-reanimated-carousel';
 import Svg, { Circle } from 'react-native-svg';
 
-import { concatTestID } from '../../../utils';
+import { concatTestID } from '../../../utils/testID';
 
 export enum CarouselImageType {
   Barcode = 'Barcode',
-  QrCode = 'QrCode',
   MRZ = 'MRZ',
   Photo = 'Photo',
+  QrCode = 'QrCode'
 }
 
 export type CarouselImage = {
-  type: CarouselImageType;
   element: React.ReactElement;
+  type: CarouselImageType;
 };
 
 type CarouselProps = {
-  carouselSize: { width: number; height: number };
+  carouselSize: { height: number, width: number; };
   imagesToRender: CarouselImage[];
   style?: StyleProp<ViewStyle>;
   testID?: string;
 };
+
+const itemStyle = (type: CarouselImageType): StyleProp<ViewStyle> => {
+  switch (type) {
+    case CarouselImageType.Barcode:
+      return styles.Barcode;
+    case CarouselImageType.MRZ:
+      return styles.MRZ;
+    case CarouselImageType.Photo: {
+      const borderStyle = {
+        borderColor: '#FFFFFF',
+      }
+      return [styles.Photo, borderStyle];
+    }
+    case CarouselImageType.QrCode:
+      return styles.QrCode;
+  };
+}
 
 const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, style, testID }) => {
   const [selectedDot, setSelectedDot] = useState(0);
@@ -40,32 +57,32 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
   return (
     <View style={[styles.container, style]}>
       <Carousel
-        onSnapToItem={setSelectedDot}
-        scrollEnabled={numberOfSlides >= 2}
         data={imagesToRender}
-        testID={testID}
         onConfigurePanGesture={(gesture) => {
           gesture.activeOffsetX([-10, 10]);
           gesture.failOffsetY([-10, 10]);
         }}
-        style={carouselSize}
+        onSnapToItem={setSelectedDot}
         renderItem={({ item: { type, element } }) => (
           <View style={styles.carouselItem}>
-            <View style={[styles[type]]}>{element}</View>
+            <View style={itemStyle(type)}>{element}</View>
           </View>
         )}
+        scrollEnabled={numberOfSlides >= 2}
+        style={carouselSize}
+        testID={testID}
       />
       {numberOfSlides >= 2 ? (
         <View style={styles.pageDotContainer}>
           {imagesToRender.map((_, index) => (
-            <Svg key={index} width="8" height="8" viewBox="0 0 8 8" fill="none">
+            <Svg fill="none" height="8" key={index} viewBox="0 0 8 8" width="8">
               <Circle
-                testID={concatTestID(testID, 'dot', index.toString())}
                 cx="4.5"
                 cy="4"
-                r="4"
                 fill="white"
                 fillOpacity={selectedDot === index ? 0.8 : 0.2}
+                r="4"
+                testID={concatTestID(testID, 'dot', index.toString())}
               />
             </Svg>
           ))}
@@ -76,23 +93,18 @@ const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, st
 };
 
 const styles = StyleSheet.create({
-  // eslint-disable-next-line react-native/no-unused-styles
   Barcode: { borderRadius: 4, borderWidth: 0, height: '50%', width: '80%' },
-  // eslint-disable-next-line react-native/no-unused-styles
   MRZ: {
     height: '50%',
     width: '100%',
   },
-  // eslint-disable-next-line react-native/no-unused-styles
   Photo: {
     aspectRatio: 1,
-    borderColor: '#FFFFFF',
     borderRadius: 100,
     borderWidth: 2,
     height: '70%',
     overflow: 'hidden',
   },
-  // eslint-disable-next-line react-native/no-unused-styles
   QrCode: { aspectRatio: 1, borderRadius: 4, borderWidth: 0, height: '70%' },
   carouselItem: {
     alignItems: 'center',

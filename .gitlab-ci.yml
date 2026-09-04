@@ -1,14 +1,14 @@
-image: node:18.20.7-alpine
+image: node:22-alpine3.22
 
 include:
-  - project: "procivis/one/one-operations"
+  - project: 'procivis/one/one-operations'
     file:
-      - "gitlab/docker.gitlab-ci.yml"
-      - "gitlab/github.gitlab-ci.yml"
-      - "gitlab/ci-tools.gitlab-ci.yml"
+      - 'gitlab/docker.gitlab-ci.yml'
+      - 'gitlab/github.gitlab-ci.yml'
+      - 'gitlab/ci-tools.gitlab-ci.yml'
 
 variables:
-  PNPM_CACHE_FOLDER: "~/.pnpm-store"
+  PNPM_CACHE_FOLDER: '~/.pnpm-store'
 
 workflow:
   rules:
@@ -188,7 +188,7 @@ deploy:storybook:
 github:push:
   stage: github
   variables:
-    GITHUB_PROJECT: "procivis/one-react-native-components"
+    GITHUB_PROJECT: 'procivis/one-react-native-components'
     PROJECT: $CI_PROJECT_NAME
   extends:
     - .ci-tool:open_source_release

@@ -38,18 +38,18 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
   return (
     <View style={[styles.logo, sizeStyle, { backgroundColor: color }, style]} testID={testID}>
       {icon ? (
-        <ImageOrComponent testID={concatTestID(testID, 'icon')} source={icon} style={sizeStyle} />
+        <ImageOrComponent source={icon} style={sizeStyle} testID={concatTestID(testID, 'icon')} />
       ) : (
         <View testID={concatTestID(testID, 'backgroundColor', String(color))}>
           <View testID={concatTestID(testID, 'textColor', String(iconLabelColor))}>
             <Typography
-              testID={concatTestID(testID, 'name')}
               color={iconLabelColor}
               preset={size === CredentialLogoSize.Regular ? 'm' : 'xs'}
               style={[
                 styles.imagePlaceholder,
                 size === CredentialLogoSize.Regular ? styles.imagePlaceholderRegular : styles.imagePlaceholderSmall,
-              ]}>
+              ]}
+              testID={concatTestID(testID, 'name')}>
               {showFullName ? credentialName : credentialName.substring(0, 1)}
             </Typography>
           </View>

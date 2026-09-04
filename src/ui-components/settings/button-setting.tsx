@@ -46,12 +46,12 @@ const ButtonSetting: FunctionComponent<ButtonSettingProps> = ({
 
   return (
     <TouchableOpacity
-      disabled={disabled}
       accessibilityRole="button"
+      disabled={disabled}
       onPress={onPress}
       style={styles.container}
       testID={testID}>
-      <SettingItem icon={icon} style={style} title={title} testID={concatTestID(testID, 'text')}>
+      <SettingItem icon={icon} style={style} testID={concatTestID(testID, 'text')} title={title}>
         {accessoryView}
       </SettingItem>
     </TouchableOpacity>

@@ -5,7 +5,7 @@ import SearchBar, { SearchBarProps } from './search-bar';
 
 const Render = (args: Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChange'>) => {
   const [searchPhrase, setSearchPhrase] = useState('');
-  return <SearchBar {...args} searchPhrase={searchPhrase} onSearchPhraseChange={setSearchPhrase} />;
+  return <SearchBar {...args} onSearchPhraseChange={setSearchPhrase} searchPhrase={searchPhrase} />;
 };
 
 const Basic: StoryObj<Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChange'>> = {
@@ -19,7 +19,10 @@ const Basic: StoryObj<Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChang
 export { Basic as SearchBar };
 
 export default {
-  title: 'base/input/Search Bar',
+  argTypes: {
+    onSearchPhraseChange: { control: { disable: true, type: undefined } },
+    searchPhrase: { control: { disable: true, type: undefined } },
+  },
   component: SearchBar,
   parameters: {
     controls: {
@@ -30,8 +33,5 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1143-40433&t=KAAJ0oKY3xb6VNtA-4',
     },
   },
-  argTypes: {
-    searchPhrase: { control: { type: undefined, disable: true } },
-    onSearchPhraseChange: { control: { type: undefined, disable: true } },
-  },
+  title: 'base/input/Search Bar',
 } as Meta<typeof SearchBar>;

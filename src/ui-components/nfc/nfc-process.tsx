@@ -11,17 +11,17 @@ import { LoaderViewState } from '../loader';
 import { ScrollViewScreen } from '../screens';
 
 interface NFCProcessProps {
-  testID: string;
-  processState: LoaderViewState;
   handleButtonClick: () => void;
   labels: {
-    share: string;
-    connectivity: string;
     close: string;
-    tryAgain: string;
     conectivityInfo: string;
+    connectivity: string;
+    share: string;
     shareInfo: string;
+    tryAgain: string;
   };
+  processState: LoaderViewState;
+  testID: string;
 }
 
 const NFCProcess: FC<NFCProcessProps> = ({ testID, processState, labels, handleButtonClick }) => {
@@ -42,7 +42,7 @@ const NFCProcess: FC<NFCProcessProps> = ({ testID, processState, labels, handleB
       testID={testID}>
       <View style={styles.content} testID={concatTestID(testID, 'content')}>
         <View style={styles.info}>
-          {processState === LoaderViewState.InProgress ? <NFCIcon width={50} height={50} /> : <StatusWarningIcon />}
+          {processState === LoaderViewState.InProgress ? <NFCIcon height={50} width={50} /> : <StatusWarningIcon />}
           <Typography align="center" color={colorScheme.black}>
             {processState === LoaderViewState.InProgress ? labels.shareInfo : labels.conectivityInfo}
           </Typography>

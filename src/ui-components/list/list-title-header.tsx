@@ -5,15 +5,15 @@ import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export type ListTitleHeaderProps = {
-  title: string;
   testID?: string;
+  title: string;
 };
 
 const ListTitleHeader: FC<ListTitleHeaderProps> = ({ title, testID }) => {
   const colorScheme = useAppColorScheme();
 
   return (
-    <Typography testID={testID} accessibilityRole="header" color={colorScheme.text} preset="l" style={styles.listTitle}>
+    <Typography accessibilityRole="header" color={colorScheme.text} preset="l" style={styles.listTitle} testID={testID}>
       {title}
     </Typography>
   );

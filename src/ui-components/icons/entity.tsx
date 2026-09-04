@@ -7,9 +7,9 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 export const EntityTrustedIcon: FC<SvgProps> = ({ ...props }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg width={16} height={19} viewBox="0 0 16 19" fill="none" {...props}>
-      <Mask id="a" maskUnits="userSpaceOnUse" x={0} y={0.0496979} width={18} height={21} fill={colorScheme.black}>
-        <Path fill={colorScheme.white} d="M0 0.0496979H18V21.0496979H0z" />
+    <Svg fill="none" height={19} viewBox="0 0 16 19" width={16} {...props}>
+      <Mask fill={colorScheme.black} height={21} id="a" maskUnits="userSpaceOnUse" width={18} x={0} y={0.0496979}>
+        <Path d="M0 0.0496979H18V21.0496979H0z" fill={colorScheme.white} />
         <Path d="M10.265 2.255a4 4 0 00-2.53 0l-3 1A4 4 0 002 7.05v4.117a7 7 0 007 7 7 7 0 007-7V7.05a4 4 0 00-2.735-3.795l-3-1z" />
       </Mask>
       <Path
@@ -34,7 +34,7 @@ export const EntityTrustedIcon: FC<SvgProps> = ({ ...props }) => {
 export const EntityNotTrustedIcon: FC<SvgProps> = ({ ...props }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg width={22} height={22} viewBox="0 0 22 22" fill="none" {...props}>
+    <Svg fill="none" height={22} viewBox="0 0 22 22" width={22} {...props}>
       <Path
         d="M10.575 20a8.241 8.241 0 01-3.312-.672 8.649 8.649 0 01-2.74-1.851 8.837 8.837 0 01-1.85-2.74A8.242 8.242 0 012 11.425c0-1.173.224-2.277.672-3.312a8.793 8.793 0 014.582-4.59 8.243 8.243 0 013.312-.672c1.18 0 2.286.224 3.32.672a8.766 8.766 0 012.74 1.86 8.667 8.667 0 011.86 2.73 8.243 8.243 0 01.672 3.312 8.243 8.243 0 01-.673 3.312 8.768 8.768 0 01-4.598 4.59 8.241 8.241 0 01-3.312.673z"
         fill={colorScheme.error}

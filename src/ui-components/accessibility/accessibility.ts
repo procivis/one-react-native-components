@@ -62,7 +62,7 @@ export function useIsOutsideTransition<
     string | undefined,
     NavigationState<Record<string, any>>,
     {},
-    { transitionStart: {}; transitionEnd: {} }
+    { transitionEnd: {}, transitionStart: {}; }
   >,
 >() {
   const navigation = useNavigation<TNavigationProp>();
@@ -106,7 +106,7 @@ export function useIsOutsideTransition<
  * @param component component ref
  * @note Disabled on android as it is not reliable
  */
-export const focusAccessibility = (component?: React.ElementType<any, any> | null) => {
+export const focusAccessibility = (component?: React.ElementType | null) => {
   if (Platform.OS === 'ios' && component) {
     const nodeHandle = findNodeHandle(component);
     if (nodeHandle) {
@@ -120,7 +120,7 @@ export const focusAccessibility = (component?: React.ElementType<any, any> | nul
  * @param {boolean} focused Focusing happens when this changes to `true`
  * @returns reference to be used with the target element
  */
-export const useAccessibilityFocus = <T extends React.ElementType<any, any>>(focused: boolean = true) => {
+export const useAccessibilityFocus = <T extends React.ElementType>(focused: boolean = true) => {
   const ref = useRef<T>(null);
 
   useEffect(() => {

@@ -45,13 +45,13 @@ export const useOrganisationUpdate = () => {
       onError: async (err) => {
         reportException(err, 'Update organisation failure');
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.removeQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+        queryClient.removeQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
         await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
         await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },
       onSuccess: async () => {
         await queryClient.invalidateQueries(ORGANISATION_DETAIL_QUERY_KEY);
-        await queryClient.removeQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+        queryClient.removeQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
         await queryClient.invalidateQueries(VERIFIER_INSTANCE_QUERY_KEY);
         await queryClient.invalidateQueries(WALLET_INSTANCE_QUERY_KEY);
       },

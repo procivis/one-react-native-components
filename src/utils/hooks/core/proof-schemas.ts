@@ -23,7 +23,7 @@ export const useProofSchemas = (queryParams?: Partial<ProofSchemaListQuery>, kee
 
   return useInfiniteQuery(
     [PROOF_SCHEMA_LIST_QUERY_KEY, ...getQueryKeyFromProofSchemaListQueryParams(queryParams)],
-    ({ pageParam = 0 }) =>
+    ({ pageParam = 0 }: { pageParam?: number }) =>
       core
         .listProofSchemas({
           organisationId,
@@ -110,7 +110,7 @@ export const useProofSchemaDelete = () => {
     onSuccess: async (_, proofSchemaId) => {
       await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
-      await queryClient.removeQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
+      queryClient.removeQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
     },
   });
 };
@@ -120,7 +120,7 @@ export const useShareProofSchema = (schemaId?: string) => {
 
   return useQuery(
     [PROOF_SCHEMA_SHARE_QUERY_KEY, schemaId],
-    () => (schemaId ? core.shareProofSchema(schemaId) : Promise.reject()),
+    () => (schemaId ? core.shareProofSchema(schemaId) : Promise.reject(new Error())),
     {
       enabled: Boolean(schemaId),
       keepPreviousData: true,

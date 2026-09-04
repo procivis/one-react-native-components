@@ -8,29 +8,29 @@ const Render = ({ ...args }: SelectionInputProps) => {
   return (
     <SelectionInput
       {...args}
-      selectedValue={selectedValue}
       onChange={(choice) => {
         setSelectedValue(choice.label);
         return false;
       }}
+      selectedValue={selectedValue}
     />
   );
 };
 
 const Basic: StoryObj<typeof SelectionInput> = {
   args: {
+    disabled: false,
+    error: '',
     label: 'Label',
+    pickerCancelLabel: 'Cancel',
+    pickerConfirmLabel: 'Select',
+    pickerTitle: 'Picker Title',
+    style: { margin: 24 },
     values: [
       { label: 'Item1', value: 1 },
       { label: 'Item2', value: 2 },
-      { label: 'Item3', value: 3, shortLabel: 'I3' },
+      { label: 'Item3', shortLabel: 'I3', value: 3 },
     ],
-    pickerTitle: 'Picker Title',
-    pickerConfirmLabel: 'Select',
-    pickerCancelLabel: 'Cancel',
-    disabled: false,
-    error: '',
-    style: { margin: 24 },
   },
   render: Render,
 };
@@ -38,7 +38,6 @@ const Basic: StoryObj<typeof SelectionInput> = {
 export { Basic as SelectionInput };
 
 export default {
-  title: 'base/input/Selection Input',
   component: SelectionInput,
   parameters: {
     design: {
@@ -46,4 +45,5 @@ export default {
       url: 'https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=4%3A127&t=if2gUkBSc85H9hWC-4',
     },
   },
+  title: 'base/input/Selection Input',
 } as Meta<typeof SelectionInput>;

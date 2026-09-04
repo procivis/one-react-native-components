@@ -8,7 +8,7 @@ const DAY = 24 * 60 * MINUTE;
 
 // OS locale
 const systemLocale: string | undefined = (
-  Platform.OS === 'ios' ? Settings.get('AppleLocale') : I18nManager.getConstants().localeIdentifier
+  Platform.OS === 'ios' ? Settings.get('AppleLocale') as string | undefined : I18nManager.getConstants().localeIdentifier
 )
   ?.match(/[a-zA-Z]+_[a-zA-Z]+/)?.[0]
   ?.replaceAll('_', '-');
@@ -41,12 +41,12 @@ export const formatTime = (date: Date, locale?: string) => {
 export const formatDateTime = (date: Date, locale?: string) => {
   try {
     return date.toLocaleString(locale || systemLocale, {
-      hour: '2-digit',
-      minute: '2-digit',
-      year: 'numeric',
-      month: 'numeric',
       day: 'numeric',
+      hour: '2-digit',
       hour12: locale === 'en-US',
+      minute: '2-digit',
+      month: 'numeric',
+      year: 'numeric',
     });
   } catch {
     return undefined;

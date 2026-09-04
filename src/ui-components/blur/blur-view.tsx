@@ -7,18 +7,18 @@ import { useAppColorScheme } from '../theme';
 
 export interface BlurViewProps extends ViewProps {
   blurAmount?: number;
+  blurStyle: 'soft' | 'strong' | 'header';
   color?: ColorValue;
   darkMode?: boolean;
-  blurStyle: 'soft' | 'strong' | 'header';
 }
 
 const BACKGROUND_COLOR = {
-  light: 'rgba(255, 255, 255, 0.8)',
   dark: 'rgba(16, 12, 12, 0.8)',
-  thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
+  light: 'rgba(255, 255, 255, 0.8)',
   thickMaterialDark: 'rgba(16, 12, 12, 0.95)',
-  thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
+  thickMaterialLight: 'rgba(255, 255, 255, 0.95)',
   thinMaterialDark: 'rgba(16, 12, 12, 0.8)',
+  thinMaterialLight: 'rgba(255, 255, 255, 0.8)',
 };
 
 const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({

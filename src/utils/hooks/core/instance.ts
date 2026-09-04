@@ -105,7 +105,7 @@ export const useInstanceCheck = (instanceId: HolderInstance['id'] | undefined) =
   }, [isLoading, refreshStatus, instanceDetail, refresh, instanceId]);
 
   return {
-    isLoading: isLoading || isRefreshing,
     instanceDetail: isLoading || isRefreshing ? undefined : instanceDetail,
+    isLoading: isLoading || isRefreshing,
   };
 };

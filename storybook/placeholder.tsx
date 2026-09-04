@@ -12,9 +12,13 @@ interface Props {
  * Placeholder component to use in stories for replacable generic content
  */
 export const Placeholder: FC<Props> = ({ style, id = 'Placeholder' }) => {
+  const colorsStyle: ViewStyle = {
+    backgroundColor: '#E6F7FF',
+    borderColor: '#1890FF',
+  };
   return (
-    <View style={[styles.placeholder, style]}>
-      <Typography preset="m" color="#1890FF">
+    <View style={[styles.placeholder, colorsStyle, style]}>
+      <Typography color="#1890FF" preset="m">
         {id}
       </Typography>
     </View>
@@ -24,8 +28,6 @@ export const Placeholder: FC<Props> = ({ style, id = 'Placeholder' }) => {
 const styles = StyleSheet.create({
   placeholder: {
     alignItems: 'center',
-    backgroundColor: '#E6F7FF',
-    borderColor: '#1890FF',
     borderRadius: 3,
     borderStyle: 'dashed',
     borderWidth: 1,

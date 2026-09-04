@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -8,8 +7,8 @@ import { Biometry } from './keypad';
 import { PinCodeScreen, PinCodeScreenActions, PinCodeScreenProps } from './pin-code-screen';
 
 type Props = PinCodeScreenProps & {
-  withBackButton: boolean;
   showActions: boolean;
+  withBackButton: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -38,7 +37,7 @@ const Render = ({
         {...args}
       />
       {showActions && (
-        <Button style={styles.actionButton} onPress={() => actionsRef.current?.shakeKeypad()} title="shake" />
+        <Button onPress={() => actionsRef.current?.shakeKeypad()} style={styles.actionButton} title="shake" />
       )}
     </>
   );
@@ -46,14 +45,14 @@ const Render = ({
 
 const Basic: StoryObj<Props> = {
   args: {
-    length: 6,
-    enteredLength: 0,
-    withBackButton: true,
-    title: 'Title',
-    instruction: 'Instruction',
-    error: '',
     biometry: Biometry.FaceID,
+    enteredLength: 0,
+    error: '',
+    instruction: 'Instruction',
+    length: 6,
     showActions: false,
+    title: 'Title',
+    withBackButton: true,
   },
   render: Render,
 };
@@ -61,27 +60,27 @@ const Basic: StoryObj<Props> = {
 export { Basic as PINScreen };
 
 export default {
-  title: 'screen/PIN Screen',
+  argTypes: {
+    biometry: {
+      control: { type: 'radio' },
+      options: [Biometry.FaceID, Biometry.Other],
+    },
+    onBack: { action: 'onBack' },
+    onBiometricPress: { action: 'onBiometricPress' },
+    onDeleteAll: { action: 'onDeleteAll' },
+    onPressDelete: { action: 'onPressDelete' },
+    onPressDigit: { action: 'onPressDigit' },
+  },
+  args: {
+    onAccessibilityAnnounced: () => {},
+  },
   component: PinCodeScreen,
   parameters: {
-    noSafeArea: true,
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=621-21892&mode=design&t=nCa9UdCDzPYtOPgu-4',
     },
+    noSafeArea: true,
   },
-  args: {
-    onAccessibilityAnnounced: fn(),
-  },
-  argTypes: {
-    onBack: { action: 'onBack' },
-    onBiometricPress: { action: 'onBiometricPress' },
-    onPressDigit: { action: 'onPressDigit' },
-    onPressDelete: { action: 'onPressDelete' },
-    onDeleteAll: { action: 'onDeleteAll' },
-    biometry: {
-      options: [Biometry.FaceID, Biometry.Other],
-      control: { type: 'radio' },
-    },
-  },
+  title: 'screen/PIN Screen',
 } as Meta<typeof PinCodeScreen>;

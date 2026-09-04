@@ -28,11 +28,11 @@ const getContrastRatio = (colorF: ColorValue, colorB: ColorValue) => {
 };
 
 interface TestProps {
-  name: string;
-  colorF: string;
-  colorB: string;
-  AAlimit: number;
   AAAlimit: number;
+  AAlimit: number;
+  colorB: string;
+  colorF: string;
+  name: string;
 }
 
 enum Rating {
@@ -66,11 +66,11 @@ const Test: FC<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
   const ratingText = getRatingText(rating, AAlimit, AAAlimit);
   return (
     <View style={styles.testContainer}>
-      <Typography preset="m" color="black">
+      <Typography color="black" preset="m">
         {name}
       </Typography>
       <View style={{ backgroundColor: colorScheme.white }}>
-        <Typography color={colorF} style={{ backgroundColor: colorB }} align="center">
+        <Typography align="center" color={colorF} style={{ backgroundColor: colorB }}>
           {`TEXT ${colorF}/${colorB}`}
         </Typography>
       </View>
@@ -88,15 +88,15 @@ const Test: FC<TestProps> = ({ name, colorF, colorB, AAlimit, AAAlimit }) => {
   );
 };
 
-const TextBackgroundTest: FC<{ text: SimpleColorName; background: SimpleColorName }> = ({ text, background }) => {
+const TextBackgroundTest: FC<{ background: SimpleColorName, text: SimpleColorName; }> = ({ text, background }) => {
   const colorScheme = useAppColorScheme();
   return (
     <Test
-      name={`${text} on ${background}`}
-      colorF={colorScheme[text]}
-      colorB={colorScheme[background]}
-      AAlimit={4.5}
       AAAlimit={7}
+      AAlimit={4.5}
+      colorB={colorScheme[background]}
+      colorF={colorScheme[text]}
+      name={`${text} on ${background}`}
     />
   );
 };
@@ -104,24 +104,24 @@ const TextBackgroundTest: FC<{ text: SimpleColorName; background: SimpleColorNam
 export const ColorContrast: StoryObj = {
   render: () => (
     <View style={styles.container}>
-      <TextBackgroundTest text="text" background="white" />
-      <TextBackgroundTest text="text" background="background" />
-      <TextBackgroundTest text="accentText" background="accent" />
-      <TextBackgroundTest text="accent" background="background" />
-      <TextBackgroundTest text="linkText" background="white" />
-      <TextBackgroundTest text="linkText" background="background" />
+      <TextBackgroundTest background="white" text="text" />
+      <TextBackgroundTest background="background" text="text" />
+      <TextBackgroundTest background="accent" text="accentText" />
+      <TextBackgroundTest background="background" text="accent" />
+      <TextBackgroundTest background="white" text="linkText" />
+      <TextBackgroundTest background="background" text="linkText" />
     </View>
   ),
 };
 
 export default {
-  title: 'test/Color Contrast',
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=0-1',
     },
   },
+  title: 'test/Color Contrast',
 } as Meta;
 
 const styles = StyleSheet.create({

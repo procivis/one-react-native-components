@@ -16,11 +16,11 @@ import Avatar, { AvatarProps } from './avatar';
 export type EntityClusterProps = ViewProps & {
   avatar?: AvatarProps;
   entityName: string;
+  isLoading?: boolean;
   subline?: string;
-  textColor?: string;
   sublineColor?: string;
   testID?: string;
-  isLoading?: boolean;
+  textColor?: string;
 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25595&mode=design&t=YI1oD2BfBie5HcvJ-0
@@ -86,21 +86,21 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
           </Animated.View>
         ) : (
           <Typography
-            testID={concatTestID(testID, 'entityName')}
             color={textColor ?? colorScheme.text}
             numberOfLines={1}
             preset="m"
-            style={styles.entityName}>
+            style={styles.entityName}
+            testID={concatTestID(testID, 'entityName')}>
             {!isLoading ? entityName : undefined}
           </Typography>
         )}
         {subline && (
           <View>
             <Typography
-              testID={concatTestID(testID, 'subline')}
               color={sublineColor ?? colorScheme.text}
               numberOfLines={1}
-              preset="xs">
+              preset="xs"
+              testID={concatTestID(testID, 'subline')}>
               {subline}
             </Typography>
           </View>

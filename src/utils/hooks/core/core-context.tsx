@@ -14,14 +14,14 @@ import { reportException } from '../../reporting';
 
 interface ContextValue {
   core: ONECore;
-  organisationId: string;
   initialize: (force?: boolean) => Promise<ONECore>;
+  organisationId: string;
 }
 
 const defaultContextValue: ContextValue = {
   core: {} as ONECore,
+  initialize: () => Promise.reject(new Error()),
   organisationId: '11111111-2222-3333-a444-ffffffffffff',
-  initialize: () => Promise.reject(),
 };
 
 export type ONECoreContextProviderProps = {
@@ -74,8 +74,8 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
   const contextValue = useMemo(
     () => ({
       core: core ?? defaultContextValue.core,
-      organisationId,
       initialize,
+      organisationId,
     }),
     [core, initialize, organisationId],
   );

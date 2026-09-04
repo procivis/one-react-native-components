@@ -21,15 +21,15 @@ import DataItem from './data-item';
 export type HistoryDetailsLabels = {
   credentialCard: CardLabels;
   data: {
-    date: string;
     action: string;
+    date: string;
   };
   infoButtonAccessibility?: string;
   relatedAssets: string;
   title: string;
 };
 
-type CredentialDetails = Omit<
+type HistoryCredentialDetailsProps = Omit<
   CredentialDetailsProps,
   'expanded' | 'labels' | 'lastItem' | 'onHeaderPress' | 'onImagePreview'
 >;
@@ -44,19 +44,26 @@ type CredentialCard = Omit<
 
 export type HistoryDetailsViewProps = {
   assets?: {
-    header?: CredentialHeaderProps & {
-      onPressed?: () => void;
-    };
     cards?: (
       | {
-          credentialDetails: CredentialDetails;
+          credentialDetails: HistoryCredentialDetailsProps;
         }
       | {
           credentialCard: CredentialCard;
         }
     )[];
+    header?: CredentialHeaderProps & {
+      onPressed?: () => void;
+    };
   };
   data: {
+    action: {
+      color: ColorValue;
+      icon: ComponentType<any> | ReactElement;
+      label: string;
+      testID?: string;
+    };
+    date: string;
     header?:
       | {
           entity: TrustInfoProps;
@@ -64,19 +71,12 @@ export type HistoryDetailsViewProps = {
       | {
           credentialHeader: CredentialHeaderProps;
         };
-    date: string;
-    action: {
-      icon: ComponentType<any> | ReactElement;
-      label: string;
-      color: ColorValue;
-      testID?: string;
-    };
   };
   headerButton?: ReactElement;
   labels: HistoryDetailsLabels;
   onBackPressed: () => void;
-  onInfoPressed?: () => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
+  onInfoPressed?: () => void;
   testID: string;
 };
 
@@ -97,7 +97,7 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
   // Expand the first credential
   useEffect(() => {
     if (assets?.cards && assets.cards.length > 0) {
-      let id =
+      const id =
         'credentialDetails' in assets.cards[0]
           ? assets.cards[0].credentialDetails.credentialId
           : assets.cards[0].credentialCard.card.credentialId;
@@ -118,9 +118,9 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
 
     return (
       <HeaderInfoButton
+        accessibilityLabel={labels.infoButtonAccessibility ?? ''}
         onPress={onInfoPressed}
         testID={concatTestID(testID, 'header', 'info')}
-        accessibilityLabel={labels.infoButtonAccessibility ?? ''}
       />
     );
   }, [headerButton, labels.infoButtonAccessibility, onInfoPressed, testID]);

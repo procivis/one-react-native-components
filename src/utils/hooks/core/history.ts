@@ -12,7 +12,7 @@ export const useHistory = (queryParams?: Partial<HistoryListQuery>) => {
 
   return useInfiniteQuery(
     [HISTORY_LIST_QUERY_KEY, ...getQueryKeyFromHistoryListQueryParams(queryParams)],
-    async ({ pageParam = 0 }) => {
+    async ({ pageParam = 0 }: { pageParam?: number }) => {
       const historyPage = await core.listHistory({
         organisationId,
         page: pageParam,

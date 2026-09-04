@@ -15,7 +15,7 @@ const ContrastingStatusBar: FC<ContrastingStatusBarProps> = ({ backgroundColor, 
     () => (getBrightness(backgroundColor) > 0.5 ? 'dark-content' : 'light-content'),
     [backgroundColor],
   );
-  return <StatusBar translucent={true} barStyle={barStyle} backgroundColor={'transparent'} {...props} />;
+  return <StatusBar barStyle={barStyle} {...props} />;
 };
 
 export default ContrastingStatusBar;

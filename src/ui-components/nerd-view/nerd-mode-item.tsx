@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dimensions, LayoutChangeEvent, Linking, StyleSheet, View, ViewStyle } from 'react-native';
+import { Dimensions, LayoutChangeEvent, Linking, StyleSheet, View, ViewInstance, ViewStyle } from 'react-native';
 import Animated, {
   clamp,
   SharedValue,
@@ -32,8 +32,8 @@ export type NerdModeItemProps = {
   expandedAttributes?: number;
   highlightedText?: string;
   labels: {
-    expand: string;
     collapse: string;
+    expand: string;
   };
   last?: boolean;
   link?: string;
@@ -158,7 +158,7 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
   testID,
 }) => {
   const colorScheme = useAppColorScheme();
-  const valueViewRef = React.useRef<View>(null);
+  const valueViewRef = React.useRef<ViewInstance>(null);
   const [isSingleLine, setIsSingleLine] = useState<boolean>();
 
   const expandedView = useSharedValue({
@@ -283,7 +283,7 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
       {expandable ? (
         <Button
           onPress={() => {
-            onExpand && onExpand(!expanded);
+            onExpand?.(!expanded);
             setExpanded(!expanded);
           }}
           style={styles.expandValueButton}

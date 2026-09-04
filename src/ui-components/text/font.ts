@@ -6,8 +6,8 @@ export interface FontStyle {
 }
 
 enum FontFace {
-  OpenSans = 'Open Sans',
   IBMPlexMono = 'IBM Plex Mono',
+  OpenSans = 'Open Sans',
   ProcivisBook = 'Procivis-Book',
 }
 
@@ -43,10 +43,10 @@ export const fontFactory = ({ face, weight }: FontFactoryProps): FontStyle => {
 };
 
 const font = {
-  regular: fontFactory({ face: FontFace.OpenSans, weight: FontWeight.Regular }),
-  medium: fontFactory({ face: FontFace.OpenSans, weight: FontWeight.Medium }),
   code: fontFactory({ face: FontFace.IBMPlexMono, weight: FontWeight.Regular }),
   heading: fontFactory({ face: FontFace.ProcivisBook }),
+  medium: fontFactory({ face: FontFace.OpenSans, weight: FontWeight.Medium }),
+  regular: fontFactory({ face: FontFace.OpenSans, weight: FontWeight.Regular }),
 };
 
 export default font;

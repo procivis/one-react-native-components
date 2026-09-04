@@ -8,10 +8,10 @@ import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
 export interface CheckboxProps extends TouchableOpacityProps {
-  value: boolean;
-  text?: ReactNode;
-  onValueChanged: (value: boolean) => void;
   disabled?: boolean;
+  onValueChanged: (value: boolean) => void;
+  text?: ReactNode;
+  value: boolean;
 }
 
 export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onValueChanged, ...props }) => {
@@ -22,15 +22,15 @@ export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onVa
 
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: value, disabled }}
       accessibilityValue={
         disabled ? undefined : { text: t(value ? 'accessibility.control.checked' : 'accessibility.control.unchecked') }
       }
+      activeOpacity={0.8}
       disabled={disabled}
-      style={[styles.container, { backgroundColor: colorScheme.background }, style]}
       onPress={onPress}
+      style={[styles.container, { backgroundColor: colorScheme.background }, style]}
       {...props}>
       {value ? (
         <CheckedIcon style={disabled && styles.disabled} />
@@ -39,8 +39,8 @@ export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onVa
           style={[
             styles.unchecked,
             {
-              borderColor: colorScheme.grayDark,
               backgroundColor: disabled ? colorScheme.background : colorScheme.white,
+              borderColor: colorScheme.grayDark,
             },
           ]}
         />
@@ -48,7 +48,7 @@ export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onVa
       {text && (
         <View style={[styles.text, disabled && styles.disabled]}>
           {typeof text === 'string' ? (
-            <Typography preset="xs/line-height-small" color={colorScheme.text}>
+            <Typography color={colorScheme.text} preset="xs/line-height-small">
               {text}
             </Typography>
           ) : (

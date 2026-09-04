@@ -12,19 +12,19 @@ const Basic: StoryObj<typeof BackButton> = {
 export { Basic as BackButton };
 
 export default {
-  title: 'base/button/Back Button',
-  component: BackButton,
   argTypes: {
     icon: {
-      options: [BackButtonIcon.Back, BackButtonIcon.Close],
       control: { type: 'radio' },
+      options: [BackButtonIcon.Back, BackButtonIcon.Close],
     },
     onPress: { action: 'onPress' },
   },
+  component: BackButton,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18650&t=KAAJ0oKY3xb6VNtA-4',
     },
   },
+  title: 'base/button/Back Button',
 } as Meta<typeof BackButton>;

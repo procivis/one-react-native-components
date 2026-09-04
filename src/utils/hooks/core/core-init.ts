@@ -21,7 +21,7 @@ export const generateHwIdentifier = async (core: ONECore, organisationId: string
     })
     .catch((e) => {
       // ignore if HW keys not supported by device
-      if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported) {
+      if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported.toString()) {
         return null;
       }
       throw e;
@@ -30,8 +30,6 @@ export const generateHwIdentifier = async (core: ONECore, organisationId: string
   if (hwKeyId) {
     return core.createIdentifier({
       did: {
-        method: 'KEY',
-        name: HW_DID_NAME_PREFIX,
         keys: {
           assertionMethod: [hwKeyId],
           authentication: [hwKeyId],
@@ -39,6 +37,8 @@ export const generateHwIdentifier = async (core: ONECore, organisationId: string
           capabilityInvocation: [hwKeyId],
           keyAgreement: [hwKeyId],
         },
+        method: 'KEY',
+        name: HW_DID_NAME_PREFIX,
         params: {},
       },
       name: HW_DID_NAME_PREFIX,
@@ -62,8 +62,6 @@ export const generateSwIdentifier = async (core: ONECore, organisationId: string
 
   return core.createIdentifier({
     did: {
-      method: 'KEY',
-      name: SW_DID_NAME_PREFIX,
       keys: {
         assertionMethod: [swKeyId],
         authentication: [swKeyId],
@@ -71,6 +69,8 @@ export const generateSwIdentifier = async (core: ONECore, organisationId: string
         capabilityInvocation: [swKeyId],
         keyAgreement: [swKeyId],
       },
+      method: 'KEY',
+      name: SW_DID_NAME_PREFIX,
       params: {},
     },
     name: SW_DID_NAME_PREFIX,
@@ -96,7 +96,7 @@ export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }
     return await core
       .createOrganisation({ id: organisationId })
       .catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OrganisationAlreadyExists) {
+        if (e instanceof OneError && e.code === OneErrorCode.OrganisationAlreadyExists.toString()) {
           return;
         }
         throw e;

@@ -1,12 +1,14 @@
 import type { ColorScheme } from '../../src/ui-components/theme';
-import * as procivis from './procivis';
+// import * as procivis from './procivis';
+import { light } from './procivis';
 
 interface Flavor {
-  light: ColorScheme;
   dark?: ColorScheme;
+  light: ColorScheme;
 }
 
-export default Object.entries<Flavor>({ procivis }).reduce<Record<string, ColorScheme>>(
+// export const ColorSchemes = Object.entries<Flavor>({ procivis }).reduce<Record<string, ColorScheme>>(
+export const ColorSchemes = Object.entries<Flavor>({ procivis: { light } }).reduce<Record<string, ColorScheme>>(
   (aggr, [flavor, { light, dark }]) => {
     return Object.assign(
       { ...aggr },
@@ -16,3 +18,5 @@ export default Object.entries<Flavor>({ procivis }).reduce<Record<string, ColorS
   },
   {},
 );
+
+export default ColorSchemes;

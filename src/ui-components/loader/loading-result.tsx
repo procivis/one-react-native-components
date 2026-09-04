@@ -43,7 +43,7 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
     headerPaddingStyle = styles.modalHeaderWithoutHandle;
   }
 
-  let buttonsWrapperMarginStyle: ViewStyle = {
+  const buttonsWrapperMarginStyle: ViewStyle = {
     marginBottom: bottom,
   };
 
@@ -55,11 +55,11 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
       <View style={styles.loaderWrapper}>
         <LoaderView {...loaderProps} />
         <Typography
-          testID={concatTestID(viewProps.testID, 'label')}
           align="center"
           color={colorScheme.text}
           preset="regular"
-          style={styles.label}>
+          style={styles.label}
+          testID={concatTestID(viewProps.testID, 'label')}>
           {label}
         </Typography>
       </View>

@@ -5,8 +5,8 @@ import { EntityTrustedIcon } from '../icons/entity';
 import Avatar, { AvatarProps } from './avatar';
 
 type Args = AvatarProps & {
-  withStatusIcon: boolean;
   withImage: boolean;
+  withStatusIcon: boolean;
 };
 
 const Render = ({ withStatusIcon, withImage, ...args }: Args) => {
@@ -22,8 +22,8 @@ const Render = ({ withStatusIcon, withImage, ...args }: Args) => {
 const Basic: StoryObj<Args> = {
   args: {
     placeholderText: 'A',
-    withStatusIcon: true,
     withImage: true,
+    withStatusIcon: true,
   },
   render: Render,
 };
@@ -31,7 +31,6 @@ const Basic: StoryObj<Args> = {
 export { Basic as Avatar };
 
 export default {
-  title: 'component/entity/Avatar',
   component: Avatar,
   parameters: {
     design: {
@@ -39,4 +38,5 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=426-25581&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
+  title: 'component/entity/Avatar',
 } as Meta<typeof Avatar>;

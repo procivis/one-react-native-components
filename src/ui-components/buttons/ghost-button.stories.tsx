@@ -13,15 +13,15 @@ const Basic: StoryObj<typeof GhostButton> = {
 export { Basic as GhostButton };
 
 export default {
-  title: 'base/button/Ghost Button',
-  component: GhostButton,
   argTypes: {
     onPress: { action: 'onPress' },
   },
+  component: GhostButton,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18650&t=KAAJ0oKY3xb6VNtA-4',
     },
   },
+  title: 'base/button/Ghost Button',
 } as Meta<typeof GhostButton>;

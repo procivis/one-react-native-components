@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import React from 'react';
 import type { ColorValue } from 'react-native';
+import { fn } from 'storybook/test';
 
 import ColorSchemes from '../../../storybook/colorScheme';
 import { ColorScheme, useAppColorScheme } from '../theme';
@@ -16,13 +16,13 @@ const Render = ({ color, ...args }: TypographyProps) => {
 
 const Basic: StoryObj<typeof Typography> = {
   args: {
-    children: 'Text',
-    preset: 'regular',
-    caps: false,
-    color: 'text',
     align: 'left',
-    numberOfLines: 1,
+    caps: false,
+    children: 'Text',
+    color: 'text',
     ellipsizeMode: 'tail',
+    numberOfLines: 1,
+    preset: 'regular',
   },
   render: Render,
 };
@@ -30,13 +30,23 @@ const Basic: StoryObj<typeof Typography> = {
 export { Basic as Typography };
 
 export default {
-  title: 'base/Typography',
-  component: Typography,
-  args: {
-    onAnnouncementFinished: fn(),
-  },
   argTypes: {
+    align: {
+      control: { type: 'radio' },
+      options: ['left', 'center', 'right'],
+    },
+    color: {
+      control: { type: 'select' },
+      options: Object.entries(ColorSchemes.procivis)
+        .filter(([_, value]) => typeof value === 'string')
+        .map(([key]) => key),
+    },
+    ellipsizeMode: {
+      control: { type: 'select' },
+      options: ['head', 'middle', 'tail', 'clip'],
+    },
     preset: {
+      control: { type: 'radio' },
       options: [
         'xl',
         'l',
@@ -51,27 +61,18 @@ export default {
         'xs/line-height-small',
         'xs/code',
       ],
-      control: { type: 'radio' },
-    },
-    color: {
-      options: Object.entries(ColorSchemes.procivis)
-        .filter(([_, value]) => typeof value === 'string')
-        .map(([key]) => key),
-      control: { type: 'select' },
-    },
-    align: {
-      options: ['left', 'center', 'right'],
-      control: { type: 'radio' },
-    },
-    ellipsizeMode: {
-      options: ['head', 'middle', 'tail', 'clip'],
-      control: { type: 'select' },
     },
   },
+  args: {
+     
+    onAnnouncementFinished: fn(),
+  },
+  component: Typography,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1045-30326',
     },
   },
+  title: 'base/Typography',
 } as Meta<typeof Typography>;

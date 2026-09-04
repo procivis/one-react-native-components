@@ -26,14 +26,14 @@ export const useIdentifiers = (identifierFilter?: Partial<IdentifierListQuery>) 
 
   return useQuery(
     [IDENTIFIER_LIST_QUERY_KEY, ...getQueryKeyFromIdentifierListQueryParams(identifierFilter)],
-    ({ pageParam = 0 }) =>
+    ({ pageParam = 0 }: { pageParam?: number }) =>
       core.listIdentifiers({
-        types: [IdentifierType.DID],
         isRemote: false,
-        page: pageParam,
-        states: [IdentifierState.ACTIVE],
         organisationId: organisationId,
+        page: pageParam,
         pageSize: PAGE_SIZE,
+        states: [IdentifierState.ACTIVE],
+        types: [IdentifierType.DID],
         ...identifierFilter,
       }),
   );

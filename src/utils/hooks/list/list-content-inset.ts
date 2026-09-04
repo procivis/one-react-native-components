@@ -7,7 +7,7 @@ type ListContentInsetProps = {
   modalPresentation?: boolean;
 };
 
-export const useListContentInset = (
+export const useListContentInset: (props: ListContentInsetProps) => ViewStyle = (
   { additionalBottomPadding = 54, headerHeight = 48, modalPresentation = false }: ListContentInsetProps = {
     additionalBottomPadding: 54,
     headerHeight: 48,

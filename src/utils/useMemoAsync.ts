@@ -38,7 +38,7 @@ export function useMemoAsync<Value, FallbackValue = Value | undefined>(
       try {
         const result = await factory(abortCtrl.signal);
         if (!abortCtrl.signal.aborted) setValue(result);
-      } catch (e) {
+      } catch {
         if (!abortCtrl.signal.aborted) setValue(fallbackValue ?? initialValue);
       }
     };

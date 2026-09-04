@@ -19,7 +19,7 @@ const Render = ({ onBack, withBackButton, withRightButton, ...args }: Args) => {
       rightButtons={
         withRightButton
           ? [
-              <TouchableOpacity>
+              <TouchableOpacity key="button">
                 <Placeholder id="R" style={styles.rightButton} />
               </TouchableOpacity>,
             ]
@@ -41,19 +41,19 @@ const Basic: StoryObj<Args> = {
 export { Basic as Header };
 
 export default {
-  title: 'component/header/Header',
-  component: Header,
   argTypes: {
     onAction: { action: 'onAction' },
     onBack: { action: 'onBack' },
     onSearchPhraseChange: { action: 'onSearchPhraseChange' },
   },
+  component: Header,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=425-18624',
     },
   },
+  title: 'component/header/Header',
 } as Meta<typeof Header>;
 
 const styles = StyleSheet.create({

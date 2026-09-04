@@ -10,23 +10,23 @@ export interface ColorScheme {
   black: string;
   codeAccent: string;
   credentialHeaderBackground: string;
+  darkMode: boolean;
   error: string;
   errorText: string;
   grayDark: string;
   linkText: string;
+  nerdView: {
+    attributeLabel: string;
+    attributeSectionBackground: string;
+    attributeValueBackground: string;
+    attributeValueBorder: string;
+    background: string;
+    button: string;
+    codeHighlightText: string;
+  };
   success: string;
   successText: string;
   text: string;
   warning: string;
   white: string;
-  darkMode: boolean;
-  nerdView: {
-    background: string;
-    attributeLabel: string;
-    attributeSectionBackground: string;
-    attributeValueBackground: string;
-    attributeValueBorder: string;
-    button: string;
-    codeHighlightText: string;
-  };
 }

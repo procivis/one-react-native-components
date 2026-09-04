@@ -41,21 +41,21 @@ export const shareUrl = async (url: string, title?: string) => {
     await Share.open({
       activityItemSources: [
         {
-          placeholderItem: { type: 'url', content: url },
           item: {
-            default: { type: 'url', content: url },
+            default: { content: url, type: 'url' },
           },
+          linkMetadata: { originalUrl: url, title, url },
+          placeholderItem: { content: url, type: 'url' },
           subject: title
             ? {
                 default: title,
               }
             : undefined,
-          linkMetadata: { originalUrl: url, url, title },
         },
       ],
       failOnCancel: false,
     });
   } else {
-    await Share.open({ url, failOnCancel: false });
+    await Share.open({ failOnCancel: false, url });
   }
 };

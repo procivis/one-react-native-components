@@ -1,17 +1,10 @@
-import type { BackupScreenProps } from './backup-screen';
-import BackupScreen, { BackupScreenMode } from './backup-screen';
-import type { ImagePreviewScreenProps } from './image-preview-screen';
-import ImagePreviewScreen from './image-preview-screen';
-import type { NerdModeScreenProps, NerdModeSection } from './nerd-mode-screen';
-import NerdModeScreen from './nerd-mode-screen';
-import type { QRCodeScannerScreenProps } from './qr-code-scanner-screen';
-import QRCodeScannerScreen from './qr-code-scanner-screen';
-import type { ScrollViewScreenProps } from './scroll-view-screen';
-import ScrollViewScreen from './scroll-view-screen';
-import type { SectionListScreenProps } from './section-list-screen';
-import SectionListScreen from './section-list-screen';
-import type { TrustInfoDetailsScreenLabels, TrustInfoDetailsScreenProps } from './trust-info-details-screen';
-import TrustInfoDetailsScreen from './trust-info-details-screen';
+import BackupScreen, { BackupScreenMode, type BackupScreenProps } from './backup-screen';
+import ImagePreviewScreen, { type ImagePreviewScreenProps } from './image-preview-screen';
+import NerdModeScreen, { type NerdModeScreenProps, type NerdModeSection } from './nerd-mode-screen';
+import QRCodeScannerScreen, { type QRCodeScannerScreenProps } from './qr-code-scanner-screen';
+import ScrollViewScreen, { type ScrollViewScreenProps } from './scroll-view-screen';
+import SectionListScreen, { type SectionListScreenProps } from './section-list-screen';
+import TrustInfoDetailsScreen, { type TrustInfoDetailsScreenLabels, type TrustInfoDetailsScreenProps } from './trust-info-details-screen';
 
 export { BackupScreen, BackupScreenMode, BackupScreenProps };
 export { ImagePreviewScreen, ImagePreviewScreenProps };

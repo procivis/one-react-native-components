@@ -20,9 +20,6 @@ const Render = ({ label, state, withButton1, withButton2, withButton3, withHeade
   return (
     <LoadingResultScreen
       button={withButton1 ? { title: 'Button 1' } : undefined}
-      secondaryButton={withButton2 ? { type: ButtonType.Secondary, title: 'Button 2' } : undefined}
-      shareButton={withShareButton ? { title: 'qr-code-date.com' } : undefined}
-      tertiaryButton={withButton3 ? { type: ButtonType.Secondary, title: 'Button 3' } : undefined}
       header={
         withHeader
           ? {
@@ -33,9 +30,12 @@ const Render = ({ label, state, withButton1, withButton2, withButton3, withHeade
       }
       loader={{
         animate: true,
-        state,
         label,
+        state,
       }}
+      secondaryButton={withButton2 ? { title: 'Button 2', type: ButtonType.Secondary } : undefined}
+      shareButton={withShareButton ? { title: 'qr-code-date.com' } : undefined}
+      tertiaryButton={withButton3 ? { title: 'Button 3', type: ButtonType.Secondary } : undefined}
     />
   );
 };
@@ -56,18 +56,18 @@ const Basic: StoryObj<Args> = {
 export { Basic as LoadingResultScreen };
 
 export default {
-  title: 'component/loader/LoadingResultScreen',
-  component: LoadingResultScreen,
   argTypes: {
     state: {
-      options: [LoaderViewState.InProgress, LoaderViewState.Success, LoaderViewState.Warning],
       control: { type: 'radio' },
+      options: [LoaderViewState.InProgress, LoaderViewState.Success, LoaderViewState.Warning],
     },
   },
+  component: LoadingResultScreen,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=444-44894&mode=design&t=YI1oD2BfBie5HcvJ-0',
     },
   },
+  title: 'component/loader/LoadingResultScreen',
 } as Meta<typeof LoadingResultScreen>;

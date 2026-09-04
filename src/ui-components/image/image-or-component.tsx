@@ -8,10 +8,10 @@ const styles = StyleSheet.create({
 });
 
 interface ImageSourceComponentProps {
+  resizeMethod?: ImageProps['resizeMethod'];
+  resizeMode?: ImageProps['resizeMode'];
   source: ImageSourcePropType;
   style: StyleProp<ImageStyle>;
-  resizeMode?: ImageProps['resizeMode'];
-  resizeMethod?: ImageProps['resizeMethod'];
   testID?: string;
 }
 
@@ -23,6 +23,11 @@ const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
   testID,
 }) => {
   const imageStyle = useMemo<ImageStyle>(() => {
+    const flatStyle = StyleSheet.flatten(style);
+    if (!flatStyle) {
+      return {};
+    }
+
     const {
       width,
       height,
@@ -31,24 +36,24 @@ const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
       borderTopWidth,
       borderLeftWidth,
       borderRightWidth,
-    } = StyleSheet.flatten(style);
+    } = flatStyle;
 
     const borderWidths = {
+      bottom: borderBottomWidth ?? borderWidth,
       left: borderLeftWidth ?? borderWidth,
       right: borderRightWidth ?? borderWidth,
       top: borderTopWidth ?? borderWidth,
-      bottom: borderBottomWidth ?? borderWidth,
     };
 
     return {
-      width: typeof width === 'number' ? width - borderWidths.left - borderWidths.right : width,
       height: typeof height === 'number' ? height - borderWidths.top - borderWidths.bottom : height,
+      width: typeof width === 'number' ? width - borderWidths.left - borderWidths.right : width,
     };
   }, [style]);
 
   return (
     <View style={[styles.imageWrapper, style]}>
-      <Image testID={testID} style={imageStyle} source={source} resizeMode={resizeMode} resizeMethod={resizeMethod} />
+      <Image resizeMethod={resizeMethod} resizeMode={resizeMode} source={source} style={imageStyle} testID={testID} />
     </View>
   );
 };
@@ -56,8 +61,8 @@ const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
 export type ImageOrComponentSource =
   | {
       imageSource: ImageSourcePropType;
-      resizeMode?: ImageProps['resizeMode'];
       resizeMethod?: ImageProps['resizeMethod'];
+      resizeMode?: ImageProps['resizeMode'];
     }
   | { component: ReactElement };
 
@@ -71,17 +76,17 @@ const ImageOrComponent: FC<ImageOrComponentProps> = ({ source, style, testID }) 
   if ('imageSource' in source) {
     return (
       <ImageSourceComponent
-        style={style}
-        source={source.imageSource}
-        resizeMode={source.resizeMode}
         resizeMethod={source.resizeMethod}
+        resizeMode={source.resizeMode}
+        source={source.imageSource}
+        style={style}
         testID={testID}
       />
     );
   }
   if ('component' in source) {
     return (
-      <View testID={testID} style={style}>
+      <View style={style} testID={testID}>
         {source.component}
       </View>
     );

@@ -1,6 +1,4 @@
-import type { CheckboxProps } from './checkbox';
-import { Checkbox } from './checkbox';
-import type { SwitchProps } from './switch';
-import { Switch } from './switch';
+import { Checkbox, type CheckboxProps } from './checkbox';
+import { Switch, type SwitchProps } from './switch';
 
 export { Checkbox, CheckboxProps, Switch, SwitchProps };

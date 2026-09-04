@@ -9,22 +9,22 @@ import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
 interface DigitKeyProps {
-  testID: string | undefined;
   digit: number;
   onPress?: (digit: number) => void;
+  testID: string | undefined;
 }
 
 const DigitKey = React.forwardRef<TouchableOpacityRef, DigitKeyProps>(({ onPress, testID, digit }, ref) => {
   const colorScheme = useAppColorScheme();
   return (
     <TouchableOpacity
-      testID={concatTestID(testID, String(digit))}
-      ref={ref}
       accessibilityRole="button"
-      style={[styles.key, { backgroundColor: colorScheme.background }]}
       disabled={!onPress}
-      onPress={() => onPress?.(digit)}>
-      <Typography maxFontSizeMultiplier={1.5} color={colorScheme.text} preset="xl">
+      onPress={() => onPress?.(digit)}
+      ref={ref}
+      style={[styles.key, { backgroundColor: colorScheme.background }]}
+      testID={concatTestID(testID, String(digit))}>
+      <Typography color={colorScheme.text} maxFontSizeMultiplier={1.5} preset="xl">
         {digit}
       </Typography>
     </TouchableOpacity>
@@ -39,13 +39,13 @@ export enum Biometry {
 }
 
 export interface KeypadProps {
-  testID?: string;
   biometry?: Biometry | null;
   onBiometricPress?: () => void;
-  onPressDigit?: (digit: number) => void;
-  onPressDelete?: () => void;
-  style?: StyleProp<ViewStyle>;
   onDeleteAll?: () => void;
+  onPressDelete?: () => void;
+  onPressDigit?: (digit: number) => void;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 const MIN_HEIGHT = 360;
@@ -69,52 +69,52 @@ export const Keypad = React.forwardRef<TouchableOpacityRef, KeypadProps>(
       if (layout.width > layout.height * RATIO) {
         return { height: layout.height, width: layout.height * RATIO };
       } else {
-        return { width: layout.width, height: layout.width / RATIO };
+        return { height: layout.width / RATIO, width: layout.width };
       }
     }, [layout]);
 
     const gap = width ? (width - 3 * KEY_SIZE) / 4 : undefined;
-    const lineStyles = [styles.line, { width, marginBottom: gap }];
+    const lineStyles = [styles.line, { marginBottom: gap, width }];
 
     return (
-      <View testID={testID} style={[styles.cover, style]} onLayout={onLayout}>
+      <View onLayout={onLayout} style={[styles.cover, style]} testID={testID}>
         <View style={{ height }}>
           <View style={lineStyles}>
-            <DigitKey testID={testID} ref={ref} digit={1} onPress={onPressDigit} />
-            <DigitKey testID={testID} digit={2} onPress={onPressDigit} />
-            <DigitKey testID={testID} digit={3} onPress={onPressDigit} />
+            <DigitKey digit={1} onPress={onPressDigit} ref={ref} testID={testID} />
+            <DigitKey digit={2} onPress={onPressDigit} testID={testID} />
+            <DigitKey digit={3} onPress={onPressDigit} testID={testID} />
           </View>
           <View style={lineStyles}>
-            <DigitKey testID={testID} digit={4} onPress={onPressDigit} />
-            <DigitKey testID={testID} digit={5} onPress={onPressDigit} />
-            <DigitKey testID={testID} digit={6} onPress={onPressDigit} />
+            <DigitKey digit={4} onPress={onPressDigit} testID={testID} />
+            <DigitKey digit={5} onPress={onPressDigit} testID={testID} />
+            <DigitKey digit={6} onPress={onPressDigit} testID={testID} />
           </View>
           <View style={lineStyles}>
-            <DigitKey testID={testID} digit={7} onPress={onPressDigit} />
-            <DigitKey testID={testID} digit={8} onPress={onPressDigit} />
-            <DigitKey testID={testID} digit={9} onPress={onPressDigit} />
+            <DigitKey digit={7} onPress={onPressDigit} testID={testID} />
+            <DigitKey digit={8} onPress={onPressDigit} testID={testID} />
+            <DigitKey digit={9} onPress={onPressDigit} testID={testID} />
           </View>
           <View style={lineStyles}>
             <TouchableOpacity
-              testID={concatTestID(testID, 'delete-all')}
-              accessibilityRole="button"
               accessibilityLabel={t('accessibility.control.clear')}
-              style={styles.key}
+              accessibilityRole="button"
               disabled={!onDeleteAll}
-              onPress={onDeleteAll}>
+              onPress={onDeleteAll}
+              style={styles.key}
+              testID={concatTestID(testID, 'delete-all')}>
               {onDeleteAll ? <KeypadClearIcon color={colorScheme.text} /> : null}
             </TouchableOpacity>
-            <DigitKey testID={testID} digit={0} onPress={onPressDigit} />
+            <DigitKey digit={0} onPress={onPressDigit} testID={testID} />
             {biometry ? (
               <TouchableOpacity
-                testID={concatTestID(testID, 'biometry')}
-                accessibilityRole="button"
                 accessibilityLabel={t(
                   biometry === Biometry.FaceID ? 'accessibility.key.faceId' : 'accessibility.key.fingerprint',
                 )}
-                style={styles.key}
+                accessibilityRole="button"
                 disabled={!onBiometricPress}
-                onPress={onBiometricPress}>
+                onPress={onBiometricPress}
+                style={styles.key}
+                testID={concatTestID(testID, 'biometry')}>
                 {biometry === Biometry.FaceID ? (
                   <FaceIDIcon color={colorScheme.text} />
                 ) : (
@@ -123,12 +123,12 @@ export const Keypad = React.forwardRef<TouchableOpacityRef, KeypadProps>(
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                testID={concatTestID(testID, 'delete')}
-                accessibilityRole="button"
                 accessibilityLabel={t('accessibility.control.delete')}
-                style={styles.key}
+                accessibilityRole="button"
                 disabled={!onPressDelete}
-                onPress={onPressDelete}>
+                onPress={onPressDelete}
+                style={styles.key}
+                testID={concatTestID(testID, 'delete')}>
                 {onPressDelete ? <KeypadBackspaceIcon color={colorScheme.text} /> : null}
               </TouchableOpacity>
             )}

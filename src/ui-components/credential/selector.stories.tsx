@@ -13,10 +13,9 @@ const Basic: StoryObj<typeof CredentialAttributeSelector> = {
 export { Basic as Selector };
 
 export default {
-  title: 'credential/Selector',
-  component: CredentialAttributeSelector,
   argTypes: {
     status: {
+      control: { type: 'radio' },
       options: [
         SelectorStatus.Empty,
         SelectorStatus.SelectedRadio,
@@ -25,13 +24,14 @@ export default {
         SelectorStatus.Disabled,
         SelectorStatus.Rejected,
       ],
-      control: { type: 'radio' },
     },
   },
+  component: CredentialAttributeSelector,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=433-28352&mode=design&t=91K8am4RSNRB8qgZ-0',
     },
   },
+  title: 'credential/Selector',
 } as Meta<typeof CredentialAttributeSelector>;

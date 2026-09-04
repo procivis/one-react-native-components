@@ -11,15 +11,15 @@ type StaticContentProps = {
 };
 
 type DynamicContentProps = {
-  staticContent?: false;
   scrollViewProps?: ScrollViewProps;
+  staticContent?: false;
 };
 
 export type DetailScreenProps = {
-  testID?: string;
+  contentStyle?: StyleProp<ViewStyle>;
   headerProps: HeaderProps;
   style?: StyleProp<ViewStyle>;
-  contentStyle?: StyleProp<ViewStyle>;
+  testID?: string;
 } & (StaticContentProps | DynamicContentProps);
 
 const DetailScreen: FunctionComponent<PropsWithChildren<DetailScreenProps>> = ({
@@ -48,25 +48,25 @@ const DetailScreen: FunctionComponent<PropsWithChildren<DetailScreenProps>> = ({
 
   return (
     <View
-      testID={testID}
-      onLayout={layoutHandler}
       onAccessibilityEscape={() => {}}
-      style={[styles.container, { paddingTop: insets.top, backgroundColor: colorScheme.background }]}>
+      onLayout={layoutHandler}
+      style={[styles.container, { backgroundColor: colorScheme.background, paddingTop: insets.top }]}
+      testID={testID}>
       <Header onLayout={headerLayoutHandler} {...headerProps} />
       {contentHeight ? (
         staticContent ? (
           <View
-            testID={concatTestID(testID, 'content')}
-            style={[styles.contentWrapper, styles.staticContent, { height: contentHeight }, style]}>
+            style={[styles.contentWrapper, styles.staticContent, { height: contentHeight }, style]}
+            testID={concatTestID(testID, 'content')}>
             {children}
           </View>
         ) : (
           <ScrollView
-            testID={concatTestID(testID, 'content')}
-            showsVerticalScrollIndicator={false}
             alwaysBounceVertical={false}
             contentContainerStyle={{ minHeight: contentHeight }}
-            style={style}>
+            showsVerticalScrollIndicator={false}
+            style={style}
+            testID={concatTestID(testID, 'content')}>
             <View
               style={[styles.contentWrapper, styles.scrollableContent, { paddingBottom: bottomPadding }, contentStyle]}>
               {children}

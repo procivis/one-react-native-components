@@ -1,6 +1,6 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const path = require('path');
-const withStorybook = require('@storybook/react-native/metro/withStorybook');
+const { withStorybook } = require('@storybook/react-native/withStorybook');
 
 const { generate } = require('@storybook/react-native/scripts/generate');
 
@@ -17,16 +17,16 @@ const defaultConfig = getDefaultConfig(__dirname);
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 const config = {
-  transformer: {
-    unstable_allowRequireContext: true,
-  },
   resolver: {
     resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main'],
     sourceExts: [...defaultConfig.resolver.sourceExts, 'mjs'],
   },
+  transformer: {
+    unstable_allowRequireContext: true,
+  },
 };
 
 module.exports = withStorybook(mergeConfig(defaultConfig, config), {
-  enabled: true,
   configPath: path.resolve(__dirname, './.ondevice'),
+  enabled: true,
 });

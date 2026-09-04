@@ -8,10 +8,10 @@ const Basic: StoryObj<typeof CredentialHeader> = {
   args: {
     accessory: RequiredAttributeIcon,
     color: undefined,
+    credentialDetailErrorColor: false,
     credentialDetailPrimary: 'Primary detail',
     credentialDetailSecondary: 'Secondary detail',
     credentialDetailTestID: undefined,
-    credentialDetailErrorColor: false,
     credentialName: 'Credential Name',
     icon: undefined,
     iconLabelColor: undefined,
@@ -22,26 +22,26 @@ const Basic: StoryObj<typeof CredentialHeader> = {
 export { Basic as CredentialHeader };
 
 export default {
-  title: 'credential/card/CredentialHeader',
-  component: CredentialHeader,
   argTypes: {
     color: {
+      control: { type: 'select' },
       options: Object.entries(ColorSchemes.procivis)
         .filter(([_, value]) => typeof value === 'string')
         .map(([key]) => key),
-      control: { type: 'select' },
     },
     iconLabelColor: {
+      control: { type: 'select' },
       options: Object.entries(ColorSchemes.procivis)
         .filter(([_, value]) => typeof value === 'string')
         .map(([key]) => key),
-      control: { type: 'select' },
     },
   },
+  component: CredentialHeader,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=401-1898&mode=design&t=0DWIGZWyWYB7JzPE-0',
     },
   },
+  title: 'credential/card/CredentialHeader',
 } as Meta<typeof CredentialHeader>;

@@ -1,6 +1,6 @@
 import WheelPicker from '@quidone/react-native-wheel-picker';
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Modal, StyleSheet, TouchableOpacityProps, View } from 'react-native';
+import { Modal, StyleSheet, TouchableOpacityProps, View, ViewStyle } from 'react-native';
 
 import { Typography } from '..';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
@@ -69,6 +69,8 @@ const SelectionInput: FC<SelectionInputProps> = ({
     setModalVisible(false);
   }, [onChange, values, wheelPickerValue]);
 
+  const modalContentBgStyle: ViewStyle = { backgroundColor: 'white' };
+
   return (
     <>
       <TouchableOpacity onPress={() => setModalVisible(true)} {...props}>
@@ -85,9 +87,8 @@ const SelectionInput: FC<SelectionInputProps> = ({
         backdropColor={'rgba(0,0,0,0.1)'}
         onDismiss={() => setModalVisible(false)}
         onRequestClose={onCancel}
-        style={styles.modal}
         visible={modalVisible}>
-        <View style={styles.modalContent}>
+        <View style={[styles.modalContent, modalContentBgStyle]}>
           <WheelPicker
             data={values}
             onValueChanged={({ item: { value } }: { item: { value?: string | number } }) => setWheelPickerValue(value)}
@@ -118,10 +119,7 @@ const styles = StyleSheet.create({
     gap: 20,
     justifyContent: 'flex-end',
   },
-
-  modal: {},
   modalContent: {
-    backgroundColor: 'white',
     borderRadius: 2,
     margin: 'auto',
     padding: 20,

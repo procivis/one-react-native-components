@@ -69,7 +69,7 @@ const multipleCredentialsSelected = (
     selectedCredentials &&
     selectedCredentials[credentialRequestId] &&
     Array.isArray(selectedCredentials[credentialRequestId]) &&
-    (selectedCredentials[credentialRequestId] as PresentationSubmitV2CredentialRequest[]).length > 1
+    (selectedCredentials[credentialRequestId]).length > 1
   );
 };
 
@@ -137,19 +137,19 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
         defaultSelection = credentialQuery.applicableCredentials?.[0]
           ? {
               credentialId: credentialQuery.applicableCredentials[0].id,
-              userSelections: [],
               transactionDataIds: [],
+              userSelections: [],
             }
           : {
               credentialId: '',
-              userSelections: [],
               transactionDataIds: [],
+              userSelections: [],
             };
       } else {
         defaultSelection = {
           credentialId: '',
-          userSelections: [],
           transactionDataIds: [],
+          userSelections: [],
         };
       }
       const request = selectedCredentials[credentialRequestId];

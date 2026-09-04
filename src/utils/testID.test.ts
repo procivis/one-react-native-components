@@ -1,3 +1,5 @@
+import { it } from '@jest/globals';
+
 import { concatTestID } from './testID';
 
 describe('concatTestID', () => {

@@ -9,20 +9,20 @@ import { IssueIcon, ScanIcon, SignIcon } from '../icons';
 import { useAppColorScheme } from '../theme';
 
 export type ScanButtonLabels = {
-  sign: string;
   issue: string;
+  sign: string;
 };
 
 export type ScanButtonProps = {
   labels: ScanButtonLabels;
-  onSignPress?: () => void;
   onIssuePress?: () => void;
   onScanPress: () => void;
-  testID?: string;
+  onSignPress?: () => void;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
-const hitSlop: Insets = { top: 10, left: 10, bottom: 10, right: 10 };
+const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
 
 const SCAN_WIDTH = 104;
 const SCAN_HEIGHT = 80;
@@ -31,7 +31,7 @@ const SIDE_HEIGHT = 64;
 const OVERLAP = 50;
 
 const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
-  ({ labels, style, onSignPress, onIssuePress, onScanPress, testID }, ref) => {
+  ({ labels, style, onSignPress, onIssuePress, onScanPress, testID = 'ScanButton' }, ref) => {
     const t = useAccessibilityTranslation();
     const colorScheme = useAppColorScheme();
     const insets = useSafeAreaInsets();
@@ -41,18 +41,21 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
     const rightButtonOpacity = showRightButton ? 1 : 0;
 
     const bottomOffset = Math.max(24, insets.bottom);
+    const shadowColorStyle: ViewStyle = {
+      shadowColor: '#000000',
+    };
 
     return (
-      <View style={[styles.wrapper, { bottom: bottomOffset }, style as object]}>
+      <View style={[styles.wrapper, { bottom: bottomOffset }, style]}>
         <View
           pointerEvents={showLeftButton ? 'auto' : 'none'}
           style={[styles.sideButtonContainer, { opacity: leftButtonOpacity }]}>
           <TouchableOpacity
             accessibilityRole="button"
             hitSlop={hitSlop}
-            testID={`${testID}.sign`}
             onPress={onSignPress}
-            style={styles.sideButton}>
+            style={styles.sideButton}
+            testID={`${testID}.sign`}>
             <View style={[styles.sideInnerLeft, { backgroundColor: colorScheme.white }]}>
               <SignIcon color={colorScheme.black} />
               <Text style={[styles.sideLabel, { color: colorScheme.black }]}>{labels.sign}</Text>
@@ -64,10 +67,10 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
           accessibilityLabel={t('accessibility.icon.scan')}
           accessibilityRole="button"
           hitSlop={hitSlop}
+          onPress={onScanPress}
           ref={ref}
-          style={styles.scanButton}
-          testID={`${testID}.scan`}
-          onPress={onScanPress}>
+          style={[styles.scanButton, shadowColorStyle]}
+          testID={`${testID}.scan`}>
           <BlurView blurStyle="soft" style={styles.scanBlurWrapper}>
             <View style={[styles.scanInner, { backgroundColor: colorScheme.accent }]}>
               <ScanIcon color={colorScheme.white} />
@@ -80,10 +83,10 @@ const ScanButton = React.forwardRef<TouchableOpacityRef, ScanButtonProps>(
           style={[styles.sideButtonContainer, { opacity: rightButtonOpacity }]}>
           <TouchableOpacity
             accessibilityRole="button"
-            testID={`${testID}.issue`}
             hitSlop={hitSlop}
             onPress={onIssuePress}
-            style={styles.sideButton}>
+            style={styles.sideButton}
+            testID={`${testID}.issue`}>
             <View style={[styles.sideInnerRight, { backgroundColor: colorScheme.white }]}>
               <IssueIcon color={colorScheme.black} />
               <Text style={[styles.sideLabel, { color: colorScheme.black }]}>{labels.issue}</Text>
@@ -107,7 +110,6 @@ const styles = StyleSheet.create({
   scanButton: {
     borderRadius: 28,
     height: SCAN_HEIGHT,
-    shadowColor: '#000000',
     shadowOffset: { height: 4, width: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 24,

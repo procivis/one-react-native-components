@@ -7,7 +7,6 @@ const Basic: StoryObj<typeof ActivityIndicator> = {};
 export { Basic as ActivityIndicator };
 
 export default {
-  title: 'base/activity/Activity Indicator',
   component: ActivityIndicator,
   parameters: {
     design: {
@@ -15,4 +14,5 @@ export default {
       url: 'https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=444-45709&node-type=symbol&t=OQxawbbArhzkDVkZ-0',
     },
   },
+  title: 'base/activity/Activity Indicator',
 } as Meta<typeof ActivityIndicator>;

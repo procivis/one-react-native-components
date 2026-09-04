@@ -1,14 +1,13 @@
-import { fn } from '@storybook/test';
-
-export default {};
+const ReactNativeOneCoreMock = {};
+export default ReactNativeOneCoreMock;
 
 export enum CacheType {
   DID_DOCUMENT = 'DID_DOCUMENT',
   JSON_LD_CONTEXT = 'JSON_LD_CONTEXT',
-  STATUS_LIST_CREDENTIAL = 'STATUS_LIST_CREDENTIAL',
-  VCT_METADATA = 'VCT_METADATA',
   JSON_SCHEMA = 'JSON_SCHEMA',
+  STATUS_LIST_CREDENTIAL = 'STATUS_LIST_CREDENTIAL',
   TRUST_LIST = 'TRUST_LIST',
+  VCT_METADATA = 'VCT_METADATA'
 }
 
 export class OneError extends Error {
@@ -17,7 +16,7 @@ export class OneError extends Error {
   readonly cause?: string;
   readonly originalError: Error;
 
-  constructor(params: { operation: string; code: string; message: string; cause?: string; originalError: Error }) {
+  constructor(params: { cause?: string; code: string; message: string; operation: string; originalError: Error }) {
     super();
     this.operation = params.operation;
     this.code = params.code;
@@ -27,41 +26,41 @@ export class OneError extends Error {
 }
 
 export enum HistoryEntityType {
-  KEY = 'KEY',
-  DID = 'DID',
+  BACKUP = 'BACKUP',
   CREDENTIAL = 'CREDENTIAL',
   CREDENTIAL_SCHEMA = 'CREDENTIAL_SCHEMA',
-  PROOF = 'PROOF',
-  PROOF_SCHEMA = 'PROOF_SCHEMA',
+  DID = 'DID',
+  KEY = 'KEY',
   ORGANISATION = 'ORGANISATION',
-  BACKUP = 'BACKUP',
+  PROOF = 'PROOF',
+  PROOF_SCHEMA = 'PROOF_SCHEMA'
 }
 
 export enum HistoryAction {
   ACCEPTED = 'ACCEPTED',
+  ACTIVATED = 'ACTIVATED',
+  CLAIMS_REMOVED = 'CLAIMS_REMOVED',
   CREATED = 'CREATED',
+  CSR_GENERATED = 'CSR_GENERATED',
   DEACTIVATED = 'DEACTIVATED',
   DELETED = 'DELETED',
   ERRORED = 'ERRORED',
+  EXPIRED = 'EXPIRED',
+  IMPORTED = 'IMPORTED',
   ISSUED = 'ISSUED',
   OFFERED = 'OFFERED',
-  REJECTED = 'REJECTED',
-  REQUESTED = 'REQUESTED',
-  REVOKED = 'REVOKED',
   PENDING = 'PENDING',
-  SUSPENDED = 'SUSPENDED',
-  RESTORED = 'RESTORED',
-  SHARED = 'SHARED',
-  IMPORTED = 'IMPORTED',
-  CLAIMS_REMOVED = 'CLAIMS_REMOVED',
-  RETRACTED = 'RETRACTED',
-  ACTIVATED = 'ACTIVATED',
-  WITHDRAWN = 'WITHDRAWN',
-  REMOVED = 'REMOVED',
-  UPDATED = 'UPDATED',
   REACTIVATED = 'REACTIVATED',
-  CSR_GENERATED = 'CSR_GENERATED',
-  EXPIRED = 'EXPIRED',
+  REJECTED = 'REJECTED',
+  REMOVED = 'REMOVED',
+  REQUESTED = 'REQUESTED',
+  RESTORED = 'RESTORED',
+  RETRACTED = 'RETRACTED',
+  REVOKED = 'REVOKED',
+  SHARED = 'SHARED',
+  SUSPENDED = 'SUSPENDED',
+  UPDATED = 'UPDATED',
+  WITHDRAWN = 'WITHDRAWN'
 }
 
 export enum DidType {
@@ -70,24 +69,24 @@ export enum DidType {
 }
 
 export enum CredentialState {
-  CREATED = 'CREATED',
-  PENDING = 'PENDING',
-  OFFERED = 'OFFERED',
   ACCEPTED = 'ACCEPTED',
+  CREATED = 'CREATED',
+  ERROR = 'ERROR',
+  OFFERED = 'OFFERED',
+  PENDING = 'PENDING',
   REJECTED = 'REJECTED',
   REVOKED = 'REVOKED',
-  SUSPENDED = 'SUSPENDED',
-  ERROR = 'ERROR',
+  SUSPENDED = 'SUSPENDED'
 }
 
 export enum ProofState {
-  CREATED = 'CREATED',
-  PENDING = 'PENDING',
-  REQUESTED = 'REQUESTED',
   ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED',
-  RETRACTED = 'RETRACTED',
+  CREATED = 'CREATED',
   ERROR = 'ERROR',
+  PENDING = 'PENDING',
+  REJECTED = 'REJECTED',
+  REQUESTED = 'REQUESTED',
+  RETRACTED = 'RETRACTED'
 }
 
 export enum CredentialSchemaCodeType {
@@ -97,37 +96,37 @@ export enum CredentialSchemaCodeType {
 }
 
 export enum DataType {
-  String = 'STRING',
-  Number = 'NUMBER',
+  Boolean = 'BOOLEAN',
   Date = 'DATE',
   File = 'FILE',
-  Boolean = 'BOOLEAN',
+  Number = 'NUMBER',
   Object = 'OBJECT',
+  String = 'STRING'
 }
 
 export enum FormatFeature {
-  SelectiveDisclosure = 'SELECTIVE_DISCLOSURE',
-  SupportsCredentialDesign = 'SUPPORTS_CREDENTIAL_DESIGN',
   RequiresSchemaId = 'REQUIRES_SCHEMA_ID',
+  SelectiveDisclosure = 'SELECTIVE_DISCLOSURE',
+  SupportsCredentialDesign = 'SUPPORTS_CREDENTIAL_DESIGN'
 }
 
 export enum TrustEntityRole {
-  ISSUER = 'ISSUER',
-  VERIFIER = 'VERIFIER',
   BOTH = 'BOTH',
+  ISSUER = 'ISSUER',
+  VERIFIER = 'VERIFIER'
 }
 
 export enum TrustEntityState {
   ACTIVE = 'ACTIVE',
   REMOVED = 'REMOVED',
-  WITHDRAWN = 'WITHDRAWN',
   REMOVED_AND_WITHDRAWN = 'REMOVED_AND_WITHDRAWN',
+  WITHDRAWN = 'WITHDRAWN'
 }
 
 export enum IdentifierType {
-  KEY = 'KEY',
-  DID = 'DID',
   CERTIFICATE = 'CERTIFICATE',
+  DID = 'DID',
+  KEY = 'KEY'
 }
 
 export enum IdentifierState {
@@ -136,16 +135,16 @@ export enum IdentifierState {
 }
 
 export enum InstanceStatus {
-  PENDING = 'PENDING',
   ACTIVE = 'ACTIVE',
-  REVOKED = 'REVOKED',
   ERROR = 'ERROR',
+  PENDING = 'PENDING',
+  REVOKED = 'REVOKED'
 }
 
-export const initializeCore = fn;
+export const initializeCore = () => {};
 
 export enum CredentialType {
-  SINGLE = 'SINGLE',
-  BATCH_PARENT = 'BATCH_PARENT',
   BATCH_ITEM = 'BATCH_ITEM',
+  BATCH_PARENT = 'BATCH_PARENT',
+  SINGLE = 'SINGLE'
 }

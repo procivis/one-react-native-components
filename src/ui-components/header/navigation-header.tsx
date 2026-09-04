@@ -59,7 +59,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
     if (animate) {
       Animated.timing(titleOpacity, {
         duration: 150,
-        easing: Easing.ease,
+        easing: (t) => Easing.ease(t),
         toValue: titleVisible ? 1 : 0,
         useNativeDriver: true,
       }).start();
@@ -80,7 +80,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
     }
   }, [rightItem]);
 
-  const titleAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
+  const titleAnimatedStyle: Animated.WithAnimatedValue<ViewStyle> = {
     opacity: titleOpacity,
   };
 
@@ -99,10 +99,10 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
         </View>
         <Animated.View style={[styles.title, titleAnimatedStyle]}>
           <Typography
-            color={titleColor ?? colorScheme.text}
-            preset="m/heading"
             align="center"
+            color={titleColor ?? colorScheme.text}
             numberOfLines={1}
+            preset="m/heading"
             testID={concatTestID(testID, 'title')}>
             {title}
           </Typography>

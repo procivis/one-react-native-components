@@ -42,8 +42,8 @@ export type HistoryDetailsScreenProps = {
   item: HistoryListItem;
   labels: HistoryDetailsScreenLabels;
   onBackPressed: () => void;
-  onInfoPressed?: () => void;
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
+  onInfoPressed?: () => void;
   testID?: string;
 };
 
@@ -66,20 +66,20 @@ export const HistoryDetailsScreen: FC<HistoryDetailsScreenProps> = ({
     <HistoryDetailsView
       assets={assets}
       data={{
-        header: dataHeader,
-        date: formatDateTimeLocalized(new Date(item.createdDate)) ?? '',
         action: {
+          color: actionValueColor,
           icon: getHistoryItemActionIcon(item.action),
           label: capitalizeFirstLetter(labels.item.actions[item.action]),
-          color: actionValueColor,
           testID: concatTestID(testID, 'action', item.action),
         },
+        date: formatDateTimeLocalized(new Date(item.createdDate)) ?? '',
+        header: dataHeader,
       }}
       headerButton={headerButton}
       labels={labels}
       onBackPressed={onBackPressed}
-      onInfoPressed={onInfoPressed}
       onImagePreview={onImagePreview}
+      onInfoPressed={onInfoPressed}
       testID={testID}
     />
   );

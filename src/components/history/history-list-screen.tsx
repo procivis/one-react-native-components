@@ -1,7 +1,7 @@
 import { HistoryListItem, HistoryListQuery } from '@procivis/react-native-one-core';
 import { debounce } from 'lodash';
 import React, { FC, PropsWithChildren, useEffect, useMemo, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, ScrollEvent, StyleSheet, View } from 'react-native';
 
 import {
   BackButton,
@@ -16,11 +16,11 @@ import { HistoryListLabels, HistoryListView } from './history-list';
 import { HistoryListItemViewProps } from './history-list-item';
 
 export type HistoryListScreenLabels = {
-  emptyTitle: string;
   emptySubtitle: string;
+  emptyTitle: string;
   list: HistoryListLabels;
-  title: string;
   search: string;
+  title: string;
 };
 
 export type HistoryListScreenProps = {
@@ -96,13 +96,13 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
         contentContainerStyle={insets}
         groupItems={groupItems}
         itemProps={{ infoLabelMode: itemInfoLabelMode, onPress: onHistoryItemPressed }}
+        labels={labels.list}
         onEmpty={setEmpty}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffset } } }], {
           useNativeDriver: true,
-        })}
+        }) as ((event: ScrollEvent) => void)}
         query={queryParams}
         testID={concatTestID(testID, 'list')}
-        labels={labels.list}
       />
       {children}
       <FoldableHeader
@@ -118,16 +118,17 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
           !searchBarVisible
             ? undefined
             : {
+                rightButtonAlwaysVisible: true,
                 rightButtons: onOpenFilter
                   ? [
                       <FilterButton
                         active={Boolean(queryParams.credentialSchemaId)}
+                        key="filter"
                         onPress={onOpenFilter}
                         testID={concatTestID(testID, 'filter')}
                       />,
                     ]
                   : undefined,
-                rightButtonAlwaysVisible: true,
                 searchBarProps: {
                   onSearchPhraseChange: setSearchPhrase,
                   placeholder: labels.search,

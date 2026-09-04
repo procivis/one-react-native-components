@@ -17,7 +17,7 @@ export const useCredentialSchemas = (queryParams?: Partial<CredentialSchemaListQ
 
   return useInfiniteQuery(
     [CREDENTIAL_SCHEMA_LIST_QUERY_KEY, ...getQueryKeyFromCredentialSchemaListQueryParams(queryParams)],
-    ({ pageParam = 0 }) =>
+    ({ pageParam = 0 }: { pageParam?: number }) =>
       core
         .listCredentialSchemas({
           organisationId,
@@ -63,13 +63,13 @@ const prepareImportCredentialSchema = (data: unknown): ImportCredentialSchemaReq
 
   // v1 schema: convert format
   const schema = data as Record<string, any>;
-  const format = schema.format;
-  const schemaId = schema.schemaId;
-  const revocationMethod = schema.revocationMethod;
+  const format = schema.format as string;
+  const schemaId = schema.schemaId as string;
+  const revocationMethod = schema.revocationMethod as string;
   return {
     ...schema,
-    formats: [{ format, schemaId }],
     allowRevocation: Boolean(revocationMethod),
+    formats: [{ format, schemaId }],
   } as unknown as ImportCredentialSchemaRequestSchema;
 };
 
@@ -112,7 +112,7 @@ export const useCredentialSchemaDelete = () => {
   return useMutation(async (credentialSchemaId: string) => core.deleteCredentialSchema(credentialSchemaId), {
     onSuccess: async (_, credentialId) => {
       await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
-      await queryClient.removeQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
+      queryClient.removeQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });
@@ -123,7 +123,7 @@ export const useShareCredentialSchema = (schemaId?: string) => {
 
   return useQuery(
     [CREDENTIAL_SCHEMA_SHARE_QUERY_KEY, schemaId],
-    () => (schemaId ? core.shareCredentialSchema(schemaId) : Promise.reject()),
+    () => (schemaId ? core.shareCredentialSchema(schemaId) : Promise.reject(new Error())),
     {
       enabled: Boolean(schemaId),
       keepPreviousData: true,

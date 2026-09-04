@@ -16,30 +16,30 @@ const Basic: StoryObj<typeof CredentialLogo> = {
 export { Basic as CredentialLogo };
 
 export default {
-  title: 'credential/card/CredentialLogo',
-  component: CredentialLogo,
   argTypes: {
     color: {
+      control: { type: 'select' },
       options: Object.entries(ColorSchemes.procivis)
         .filter(([_, value]) => typeof value === 'string')
         .map(([key]) => key),
-      control: { type: 'select' },
     },
     iconLabelColor: {
+      control: { type: 'select' },
       options: Object.entries(ColorSchemes.procivis)
         .filter(([_, value]) => typeof value === 'string')
         .map(([key]) => key),
-      control: { type: 'select' },
     },
     size: {
-      options: [44, 20],
       control: { type: 'select' },
+      options: [44, 20],
     },
   },
+  component: CredentialLogo,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=401-1807&t=aYYyzt4OQQZxwjRu-0',
     },
   },
+  title: 'credential/card/CredentialLogo',
 } as Meta<typeof CredentialLogo>;

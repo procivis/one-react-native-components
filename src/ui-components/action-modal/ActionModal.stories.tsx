@@ -10,11 +10,11 @@ const Render = () => {
   const [visible, setVisible] = useState(false);
   return (
     <>
-      <Button title="Show modal" onPress={() => setVisible(true)} />
+      <Button onPress={() => setVisible(true)} title="Show modal" />
       <ActionModal visible={visible}>
         <View>
           <Typography color={'white'}>Example text in modal</Typography>
-          <Button title="Hide modal" onPress={() => setVisible(false)} />
+          <Button onPress={() => setVisible(false)} title="Hide modal" />
         </View>
       </ActionModal>
     </>
@@ -28,7 +28,6 @@ const Basic: StoryObj = {
 export { Basic as ActionModal };
 
 export default {
-  title: 'base/Action Modal',
   component: ActionModal,
   parameters: {
     design: {
@@ -36,4 +35,5 @@ export default {
       url: 'https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=391-9097&t=WhKthlRU5MCuUWfw-0',
     },
   },
+  title: 'base/Action Modal',
 } as Meta<typeof ActionModal>;

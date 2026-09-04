@@ -3,7 +3,7 @@ import { ImageSourcePropType, LayoutChangeEvent, StyleSheet, View, ViewProps } f
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { concatTestID } from '../../../utils/testID';
-import { Button, ButtonType } from '../../buttons';
+import { Button, ButtonType } from '../../buttons/button';
 import { DownIcon, UpIcon } from '../../icons/credential';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
 import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
@@ -15,12 +15,12 @@ export type CredentialDetailsCardProps = ViewProps & {
   card: CredentialCardProps;
   expanded?: boolean;
   footer?: ComponentType<any> | ReactElement;
-  onImagePreview?: (name: string, image: ImageSourcePropType) => void;
+  lessLabel?: string;
+  moreLabel?: string;
   onAttributeSelected?: (id: string, selected: boolean) => void;
+  onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   showAllButtonLabel?: string;
   showLessButtonLabel?: string;
-  moreLabel?: string;
-  lessLabel?: string;
 };
 
 const PREVIEW_ATTRIBUTES_COUNT = 3;
@@ -64,7 +64,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
         styles.allAttributesWrapper,
         footer && styles.allAttributesWrapperWithFooter,
       ]);
-      const padding = viewStyle.paddingBottom;
+      const padding = viewStyle?.paddingBottom;
       setFullAttributesHeight(padding);
     }
   }, [extraAttributes, footer]);
@@ -149,9 +149,8 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const renderExtraAttributes = allAttributesRendered || (previewAttributesHeight !== undefined && animatedHeightSet);
 
-  const ContainerComponent = animate ? Animated.View : View;
   return (
-    <ContainerComponent
+    <Animated.View
       style={[styles.detailsCard, { backgroundColor: colorScheme.white }, animate ? animatedStyle : undefined, style]}
       {...viewProps}
       testID={concatTestID(card.testID, expanded ? 'expanded' : 'collapsed')}>
@@ -166,14 +165,14 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
             <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
               {previewAttributes.map((attribute, idx) => (
                 <CredentialAttributeItem
-                  moreLabel={moreLabel}
-                  lessLabel={lessLabel}
+                  isExpanded={isExpanded}
                   key={attribute.id}
                   last={!footerView && !showSeeAllButton && idx === previewAttributes.length - 1}
-                  testID={concatTestID(testID, 'attribute', idx.toString())}
+                  lessLabel={lessLabel}
+                  moreLabel={moreLabel}
                   onImagePreview={onImagePreview}
                   onPress={onAttributeSelected}
-                  isExpanded={isExpanded}
+                  testID={concatTestID(testID, 'attribute', idx.toString())}
                   {...attribute}
                 />
               ))}
@@ -181,23 +180,23 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
             {renderExtraAttributes && (
               <View
+                onLayout={onFullAttrContentLayout}
                 style={[
                   styles.allAttributesWrapper,
                   footerView && styles.allAttributesWrapperWithFooter,
                   showSeeAllButton && styles.allAttributesWrapperWithButton,
                   !allAttributesRendered && styles.hidden,
-                ]}
-                onLayout={onFullAttrContentLayout}>
+                ]}>
                 {extraAttributes.map((attribute, index, { length }) => (
                   <CredentialAttributeItem
-                    moreLabel={moreLabel}
-                    lessLabel={lessLabel}
+                    isExpanded={isExpanded}
                     key={attribute.id}
                     last={!footerView && !showSeeAllButton && index === length - 1}
-                    testID={concatTestID(testID, 'attribute', index.toString())}
+                    lessLabel={lessLabel}
+                    moreLabel={moreLabel}
                     onImagePreview={onImagePreview}
                     onPress={onAttributeSelected}
-                    isExpanded={isExpanded}
+                    testID={concatTestID(testID, 'attribute', index.toString())}
                     {...attribute}
                   />
                 ))}
@@ -208,9 +207,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
               <View style={styles.buttonWrapper}>
                 <Button
                   onPress={() => setAllAttributesRendered((prev) => !prev)}
-                  type={ButtonType.Secondary}
                   testID={concatTestID(testID, 'showAllAttributesButton')}
                   title={isExpanded ? showLessButtonLabel : showAllButtonLabel}
+                  type={ButtonType.Secondary}
                 />
               </View>
             )}
@@ -218,7 +217,7 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
         </View>
       )}
       {footerView ? <View style={styles.footer}>{footerView}</View> : null}
-    </ContainerComponent>
+    </Animated.View>
   );
 };
 

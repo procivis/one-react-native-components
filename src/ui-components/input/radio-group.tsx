@@ -23,10 +23,10 @@ export type RadioGroupProps = {
   onEndReached?: FlatListProps<RadioGroupItem>['onEndReached'];
   onGetItemAccessibilityLabel?: (current: number, length: number) => string;
   onSelected: (item: RadioGroupItem, index: number) => void;
+  scrollEnabled?: boolean;
   selectedItem?: React.Key;
   style?: StyleProp<ViewStyle>;
   testID?: string;
-  scrollEnabled?: boolean;
 };
 
 const RadioGroup: FunctionComponent<RadioGroupProps> = ({
@@ -46,7 +46,6 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
 
   return (
     <FlatList<RadioGroupItem>
-      scrollEnabled={scrollEnabled}
       ListFooterComponent={listFooter}
       ListFooterComponentStyle={listFooterStyle}
       contentContainerStyle={containerStyle}
@@ -73,7 +72,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
               }}
               style={[styles.item, item.style]}
               testID={item.testID}>
-              <Typography color={colorScheme.text} style={styles.label} numberOfLines={2}>
+              <Typography color={colorScheme.text} numberOfLines={2} style={styles.label}>
                 {item.label}
               </Typography>
               <Selector
@@ -86,6 +85,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
           </React.Fragment>
         );
       }}
+      scrollEnabled={scrollEnabled}
       showsVerticalScrollIndicator={false}
       style={style}
       testID={testID}

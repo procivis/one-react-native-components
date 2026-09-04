@@ -1,10 +1,11 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { FC, PropsWithChildren, useEffect } from 'react';
 import {
   ColorValue,
-  NativeSyntheticEvent,
+  HostInstance,
   StyleProp,
   Text,
-  TextLayoutEventData,
+  TextInstance,
+  TextLayoutEvent,
   TextProps,
   TextStyle,
 } from 'react-native';
@@ -13,18 +14,21 @@ import { useAccessibilityAnnouncementCumulative } from '../accessibility/accessi
 
 export type BaseTextProps = TextProps & {
   align?: 'center' | 'left' | 'right';
-  color: ColorValue;
-  style?: StyleProp<TextStyle>;
-  onTextLayout?: (e: NativeSyntheticEvent<TextLayoutEventData>) => void;
-
   /* accessibility automatic voice-over */
   announcementActive?: boolean;
   announcementCumulative?: boolean;
+  color: ColorValue;
+
   /* only supported (fired) on iOS */
   onAnnouncementFinished?: (finished: boolean) => void;
+  onTextLayout?: (e: TextLayoutEvent) => void;
+  style?: StyleProp<TextStyle>;
 };
 
-export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>(
+export const BaseText: FC<PropsWithChildren<BaseTextProps> & React.RefAttributes<HostInstance>> = React.forwardRef<
+  TextInstance,
+  PropsWithChildren<BaseTextProps>
+>(
   (
     {
       align = 'left',
@@ -39,7 +43,7 @@ export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>
     ref,
   ) => {
     const announcementFinished = useAccessibilityAnnouncementCumulative(
-      announcementActive && typeof children === 'string' ? (children as string) : undefined,
+      announcementActive && typeof children === 'string' ? (children) : undefined,
       announcementCumulative,
     );
     useEffect(() => {
@@ -47,12 +51,12 @@ export const BaseText = React.forwardRef<Text, PropsWithChildren<BaseTextProps>>
     }, [announcementFinished, onAnnouncementFinished]);
 
     const baseStyle: TextStyle = {
-      textAlign: align,
       color,
+      textAlign: align,
     };
 
     return (
-      <Text ref={ref} style={[baseStyle, style]} maxFontSizeMultiplier={2} {...props}>
+      <Text maxFontSizeMultiplier={2} ref={ref} style={[baseStyle, style]} {...props}>
         {children}
       </Text>
     );

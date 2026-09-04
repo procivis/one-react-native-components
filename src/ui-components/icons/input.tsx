@@ -19,7 +19,7 @@ export const ClearInputIcon: FC = () => {
 export const DropdownInputIcon: FC = () => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+    <Svg fill="none" height={24} viewBox="0 0 24 24" width={24}>
       <Path
         d="M8 10.8707L11.9994 15L16 10.8707L15.1555 10L11.9994 13.2586L8.84211 10L8 10.8707Z"
         fill={colorScheme.text}

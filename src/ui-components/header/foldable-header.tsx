@@ -51,7 +51,7 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
 
   const playHeaderFoldAnimation = !staticHeader && headerHeight;
 
-  const scrollHeaderAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> | undefined = playHeaderFoldAnimation
+  const scrollHeaderAnimatedStyle: Animated.WithAnimatedValue<ViewStyle> | undefined = playHeaderFoldAnimation
     ? {
         transform: [
           {
@@ -65,7 +65,7 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
       }
     : undefined;
 
-  const fadeHeaderOutAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> | undefined = playHeaderFoldAnimation
+  const fadeHeaderOutAnimatedStyle: Animated.WithAnimatedValue<ViewStyle> | undefined = playHeaderFoldAnimation
     ? {
         opacity: scrollOffset.interpolate({
           extrapolate: 'clamp',

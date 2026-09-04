@@ -1,5 +1,4 @@
-import { fn } from '@storybook/test';
+const ReactNativeBluetoothStateManagerMock = {};
+export default ReactNativeBluetoothStateManagerMock;
 
-export default {};
-
-export const openSettings = fn;
+export const openSettings = () => {};

@@ -9,10 +9,10 @@ import Typography, { TypographyProps } from './typography';
 const testID = 'expandableTypography';
 
 export type ExpandableTypographyProps = TypographyProps & {
-  numberOfLines?: number;
   hideExpandButton?: boolean;
-  moreLabel?: string;
   lessLabel?: string;
+  moreLabel?: string;
+  numberOfLines?: number;
 };
 
 const ExpandableTypography: React.FC<ExpandableTypographyProps> = ({
@@ -32,20 +32,19 @@ const ExpandableTypography: React.FC<ExpandableTypographyProps> = ({
   }, []);
 
   return (
-    <View style={[style]}>
+    <View style={style}>
       <Typography
         {...props}
         numberOfLines={undefined}
-        style={[styles.hiddenTypography]}
         onTextLayout={(e) => {
           setIsTruncated(e.nativeEvent.lines.length > numberOfLines);
         }}
+        style={styles.hiddenTypography}
       />
       <Typography {...props} numberOfLines={expanded ? undefined : numberOfLines} />
       {(isTruncated || expanded) && !hideExpandButton && (
         <Button
           onPress={handlePress}
-          type={ButtonType.Secondary}
           style={[
             styles.button,
             {
@@ -54,6 +53,7 @@ const ExpandableTypography: React.FC<ExpandableTypographyProps> = ({
           ]}
           testID={concatTestID(testID, 'showMore')}
           title={expanded ? lessLabel : moreLabel}
+          type={ButtonType.Secondary}
         />
       )}
     </View>

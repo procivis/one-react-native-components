@@ -14,18 +14,18 @@ export enum ButtonType {
 }
 
 export interface ButtonProps extends TouchableOpacityProps {
-  type?: ButtonType;
-  title: string;
-  subtitle?: string;
   disabled?: boolean;
+  subtitle?: string;
+  title: string;
+  type?: ButtonType;
 }
 
 const SLOP_VALUE = 10;
 const hitSlop: Insets = {
-  top: SLOP_VALUE,
   bottom: SLOP_VALUE,
   left: SLOP_VALUE,
   right: SLOP_VALUE,
+  top: SLOP_VALUE,
 };
 
 const ACTIVE_OPACITY: Record<ButtonType, number> = {
@@ -100,7 +100,10 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
       <TouchableOpacity
         accessibilityRole="button"
         activeOpacity={ACTIVE_OPACITY[type]}
+        disabled={disabled}
         hitSlop={hitSlop}
+        onPressIn={type === ButtonType.Secondary ? secondaryPressIn : onPressIn}
+        onPressOut={type === ButtonType.Secondary ? secondaryPressOut : onPressOut}
         ref={ref}
         style={[
           styles.button,
@@ -109,28 +112,25 @@ export const Button = React.forwardRef<TouchableOpacityRef, ButtonProps>(
           type === ButtonType.SmallTech && styles.techSmall,
           style,
         ]}
-        disabled={disabled}
-        onPressIn={type === ButtonType.Secondary ? secondaryPressIn : onPressIn}
-        onPressOut={type === ButtonType.Secondary ? secondaryPressOut : onPressOut}
         testID={testID}
         {...props}>
         <View
           style={[secondaryPressed && styles.secondaryPressedLabel, disabled && styles.disabled]}
           testID={concatTestID(testID, disabled ? 'disabled' : 'enabled')}>
           <Typography
-            preset={type === ButtonType.SmallTech ? 's' : 'regular'}
-            color={textColor}
             align="center"
-            numberOfLines={1}>
+            color={textColor}
+            numberOfLines={1}
+            preset={type === ButtonType.SmallTech ? 's' : 'regular'}>
             {title}
           </Typography>
           {subtitle ? (
             <Typography
-              preset="s/line-height-capped"
-              style={styles.subtitle}
-              color={textColor}
               align="center"
-              numberOfLines={1}>
+              color={textColor}
+              numberOfLines={1}
+              preset="s/line-height-capped"
+              style={styles.subtitle}>
               {subtitle}
             </Typography>
           ) : null}

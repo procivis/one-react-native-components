@@ -10,21 +10,27 @@ const Render = ({ style, ...args }: ScanButtonProps) => {
 };
 
 const Basic: StoryObj<typeof ScanButton> = {
+  args: {
+    labels: {
+      issue: 'Issue',
+      sign: 'Sign'
+    },
+  },
   render: Render,
 };
 
 export { Basic as ScanButton };
 
 export default {
-  title: 'base/button/Scan Button',
-  component: ScanButton,
   argTypes: {
     onPress: { action: 'onPress' },
   },
+  component: ScanButton,
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=527-88398&t=OcqD1XaEyN4BAsCn-4',
     },
   },
+  title: 'base/button/Scan Button',
 } as Meta<typeof ScanButton>;

@@ -121,17 +121,17 @@ export const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
 };
 
 export type AttributesLabels = {
-  true: string;
   false: string;
+  true: string;
 };
 
 export type CardHeaderLabels = AttributesLabels & {
-  validityIssues: string;
+  expired: string;
+  expiredAt: (date: string) => string;
   revoked: string;
   suspended: string;
   suspendedUntil: (date: string) => string;
-  expired: string;
-  expiredAt: (date: string) => string;
+  validityIssues: string;
 };
 
 const credentialDetailFromCredential = (
@@ -142,9 +142,9 @@ const credentialDetailFromCredential = (
   labels: CardHeaderLabels,
   language: string | undefined,
 ): {
+  credentialDetailErrorColor?: boolean;
   credentialDetailPrimary?: string;
   credentialDetailSecondary?: string;
-  credentialDetailErrorColor?: boolean;
   credentialDetailTestID?: string;
   statusIcon?: FC<SvgProps>;
 } => {
@@ -161,15 +161,15 @@ const credentialDetailFromCredential = (
       };
     case CredentialState.REVOKED:
       return {
-        credentialDetailPrimary: labels.revoked,
         credentialDetailErrorColor: true,
+        credentialDetailPrimary: labels.revoked,
         credentialDetailTestID: concatTestID(testID, 'revoked'),
         statusIcon: CredentialErrorIcon,
       };
     case CredentialState.EXPIRED:
       return {
-        credentialDetailPrimary: labels.expired,
         credentialDetailErrorColor: true,
+        credentialDetailPrimary: labels.expired,
         credentialDetailTestID: concatTestID(testID, 'expired'),
         statusIcon: CredentialErrorIcon,
       };
@@ -247,9 +247,9 @@ export const cardHeaderFromCredential = (
 };
 
 export type CardLabels = CardHeaderLabels & {
-  validityIssuesNotice: string;
-  true: string;
   false: string;
+  true: string;
+  validityIssuesNotice: string;
 };
 
 export const getCredentialCardPropsFromCredential = (
@@ -266,15 +266,15 @@ export const getCredentialCardPropsFromCredential = (
 
   if (hasMsoValidityIssues(credential)) {
     notice = {
-      text: labels.validityIssuesNotice,
       noticeIcon: CredentialNoticeWarningIcon,
+      text: labels.validityIssuesNotice,
     };
   } else if (!notice) {
-    let description = getTranslatedLabel(credential.schema.translations?.description, language, defaultLanguage);
+    const description = getTranslatedLabel(credential.schema.translations?.description, language, defaultLanguage);
     if (description) {
       notice = {
-        text: description,
         noticeIcon: CredentialNoticeInfoIcon,
+        text: description,
       };
     }
   }
@@ -286,8 +286,8 @@ export const getCredentialCardPropsFromCredential = (
       : undefined,
     color: layoutProperties?.background?.color,
     header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels, language),
-    testID,
     notice,
+    testID,
   };
 
   return result;
@@ -369,9 +369,9 @@ const detailsCardAttributeValueFromClaim = (
         }
       }
       case DataType.Boolean:
-        return { testID: testID, value: claim.value.value === 'true' ? labels.true : labels.false };
+        return { testID: testID, value: (claim.value.value === 'true' || claim.value.value === true) ? labels.true : labels.false };
       default:
-        return { testID: testID, value: String(claim.value.value) };
+        return { testID: testID, value: Array.isArray(claim.value.value) ? '' : String(claim.value.value) };
     }
   }
 };
@@ -454,11 +454,11 @@ const nestAttributeInDummyParent = (attribute: CredentialAttribute): CredentialA
   // the user can't interact with it.
   if (attribute.listValue) {
     return {
-      values: [nestAttributeInDummyParent({ ...attribute, path: rest.join('/') })],
       disabled: true,
       id: `${attribute.id}/${first}`,
       name: first,
       path: first,
+      values: [nestAttributeInDummyParent({ ...attribute, path: rest.join('/') })],
     };
   } else {
     return {

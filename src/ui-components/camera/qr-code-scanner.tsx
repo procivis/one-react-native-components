@@ -45,8 +45,8 @@ const QRCodeScanner: FunctionComponent<QRCodeScannerProps> = ({
   return (
     <View {...viewProps}>
       <CodeScanner
-        isActive={isFocused && isAppActive !== false}
         barcodeFormats={codeTypes}
+        isActive={isFocused && isAppActive !== false}
         onBarcodeScanned={onQRCodeRead}
         onError={() => {}}
         style={StyleSheet.absoluteFill}

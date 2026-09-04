@@ -1,5 +1,5 @@
-/* eslint-disable no-restricted-imports */
-import React, { FC, ForwardedRef, forwardRef } from 'react';
+ 
+import React, { FC, ForwardedRef, forwardRef, MutableRefObject, PropsWithoutRef } from 'react';
 import {
   GestureResponderEvent,
   Pressable as RNPressable,
@@ -22,13 +22,13 @@ interface OnPressProps {
 
 const WithAccessibilityFocusHistory = <
   ComponentProps extends OnPressProps,
-  RefType extends React.ElementType<any, any>,
+  RefType extends React.ElementType,
 >(
   C: React.ComponentType<ComponentProps>,
   displayName: string,
 ) => {
-  type ForwardedProps = ComponentProps & {
-    forwardedRef: ForwardedRef<RefType>;
+  type ForwardedProps = PropsWithoutRef<ComponentProps> & {
+    forwardedRef: ForwardedRef<RefType | null>;
   };
 
   const ComponentWithAccessibilityFocusHistory: FC<ForwardedProps> = ({
@@ -38,10 +38,10 @@ const WithAccessibilityFocusHistory = <
   }) => {
     const { ref, onPress } = useAccessibilityFocusHistory<RefType, RNOnPress>(
       originalOnPress ?? undefined,
-      forwardedRef,
+      forwardedRef as MutableRefObject<RefType | null>,
     );
     // @ts-ignore
-    return <C ref={ref} onPress={onPress} {...props} />;
+    return <C onPress={onPress} ref={ref} {...props} />;
   };
 
   const Forwarded = forwardRef<RefType, ComponentProps>((props, ref) => (
@@ -55,13 +55,15 @@ const WithAccessibilityFocusHistory = <
 /**
  * Wrappers of RN touchable components with accessibilty focus history support
  */
-export const TouchableOpacity = WithAccessibilityFocusHistory<TouchableOpacityProps, typeof RNTouchableOpacity>(
+export const TouchableOpacity: React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<TouchableOpacityProps> & React.RefAttributes<typeof RNTouchableOpacity>
+> = WithAccessibilityFocusHistory<TouchableOpacityProps, typeof RNTouchableOpacity>(
   RNTouchableOpacity,
   'TouchableOpacity',
 );
 export const TouchableWithoutFeedback = WithAccessibilityFocusHistory<
   TouchableWithoutFeedbackProps,
-  RNTouchableWithoutFeedback
+  typeof RNTouchableWithoutFeedback
 >(RNTouchableWithoutFeedback, 'TouchableWithoutFeedback');
 export const TouchableHighlight = WithAccessibilityFocusHistory<TouchableHighlightProps, typeof RNTouchableHighlight>(
   RNTouchableHighlight,

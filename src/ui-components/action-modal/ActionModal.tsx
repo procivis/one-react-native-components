@@ -6,8 +6,8 @@ import { useAppColorScheme } from '../theme';
 interface Props {
   contentStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ViewStyle>;
-  visible: boolean;
   testID?: string;
+  visible: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -35,7 +35,7 @@ const ActionModal: FunctionComponent<PropsWithChildren<Props>> = ({
 
   return (
     <Modal animationType="fade" statusBarTranslucent style={style} transparent visible={visible}>
-      <View testID={testID} style={[styles.background, { backgroundColor: overlay }]}>
+      <View style={[styles.background, { backgroundColor: overlay }]} testID={testID}>
         <View style={[styles.contentContainer, { backgroundColor: colorScheme.white }, contentStyle]}>{children}</View>
       </View>
     </Modal>

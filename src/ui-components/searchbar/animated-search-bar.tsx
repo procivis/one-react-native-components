@@ -5,8 +5,8 @@ import SearchBar, { SearchBarProps } from './search-bar';
 
 export type AnimatedSearchBarProps = {
   collapsed: boolean;
-  rightButtons?: ReactNode[];
   rightButtonAlwaysVisible?: boolean;
+  rightButtons?: ReactNode[];
   searchBarProps: SearchBarProps;
 };
 
@@ -52,7 +52,7 @@ const AnimatedSearchBar = ({
     }),
   };
 
-  const optionsIconAnimatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
+  const optionsIconAnimatedStyle: Animated.WithAnimatedValue<ViewStyle> = {
     opacity: rightIconFadeAnimation.interpolate({
       extrapolate: 'clamp',
       inputRange: [1, 1.5],

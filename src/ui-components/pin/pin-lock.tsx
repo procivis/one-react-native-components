@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import React, { FC, useEffect, useRef } from 'react';
-import { Modal, StatusBar, StyleSheet, View } from 'react-native';
+import { Modal, StatusBar, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.9)',
     flex: 1,
     justifyContent: 'center',
     textAlign: 'center',
@@ -23,8 +22,8 @@ const styles = StyleSheet.create({
 });
 
 export type PinLockModalLabels = {
-  title: (attempts: number) => string;
   subtitle: (minutes: number, seconds: number) => string;
+  title: (attempts: number) => string;
 };
 
 interface PinLockModalProps {
@@ -65,10 +64,14 @@ const PinLockModal: FC<PinLockModalProps> = ({ attempts, labels, seconds, open }
     />
   );
 
+  const overlayColorStyle: ViewStyle = {
+    backgroundColor: 'rgba(255,255,255,0.9)',
+  };
+
   return (
     <Modal animationType="slide" statusBarTranslucent={true} transparent={true} visible={open}>
-      <View style={styles.overlay}>
-        <StatusBar backgroundColor={'#00000000'} barStyle={'dark-content'} translucent={true} />
+      <View style={[styles.overlay, overlayColorStyle]}>
+        <StatusBar barStyle={'dark-content'} />
         {content}
         <Typography color={colorScheme.text} preset="m/heading">
           {labels.title(attempts)}

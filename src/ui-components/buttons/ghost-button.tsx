@@ -13,7 +13,7 @@ export type GhostButtonProps = TouchableOpacityProps & {
   style?: StyleProp<ViewStyle>;
 };
 
-const hitSlop: Insets = { top: 10, left: 10, bottom: 10, right: 10 };
+const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
 
 const GhostButton: FC<GhostButtonProps> = ({ accessibilityLabel, icon, onPress, style, ...props }) => {
   const colorScheme = useAppColorScheme();
@@ -27,6 +27,10 @@ const GhostButton: FC<GhostButtonProps> = ({ accessibilityLabel, icon, onPress, 
     return <Icon color={colorScheme.text} />;
   }, [colorScheme.text, icon]);
 
+  const backgroundStyle: ViewStyle = {
+    backgroundColor: 'transparent',
+  };
+
   return (
     <TouchableOpacity
       accessibilityLabel={accessibilityLabel}
@@ -34,7 +38,7 @@ const GhostButton: FC<GhostButtonProps> = ({ accessibilityLabel, icon, onPress, 
       accessible={accessible}
       hitSlop={hitSlop}
       onPress={onPress}
-      style={[styles.button, style]}
+      style={[styles.button, backgroundStyle, style]}
       {...props}>
       {iconElement}
     </TouchableOpacity>
@@ -44,7 +48,6 @@ const GhostButton: FC<GhostButtonProps> = ({ accessibilityLabel, icon, onPress, 
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: 'transparent',
     borderRadius: 12,
     borderWidth: 0,
     height: 24,

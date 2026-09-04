@@ -32,11 +32,11 @@ import {
 import { AttributesLabels, CardLabels, credentialDetailFromPresentationV2Credential } from './credential';
 
 export type ShareCredentialCardLabels = CardLabels & {
-  selectiveDisclosure: string;
+  disclosurePolicyViolation: string;
   missingAttribute: string;
   missingCredential: string;
   multipleCredentials: string;
-  disclosurePolicyViolation: string;
+  selectiveDisclosure: string;
 };
 
 export const validityCheckedCardFromCredential = (
@@ -110,8 +110,8 @@ const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): Cl
 
 const v2PresentationClaimToClaim = (claim: PresentationDefinitionV2Claim): Claim => {
   return {
-    schema: claim.schema,
     path: claim.path,
+    schema: claim.schema,
     value: v2ClaimValueToClaimValue(claim.value),
   };
 };

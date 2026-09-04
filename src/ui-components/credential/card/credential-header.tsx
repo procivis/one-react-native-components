@@ -12,10 +12,10 @@ export interface CredentialHeaderProps extends AccessibilityProps {
   accessory?: React.ComponentType<any> | React.ReactElement;
   blur?: boolean;
   color?: ColorValue;
+  credentialDetailErrorColor?: boolean;
   credentialDetailPrimary?: string;
   credentialDetailSecondary?: string;
   credentialDetailTestID?: string;
-  credentialDetailErrorColor?: boolean;
   credentialName: string;
   icon?: ImageOrComponentSource;
   iconLabelColor?: ColorValue;
@@ -107,20 +107,20 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
       {blur && <BlurView blurStyle="strong" style={StyleSheet.absoluteFill} />}
       <CredentialLogo
         color={color}
+        credentialName={credentialName}
         icon={icon}
         iconLabelColor={iconLabelColor}
-        credentialName={credentialName}
         testID={concatTestID(testID, 'logo')}
       />
       {statusIconView && <View style={styles.statusIconWrapper}>{statusIconView}</View>}
       <View style={styles.text}>
         <Typography
-          testID={concatTestID(testID, 'name')}
           color={colorScheme.text}
           ellipsizeMode={'tail'}
           numberOfLines={1}
           preset="regular"
-          style={styles.nameText}>
+          style={styles.nameText}
+          testID={concatTestID(testID, 'name')}>
           {credentialName}
         </Typography>
         {DetailText}

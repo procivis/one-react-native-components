@@ -18,12 +18,12 @@ export const useNFCStatus = () => {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+     
     checkNFCStatus();
   }, [checkNFCStatus]);
 
   const recheck = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+     
     checkNFCStatus();
   }, [checkNFCStatus]);
 

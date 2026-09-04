@@ -1,4 +1,4 @@
-/* eslint-disable no-bitwise */
+ 
 import normalizeColor from '@react-native/normalize-color';
 import type { ColorValue } from 'react-native';
 

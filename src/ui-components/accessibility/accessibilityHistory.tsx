@@ -4,15 +4,15 @@ import React, { FC, PropsWithChildren, useCallback, useContext, useEffect, useMe
 import { useForwardedRef } from '../../utils/ref';
 import { focusAccessibility, useAccessibleAfterTransition } from './accessibility';
 
-type AccessibilityRefComponent = React.ElementType<any, any> | null;
+type AccessibilityRefComponent = React.ElementType | null;
 interface AccessibilityRefContextValue {
-  setRef: (route: string, ref: AccessibilityRefComponent) => void;
   getRef: (route: string) => AccessibilityRefComponent;
+  setRef: (route: string, ref: AccessibilityRefComponent) => void;
 }
 
 const accessibilityFocusHistoryContext = React.createContext<AccessibilityRefContextValue>({
-  setRef: () => {},
   getRef: () => null,
+  setRef: () => {},
 });
 
 /**
@@ -27,7 +27,7 @@ export const AccessibilityFocusHistoryProvider: FC<PropsWithChildren<{}>> = ({ c
   const getRef = useCallback((route: string) => {
     return refs.current[route] ?? null;
   }, []);
-  const value = useMemo(() => ({ setRef, getRef }), [getRef, setRef]);
+  const value = useMemo(() => ({ getRef, setRef }), [getRef, setRef]);
   return <Provider value={value}>{children}</Provider>;
 };
 
@@ -36,11 +36,11 @@ export const AccessibilityFocusHistoryProvider: FC<PropsWithChildren<{}>> = ({ c
  * @note This needs to be used inside {@link AccessibilityFocusHistoryProvider} and navigation context
  */
 export const useAccessibilityFocusHistory = <
-  Component extends React.ElementType<any, any>,
+  Component extends React.ElementType,
   OnPress extends (...args: never[]) => void = () => void,
 >(
   pressHandler: OnPress | undefined,
-  passedRef?: React.Ref<Component>,
+  passedRef?: React.MutableRefObject<Component | null>,
 ) => {
   const [forwardedRef, refObject] = useForwardedRef<Component>(passedRef);
 
@@ -63,7 +63,6 @@ export const useAccessibilityFocusHistory = <
     }
   }, [outsideTransition]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onPress = useCallback(
     ((...args) => {
       previouslyPressed.current = true;

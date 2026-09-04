@@ -4,18 +4,18 @@ import ErrorScreen, { ErrorScreenProps } from './error-screen';
 
 const Basic: StoryObj<ErrorScreenProps> = {
   args: {
-    title: 'Error',
-    subtitle: 'The app has reached an error state.',
     button: { label: 'Primary', onPress: () => null },
+    subtitle: 'The app has reached an error state.',
+    title: 'Error',
   },
 };
 
 export { Basic as ErrorScreen };
 
 export default {
-  title: 'view/loading/Error Screen',
   component: ErrorScreen,
   parameters: {
     noSafeArea: true,
   },
+  title: 'view/loading/Error Screen',
 } as Meta<typeof ErrorScreen>;

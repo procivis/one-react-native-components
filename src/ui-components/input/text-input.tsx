@@ -1,17 +1,17 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Animated,
   Insets,
   LayoutChangeEvent,
   LayoutRectangle,
-  NativeSyntheticEvent,
   Platform,
   StyleProp,
   StyleSheet,
   TextInput as RNTextInput,
-  TextInputFocusEventData as RNTextInputFocusEventData,
+  TextInputFocusEvent as RNTextInputFocusEvent,
+  TextInputInstance as RNTextInputInstance,
   TextInputProps as RNTextInputProps,
-  TextInputSubmitEditingEventData as RNTextInputSubmitEditingEventData,
+  TextInputSubmitEditingEvent as RNTextInputSubmitEditingEvent,
   useWindowDimensions,
   View,
   ViewStyle,
@@ -28,8 +28,8 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 const LABEL_SCALE_RATIO = 14 / 12;
 
 export enum TextInputAccessory {
-  Dropdown = 'dropdown',
   Clear = 'clear',
+  Dropdown = 'dropdown'
 }
 
 const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
@@ -49,7 +49,7 @@ export type TextInputProps = Omit<RNTextInputProps, 'editable' | 'onSubmitEditin
  * Generic text input component
  * @see https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=3%3A824&t=r7HhHF1rsNLmOBL2-4
  */
-const TextInput = forwardRef<RNTextInput, TextInputProps>(
+const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputProps>(
   (
     {
       value,
@@ -73,14 +73,14 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
 
     const [focused, setFocused] = useState(false);
     const onFocusAction = useCallback(
-      (e: NativeSyntheticEvent<RNTextInputFocusEventData>) => {
+      (e: RNTextInputFocusEvent) => {
         setFocused(true);
         onFocus?.(e);
       },
       [onFocus],
     );
     const onBlurAction = useCallback(
-      (e: NativeSyntheticEvent<RNTextInputFocusEventData>) => {
+      (e: RNTextInputFocusEvent) => {
         setFocused(false);
         onBlur?.(e);
       },
@@ -88,7 +88,7 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
     );
 
     const onSubmitEditing = useCallback(
-      (e: NativeSyntheticEvent<RNTextInputSubmitEditingEventData>) => onSubmit?.(e.nativeEvent.text),
+      (e: RNTextInputSubmitEditingEvent) => onSubmit?.(e.nativeEvent.text),
       [onSubmit],
     );
 

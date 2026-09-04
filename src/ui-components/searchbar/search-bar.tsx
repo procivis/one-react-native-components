@@ -1,5 +1,15 @@
-import React, { forwardRef, useCallback } from 'react';
-import { Insets, Platform, StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
+import React, { FC, forwardRef, useCallback } from 'react';
+import {
+  Insets,
+  Platform,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  TextInputInstance,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../utils';
 import { TouchableOpacity } from '../accessibility';
@@ -8,16 +18,16 @@ import font from '../text/font';
 import { useAppColorScheme } from '../theme';
 
 export interface SearchBarProps extends TextInputProps {
-  style?: StyleProp<ViewStyle>;
+  onSearchPhraseChange: (searchPhrase: string) => void;
   placeholder?: string;
   searchPhrase: string;
-  onSearchPhraseChange: (searchPhrase: string) => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-const hitSlop: Insets = { top: 10, left: 10, bottom: 10, right: 10 };
+const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1143-40433&t=HY1KvobxOReLeC8Z-4
-const SearchBar = forwardRef<TextInput, SearchBarProps>(
+const SearchBar: FC<SearchBarProps> = forwardRef<TextInputInstance, SearchBarProps>(
   ({ style, placeholder, searchPhrase, onSearchPhraseChange, testID, ...textInputProps }, ref) => {
     const colorScheme = useAppColorScheme();
 
@@ -43,17 +53,17 @@ const SearchBar = forwardRef<TextInput, SearchBarProps>(
           ref={ref}
           returnKeyType="search"
           style={[styles.textInput, { color: colorScheme.text }]}
-          value={searchPhrase}
           testID={testID}
+          value={searchPhrase}
           {...textInputProps}
         />
         {searchPhrase ? (
           <TouchableOpacity
-            testID={concatTestID(testID, 'clear')}
             accessibilityRole="button"
             hitSlop={hitSlop}
             onPress={onClear}
-            style={styles.clearButton}>
+            style={styles.clearButton}
+            testID={concatTestID(testID, 'clear')}>
             <CloseIcon color={colorScheme.text} height={12} width={12} />
           </TouchableOpacity>
         ) : null}

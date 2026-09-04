@@ -53,7 +53,7 @@ export const usePagedCredentials = (queryParams?: Partial<CredentialListQuery>) 
       CREDENTIAL_LIST_PAGED_QUERY_KEY,
       ...getQueryKeyFromCredentialListQueryParams(queryParams),
     ],
-    ({ pageParam = 0 }) =>
+    ({ pageParam = 0 }: { pageParam?: number }) =>
       core.listCredentials({
         organisationId,
         page: pageParam,
@@ -129,7 +129,7 @@ export const useCredentialReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectCredential(interactionId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported) {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
           return;
         }
         throw e;
@@ -164,7 +164,7 @@ export const useCredentialDelete = () => {
   return useMutation(async (credentialId: string) => core.deleteCredential(credentialId), {
     onSuccess: async (_, credentialId) => {
       await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
-      await queryClient.removeQueries([CREDENTIAL_DETAIL_QUERY_KEY, credentialId]);
+      queryClient.removeQueries([CREDENTIAL_DETAIL_QUERY_KEY, credentialId]);
       await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
     },
   });

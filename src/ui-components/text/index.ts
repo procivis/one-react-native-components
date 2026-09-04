@@ -1,6 +1,4 @@
-import type { ExpandableTypographyProps } from './expandableTypography';
-import ExpandableTypography from './expandableTypography';
-import type { TypographyProps } from './typography';
-import Typography from './typography';
+import ExpandableTypography, { type ExpandableTypographyProps } from './expandableTypography';
+import Typography, { type TypographyProps } from './typography';
 
 export { ExpandableTypography, ExpandableTypographyProps, Typography, TypographyProps };

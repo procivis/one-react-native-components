@@ -102,7 +102,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
       );
     }
 
-    if (failureHint?.reason === 'VALIDITY') {
+    if (failureHint?.reason.toString() === 'VALIDITY') {
       return (
         <ShareCredentialCardNotice
           testID={concatTestID(testID, 'notice.invalid')}

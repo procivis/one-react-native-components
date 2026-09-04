@@ -17,10 +17,10 @@ import { useAppColorScheme } from '../theme';
 export interface QRCodeScannerScreenProps {
   codeTypes?: QRCodeScannerProps['codeTypes'];
   footer?: React.ComponentType<any> | React.ReactElement;
-  onQRCodeRead: QRCodeScannerProps['onQRCodeRead'];
-  onClose: () => void;
-  overlayStyle?: StyleProp<ViewStyle>;
   noCameraView?: JSX.Element;
+  onClose: () => void;
+  onQRCodeRead: QRCodeScannerProps['onQRCodeRead'];
+  overlayStyle?: StyleProp<ViewStyle>;
   title: ReactElement | string;
 }
 
@@ -66,20 +66,20 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
       />
       <ContrastingStatusBar backgroundColor={colorScheme.black} />
       <BlurView
-        darkMode={true}
         blurStyle="soft"
+        darkMode={true}
         style={[styles.topBlurView, { backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5) }]}>
         <View style={[styles.headerSection, { top: insets.top }]}>
           <GhostButton
+            accessibilityLabel={t('accessibility.nav.close')}
             icon={<CloseIcon color={colorScheme.white} />}
             onPress={onClose}
-            accessibilityLabel={t('accessibility.nav.close')}
           />
         </View>
       </BlurView>
       <BlurView
-        darkMode={true}
         blurStyle="soft"
+        darkMode={true}
         style={[
           styles.bottomBlurView,
           {
@@ -88,7 +88,7 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
             paddingBottom: Math.max(insets.bottom, 32),
           },
         ]}>
-        <Typography align="center" style={styles.title} color={colorScheme.white}>
+        <Typography align="center" color={colorScheme.white} style={styles.title}>
           {title}
         </Typography>
         {footerView}

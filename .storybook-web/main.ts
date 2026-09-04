@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-native-web-vite';
+import path from 'path';
 
 type ServerStorybookConfig = StorybookConfig & {
   reactNativeServerOptions: { host: string; port: number };
@@ -9,14 +10,22 @@ const main: ServerStorybookConfig = {
 
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
     '@storybook/addon-react-native-server',
     '@storybook/addon-designs',
   ],
 
   framework: {
     name: '@storybook/react-native-web-vite',
-    options: {},
+    options: {
+      pluginReactOptions: {
+        babel: {
+          plugins: [
+            '@babel/plugin-proposal-export-namespace-from',
+            'react-native-reanimated/plugin',
+          ],
+        },
+      },
+    },
   },
 
   viteFinal: async (config) => ({
@@ -24,7 +33,7 @@ const main: ServerStorybookConfig = {
     resolve: {
       ...(config.resolve || {}),
       alias: {
-        'react-native$': 'react-native-web',
+        'react-native': 'react-native-web',
         '../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '../../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '@react-native-community/blur': '/storybook/modules/blur',
@@ -39,7 +48,16 @@ const main: ServerStorybookConfig = {
         'react-native-nitro-modules': '/storybook/modules/react-native-nitro-modules',
         'react-native-vision-camera-barcode-scanner': '/storybook/modules/react-native-vision-camera-barcode-scanner',
         'react-native-reanimated-carousel': '/storybook/modules/react-native-reanimated-carousel',
+        '@sentry/react-native': '/storybook/modules/react-native-sentry',
+        '@react-native/assets-registry/registry': 'react-native-web/dist/modules/AssetRegistry',
       },
+    },
+    optimizeDeps: {
+      ...config.optimizeDeps,
+      exclude: [
+        ...(config.optimizeDeps?.exclude ?? []),
+        '@react-native/assets-registry',
+      ],
     },
   }),
 
@@ -54,6 +72,10 @@ const main: ServerStorybookConfig = {
 
   typescript: {
     reactDocgen: 'react-docgen-typescript',
+  },
+  
+  core: {
+    builder: '@storybook/builder-vite',
   },
 };
 

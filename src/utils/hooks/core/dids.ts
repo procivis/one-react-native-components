@@ -12,7 +12,7 @@ export const useDids = (queryParams?: Partial<DidListQuery>) => {
 
   return useQuery(
     [DID_LIST_QUERY_KEY, ...getQueryKeyFromDidListQueryParams(queryParams)],
-    async ({ pageParam = 0 }) => {
+    async ({ pageParam = 0 }: { pageParam?: number }) => {
       const dids = await core.listDids({
         deactivated: false,
         organisationId,

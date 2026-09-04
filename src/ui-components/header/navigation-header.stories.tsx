@@ -30,8 +30,8 @@ const Render = ({ withBackButton, withRightButton, ...args }: Args) => {
 
 const Basic: StoryObj<Args> = {
   args: {
-    title: 'Title',
     modalHandleVisible: false,
+    title: 'Title',
     withBackButton: true,
     withRightButton: true,
   },
@@ -41,7 +41,6 @@ const Basic: StoryObj<Args> = {
 export { Basic as NavigationHeader };
 
 export default {
-  title: 'component/header/NavigationHeader',
   component: NavigationHeader,
   parameters: {
     design: {
@@ -49,6 +48,7 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=425-18624&mode=design&t=29eTMhPYwNIK3rK3-0',
     },
   },
+  title: 'component/header/NavigationHeader',
 } as Meta<typeof NavigationHeader>;
 
 const styles = StyleSheet.create({

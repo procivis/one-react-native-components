@@ -4,14 +4,14 @@ export const parseUniversalLink = (universalLink: string): string | undefined =>
   let parsedUrl: parseUrl.ParsedUrl;
   try {
     parsedUrl = parseUrl(universalLink);
-  } catch (e) {
+  } catch {
     return undefined;
   }
 
   if (parsedUrl.parse_failed) {
     return undefined;
   }
-  const protocol = parsedUrl.protocol as string;
+  const protocol = parsedUrl.protocol;
   if (!['http', 'https'].includes(protocol)) {
     return undefined;
   }

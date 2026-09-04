@@ -1,4 +1,3 @@
-import type { BlurViewProps } from './blur-view';
-import BlurView from './blur-view';
+import BlurView, { type BlurViewProps } from './blur-view';
 
 export { BlurView, BlurViewProps };

@@ -25,16 +25,16 @@ const Basic: StoryObj<typeof QRCodeScannerScreen> = {
 export { Basic as QRCodeScannerScreen };
 
 export default {
-  title: 'screen/QR Code Scanner Screen',
+  argTypes: {
+    onQRCodeRead: { action: 'onQRCodeRead' },
+  },
   component: QRCodeScannerScreen,
   parameters: {
-    noSafeArea: true,
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=651%3A22601&mode=design&t=NuPAMUrC62C0azQ4-1',
     },
+    noSafeArea: true,
   },
-  argTypes: {
-    onQRCodeRead: { action: 'onQRCodeRead' },
-  },
+  title: 'screen/QR Code Scanner Screen',
 } as Meta<typeof QRCodeScannerScreen>;

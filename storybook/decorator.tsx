@@ -8,8 +8,9 @@ import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-c
 import { AccessibilityLanguageProvider } from '../src/ui-components/accessibility/accessibilityLanguage';
 import { ColorSchemeProvider } from '../src/ui-components/theme';
 import ColorSchemes from './colorScheme';
+import { ExtendedContext } from './context';
 
-const getColorScheme = (context: StoryContext) => ColorSchemes[context.globals.colorScheme] ?? ColorSchemes.procivis;
+const getColorScheme = (context: StoryContext) => ColorSchemes[(context as ExtendedContext).globals.colorScheme] ?? ColorSchemes.procivis;
 
 export const withColorScheme = (Story: any, context: StoryContext) => {
   return (
@@ -53,8 +54,8 @@ export const FullScreen = (Story: () => JSX.Element) => {
   return (
     <View
       style={{
-        width: dimensions.width,
         height: dimensions.height,
+        width: dimensions.width,
       }}>
       <Story />
     </View>

@@ -35,10 +35,10 @@ export type BarcodeFormat =
   | 'aztec';
 
 export interface Rect {
+  bottom: number;
   left: number;
   right: number;
   top: number;
-  bottom: number;
 }
 export interface Point {
   x: number;
@@ -61,10 +61,10 @@ export type BarcodeValueType =
   | 'driver-license';
 
 export interface Barcode {
-  readonly format: BarcodeFormat;
   readonly boundingBox: Rect;
   readonly cornerPoints: Point[];
   readonly displayValue: string | undefined;
+  readonly format: BarcodeFormat;
   readonly rawBytes: ArrayBuffer | undefined;
   readonly rawValue: string | undefined;
   readonly valueType: BarcodeValueType;

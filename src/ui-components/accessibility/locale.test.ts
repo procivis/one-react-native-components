@@ -1,3 +1,5 @@
+import { it } from '@jest/globals';
+
 import { AccessibilityLanguageFile, defaultLanguageFiles, SupportedAccessibilityLanguage } from './locale';
 
 it('language files consistency', () => {

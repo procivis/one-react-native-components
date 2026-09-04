@@ -1,7 +1,7 @@
 import { barcode } from 'pure-svg-code';
 import QRCode from 'qrcode-svg';
 import React, { FC, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import Typography from '../text/typography';
@@ -10,7 +10,6 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 const styles = StyleSheet.create({
   barcodeBackground: {
     alignSelf: 'center',
-    backgroundColor: 'white',
     borderRadius: 5,
     borderWidth: 0,
   },
@@ -22,7 +21,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mrzBackground: {
-    backgroundColor: 'white',
     paddingHorizontal: 12,
   },
 });
@@ -46,12 +44,16 @@ export const Barcode: FC<BarcodeProps> = ({ content, width = 220, height = 80, t
     [content, colorScheme, height, width],
   );
 
+  const whiteBgStyle: ViewStyle = {
+    backgroundColor: 'white',
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.barcodeBackground}>
+      <View style={[styles.barcodeBackground, whiteBgStyle]}>
         <SvgXml
           height={height}
-          style={[styles.barcodeBackground, styles.barcodeContent]}
+          style={[styles.barcodeBackground, whiteBgStyle, styles.barcodeContent]}
           testID={testID}
           width={width}
           xml={barcodeXml}
@@ -63,9 +65,9 @@ export const Barcode: FC<BarcodeProps> = ({ content, width = 220, height = 80, t
 
 type QrCodeProps = {
   content: string;
+  onError?: (err: string) => void;
   padding?: number;
   testID?: string;
-  onError?: (err: string) => void;
 };
 
 export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) => {
@@ -79,7 +81,7 @@ export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) =
         padding: padding ?? 1,
       }).svg();
     } catch (err) {
-      onError && onError(err instanceof Error ? err.message : 'Unknown error occurred.');
+      onError?.(err instanceof Error ? err.message : 'Unknown error occurred.');
       return null;
     }
   }, [content, onError, padding]);
@@ -88,8 +90,11 @@ export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) =
 
 export const Mrz: FC<{ content: string; testID?: string }> = ({ content, testID }) => {
   const colorScheme = useAppColorScheme();
+  const whiteBgStyle: ViewStyle = {
+    backgroundColor: 'white',
+  };
   return (
-    <View style={[styles.container, styles.mrzBackground]}>
+    <View style={[styles.container, styles.mrzBackground, whiteBgStyle]}>
       <Typography color={colorScheme.text} preset={'s/code'} testID={testID}>
         {content}
       </Typography>

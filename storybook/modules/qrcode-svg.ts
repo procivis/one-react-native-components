@@ -1,1 +1,2 @@
-export default {};
+const QRCodeSVGMock = {};
+export default QRCodeSVGMock;

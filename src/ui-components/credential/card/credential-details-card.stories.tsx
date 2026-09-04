@@ -1,8 +1,10 @@
 import type { Meta, StoryContext, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { fn } from 'storybook/test';
 
 import CredentialDetailsCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
+import { ExtendedContext } from '../../../../storybook/context';
 import { Placeholder } from '../../../../storybook/placeholder';
 import { CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../icons/credential';
 import Selector from '../selector';
@@ -18,13 +20,13 @@ const style = StyleSheet.create({
     flex: 1,
   },
   footer: {
-    backgroundColor: 'lightgray',
     padding: 12,
   },
 });
 
 const Render = (args: CredentialDetailsCardProps, context: StoryContext<CredentialDetailsCardProps>) => {
-  const viewport = context.parameters.viewport.viewports[context.userGlobals.viewport];
+  const extendedContext = context as ExtendedContext<CredentialDetailsCardProps>;
+  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value];
   const width = parseInt(viewport.styles.width.replace('px', ''), 10) - 32;
   const props = {
     ...args,
@@ -34,6 +36,10 @@ const Render = (args: CredentialDetailsCardProps, context: StoryContext<Credenti
     },
   };
   return <CredentialDetailsCard {...props} style={style.card} />;
+};
+
+const backgroundStyle: ViewStyle = {
+  backgroundColor: 'lightgray',
 };
 
 const Basic: StoryObj<typeof CredentialDetailsCard> = {
@@ -72,82 +78,85 @@ const Basic: StoryObj<typeof CredentialDetailsCard> = {
         path: 'Attribute 1',
       },
       {
+        id: 'attribute-2',
+        name: 'Attribute 2',
+        path: 'Attribute 2',
         values: [
           {
             id: 'attribute-2-1',
             name: 'Attribute 2-1',
             path: 'Attribute 2/Attribute 2-1',
-            value: 'Value 2.1',
             rightAccessory: <Selector status={SelectorStatus.Required} />,
+            value: 'Value 2.1',
           },
           {
             id: 'attribute-2-2',
             name: 'Attribute 2-2',
             path: 'Attribute 2/Attribute 2-2',
-            value: 'Value 2.2',
             rightAccessory: <Selector status={SelectorStatus.Required} />,
+            value: 'Value 2.2',
           },
           {
             id: 'attribute-2-3',
             name: 'Attribute 2-3',
             path: 'Attribute 2/Attribute 2-3',
-            value: 'Value 2.3',
             rightAccessory: <Selector status={SelectorStatus.Required} />,
+            value: 'Value 2.3',
           },
         ],
-        id: 'attribute-2',
-        name: 'Attribute 2',
-        path: 'Attribute 2',
       },
       {
         id: 'attribute-3',
-        name: 'Attribute 3',
-        path: 'Attribute 3',
         image: {
           uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
         },
+        name: 'Attribute 3',
+        path: 'Attribute 3',
         rightAccessory: <Selector status={SelectorStatus.Required} />,
       },
       {
-        selected: true,
         id: 'attribute-4',
         name: 'Attribute 4',
         path: 'Attribute 4',
+        rightAccessory: <Selector status={SelectorStatus.SelectedCheckmark} />,
+        selected: true,
         value: 'Value 4',
-        rightAccessory: <Selector status={true ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
       },
       {
         id: 'attribute-5',
-        name: 'Attribute 5',
-        path: 'Attribute 5',
         image: {
           uri: 'https://cdn.pixabay.com/photo/2016/02/17/16/09/vertical-1205295_960_720.jpg',
         },
+        name: 'Attribute 5',
+        path: 'Attribute 5',
         rightAccessory: <Selector status={SelectorStatus.Required} />,
       },
       {
         id: 'attribute-6',
         name: 'Attribute 6',
         path: 'Attribute 6',
+        rightAccessory: <Selector status={SelectorStatus.Empty} />,
         value: 'Value 6',
-        rightAccessory: <Selector status={false ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
       },
       {
-        selected: true,
         id: 'attribute-7',
         name: 'Attribute 7',
         path: 'Attribute 7',
+        rightAccessory: <Selector status={SelectorStatus.SelectedCheckmark} />,
+        selected: true,
         value: 'Value 7',
-        rightAccessory: <Selector status={true ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
       },
       {
         id: 'attribute-8',
         name: 'Attribute 8',
         path: 'Attribute 8',
+        rightAccessory: <Selector status={SelectorStatus.Empty} />,
         value: 'Value 8',
-        rightAccessory: <Selector status={false ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />,
       },
       {
+        id: 'attribute-9',
+        name: 'Attribute 9',
+        path: 'Attribute 9',
         values: [
           {
             attributes: [
@@ -207,87 +216,85 @@ const Basic: StoryObj<typeof CredentialDetailsCard> = {
             path: 'Attribute 9/2',
           },
         ],
-        id: 'attribute-9',
-        name: 'Attribute 9',
-        path: 'Attribute 9',
       },
       {
-        values: [
-          {
-            id: 'attribute-10-1',
-            name: 'Attribute 10-1',
-            path: 'Attribute 10/Attribute 10.1',
-            image: {
-              uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
-            },
-          },
-          {
-            id: 'attribute-10-2',
-            name: 'Attribute 10-2',
-            path: 'Attribute 10/Attribute 10.2',
-            image: {
-              uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
-            },
-          },
-          {
-            id: 'attribute-10-3',
-            name: 'Attribute 10-3',
-            path: 'Attribute 10/Attribute 10.3',
-            image: {
-              uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
-            },
-          },
-        ],
         id: 'attribute-10',
         name: 'Attribute 10',
         path: 'Attribute 10',
+        values: [
+          {
+            id: 'attribute-10-1',
+            image: {
+              uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
+            },
+            name: 'Attribute 10-1',
+            path: 'Attribute 10/Attribute 10.1',
+          },
+          {
+            id: 'attribute-10-2',
+            image: {
+              uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
+            },
+            name: 'Attribute 10-2',
+            path: 'Attribute 10/Attribute 10.2',
+          },
+          {
+            id: 'attribute-10-3',
+            image: {
+              uri: 'https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_1280.png',
+            },
+            name: 'Attribute 10-3',
+            path: 'Attribute 10/Attribute 10.3',
+          },
+        ],
       },
     ],
     card: {
-      cardImage: { imageSource: CredentialDetailsCardBackground },
       cardCarouselImages: [
         {
+          element: <Placeholder id="R" style={style.carouselItem} />,
           type: CarouselImageType.Photo,
-          element: <Placeholder id="R" style={style.carouselItem} />,
         },
         {
+          element: <Placeholder id="R" style={style.carouselItem} />,
           type: CarouselImageType.Barcode,
-          element: <Placeholder id="R" style={style.carouselItem} />,
         },
         {
+          element: <Placeholder id="R" style={style.carouselItem} />,
           type: CarouselImageType.MRZ,
-          element: <Placeholder id="R" style={style.carouselItem} />,
         },
         {
-          type: CarouselImageType.QrCode,
           element: <Placeholder id="R" style={style.carouselItem} />,
+          type: CarouselImageType.QrCode,
         },
       ],
+      cardImage: { imageSource: CredentialDetailsCardBackground },
       color: undefined,
-      onHeaderPress: () => {},
       header: {
+        credentialDetailErrorColor: false,
         credentialDetailPrimary: 'Primary Detail',
         credentialDetailSecondary: 'Secondary Detail',
         credentialDetailTestID: undefined,
-        credentialDetailErrorColor: false,
         credentialName: 'Credential Name',
         icon: undefined,
         iconLabelColor: undefined,
         statusIcon: CredentialWarningIcon,
       },
       notice: {
-        text: 'Notice related to the credential',
         noticeIcon: CredentialNoticeWarningIcon,
+        text: 'Notice related to the credential',
       },
+       
+      onHeaderPress: fn(),
       width: Dimensions.get('screen').width - 32,
     },
-    showAllButtonLabel: 'See all',
     expanded: true,
     footer: (
-      <View style={style.footer}>
+      <View style={[style.footer, backgroundStyle]}>
         <Text>Footer view</Text>
       </View>
     ),
+    showAllButtonLabel: 'See all',
   },
   render: Render,
 };
@@ -295,12 +302,11 @@ const Basic: StoryObj<typeof CredentialDetailsCard> = {
 export { Basic as CredentialDetailsCard };
 
 export default {
-  title: 'credential/card/CredentialDetailsCard',
-  component: CredentialDetailsCard,
   argTypes: {
-    onImagePreview: { action: 'onImagePreview' },
     onAttributeSelected: { action: 'onAttributeSelected' },
+    onImagePreview: { action: 'onImagePreview' },
   },
+  component: CredentialDetailsCard,
   parameters: {
     backgrounds: {
       default: 'background',
@@ -310,4 +316,5 @@ export default {
       url: 'https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=415-10041&mode=design&t=0DWIGZWyWYB7JzPE-0',
     },
   },
+  title: 'credential/card/CredentialDetailsCard',
 } as Meta<typeof CredentialDetailsCard>;

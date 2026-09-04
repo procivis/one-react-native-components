@@ -1,1 +1,2 @@
-export default {};
+const ReactNativeShareMock = {};
+export default ReactNativeShareMock;

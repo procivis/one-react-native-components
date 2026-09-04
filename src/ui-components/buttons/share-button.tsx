@@ -10,8 +10,8 @@ import { useAppColorScheme } from '../theme';
 export type ShareButtonProps = {
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
-  title?: string;
   testID?: string;
+  title?: string;
 };
 
 const ShareButton: FC<ShareButtonProps> = ({
@@ -27,7 +27,7 @@ const ShareButton: FC<ShareButtonProps> = ({
       <View style={[styles.container, { backgroundColor: colorScheme.white }]}>
         <LinkIcon color={colorScheme.text} />
         {title && (
-          <Typography testID={concatTestID(testID, 'title')} color={colorScheme.text} preset="s">
+          <Typography color={colorScheme.text} preset="s" testID={concatTestID(testID, 'title')}>
             {title}
           </Typography>
         )}

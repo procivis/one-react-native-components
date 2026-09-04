@@ -125,8 +125,12 @@ export const useAvailableTransports = (
     const availableTransport: Transport[] = [];
     const transportError: TransportError = {};
     if (internetState === InternetState.Available) {
-      supportedTransports.includes(Transport.MQTT) && availableTransport.push(Transport.MQTT);
-      supportedTransports.includes(Transport.HTTP) && availableTransport.push(Transport.HTTP);
+      if (supportedTransports.includes(Transport.MQTT)) {
+        availableTransport.push(Transport.MQTT);
+      }
+      if (supportedTransports.includes(Transport.HTTP)) {
+        availableTransport.push(Transport.HTTP);
+      }
     } else {
       transportError.internet = internetState;
     }
@@ -145,19 +149,19 @@ export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: 
   let parsedUrl: parseUrl.ParsedUrl;
   try {
     parsedUrl = parseUrl(url);
-  } catch (e) {
+  } catch {
     return [];
   }
 
   if (parsedUrl.parse_failed) {
     return [];
   }
-  const protocol = parsedUrl.protocol as string;
+  const protocol = parsedUrl.protocol;
   if (protocol !== 'openid4vp' && protocol !== customOpenIdUrlScheme?.toLowerCase()) {
     return [Transport.HTTP];
   }
 
-  const query = parsedUrl.query as Record<string, string>;
+  const query = parsedUrl.query;
   const hasAllParameters = (...params: string[]): boolean => {
     return params.every((param) => param in query);
   };

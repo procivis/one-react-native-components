@@ -14,10 +14,10 @@ export const Pins: FC<PinsProps> = ({ enteredLength, maxLength, style, ...props 
   const colorScheme = useAppColorScheme();
   return (
     <View
-      style={[styles.pinsWrapper, style]}
-      accessible={true}
       accessibilityRole="progressbar"
       accessibilityValue={{ text: t('accessibility.control.progress', { current: enteredLength, length: maxLength }) }}
+      accessible={true}
+      style={[styles.pinsWrapper, style]}
       {...props}>
       {Array.from({ length: maxLength }).map((_, index) => (
         <View

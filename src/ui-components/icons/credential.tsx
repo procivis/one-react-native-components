@@ -47,16 +47,16 @@ export const CredentialWarningIcon: FC<SvgProps> = ({ ...props }) => (
 export const CredentialNoticeInfoIcon: FC<SvgProps> = ({ ...props }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+    <Svg fill="none" height={24} viewBox="0 0 24 24" width={24} {...props}>
       <Path
         d="M12.36 10.732c.111 0 .2.09.2.2V15.8a.2.2 0 01-.2.2h-.66a.2.2 0 01-.2-.2v-4.868c0-.11.09-.2.2-.2h.66zM11.5 8.2c0-.11.09-.2.2-.2h.66c.111 0 .2.09.2.2v.699a.2.2 0 01-.2.2h-.66a.2.2 0 01-.2-.2V8.2z"
         fill={colorScheme.text}
       />
       <Path
-        fillRule="evenodd"
         clipRule="evenodd"
         d="M12 19a7 7 0 100-14 7 7 0 000 14zm0 1a8 8 0 100-16 8 8 0 000 16z"
         fill={colorScheme.text}
+        fillRule="evenodd"
       />
     </Svg>
   );
@@ -66,7 +66,7 @@ export const CredentialNoticeInfoIcon: FC<SvgProps> = ({ ...props }) => {
 export const CredentialNoticeWarningIcon: FC<SvgProps> = ({ ...props }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+    <Svg fill="none" height={24} viewBox="0 0 24 24" width={24} {...props}>
       <Path
         d="M12.36 13.268a.2.2 0 00.2-.2V8.2a.2.2 0 00-.2-.2h-.66a.2.2 0 00-.2.2v4.868c0 .11.09.2.2.2h.66zM11.5 15.8c0 .11.09.2.2.2h.66a.2.2 0 00.2-.2v-.699a.2.2 0 00-.2-.2h-.66a.2.2 0 00-.2.2v.699z"
         fill={colorScheme.text}

@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
 export type SettingItemProps = {
   icon?: ComponentType<any> | ReactElement;
   style?: StyleProp<ViewStyle>;
-  title: string;
   testID?: string;
+  title: string;
 };
 
 const SettingItem: FunctionComponent<PropsWithChildren<SettingItemProps>> = ({
