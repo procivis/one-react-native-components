@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { ComponentType, FC, ReactElement, useCallback, useMemo } from 'react';
 import { ColorValue, Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../../utils/testID';
@@ -33,6 +33,7 @@ export type CredentialCardProps = {
   cardImage?: ImageOrComponentSource;
   color?: ColorValue;
   credentialId?: string;
+  extra?: ComponentType<any> | ReactElement;
   header: CredentialHeaderProps;
   notice?: CredentialCardNotice;
   onCardPress?: (credentialId?: string) => void;
@@ -47,6 +48,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
   cardImage,
   color = '#5A69F3',
   credentialId,
+  extra,
   header,
   notice,
   onCardPress,
@@ -68,6 +70,18 @@ const CredentialCard: FC<CredentialCardProps> = ({
   const cardPressHandler = useCallback(() => {
     onCardPress?.(credentialId);
   }, [credentialId, onCardPress]);
+  
+  const extraView: ReactElement | undefined = useMemo(() => {
+    if (!extra) {
+      return undefined;
+    }
+    if (React.isValidElement(extra)) {
+      return extra;
+    } else {
+      const ExtraComponent = extra as React.ComponentType<any>;
+      return <ExtraComponent />;
+    }
+  }, [extra]);
 
   const noticeIconView: React.ReactElement | undefined = useMemo(() => {
     if (!notice?.noticeIcon) {
@@ -117,6 +131,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
         style={styles.header}>
         <CredentialHeader {...header} color={header.color ?? color} testID={concatTestID(testID, 'header')} />
       </TouchableOpacity>
+      {extraView}
       {notice && (
         <BlurView blurStyle="soft" style={styles.notice} testID={concatTestID(testID, 'notice')}>
           {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
