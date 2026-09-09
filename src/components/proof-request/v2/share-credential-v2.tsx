@@ -76,6 +76,13 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
       ? {
           ...credential,
           issuer: credential?.issuer?.id,
+          schema: {
+            ...credential.schema,
+            formats: [{
+              ecosystemSchemaId: credential.schema.schemaId,
+              format: credential.schema.format,
+            }],
+          },
           type: CredentialType.SINGLE,
         }
       : undefined,

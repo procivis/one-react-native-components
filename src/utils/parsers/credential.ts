@@ -53,7 +53,7 @@ export const supportsSelectiveDisclosure = (
   credential: CredentialListItem | undefined,
   config: CoreConfig | undefined,
 ) => {
-  const formatConfig = credential && config?.format[credential.schema.format];
+  const formatConfig = credential?.schema.formats[0] ? config?.format[credential.schema.formats[0].format] : undefined;
   return formatConfig
     ? Boolean(formatConfig.capabilities?.features?.includes(FormatFeature.SelectiveDisclosure))
     : undefined;
@@ -517,5 +517,12 @@ export function credentialDetailFromPresentationV2Credential(
   return {
     type: CredentialType.SINGLE,
     ...presentationCredential,
+    schema: 'formats' in presentationCredential.schema ? presentationCredential.schema : {
+      ...presentationCredential.schema,
+      formats: [{
+        ecosystemSchemaId: presentationCredential.schema.schemaId,
+        format: presentationCredential.schema.format,
+      }],
+    },
   };
 }

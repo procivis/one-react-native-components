@@ -251,7 +251,18 @@ export const shareCredentialCardFromV2PresentationCredential = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuer: credential.issuer?.id, type: CredentialType.SINGLE } : undefined,
+    credential ? {
+      ...credential,
+      issuer: credential.issuer?.id,
+      schema: {
+        ...credential.schema,
+        formats: [{
+          ecosystemSchemaId: credential.schema.schemaId,
+          format: credential.schema.format,
+        }],
+      },
+      type: CredentialType.SINGLE
+    } : undefined,
     config,
   );
   const notice: CredentialCardNotice | undefined = purpose
@@ -294,7 +305,18 @@ export const selectCredentialCardFromV2Credential = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? { ...credential, issuer: credential.issuer?.id, type: CredentialType.SINGLE } : undefined,
+    credential ? {
+      ...credential,
+      issuer: credential.issuer?.id,
+      schema: {
+        ...credential.schema,
+        formats: [{
+          ecosystemSchemaId: credential.schema.schemaId,
+          format: credential.schema.format,
+        }],
+      },
+      type: CredentialType.SINGLE
+    } : undefined,
     config,
   );
   const selectedStatus = multiple ? SelectorStatus.SelectedCheckmark : SelectorStatus.SelectedRadio;
@@ -310,6 +332,13 @@ export const selectCredentialCardFromV2Credential = (
     {
       ...credential,
       claims: credential.claims.map(v2PresentationClaimToClaim),
+      schema: {
+        ...credential.schema,
+        formats: [{
+          ecosystemSchemaId: credential.schema.schemaId,
+          format: credential.schema.format,
+        }],
+      },
       type: CredentialType.SINGLE,
     },
     credential.claims.map(v2PresentationClaimToClaim),

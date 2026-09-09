@@ -127,8 +127,8 @@ export const useCredentialReject = () => {
   const { core } = useONECore();
 
   return useMutation(
-    async (interactionId: string) =>
-      core.holderRejectCredential(interactionId).catch((e) => {
+    async ({ credentialIds, interactionId }: { credentialIds?: string[], interactionId: string }) =>
+      core.holderRejectCredential(interactionId, credentialIds).catch((e) => {
         if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
           return;
         }
