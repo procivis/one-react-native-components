@@ -1,4 +1,4 @@
-import { TrustInformationDetailInfo } from '@procivis/react-native-one-core';
+import { TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useState } from 'react';
 import { Linking, SectionList, SectionListData, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,7 +15,9 @@ import { useAppColorScheme } from '../theme';
 
 type TrustInfoDetailItem =
   | {
+      identifier?: string;
       name: string;
+      result: TrustResolutionResult;
       type: 'trustInfo';
     }
   | {
@@ -189,7 +191,9 @@ export type TrustInfoDetailsScreenProps = {
   labels: TrustInfoDetailsScreenLabels;
   language: string;
   onClose: () => void;
+  result: TrustResolutionResult;
   testID: string;
+  translate: boolean;
   trustInformation: TrustInformationDetailInfo;
 };
 
@@ -198,7 +202,9 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
   labels,
   language,
   onClose,
+  result,
   testID,
+  translate,
   trustInformation,
 }) => {
   const insets = useSafeAreaInsets();
@@ -224,7 +230,9 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
 
   const baseInfo: TrustInfoDetailItem[] = [
     {
+      identifier: trustDetails.identifier,
       name: trustDetails.name,
+      result,
       type: 'trustInfo',
     },
     {
@@ -285,7 +293,9 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
   const intermediaryName: TrustInfoDetailItem[] = trustDetails.intermediary?.name
     ? [
         {
+          identifier: trustDetails.intermediary.identifier,
           name: trustDetails.intermediary.name,
+          result,
           type: 'trustInfo',
         },
       ]
@@ -356,7 +366,9 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
               return (
                 <TrustInfo
                   labels={labels}
+                  language={language}
                   style={[styles.trustInfoItem, styles.firstItem, { backgroundColor: colorScheme.white }]}
+                  translate={translate}
                   trustInformation={item}
                 />
               );

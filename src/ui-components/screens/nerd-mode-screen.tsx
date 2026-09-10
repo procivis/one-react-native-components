@@ -1,4 +1,4 @@
-import { IdentifierListItem, TrustInformationDetailInfo } from '@procivis/react-native-one-core';
+import { TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -24,9 +24,9 @@ export interface AttributesLabels {
 }
 
 interface SectionEntityCluster {
-  identifier?: IdentifierListItem;
-  subline?: string;
+  result: TrustResolutionResult;
   testID?: string;
+  translate: boolean;
   trustInfoLabels: TrustInfoLabels;
   trustInformation?: TrustInformationDetailInfo;
 }
@@ -43,6 +43,7 @@ export type NerdModeSection = {
 export type NerdModeScreenProps = {
   entityCluster?: SectionEntityCluster;
   labels: AttributesLabels;
+  language: string;
   onClose: () => void;
   onCopyToClipboard: (value: string) => void;
   onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetailInfo) => void;
@@ -57,7 +58,7 @@ export enum EntityType {
 }
 
 function isSectionEntityCluster(item: NerdModeSectionItem): item is SectionEntityCluster {
-  return (item as SectionEntityCluster).identifier !== undefined;
+  return (item as SectionEntityCluster).trustInfoLabels !== undefined;
 }
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdModeSectionItem, NerdModeSection>);
@@ -65,6 +66,7 @@ const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdMod
 const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
   sections,
   labels,
+  language,
   onClose,
   onCopyToClipboard,
   onOpenTrustInfoDetails,
@@ -104,6 +106,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     return (
       <TrustInfo
         labels={entityCluster.trustInfoLabels}
+        language={language}
         onPress={
           onOpenTrustInfoDetails && entityCluster.trustInformation
             ? () => onOpenTrustInfoDetails(entityCluster.trustInformation!)
@@ -117,10 +120,15 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         ]}
         testID={entityCluster.testID ?? concatTestID(testID, 'trustInfo')}
         textColor={colorScheme.white}
-        trustInformation={entityCluster.trustInformation?.value[0]}
+        translate={entityCluster.translate}
+        trustInformation={entityCluster.trustInformation ? {
+          identifier: entityCluster.trustInformation.value[0].identifier,
+          name: entityCluster.trustInformation.value[0].name,
+          result: entityCluster.result,
+        } : undefined}
       />
     );
-  }, [entityCluster, colorScheme.nerdView.background, colorScheme.white, onOpenTrustInfoDetails, testID]);
+  }, [entityCluster, language, onOpenTrustInfoDetails, colorScheme.nerdView.background, colorScheme.white, testID]);
 
   return (
     <>
@@ -146,6 +154,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
             return (
               <TrustInfo
                 labels={item.trustInfoLabels}
+                language={language}
                 onPress={
                   onOpenTrustInfoDetails && item.trustInformation
                     ? () => onOpenTrustInfoDetails(item.trustInformation!)
@@ -159,7 +168,12 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 ]}
                 testID={item.testID ?? concatTestID(testID, 'trustInfo')}
                 textColor={colorScheme.white}
-                trustInformation={item.trustInformation?.value[0]}
+                translate={item.translate}
+                trustInformation={item.trustInformation ? {
+                  identifier: item.trustInformation.value[0].identifier,
+                  name: item.trustInformation.value[0].name,
+                  result: item.result,
+                } : undefined}
               />
             );
           } else {
