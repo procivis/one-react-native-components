@@ -38,6 +38,7 @@ const defaultIcons: {
     DEACTIVATED: HistoryStatusErrorIcon,
     DELETED: HistoryStatusDeleteIcon,
     DELIVERED: HistoryStatusAcceptedIcon,
+    ECOSYSTEMS_RESOLVED: HistoryStatusAcceptedIcon,
     ERRORED: HistoryStatusErrorIcon,
     EXPIRED: HistoryStatusErrorIcon,
     EXPIRING: HistoryStatusErrorIcon,

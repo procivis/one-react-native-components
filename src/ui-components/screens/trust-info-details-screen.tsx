@@ -1,11 +1,11 @@
-import { TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
+import { EcosystemOutcome, TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useState } from 'react';
 import { Linking, SectionList, SectionListData, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgProps } from 'react-native-svg';
 
 import TrustInfo, { TrustInfoLabels } from '../../components/trust-info/trust-info';
-import { concatTestID, nonEmptyFilter, reportException } from '../../utils';
+import { colorWithAlphaComponent, concatTestID, nonEmptyFilter, reportException } from '../../utils';
 import { TouchableOpacity } from '../accessibility';
 import { BackButton } from '../buttons';
 import { NavigationHeader } from '../header';
@@ -15,8 +15,9 @@ import { useAppColorScheme } from '../theme';
 
 type TrustInfoDetailItem =
   | {
+      ecosystemErrors?: Record<string, EcosystemOutcome>;
       identifier?: string;
-      name: string;
+      name?: string;
       result: TrustResolutionResult;
       type: 'trustInfo';
     }
@@ -54,6 +55,7 @@ export type TrustInfoDetailsScreenLabels = TrustInfoLabels & {
   collapse: string;
   country: string;
   email: string;
+  errors: Record<string, string>;
   expand: string;
   identifier: string;
   isPublicSector: string;
@@ -188,17 +190,19 @@ export type TrustInfoDetailsScreenProps = {
     display: Record<string, string>;
     value: string;
   }[];
+  ecosystemErrors?: Record<string, EcosystemOutcome>;
   labels: TrustInfoDetailsScreenLabels;
   language: string;
   onClose: () => void;
   result: TrustResolutionResult;
   testID: string;
   translate: boolean;
-  trustInformation: TrustInformationDetailInfo;
+  trustInformation?: TrustInformationDetailInfo;
 };
 
 const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
   countries,
+  ecosystemErrors,
   labels,
   language,
   onClose,
@@ -220,77 +224,80 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
     [],
   );
 
-  const trustDetails = trustInformation.value[0];
-  if (!trustDetails) {
-    return null;
-  }
+  const trustDetails = trustInformation?.value[0];
 
-  const countryDisplay = countries.find((c) => c.value === trustDetails.country)?.display;
-  const country = countryDisplay?.[language] ?? countryDisplay?.en;
-
-  const baseInfo: TrustInfoDetailItem[] = [
+  let trustDetailsSection: TrustInfoDetailItem[] = [
     {
-      identifier: trustDetails.identifier,
-      name: trustDetails.name,
+      ecosystemErrors,
+      identifier: trustDetails?.identifier,
+      name: trustDetails?.name,
       result,
       type: 'trustInfo',
     },
-    {
-      title: labels.isPublicSector,
-      type: 'item',
-      value: trustDetails.isPublicSector ? labels.true : undefined,
-    },
-    {
-      title: labels.serviceDescription,
-      type: 'item',
-      value: trustDetails.serviceDescription[0]?.[language],
-    },
-  ];
+  ]
 
-  const expandItem: TrustInfoDetailItem[] = !expanded ? [{ type: 'expand' }] : [];
+  if (trustDetails) {
+    const countryDisplay = countries.find((c) => c.value === trustDetails.country)?.display;
+    const country = countryDisplay?.[language] ?? countryDisplay?.en;
 
-  const supervisoryAuthority: TrustInfoDetailItem[] = trustDetails.supervisoryAuthority
-    ? [
-        {
-          title: labels.supervisoryAuthority,
-          type: 'subsection',
-        },
-        {
-          ...trustDetails.supervisoryAuthority,
-          type: 'contact',
-          website: trustDetails.supervisoryAuthority.uri,
-        },
-      ]
-    : [];
+    const baseInfo: TrustInfoDetailItem[] = [
+      {
+        title: labels.isPublicSector,
+        type: 'item',
+        value: trustDetails.isPublicSector ? labels.true : undefined,
+      },
+      {
+        title: labels.serviceDescription,
+        type: 'item',
+        value: trustDetails.serviceDescription[0]?.[language],
+      },
+    ];
 
-  const extraInfo: TrustInfoDetailItem[] = expanded
-    ? [
-        {
-          title: labels.country,
-          type: 'item',
-          value: country,
-        },
-        {
-          title: labels.identifier,
-          type: 'item',
-          value: trustDetails.identifier,
-        },
-        {
-          title: labels.support,
-          type: 'subsection',
-        },
-        {
-          type: 'contact',
-          ...trustDetails,
-        },
-        ...supervisoryAuthority,
-        { type: 'collapse' },
-      ]
-    : [];
+    const expandItem: TrustInfoDetailItem[] = !expanded ? [{ type: 'expand' }] : [];
 
-  const trustDetailsSection = baseInfo.concat(expandItem).concat(extraInfo);
+    const supervisoryAuthority: TrustInfoDetailItem[] = trustDetails.supervisoryAuthority
+      ? [
+          {
+            title: labels.supervisoryAuthority,
+            type: 'subsection',
+          },
+          {
+            ...trustDetails.supervisoryAuthority,
+            type: 'contact',
+            website: trustDetails.supervisoryAuthority.uri,
+          },
+        ]
+      : [];
 
-  const intermediaryName: TrustInfoDetailItem[] = trustDetails.intermediary?.name
+    const extraInfo: TrustInfoDetailItem[] = expanded
+      ? [
+          {
+            title: labels.country,
+            type: 'item',
+            value: country,
+          },
+          {
+            title: labels.identifier,
+            type: 'item',
+            value: trustDetails.identifier,
+          },
+          {
+            title: labels.support,
+            type: 'subsection',
+          },
+          {
+            type: 'contact',
+            ...trustDetails,
+          },
+          ...supervisoryAuthority,
+          { type: 'collapse' },
+        ]
+      : [];
+
+    trustDetailsSection = trustDetailsSection.concat(baseInfo).concat(expandItem).concat(extraInfo);
+  }
+
+  const intermediaryName: TrustInfoDetailItem[] = trustDetails?.intermediary?.name
     ? [
         {
           identifier: trustDetails.intermediary.identifier,
@@ -301,7 +308,7 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
       ]
     : [];
 
-  const intermediarySection: TrustInfoDetailItem[] = trustDetails.intermediary
+  const intermediarySection: TrustInfoDetailItem[] = trustDetails?.intermediary
     ? [
         ...intermediaryName,
         {
@@ -364,13 +371,30 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
               );
             case 'trustInfo':
               return (
-                <TrustInfo
-                  labels={labels}
-                  language={language}
-                  style={[styles.trustInfoItem, styles.firstItem, { backgroundColor: colorScheme.white }]}
-                  translate={translate}
-                  trustInformation={item}
-                />
+                <View style={[styles.trustInfoItem, styles.firstItem, { backgroundColor: colorScheme.white }]}>
+                  <TrustInfo
+                    labels={labels}
+                    language={language}
+                    translate={translate}
+                    trustInformation={item}
+                  />
+                  {item.ecosystemErrors ? Object.values(item.ecosystemErrors).map((outcome, index) => {
+                    if (!outcome.error) {
+                      return null;
+                    }
+                    return <Typography 
+                      color={colorScheme.errorText}
+                      key={index}
+                      preset='s'
+                      style={[
+                        styles.trustInfoError,
+                        { backgroundColor: colorWithAlphaComponent(colorScheme.error, 0.05) },
+                      ]}
+                    >
+                      {labels.errors[outcome.error.errorCode] ?? outcome.error.message}
+                    </Typography>
+                  }) : undefined}
+                </View>
               );
             case 'item':
               if (!item.value) {
@@ -476,7 +500,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 22,
   },
+  trustInfoError: {
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+  },
   trustInfoItem: {
+    flexDirection: 'column',
+    gap: 8,
     padding: 8,
   },
 });

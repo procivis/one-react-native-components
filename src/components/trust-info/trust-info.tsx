@@ -2,7 +2,7 @@ import { TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { AvatarProps, ImageOrComponentSource, TouchableOpacity } from '../../ui-components';
+import { AvatarProps, ImageOrComponentSource, TouchableOpacity, useAppColorScheme } from '../../ui-components';
 import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityNotTrustedIcon, EntityTrustedIcon, UpIcon } from '../../ui-components/icons';
 import { concatTestID, useCoreConfig, useIdentifierDetails } from '../../utils';
@@ -17,7 +17,6 @@ export type TrustInfoProps = {
   language: string;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
-  sublineColor?: string;
   testID?: string;
   textColor?: string;
   translate: boolean;
@@ -33,16 +32,15 @@ const TrustInfo: FC<TrustInfoProps> = ({
   language,
   onPress,
   style,
-  sublineColor,
   testID,
   textColor,
   translate,
   trustInformation,
 }) => {
   const { data: config } = useCoreConfig();
-
   const { data: identifier } = useIdentifierDetails(trustInformation?.identifier);
   const defaultLanguage = config?.globalSettings.defaultLanguage;
+  const colorScheme = useAppColorScheme();
 
   const trustEntityName = useMemo(() => {
     const defaultLanguageName = identifier?.translations?.name[defaultLanguage ?? ''];
@@ -73,12 +71,12 @@ const TrustInfo: FC<TrustInfoProps> = ({
         avatar={avatarProps}
         entityName={trustEntityName}
         style={styles.cluster}
-        subline={trustInformation ? undefined : labels.unknownSubline}
-        sublineColor={sublineColor}
+        subline={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : labels.unknownSubline}
+        sublineColor={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : colorScheme.errorText}
         testID={testID}
         textColor={textColor}
       />
-      {onPress && trustInformation && <UpIcon color={textColor} style={styles.chevron} />}
+      {onPress && <UpIcon color={textColor} style={styles.chevron} />}
     </TouchableOpacity>
   );
 };
