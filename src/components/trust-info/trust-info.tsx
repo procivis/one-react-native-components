@@ -44,12 +44,14 @@ const TrustInfo: FC<TrustInfoProps> = ({
 
   const trustEntityName = useMemo(() => {
     const defaultLanguageName = identifier?.translations?.name[defaultLanguage ?? ''];
-    const translatedName = translate ? identifier?.translations?.name[language] ?? defaultLanguageName : defaultLanguageName ;
-    return translatedName ?? trustInformation?.name ?? labels.unknown;
+    const translatedName = translate ? identifier?.translations?.name[language] ?? defaultLanguageName : undefined;
+    const ecosystemResolvedName = trustInformation?.result === TrustResolutionResult.TRUSTED ? trustInformation?.name ?? labels.unknown : labels.unknown;
+    return translatedName ?? ecosystemResolvedName;
   }, [translate, identifier, language, defaultLanguage, trustInformation, labels.unknown]);
   
   const avatarProps: AvatarProps | undefined = useMemo(() => {
-    const avatar: ImageOrComponentSource | undefined = identifier?.logo ? { imageSource: { uri: identifier.logo } } : undefined;
+    const showLogo = translate || trustInformation?.result === TrustResolutionResult.TRUSTED;
+    const avatar: ImageOrComponentSource | undefined = showLogo && identifier?.logo ? { imageSource: { uri: identifier.logo } } : undefined;
     const placeholderText = trustEntityName.substring(0, 1);
 
     const statusIcon = trustInformation?.result === TrustResolutionResult.TRUSTED ? (
@@ -63,7 +65,7 @@ const TrustInfo: FC<TrustInfoProps> = ({
       placeholderText,
       statusIcon,
     };
-  }, [identifier, testID, trustInformation, trustEntityName]);
+  }, [translate, identifier?.logo, trustEntityName, trustInformation?.result, testID]);
 
   return (
     <TouchableOpacity disabled={!onPress || !trustInformation} onPress={onPress} style={[styles.button, style]}>

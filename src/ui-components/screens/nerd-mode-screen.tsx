@@ -1,4 +1,4 @@
-import { TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
+import { TrustInformation, TrustInformationDetailInfo } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -24,11 +24,11 @@ export interface AttributesLabels {
 }
 
 interface SectionEntityCluster {
-  result: TrustResolutionResult;
   testID?: string;
   translate: boolean;
   trustInfoLabels: TrustInfoLabels;
-  trustInformation?: TrustInformationDetailInfo;
+  trustInformation?: TrustInformation;
+  trustInformationDetail?: TrustInformationDetailInfo;
 }
 
 type SectionAttribute = Omit<NerdModeItemProps, 'labels' | 'onCopyToClipboard'>;
@@ -108,8 +108,8 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         labels={entityCluster.trustInfoLabels}
         language={language}
         onPress={
-          onOpenTrustInfoDetails && entityCluster.trustInformation
-            ? () => onOpenTrustInfoDetails(entityCluster.trustInformation!)
+          onOpenTrustInfoDetails && entityCluster.trustInformationDetail
+            ? () => onOpenTrustInfoDetails(entityCluster.trustInformationDetail!)
             : undefined
         }
         style={[
@@ -122,9 +122,8 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         textColor={colorScheme.white}
         translate={entityCluster.translate}
         trustInformation={entityCluster.trustInformation ? {
-          identifier: entityCluster.trustInformation.value[0].identifier,
-          name: entityCluster.trustInformation.value[0].name,
-          result: entityCluster.result,
+          ...entityCluster.trustInformation,
+          identifier: entityCluster.trustInformationDetail?.value[0]?.identifier,
         } : undefined}
       />
     );
@@ -156,8 +155,8 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 labels={item.trustInfoLabels}
                 language={language}
                 onPress={
-                  onOpenTrustInfoDetails && item.trustInformation
-                    ? () => onOpenTrustInfoDetails(item.trustInformation!)
+                  onOpenTrustInfoDetails && item.trustInformationDetail
+                    ? () => onOpenTrustInfoDetails(item.trustInformationDetail!)
                     : undefined
                 }
                 style={[
@@ -170,9 +169,8 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 textColor={colorScheme.white}
                 translate={item.translate}
                 trustInformation={item.trustInformation ? {
-                  identifier: item.trustInformation.value[0].identifier,
-                  name: item.trustInformation.value[0].name,
-                  result: item.result,
+                  ...item.trustInformation,
+                  identifier: item.trustInformationDetail?.value[0]?.identifier,
                 } : undefined}
               />
             );

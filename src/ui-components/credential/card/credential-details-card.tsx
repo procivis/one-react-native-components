@@ -12,6 +12,7 @@ import CredentialCard, { CredentialCardProps, CredentialCardRatio } from './cred
 export type CredentialDetailsCardProps = ViewProps & {
   animate?: boolean;
   attributes: CredentialAttribute[] | false;
+  attributesExtra?: ComponentType<any> | ReactElement;
   card: CredentialCardProps;
   expanded?: boolean;
   footer?: ComponentType<any> | ReactElement;
@@ -29,6 +30,7 @@ const SEE_ALL_BUTTON_HEIGHT = 78;
 const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   animate = true,
   attributes,
+  attributesExtra,
   card,
   expanded,
   footer,
@@ -133,6 +135,18 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     setFullAttributesHeight(event.nativeEvent.layout.height);
   }, []);
 
+  const attributesExtraView: ReactElement | undefined = useMemo(() => {
+    if (!attributesExtra) {
+      return undefined;
+    }
+    if (React.isValidElement(attributesExtra)) {
+      return attributesExtra;
+    } else {
+      const AttributesExtraComponent = attributesExtra as React.ComponentType<any>;
+      return <AttributesExtraComponent />;
+    }
+  }, [attributesExtra]);
+
   const footerView: ReactElement | undefined = useMemo(() => {
     if (!footer) {
       return undefined;
@@ -162,6 +176,8 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
       {previewAttributes.length > 0 && (
         <View>
           <View style={styles.attributesWrapper}>
+            {attributesExtraView}
+
             <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
               {previewAttributes.map((attribute, idx) => (
                 <CredentialAttributeItem

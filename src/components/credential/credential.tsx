@@ -1,5 +1,5 @@
 import { Claim } from '@procivis/react-native-one-core';
-import React, { FC, useMemo } from 'react';
+import React, { ComponentType, FC, ReactElement, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleSheet } from 'react-native';
 
 import { CredentialDetailsCardListItem, CredentialHeaderProps } from '../../ui-components/credential/card';
@@ -9,6 +9,7 @@ import { useCredentialDetail } from '../../utils/hooks/core/credentials';
 import { CardLabels, detailsCardFromCredentialWithClaims } from '../../utils/parsers/credential';
 
 export interface CredentialDetailsProps {
+  attributesExtra?: ComponentType<any> | ReactElement;
   claims?: Claim[];
   credentialId: string;
   expanded?: boolean;
@@ -21,6 +22,7 @@ export interface CredentialDetailsProps {
 }
 
 export const CredentialDetails: FC<CredentialDetailsProps> = ({
+  attributesExtra,
   claims,
   credentialId,
   expanded = false,
@@ -55,6 +57,7 @@ export const CredentialDetails: FC<CredentialDetailsProps> = ({
   return (
     <CredentialDetailsCardListItem
       attributes={attributes}
+      attributesExtra={attributesExtra}
       card={{
         ...card,
         credentialId,

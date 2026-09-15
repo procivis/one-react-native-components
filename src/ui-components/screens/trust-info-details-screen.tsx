@@ -1,11 +1,11 @@
-import { EcosystemOutcome, TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
+import { TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useState } from 'react';
 import { Linking, SectionList, SectionListData, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgProps } from 'react-native-svg';
 
 import TrustInfo, { TrustInfoLabels } from '../../components/trust-info/trust-info';
-import { colorWithAlphaComponent, concatTestID, nonEmptyFilter, reportException } from '../../utils';
+import { concatTestID, nonEmptyFilter, reportException } from '../../utils';
 import { TouchableOpacity } from '../accessibility';
 import { BackButton } from '../buttons';
 import { NavigationHeader } from '../header';
@@ -15,7 +15,6 @@ import { useAppColorScheme } from '../theme';
 
 type TrustInfoDetailItem =
   | {
-      ecosystemErrors?: Record<string, EcosystemOutcome>;
       identifier?: string;
       name?: string;
       result: TrustResolutionResult;
@@ -190,7 +189,6 @@ export type TrustInfoDetailsScreenProps = {
     display: Record<string, string>;
     value: string;
   }[];
-  ecosystemErrors?: Record<string, EcosystemOutcome>;
   labels: TrustInfoDetailsScreenLabels;
   language: string;
   onClose: () => void;
@@ -202,7 +200,6 @@ export type TrustInfoDetailsScreenProps = {
 
 const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
   countries,
-  ecosystemErrors,
   labels,
   language,
   onClose,
@@ -228,7 +225,6 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
 
   let trustDetailsSection: TrustInfoDetailItem[] = [
     {
-      ecosystemErrors,
       identifier: trustDetails?.identifier,
       name: trustDetails?.name,
       result,
@@ -378,22 +374,6 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
                     translate={translate}
                     trustInformation={item}
                   />
-                  {item.ecosystemErrors ? Object.values(item.ecosystemErrors).map((outcome, index) => {
-                    if (!outcome.error) {
-                      return null;
-                    }
-                    return <Typography 
-                      color={colorScheme.errorText}
-                      key={index}
-                      preset='s'
-                      style={[
-                        styles.trustInfoError,
-                        { backgroundColor: colorWithAlphaComponent(colorScheme.error, 0.05) },
-                      ]}
-                    >
-                      {labels.errors[outcome.error.errorCode] ?? outcome.error.message}
-                    </Typography>
-                  }) : undefined}
                 </View>
               );
             case 'item':
@@ -499,11 +479,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingHorizontal: 12,
     paddingTop: 22,
-  },
-  trustInfoError: {
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 11,
   },
   trustInfoItem: {
     flexDirection: 'column',
