@@ -237,17 +237,29 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
     const country = countryDisplay?.[language] ?? countryDisplay?.en;
 
     const baseInfo: TrustInfoDetailItem[] = [
-      {
+      trustDetails.isPublicSector ? {
         title: labels.isPublicSector,
         type: 'item',
         value: trustDetails.isPublicSector ? labels.true : undefined,
-      },
+      } satisfies TrustInfoDetailItem : undefined,
       {
         title: labels.serviceDescription,
         type: 'item',
         value: trustDetails.serviceDescription[0]?.[language],
-      },
-    ];
+      } satisfies TrustInfoDetailItem,
+      trustDetails.infoUrl ? {
+        action: { icon: LinkIcon, onPress: linkHandler(trustDetails.infoUrl) },
+        title: labels.website,
+        type: 'item',
+        value: trustDetails.infoUrl,
+      } satisfies TrustInfoDetailItem : undefined,
+      trustDetails.privacyPolicyUrl ? {
+        action: { icon: LinkIcon, onPress: linkHandler(trustDetails.privacyPolicyUrl) },
+        title: labels.privacyPolicy,
+        type: 'item',
+        value: trustDetails.privacyPolicyUrl,
+      } satisfies TrustInfoDetailItem : undefined,
+    ].filter(nonEmptyFilter);
 
     const expandItem: TrustInfoDetailItem[] = !expanded ? [{ type: 'expand' }] : [];
 
@@ -258,7 +270,8 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
             type: 'subsection',
           },
           {
-            ...trustDetails.supervisoryAuthority,
+            email: trustDetails.supervisoryAuthority.email,
+            phone: trustDetails.supervisoryAuthority.phone,
             type: 'contact',
             website: trustDetails.supervisoryAuthority.uri,
           },
@@ -282,8 +295,10 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
             type: 'subsection',
           },
           {
+            email: trustDetails.email,
+            phone: trustDetails.phone,
             type: 'contact',
-            ...trustDetails,
+            website: trustDetails.supportUrl,
           },
           ...supervisoryAuthority,
           { type: 'collapse' },

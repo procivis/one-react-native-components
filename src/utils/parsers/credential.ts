@@ -285,8 +285,10 @@ export const getCredentialCardPropsFromCredential = (
       ? { imageSource: { uri: layoutProperties.background.image } }
       : undefined,
     color: layoutProperties?.background?.color,
+    count: credential.remainingBatchItemCount ? Object.values(credential.remainingBatchItemCount).reduce((sum, a) => sum + a, 0) : undefined,
     header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels, language),
     notice,
+    tags: credential.schema.formats.map((f) => f.format),
     testID,
   };
 
@@ -523,6 +525,10 @@ export function credentialDetailFromPresentationV2Credential(
         ecosystemSchemaId: presentationCredential.schema.schemaId,
         format: presentationCredential.schema.format,
       }],
+      walletAttestation: {
+        keyStorageSecurityLevel: presentationCredential.schema.keyStorageSecurity,
+        requireInstanceAttestation: presentationCredential.schema.requiresWalletInstanceAttestation,
+      },
     },
   };
 }

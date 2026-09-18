@@ -26,7 +26,7 @@ const style = StyleSheet.create({
 
 const Render = (args: CredentialDetailsCardProps, context: StoryContext<CredentialDetailsCardProps>) => {
   const extendedContext = context as ExtendedContext<CredentialDetailsCardProps>;
-  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value];
+  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value ?? extendedContext.initialGlobals.viewport.value];
   const width = parseInt(viewport.styles.width.replace('px', ''), 10) - 32;
   const props = {
     ...args,

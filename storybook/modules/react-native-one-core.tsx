@@ -148,3 +148,9 @@ export enum CredentialType {
   BATCH_PARENT = 'BATCH_PARENT',
   SINGLE = 'SINGLE'
 }
+
+export enum TrustResolutionResult {
+    TRUSTED = "TRUSTED",
+    UNKNOWN = "UNKNOWN",
+    UNTRUSTED = "UNTRUSTED",
+}

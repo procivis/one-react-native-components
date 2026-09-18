@@ -112,7 +112,7 @@ const preview: Preview = {
   parameters,
   globalTypes,
   initialGlobals: {
-    viewport: { value: 'iphoneX' },
+    viewport: { value: 'iPhoneX' },
   },
 };
 

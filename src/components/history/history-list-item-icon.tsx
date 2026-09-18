@@ -47,6 +47,7 @@ const defaultIcons: {
     INTERACTION_ERRORED: HistoryStatusErrorIcon,
     INTERACTION_EXPIRED: HistoryStatusErrorIcon,
     ISSUED: HistoryStatusAcceptedIcon,
+    KA_CREATED: HistoryStatusAcceptedIcon,
     OFFERED: HistoryStatusAcceptedIcon,
     PENDING: HistoryStatusAcceptedIcon,
     REACTIVATED: HistoryStatusAcceptedIcon,
@@ -62,6 +63,7 @@ const defaultIcons: {
     SUSPENDED: HistoryStatusSuspendIcon,
     TRUST_RESOLVED: HistoryStatusAcceptedIcon,
     UPDATED: HistoryStatusAcceptedIcon,
+    WIA_CREATED: HistoryStatusAcceptedIcon,
     WITHDRAWN: HistoryStatusErrorIcon,
     WRP_AC_RECEIVED: HistoryStatusAcceptedIcon,
     WRP_NR_RECEIVED: HistoryStatusAcceptedIcon,
@@ -74,7 +76,9 @@ const defaultIcons: {
     CREDENTIAL_SCHEMA: HistorySchemaIcon,
     DID: HistoryDidIcon,
     IDENTIFIER: HistoryIdentifierIcon,
+    INSTANCE: HistoryTrustedEntityIcon,
     KEY: HistoryKeyIcon,
+    MANAGED_INSTANCE: HistoryTrustedEntityIcon,
     NOTIFICATION: HistoryCredentialIcon,
     ORGANISATION: HistoryOrganisationIcon,
     PROOF: HistoryProofRequestIcon,
@@ -93,7 +97,6 @@ const defaultIcons: {
     TRUST_LIST_SUBSCRIPTION: HistoryTrustAnchorIcon,
     USER: HistoryIdentifierIcon,
     WALLET_RELYING_PARTY: HistoryTrustedEntityIcon,
-    WALLET_UNIT: HistoryTrustedEntityIcon,
   },
 };
 

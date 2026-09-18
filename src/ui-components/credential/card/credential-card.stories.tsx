@@ -10,7 +10,7 @@ import CredentialCard, { CredentialCardProps } from './credential-card';
 
 const Render = (args: CredentialCardProps, context: StoryContext<CredentialCardProps>) => {
   const extendedContext = context as ExtendedContext<CredentialCardProps>;
-  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value];
+  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value ?? extendedContext.initialGlobals.viewport.value];
   const width = parseInt(viewport.styles.width.replace('px', ''), 10);
   const props = {
     ...args,
@@ -38,8 +38,8 @@ const Basic: StoryObj<typeof CredentialCard> = {
       noticeIcon: CredentialNoticeWarningIcon,
       text: 'Notice related to the credential',
     },
-     
     onHeaderPress: fn(),
+    tags: [],
   },
   render: Render,
 };

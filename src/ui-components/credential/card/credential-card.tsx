@@ -3,6 +3,7 @@ import { ColorValue, Image, StyleProp, StyleSheet, View, ViewStyle } from 'react
 
 import { concatTestID } from '../../../utils/testID';
 import { TouchableOpacity } from '../../accessibility/accessibilityHistoryWrappers';
+import { Badge } from '../../badge';
 import BlurView from '../../blur/blur-view';
 import ImageOrComponent, { ImageOrComponentSource } from '../../image/image-or-component';
 import Typography from '../../text/typography';
@@ -32,6 +33,7 @@ export type CredentialCardProps = {
   cardCarouselImages?: CarouselImage[];
   cardImage?: ImageOrComponentSource;
   color?: ColorValue;
+  count?: number;
   credentialId?: string;
   extra?: ComponentType<any> | ReactElement;
   header: CredentialHeaderProps;
@@ -39,6 +41,7 @@ export type CredentialCardProps = {
   onCardPress?: (credentialId?: string) => void;
   onHeaderPress?: (credentialId?: string) => void;
   style?: StyleProp<ViewStyle>;
+  tags?: string[];
   testID?: string;
   width: number;
 };
@@ -47,6 +50,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
   cardCarouselImages = [],
   cardImage,
   color = '#5A69F3',
+  count,
   credentialId,
   extra,
   header,
@@ -54,6 +58,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
   onCardPress,
   onHeaderPress,
   style,
+  tags,
   testID,
   width,
 }) => {
@@ -131,26 +136,43 @@ const CredentialCard: FC<CredentialCardProps> = ({
         style={styles.header}>
         <CredentialHeader {...header} color={header.color ?? color} testID={concatTestID(testID, 'header')} />
       </TouchableOpacity>
-      {extraView}
-      {notice && (
-        <BlurView blurStyle="soft" style={styles.notice} testID={concatTestID(testID, 'notice')}>
-          {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
-          <View style={styles.noticeTextWrapper}>
-            <Typography
-              color={colorScheme.text}
-              preset="xs/line-height-small"
-              style={styles.noticeText}
-              testID={concatTestID(testID, 'notice.text')}>
-              {notice.text}
-            </Typography>
+      <View style={styles.accessories}>
+        {extraView}
+        {count || tags?.length ? <View style={styles.tagsAndCount}>
+          <View style={styles.tags}>
+            {tags?.map((t) => (
+              <Badge key={t} type='rect' value={t} />
+            ))}
           </View>
-        </BlurView>
-      )}
+          {count ? <Badge type="pill" value={count.toString()} /> : undefined}
+        </View> : undefined}
+        {notice && (
+          <BlurView blurStyle="soft" style={styles.notice} testID={concatTestID(testID, 'notice')}>
+            {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
+            <View style={styles.noticeTextWrapper}>
+              <Typography
+                color={colorScheme.text}
+                preset="xs/line-height-small"
+                style={styles.noticeText}
+                testID={concatTestID(testID, 'notice.text')}>
+                {notice.text}
+              </Typography>
+            </View>
+          </BlurView>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  accessories: {
+    bottom: 0,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    width: '100%',
+  },
   card: {
     borderRadius: 10,
     borderWidth: 0,
@@ -174,15 +196,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   notice: {
-    bottom: 0,
     columnGap: 6,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingBottom: 6,
     paddingHorizontal: 12,
     paddingTop: 2,
-    position: 'absolute',
-    width: '100%',
   },
   noticeIcon: {
     marginTop: 4,
@@ -192,6 +211,18 @@ const styles = StyleSheet.create({
   },
   noticeTextWrapper: {
     flex: 1,
+  },
+  tags: {
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    gap: 4,
+    justifyContent: 'flex-start',
+  },
+  tagsAndCount: {
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12,
   },
 });
 

@@ -22,7 +22,7 @@ export const CREDENTIAL_LIST_PAGED_QUERY_KEY = 'credential-list-paged';
 export const CREDENTIAL_DETAIL_QUERY_KEY = 'credential-detail';
 export const CREDENTIAL_TRUST_INFORMATION_QUERY_KEY = 'credential-trust-information';
 
-export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
+export const useCredentials = (queryParams?: Partial<CredentialListQuery>, enabled = true) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
@@ -39,6 +39,7 @@ export const useCredentials = (queryParams?: Partial<CredentialListQuery>) => {
       return values;
     },
     {
+      enabled,
       keepPreviousData: true,
     },
   );
@@ -134,6 +135,36 @@ export const useCredentialReject = () => {
         }
         throw e;
       }),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
+    },
+  );
+};
+
+export const useCredentialRejectFormat = () => {
+  const queryClient = useQueryClient();
+  const { core, organisationId } = useONECore();
+
+  return useMutation(
+    async ({ formats, interactionId, parentId }: { formats: string[], interactionId: string, parentId?: string }) => {
+      const credentials = await core.listCredentials({
+        organisationId,
+        page: 0,
+        pageSize: 1000,
+        parentId,
+      });
+      const credentialIds = credentials.values.filter((c) => c.format && formats.includes(c.format)).map((c) => c.id);
+      core.holderRejectCredential(interactionId, credentialIds).catch((e) => {
+        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
+          return;
+        }
+        throw e;
+      });
+    },
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(CREDENTIAL_LIST_QUERY_KEY);

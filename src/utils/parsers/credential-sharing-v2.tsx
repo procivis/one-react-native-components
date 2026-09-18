@@ -260,6 +260,10 @@ export const shareCredentialCardFromV2PresentationCredential = (
           ecosystemSchemaId: credential.schema.schemaId,
           format: credential.schema.format,
         }],
+        walletAttestation: {
+          keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
+          requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
+        },
       },
       type: CredentialType.SINGLE
     } : undefined,
@@ -314,6 +318,10 @@ export const selectCredentialCardFromV2Credential = (
           ecosystemSchemaId: credential.schema.schemaId,
           format: credential.schema.format,
         }],
+        walletAttestation: {
+          keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
+          requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
+        },
       },
       type: CredentialType.SINGLE
     } : undefined,
@@ -338,6 +346,10 @@ export const selectCredentialCardFromV2Credential = (
           ecosystemSchemaId: credential.schema.schemaId,
           format: credential.schema.format,
         }],
+        walletAttestation: {
+          keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
+          requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
+        },
       },
       type: CredentialType.SINGLE,
     },

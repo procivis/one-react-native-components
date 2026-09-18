@@ -16,9 +16,13 @@ export type ExtendedContext<TArgs = StrictArgs> = StoryContext<TArgs> & {
     globals: {
       colorScheme: string;
     },
+    initialGlobals: {
+      viewport: {
+        value: string;
+      };
+    },
     parameters: {
         viewport: {
-          defaultViewport: string;
           options: Viewports;
         }
     },
