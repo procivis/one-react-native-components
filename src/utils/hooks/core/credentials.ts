@@ -152,12 +152,13 @@ export const useCredentialRejectFormat = () => {
   return useMutation(
     async ({ formats, interactionId, parentId }: { formats: string[], interactionId: string, parentId?: string }) => {
       const credentials = await core.listCredentials({
+        formats,
         organisationId,
         page: 0,
         pageSize: 1000,
         parentId,
       });
-      const credentialIds = credentials.values.filter((c) => c.format && formats.includes(c.format)).map((c) => c.id);
+      const credentialIds = credentials.values.map((c) => c.id);
       core.holderRejectCredential(interactionId, credentialIds).catch((e) => {
         if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
           return;

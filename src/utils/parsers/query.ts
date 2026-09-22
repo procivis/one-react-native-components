@@ -38,6 +38,7 @@ export const getQueryKeyFromCredentialListQueryParams = (queryParams: Partial<Cr
     'states',
     'include',
     'profiles',
+    'formats',
     'credentialSchemaIds',
     'ecosystems',
     'createdDateAfter',
