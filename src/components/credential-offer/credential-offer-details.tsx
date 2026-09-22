@@ -2,8 +2,7 @@ import { ClaimSchema } from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { CredentialAttribute, CredentialCardRatio, CredentialDetailsCardListItem,Selector, SelectorStatus } from '../../ui-components';
-import Badge from '../../ui-components/badge/badge';
+import { CredentialAttribute, CredentialDetailsCardListItem,Selector, SelectorStatus } from '../../ui-components';
 import { CardLabels, concatTestID, detailsCardFromCredential,useCoreConfig, useCredentialDetail, useCredentialSchemaDetail } from '../../utils';
 
 const getDummyAttributes = (
@@ -45,6 +44,7 @@ export const CredentialOfferDetails: FC<CredentialOfferDetailsProps> = ({
   selected = false,
 }) => {
   const { data: credential } = useCredentialDetail(credentialId);
+  const { data: parentCredential } = useCredentialDetail(credential?.parentId);
   const { data: credentialSchema } = useCredentialSchemaDetail(
     credential?.schema.id,
   );
@@ -79,19 +79,13 @@ export const CredentialOfferDetails: FC<CredentialOfferDetailsProps> = ({
     card.header.accessory = <Selector status={selected ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />;
   }
 
-  const badgeTop = Math.ceil(cardWidth / CredentialCardRatio) - 34;
-
   return (
     <CredentialDetailsCardListItem
       attributes={displayedAttributes}
       card={{
         ...card,
+        count: parentCredential?.remainingBatchItemCount?.[credential.format ?? ''],
         credentialId,
-        extra: <Badge
-          style={[styles.credentialBadge, { top: badgeTop }]}
-          type="rect"
-          value={credential.schema.formats[0].format.toString()}
-        />,
         onHeaderPress,
         width: cardWidth,
       }}
@@ -111,9 +105,5 @@ export const CredentialOfferDetails: FC<CredentialOfferDetailsProps> = ({
 const styles = StyleSheet.create({
   credential: {
     marginBottom: 8,
-  },
-  credentialBadge: {
-    position: 'absolute',
-    right: 12,
   },
 });

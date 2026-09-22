@@ -279,6 +279,13 @@ export const getCredentialCardPropsFromCredential = (
     }
   }
 
+  let tags: string[] | undefined;
+  if (credential.type === CredentialType.BATCH_PARENT) {
+    tags = credential.schema.formats.map((f) => f.format);
+  } else {
+    tags = credential.format ? [credential.format] : undefined;
+  }
+
   const result: Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> = {
     cardCarouselImages: getCarouselImagesFromClaims(claims, layoutProperties, concatTestID(testID, 'carousel')),
     cardImage: layoutProperties?.background?.image
@@ -288,7 +295,7 @@ export const getCredentialCardPropsFromCredential = (
     count: credential.remainingBatchItemCount ? Object.values(credential.remainingBatchItemCount).reduce((sum, a) => sum + a, 0) : undefined,
     header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels, language),
     notice,
-    tags: credential.schema.formats.map((f) => f.format),
+    tags,
     testID,
   };
 

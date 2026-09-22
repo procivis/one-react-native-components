@@ -1,6 +1,7 @@
 import {
   CredentialListQuery,
   CredentialState,
+  CredentialType,
   HandleInvitationRequest,
   HandleInvitationResponse,
   HolderAcceptCredentialRequest,
@@ -119,6 +120,47 @@ export const useCredentialAccept = () => {
         await queryClient.invalidateQueries(CREDENTIAL_DETAIL_QUERY_KEY);
         await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
       },
+    },
+  );
+};
+
+export const useCredentialsOffer = (interactionId: string, ids: string[] | undefined) => {
+  const { core, organisationId } = useONECore();
+
+  return useQuery(
+    ['credential-offer', interactionId],
+    async () => {
+      if (!ids) {
+        return undefined;
+      }
+      const batches: Record<string, Record<string, string>> = {};
+      const singles: string[] = [];
+      const accepted = await core.listCredentials({ ids, organisationId, page: 0, pageSize: 1000 });
+      accepted.values.forEach((credential) => {
+        if (credential.type === CredentialType.BATCH_PARENT) {
+          batches[credential.id] = {};
+        } else {
+          singles.push(credential.id);
+        }
+      });
+      await Promise.all(Object.keys(batches).map(async (parentId) => {
+        const credentialForFormat: Record<string, string> = {};
+        const children = await core.listCredentials({ organisationId, page: 0, pageSize: 1000, parentId });
+        children.values.forEach((credential) => {
+          if (!credential.format || credentialForFormat[credential.format]) {
+            return;
+          }
+          credentialForFormat[credential.format] = credential.id;
+        });
+        batches[parentId] = Object.entries(credentialForFormat).reduce<Record<string, string>>((acc, [format, id]) => {
+          acc[id] = format;
+          return acc;
+        }, {});
+      }));
+      return { batches, singles };
+    },
+    {
+      enabled: ids !== undefined,
     },
   );
 };
