@@ -88,15 +88,17 @@ const Separator: FC<SeparatorProps> = ({ dark, leadingItem }) => {
 type ListButtonProps = {
   label: string;
   onPress: () => void;
+  testID?: string;
 };
 
-const ListButton: FC<ListButtonProps> = ({ label, onPress }) => {
+const ListButton: FC<ListButtonProps> = ({ label, onPress, testID }) => {
   const colorScheme = useAppColorScheme();
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, styles.lastItem, { backgroundColor: colorScheme.white }]}>
-      <Typography align="center" color={colorScheme.text}>
+      style={[styles.button, styles.lastItem, { backgroundColor: colorScheme.white }]}
+      testID={testID}>
+      <Typography align="center" color={colorScheme.text} testID={concatTestID(testID, 'label')}>
         {label}
       </Typography>
     </TouchableOpacity>
@@ -109,30 +111,37 @@ type ListItemProps = {
     onPress: () => void;
   };
   dark?: boolean;
+  testID?: string;
   title: string;
   value: string;
 };
 
-const ListItem: FC<ListItemProps> = ({ action, dark, title, value }) => {
+const ListItem: FC<ListItemProps> = ({ action, dark, title, value, testID }) => {
   const colorScheme = useAppColorScheme();
   return (
     <View style={[styles.item, { backgroundColor: dark ? undefined : colorScheme.white }]}>
-      <View style={styles.itemLabels}>
+      <View style={styles.itemLabels} testID={testID}>
         <Typography
           color={colorScheme.text}
           numberOfLines={1}
           preset="s/line-height-capped"
-          style={styles.itemTitleLabel}>
+          style={styles.itemTitleLabel}
+          testID={concatTestID(testID, 'title')}>
           {title}
         </Typography>
-        <Typography color={colorScheme.text} numberOfLines={1} preset="s/line-height-capped">
+        <Typography 
+        color={colorScheme.text} 
+        numberOfLines={1} 
+        preset="s/line-height-capped"
+        testID={concatTestID(testID, 'value')}>
           {value}
         </Typography>
       </View>
       {action && (
         <TouchableOpacity
           onPress={action.onPress}
-          style={[styles.actionButton, { backgroundColor: dark ? colorScheme.white : colorScheme.grayDark }]}>
+          style={[styles.actionButton, { backgroundColor: dark ? colorScheme.white : colorScheme.grayDark }]}
+          testID={concatTestID(testID, 'action')}>
           <action.icon color={colorScheme.black} />
         </TouchableOpacity>
       )}
@@ -145,10 +154,11 @@ type ContactItemProps = {
   labels: TrustInfoDetailsScreenLabels;
   onPress: (url: string) => () => void;
   phone?: string;
+  testID?: string;
   website?: string;
 };
 
-const ContactItem: FC<ContactItemProps> = ({ email, labels, onPress, phone, website }) => {
+const ContactItem: FC<ContactItemProps> = ({ email, labels, onPress, phone, website, testID }) => {
   const colorScheme = useAppColorScheme();
   return (
     <View style={[styles.contactItemWrapper, { backgroundColor: colorScheme.white }]}>
@@ -157,6 +167,7 @@ const ContactItem: FC<ContactItemProps> = ({ email, labels, onPress, phone, webs
           <ListItem
             action={{ icon: LinkIcon, onPress: onPress(website) }}
             dark
+            testID={concatTestID(testID, 'website')}
             title={labels.website}
             value={website}
           />
@@ -166,6 +177,7 @@ const ContactItem: FC<ContactItemProps> = ({ email, labels, onPress, phone, webs
           <ListItem
             action={{ icon: MailIcon, onPress: onPress(`mailto:${email}`) }}
             dark
+            testID={concatTestID(testID, 'email')}
             title={labels.email}
             value={email}
           />
@@ -175,6 +187,7 @@ const ContactItem: FC<ContactItemProps> = ({ email, labels, onPress, phone, webs
           <ListItem
             action={{ icon: PhoneIcon, onPress: onPress(`tel:${phone}`) }}
             dark
+            testID={concatTestID(testID, 'phone')}
             title={labels.phone}
             value={phone}
           />
@@ -395,16 +408,24 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
               if (!item.value) {
                 return <View style={styles.emptyItem} />;
               }
-              return <ListItem {...item} value={item.value} />;
+              return <ListItem {...item} testID={concatTestID(testID, 'item')} value={item.value} />;
             case 'contact':
               if (!item.website && !item.phone && !item.email) {
                 return <View style={styles.emptyItem} />;
               }
-              return <ContactItem labels={labels} onPress={linkHandler} {...item} />;
+              return <ContactItem labels={labels} onPress={linkHandler} testID={testID} {...item} />;
             case 'expand':
-              return <ListButton label={labels.expand} onPress={() => setExpanded(true)} />;
+              return <ListButton 
+                label={labels.expand} 
+                onPress={() => setExpanded(true)} 
+                testID={concatTestID(testID, 'expandButton')}
+              />;
             case 'collapse':
-              return <ListButton label={labels.collapse} onPress={() => setExpanded(false)} />;
+              return <ListButton 
+                label={labels.collapse} 
+                onPress={() => setExpanded(false)} 
+                testID={concatTestID(testID, 'collapseButton')}
+              />;
           }
         }}
         renderSectionHeader={({ section }) => {
