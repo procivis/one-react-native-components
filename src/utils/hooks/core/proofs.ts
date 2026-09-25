@@ -24,25 +24,36 @@ import { useONECore } from './core-context';
 import { OneErrorCode } from './error-code';
 import { HISTORY_LIST_QUERY_KEY } from './history';
 import { useIdentifiers } from './identifiers';
-import { useOrganisationDetail, useOrganisationEcosystems } from './organisation';
+import {
+  useOrganisationDetail,
+  useOrganisationEcosystems,
+} from './organisation';
 import { useProofSchemaDetail } from './proof-schemas';
 
 const PAGE_SIZE = 10;
 export const PROOF_DETAIL_QUERY_KEY = 'proof-detail';
 export const PROOF_STATE_QUERY_KEY = 'proof-state';
 export const PROOF_LIST_QUERY_KEY = 'proof-list';
-export const PROOF_REQUEST_TRUST_INFORMATION_QUERY_KEY = 'proof-request-trust-information';
+export const PROOF_REQUEST_TRUST_INFORMATION_QUERY_KEY =
+  'proof-request-trust-information';
 
 export const useProofDetail = (proofId: string | undefined) => {
   const { core } = useONECore();
 
-  return useQuery([PROOF_DETAIL_QUERY_KEY, proofId], () => (proofId ? core.getProof(proofId) : undefined), {
-    enabled: Boolean(proofId),
-    keepPreviousData: true,
-  });
+  return useQuery(
+    [PROOF_DETAIL_QUERY_KEY, proofId],
+    () => (proofId ? core.getProof(proofId) : undefined),
+    {
+      enabled: Boolean(proofId),
+      keepPreviousData: true,
+    },
+  );
 };
 
-export const useProofState = (proofId: string | undefined, isPolling: boolean) => {
+export const useProofState = (
+  proofId: string | undefined,
+  isPolling: boolean,
+) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
@@ -64,7 +75,10 @@ export const useProofState = (proofId: string | undefined, isPolling: boolean) =
             page: 0,
             pageSize: 1,
           })
-          .then((result) => result.values[0]?.metadata?.value as HistoryErrorMetadata);
+          .then(
+            (result) =>
+              result.values[0]?.metadata?.value as HistoryErrorMetadata,
+          );
       }
       return { metadata, state };
     },
@@ -129,7 +143,10 @@ export const useProofReject = () => {
   return useMutation(
     async (interactionId: string) =>
       core.holderRejectProof(interactionId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
+        if (
+          e instanceof OneError &&
+          e.code === OneErrorCode.OperationNotSupported.toString()
+        ) {
           return;
         }
         throw e;
@@ -157,7 +174,7 @@ export enum VerificationProtocol {
 
 export enum VerificationEngagement {
   NFC = 'NFC',
-  QR_CODE = 'QR_CODE'
+  QR_CODE = 'QR_CODE',
 }
 
 export const useProposeProof = () => {
@@ -165,7 +182,8 @@ export const useProposeProof = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<ProposeProofRequest, 'organisationId'>) => core.proposeProof({ organisationId, ...request }),
+    async (request: Omit<ProposeProofRequest, 'organisationId'>) =>
+      core.proposeProof({ organisationId, ...request }),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
@@ -182,7 +200,10 @@ export const useProofDelete = () => {
   return useMutation(
     async (proofId: string) => {
       return core.deleteProof(proofId).catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OperationNotSupported.toString()) {
+        if (
+          e instanceof OneError &&
+          e.code === OneErrorCode.OperationNotSupported.toString()
+        ) {
           return;
         }
         throw e;
@@ -202,7 +223,10 @@ export const useProofDelete = () => {
 export const useProofs = (queryParams?: Partial<ProofListQuery>) => {
   const { core, organisationId } = useONECore();
 
-  const queryKey = [PROOF_LIST_QUERY_KEY, ...getQueryKeyFromProofListQueryParams(queryParams)];
+  const queryKey = [
+    PROOF_LIST_QUERY_KEY,
+    ...getQueryKeyFromProofListQueryParams(queryParams),
+  ];
 
   return useQuery(
     queryKey,
@@ -224,34 +248,44 @@ export const useProofCreate = () => {
 
   const { core } = useONECore();
 
-  return useMutation(async (data: CreateProofRequest) => core.createProof(data), {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+  return useMutation(
+    async (data: CreateProofRequest) => core.createProof(data),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
     },
-  });
+  );
 };
 
 const getIdentifierFilterForProofSchema = (
   proofSchema: ProofSchemaDetail,
   config: CoreConfig,
 ): Partial<IdentifierListQuery> => {
-  const requestedFormats = proofSchema.proofInputSchemas.map((schema) => schema.credentialSchema.format);
+  const requestedFormats = proofSchema.proofInputSchemas.map(
+    (schema) => schema.credentialSchema.format,
+  );
   const requestedFormatsCapabilities = requestedFormats
     .map((format) => config.format[format]?.capabilities)
     .filter((x) => x);
 
   // key algorithms must be supported by all requested formats
-  const keyAlgorithms = requestedFormatsCapabilities.reduce<string[] | undefined>((others, capabilities) => {
+  const keyAlgorithms = requestedFormatsCapabilities.reduce<
+    string[] | undefined
+  >((others, capabilities) => {
     const current = capabilities.verificationKeyAlgorithms;
     return others?.filter((item) => current.includes(item)) ?? current;
   }, undefined);
 
   // key storages must be supported by all requested formats
-  const keyStorages = requestedFormatsCapabilities.reduce<string[] | undefined>((others, capabilities) => {
-    const current = capabilities.verificationKeyStorages;
-    return others?.filter((item) => current.includes(item)) ?? current;
-  }, undefined);
+  const keyStorages = requestedFormatsCapabilities.reduce<string[] | undefined>(
+    (others, capabilities) => {
+      const current = capabilities.verificationKeyStorages;
+      return others?.filter((item) => current.includes(item)) ?? current;
+    },
+    undefined,
+  );
 
   return { keyAlgorithms, keyStorages };
 };
@@ -264,10 +298,14 @@ export const useProofForSchemaIdWithTransport = (
   const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
   const { data: config } = useCoreConfig();
   const { data: orgDetail, isLoading: isLoadingOrg } = useOrganisationDetail();
-  const { data: ecosystems, isLoading: isLoadingEcosystems } = useOrganisationEcosystems();
+  const { data: ecosystems, isLoading: isLoadingEcosystems } =
+    useOrganisationEcosystems();
 
   const identifierFilter = useMemo(
-    () => (proofSchema && config ? getIdentifierFilterForProofSchema(proofSchema, config) : undefined),
+    () =>
+      proofSchema && config
+        ? getIdentifierFilterForProofSchema(proofSchema, config)
+        : undefined,
     [config, proofSchema],
   );
 
@@ -277,9 +315,13 @@ export const useProofForSchemaIdWithTransport = (
 
   const [deleting, setDeleting] = useState(false);
   const [proofId, setProofIdState] = useState<string | undefined>(undefined);
+  const [proofCreateError, setProofCreateError] = useState<unknown>();
   const proofIdRef = useRef<string>();
 
-  const { data: proofState } = useProofState(deleting ? undefined : proofId, enabled);
+  const { data: proofState } = useProofState(
+    deleting ? undefined : proofId,
+    enabled,
+  );
 
   const setProofId = useCallback((id: string | undefined) => {
     proofIdRef.current = id;
@@ -295,34 +337,45 @@ export const useProofForSchemaIdWithTransport = (
     await deleteProof(id).catch(() => {});
   }, [deleteProof, setProofId]);
 
+  // delete proof when changing proofSchema or transport
   useEffect(() => {
     if (!proofIdRef.current) {
       return;
     }
     setDeleting(true);
+    setProofCreateError(undefined);
     deleteProof(proofIdRef.current)
       .then(() => {
         setProofId(undefined);
-        setDeleting(false);
       })
-      .catch(() => {});
-  }, [proofIdRef, deleteProof, proofSchemaId, transport, setProofId]);
+      .catch(() => {})
+      .finally(() => {
+        setDeleting(false);
+      });
+  }, [deleteProof, proofSchemaId, transport, setProofId]);
 
+  // delete proof when enabled prop changes to false
   useEffect(() => {
     if (enabled) {
       return;
     }
 
-    if (proofState?.state !== ProofState.CREATED && proofState?.state !== ProofState.PENDING) {
+    setProofCreateError(undefined);
+    if (
+      proofState?.state !== ProofState.CREATED &&
+      proofState?.state !== ProofState.PENDING
+    ) {
       setProofId(undefined);
-    } else {
+    } else if (proofIdRef.current) {
       setDeleting(true);
-      deleteProof(proofIdRef.current || '')
+      deleteProof(proofIdRef.current)
         .then(() => {
           setProofId(undefined);
-          setDeleting(false);
         })
-        .catch(() => {});
+        .catch(() => {})
+        .finally(() => {
+          setDeleting(false);
+        });
     }
   }, [deleteProof, enabled, proofId, proofState, setProofId]);
 
@@ -331,6 +384,7 @@ export const useProofForSchemaIdWithTransport = (
       deleting ||
       !enabled ||
       proofId ||
+      proofCreateError ||
       !identifiers ||
       !identifierFilter ||
       !identifiers.values.length ||
@@ -343,7 +397,9 @@ export const useProofForSchemaIdWithTransport = (
     }
 
     createProof({
-      ecosystem: orgDetail?.configuration?.enforceEcosystemAsVerifier ? ecosystems?.[0]?.name : undefined,
+      ecosystem: orgDetail?.configuration?.enforceEcosystemAsVerifier
+        ? ecosystems?.[0]?.name
+        : undefined,
       proofSchemaId,
       protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       transport,
@@ -352,7 +408,9 @@ export const useProofForSchemaIdWithTransport = (
       .then((id) => {
         setProofId(id);
       })
-      .catch(() => {});
+      .catch((error: unknown) => {
+        setProofCreateError(error);
+      });
   }, [
     proofSchemaId,
     identifiers,
@@ -361,6 +419,7 @@ export const useProofForSchemaIdWithTransport = (
     enabled,
     transport,
     proofId,
+    proofCreateError,
     setProofId,
     deleting,
     isLoadingEcosystems,
@@ -369,7 +428,7 @@ export const useProofForSchemaIdWithTransport = (
     ecosystems,
   ]);
 
-  return { proofId: deleting ? undefined : proofId, retract };
+  return { proofCreateError, proofId: deleting ? undefined : proofId, retract };
 };
 
 export const useCleanupUnusedProofs = () => {
@@ -391,7 +450,10 @@ export const useCleanupUnusedProofs = () => {
   }, [cleaned, deleteProof, proofs]);
 };
 
-export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, enabled: boolean) => {
+export const useShareProof = (
+  proofUrlProps: ProofUrlHookParams | undefined,
+  enabled: boolean,
+) => {
   const { mutateAsync: shareProof } = useProofUrl();
   const { data: proofState } = useProofState(proofUrlProps?.proofId, enabled);
 
@@ -421,7 +483,10 @@ export const useShareProof = (proofUrlProps: ProofUrlHookParams | undefined, ena
         });
       })
       .catch((error: unknown) => {
-        if (error instanceof OneError && error.cause?.includes('BLE adapter not enabled')) {
+        if (
+          error instanceof OneError &&
+          error.cause?.includes('BLE adapter not enabled')
+        ) {
           setSharedProof({
             bleAdapterDisabled: true,
           });
@@ -439,14 +504,17 @@ export const useRetainProofCheck = (proofId?: string) => {
 
   const { core } = useONECore();
 
-  return useMutation(async () => core.runTask('RETAIN_PROOF_CHECK', undefined), {
-    onSuccess: async () => {
-      if (proofId) {
-        queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
-        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
-      }
+  return useMutation(
+    async () => core.runTask('RETAIN_PROOF_CHECK', undefined),
+    {
+      onSuccess: async () => {
+        if (proofId) {
+          queryClient.removeQueries([PROOF_DETAIL_QUERY_KEY, proofId]);
+          await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+        }
+      },
     },
-  });
+  );
 };
 
 export const useDeleteProofData = (proofId: string) => {
@@ -477,7 +545,13 @@ export const useDeleteAllProofsData = (schemaId: string) => {
           proofSchemaIds: [schemaId],
           proofStates: [ProofState.ACCEPTED],
         })
-        .then((result) => Promise.all(result.values.reverse().map((proof) => core.deleteProofClaims(proof.id)))),
+        .then((result) =>
+          Promise.all(
+            result.values
+              .reverse()
+              .map((proof) => core.deleteProofClaims(proof.id)),
+          ),
+        ),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(PROOF_DETAIL_QUERY_KEY);
@@ -487,12 +561,15 @@ export const useDeleteAllProofsData = (schemaId: string) => {
   );
 };
 
-export const useProofRequestTrustInformation = (credentialId: string | undefined) => {
+export const useProofRequestTrustInformation = (
+  credentialId: string | undefined,
+) => {
   const { core } = useONECore();
 
   return useQuery(
     [PROOF_REQUEST_TRUST_INFORMATION_QUERY_KEY, credentialId],
-    () => (credentialId ? core.getProofTrustInformation(credentialId) : undefined),
+    () =>
+      credentialId ? core.getProofTrustInformation(credentialId) : undefined,
     {
       enabled: Boolean(credentialId),
       keepPreviousData: true,
