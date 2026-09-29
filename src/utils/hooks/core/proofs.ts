@@ -485,7 +485,7 @@ export const useShareProof = (
       .catch((error: unknown) => {
         if (
           error instanceof OneError &&
-          error.cause?.includes('BLE adapter not enabled')
+          error.cause?.message.includes('BLE adapter not enabled')
         ) {
           setSharedProof({
             bleAdapterDisabled: true,

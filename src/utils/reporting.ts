@@ -1,4 +1,3 @@
- 
 import { OneError } from '@procivis/react-native-one-core';
 import * as Sentry from '@sentry/react-native';
 
@@ -17,8 +16,8 @@ export function reportError(message: string) {
 const getDebugExceptionInfo = (error: unknown, message: string | undefined) => {
   if (error instanceof OneError) {
     let info = `[${error.code}](${error.message})`;
-    if (error.cause) {
-      info = `${info}: ${error.cause}`;
+    if (error.cause?.message) {
+      info = `${info}: ${error.cause.message}`;
     }
     return message ? `(${message}, ${info})` : info;
   }
@@ -36,15 +35,15 @@ export function reportException(e: unknown, message?: string) {
 
         if (e instanceof OneError) {
           // prevent reporting specific errors
-          if (e.cause?.includes('BLE adapter not enabled')) {
+          if (e.cause?.message.includes('BLE adapter not enabled')) {
             return;
           }
 
           scope.setExtra('operation', e.operation);
           scope.setExtra('code', e.code);
           scope.setExtra('codeMessage', e.message);
-          if (e.cause) {
-            scope.setExtra('cause', e.cause);
+          if (e.cause?.message) {
+            scope.setExtra('cause', e.cause.message);
           }
 
           Sentry.captureException(e.originalError);
@@ -57,11 +56,19 @@ export function reportException(e: unknown, message?: string) {
     }
   } else {
     const info = getDebugExceptionInfo(e, message);
-    console.warn(`reportException${info}`, e, e instanceof Error ? e.stack : undefined);
+    console.warn(
+      `reportException${info}`,
+      e,
+      e instanceof Error ? e.stack : undefined,
+    );
   }
 }
 
-export function reportTraceInfo(category: string, message?: string, data?: Sentry.Breadcrumb['data']) {
+export function reportTraceInfo(
+  category: string,
+  message?: string,
+  data?: Sentry.Breadcrumb['data'],
+) {
   if (!__DEV__) {
     try {
       Sentry.addBreadcrumb({
