@@ -294,6 +294,7 @@ export const useProofForSchemaIdWithTransport = (
   proofSchemaId: string,
   transport: Transport[] | undefined,
   enabled: boolean,
+  verifierIdentifierId?: string,
 ) => {
   const { data: proofSchema } = useProofSchemaDetail(proofSchemaId, enabled);
   const { data: config } = useCoreConfig();
@@ -310,6 +311,9 @@ export const useProofForSchemaIdWithTransport = (
   );
 
   const { data: identifiers } = useIdentifiers(identifierFilter);
+  const identifierId =
+    verifierIdentifierId ??
+    (identifierFilter ? identifiers?.values[0]?.id : undefined);
   const { mutateAsync: createProof } = useProofCreate();
   const { mutateAsync: deleteProof } = useProofDelete();
 
@@ -385,9 +389,7 @@ export const useProofForSchemaIdWithTransport = (
       !enabled ||
       proofId ||
       proofCreateError ||
-      !identifiers ||
-      !identifierFilter ||
-      !identifiers.values.length ||
+      !identifierId ||
       !transport ||
       transport.length === 0 ||
       isLoadingEcosystems ||
@@ -403,7 +405,7 @@ export const useProofForSchemaIdWithTransport = (
       proofSchemaId,
       protocol: VerificationProtocol.OPENID4VP_PROXIMITY_DRAFT00,
       transport,
-      verifierIdentifierId: identifiers.values[0].id,
+      verifierIdentifierId: identifierId,
     })
       .then((id) => {
         setProofId(id);
@@ -413,8 +415,7 @@ export const useProofForSchemaIdWithTransport = (
       });
   }, [
     proofSchemaId,
-    identifiers,
-    identifierFilter,
+    identifierId,
     createProof,
     enabled,
     transport,
