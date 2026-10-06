@@ -11,10 +11,21 @@ export interface HistorySectionListItemProps extends ListItemViewProps {
   first?: boolean;
 }
 
-const HistorySectionListItem: FC<HistorySectionListItemProps> = ({ first, last, ...props }) => {
+const HistorySectionListItem: FC<HistorySectionListItemProps> = ({
+  first,
+  last,
+  ...props
+}) => {
   const colorScheme = useAppColorScheme();
   return (
-    <View style={[styles.item, first && styles.first, last && styles.last, { backgroundColor: colorScheme.white }]}>
+    <View
+      style={[
+        styles.item,
+        first && styles.first,
+        last && styles.last,
+        { backgroundColor: colorScheme.white },
+      ]}
+    >
       <ListItemView last={last} {...props} />
     </View>
   );

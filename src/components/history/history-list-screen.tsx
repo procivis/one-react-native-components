@@ -1,6 +1,15 @@
-import { HistoryListItem, HistoryListQuery } from '@procivis/react-native-one-core';
+import {
+  HistoryListItem,
+  HistoryListQuery,
+} from '@procivis/react-native-one-core';
 import { debounce } from 'lodash';
-import React, { FC, PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Animated, ScrollEvent, StyleSheet, View } from 'react-native';
 
 import {
@@ -11,7 +20,12 @@ import {
   Typography,
   useAppColorScheme,
 } from '../../ui-components';
-import { concatTestID, groupEntriesByDay, HistoryGroupByDaySection, useListContentInset } from '../../utils';
+import {
+  concatTestID,
+  groupEntriesByDay,
+  HistoryGroupByDaySection,
+  useListContentInset,
+} from '../../utils';
 import { HistoryListLabels, HistoryListView } from './history-list';
 import { HistoryListItemViewProps } from './history-list-item';
 
@@ -35,7 +49,9 @@ export type HistoryListScreenProps = {
   testID?: string;
 };
 
-export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = ({
+export const HistoryListScreen: FC<
+  PropsWithChildren<HistoryListScreenProps>
+> = ({
   children,
   groupItems = groupEntriesByDay,
   itemInfoLabelMode = 'associatedLabel',
@@ -54,7 +70,10 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
   const [searchPhrase, setSearchPhrase] = useState<string>('');
   const searchBarVisible = !empty || Boolean(queryParams.search?.text);
 
-  const handleSearchPhraseChange = useMemo(() => debounce(onSearchPhraseChange, 500), [onSearchPhraseChange]);
+  const handleSearchPhraseChange = useMemo(
+    () => debounce(onSearchPhraseChange, 500),
+    [onSearchPhraseChange],
+  );
   useEffect(() => {
     handleSearchPhraseChange(searchPhrase || undefined);
   }, [searchPhrase, handleSearchPhraseChange]);
@@ -74,7 +93,8 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
           backgroundColor: colorScheme.background,
         },
       ]}
-      testID={testID}>
+      testID={testID}
+    >
       {empty && (
         <View
           style={[
@@ -83,11 +103,17 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
               backgroundColor: colorScheme.white,
               marginTop: insets.paddingTop,
             },
-          ]}>
+          ]}
+        >
           <Typography align="center" color={colorScheme.text} preset="s">
             {labels.emptyTitle}
           </Typography>
-          <Typography align="center" color={colorScheme.text} preset="s/line-height-small" style={styles.shaded}>
+          <Typography
+            align="center"
+            color={colorScheme.text}
+            preset="s/line-height-small"
+            style={styles.shaded}
+          >
             {labels.emptySubtitle}
           </Typography>
         </View>
@@ -95,12 +121,20 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
       <HistoryListView
         contentContainerStyle={insets}
         groupItems={groupItems}
-        itemProps={{ infoLabelMode: itemInfoLabelMode, onPress: onHistoryItemPressed }}
+        itemProps={{
+          infoLabelMode: itemInfoLabelMode,
+          onPress: onHistoryItemPressed,
+        }}
         labels={labels.list}
         onEmpty={setEmpty}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffset } } }], {
-          useNativeDriver: true,
-        }) as ((event: ScrollEvent) => void)}
+        onScroll={
+          Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollOffset } } }],
+            {
+              useNativeDriver: true,
+            },
+          ) as (event: ScrollEvent) => void
+        }
         query={queryParams}
         testID={concatTestID(testID, 'list')}
       />
@@ -109,7 +143,12 @@ export const HistoryListScreen: FC<PropsWithChildren<HistoryListScreenProps>> = 
         header={
           <NavigationHeader
             backgroundColor={'transparent'}
-            leftItem={<BackButton onPress={onBackPressed} testID={concatTestID(testID, 'back')} />}
+            leftItem={
+              <BackButton
+                onPress={onBackPressed}
+                testID={concatTestID(testID, 'back')}
+              />
+            }
             title={labels.title}
           />
         }

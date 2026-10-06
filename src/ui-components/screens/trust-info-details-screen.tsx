@@ -1,10 +1,21 @@
-import { TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
+import {
+  TrustInformationDetailInfo,
+  TrustResolutionResult,
+} from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useState } from 'react';
-import { Linking, SectionList, SectionListData, StyleSheet, View } from 'react-native';
+import {
+  Linking,
+  SectionList,
+  SectionListData,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgProps } from 'react-native-svg';
 
-import TrustInfo, { TrustInfoLabels } from '../../components/trust-info/trust-info';
+import TrustInfo, {
+  TrustInfoLabels,
+} from '../../components/trust-info/trust-info';
 import { concatTestID, nonEmptyFilter, reportException } from '../../utils';
 import { TouchableOpacity } from '../accessibility';
 import { BackButton } from '../buttons';
@@ -75,12 +86,21 @@ type SeparatorProps = {
 
 const Separator: FC<SeparatorProps> = ({ dark, leadingItem }) => {
   const colorScheme = useAppColorScheme();
-  if (leadingItem?.type === 'subsection' || (leadingItem?.type === 'item' && !leadingItem?.value)) {
+  if (
+    leadingItem?.type === 'subsection' ||
+    (leadingItem?.type === 'item' && !leadingItem?.value)
+  ) {
     return <View style={styles.emptyItem} />;
   }
   return (
-    <View style={{ backgroundColor: dark ? colorScheme.background : colorScheme.white }}>
-      <View style={[styles.separator, { backgroundColor: colorScheme.grayDark }]} />
+    <View
+      style={{
+        backgroundColor: dark ? colorScheme.background : colorScheme.white,
+      }}
+    >
+      <View
+        style={[styles.separator, { backgroundColor: colorScheme.grayDark }]}
+      />
     </View>
   );
 };
@@ -96,9 +116,18 @@ const ListButton: FC<ListButtonProps> = ({ label, onPress, testID }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, styles.lastItem, { backgroundColor: colorScheme.white }]}
-      testID={testID}>
-      <Typography align="center" color={colorScheme.text} testID={concatTestID(testID, 'label')}>
+      style={[
+        styles.button,
+        styles.lastItem,
+        { backgroundColor: colorScheme.white },
+      ]}
+      testID={testID}
+    >
+      <Typography
+        align="center"
+        color={colorScheme.text}
+        testID={concatTestID(testID, 'label')}
+      >
         {label}
       </Typography>
     </TouchableOpacity>
@@ -116,32 +145,51 @@ type ListItemProps = {
   value: string;
 };
 
-const ListItem: FC<ListItemProps> = ({ action, dark, title, value, testID }) => {
+const ListItem: FC<ListItemProps> = ({
+  action,
+  dark,
+  title,
+  value,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
-    <View style={[styles.item, { backgroundColor: dark ? undefined : colorScheme.white }]}>
+    <View
+      style={[
+        styles.item,
+        { backgroundColor: dark ? undefined : colorScheme.white },
+      ]}
+    >
       <View style={styles.itemLabels} testID={testID}>
         <Typography
           color={colorScheme.text}
           numberOfLines={1}
           preset="s/line-height-capped"
           style={styles.itemTitleLabel}
-          testID={concatTestID(testID, 'title')}>
+          testID={concatTestID(testID, 'title')}
+        >
           {title}
         </Typography>
-        <Typography 
-        color={colorScheme.text} 
-        numberOfLines={1} 
-        preset="s/line-height-capped"
-        testID={concatTestID(testID, 'value')}>
+        <Typography
+          color={colorScheme.text}
+          numberOfLines={1}
+          preset="s/line-height-capped"
+          testID={concatTestID(testID, 'value')}
+        >
           {value}
         </Typography>
       </View>
       {action && (
         <TouchableOpacity
           onPress={action.onPress}
-          style={[styles.actionButton, { backgroundColor: dark ? colorScheme.white : colorScheme.grayDark }]}
-          testID={concatTestID(testID, 'action')}>
+          style={[
+            styles.actionButton,
+            {
+              backgroundColor: dark ? colorScheme.white : colorScheme.grayDark,
+            },
+          ]}
+          testID={concatTestID(testID, 'action')}
+        >
           <action.icon color={colorScheme.black} />
         </TouchableOpacity>
       )}
@@ -158,11 +206,28 @@ type ContactItemProps = {
   website?: string;
 };
 
-const ContactItem: FC<ContactItemProps> = ({ email, labels, onPress, phone, website, testID }) => {
+const ContactItem: FC<ContactItemProps> = ({
+  email,
+  labels,
+  onPress,
+  phone,
+  website,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
-    <View style={[styles.contactItemWrapper, { backgroundColor: colorScheme.white }]}>
-      <View style={[styles.contactItem, { backgroundColor: colorScheme.background }]}>
+    <View
+      style={[
+        styles.contactItemWrapper,
+        { backgroundColor: colorScheme.white },
+      ]}
+    >
+      <View
+        style={[
+          styles.contactItem,
+          { backgroundColor: colorScheme.background },
+        ]}
+      >
         {website && (
           <ListItem
             action={{ icon: LinkIcon, onPress: onPress(website) }}
@@ -243,53 +308,70 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
       result,
       type: 'trustInfo',
     },
-  ]
+  ];
 
   if (trustDetails) {
-    const countryDisplay = countries.find((c) => c.value === trustDetails.country)?.display;
+    const countryDisplay = countries.find(
+      (c) => c.value === trustDetails.country,
+    )?.display;
     const country = countryDisplay?.[language] ?? countryDisplay?.en;
 
     const baseInfo: TrustInfoDetailItem[] = [
-      trustDetails.isPublicSector ? {
-        title: labels.isPublicSector,
-        type: 'item',
-        value: trustDetails.isPublicSector ? labels.true : undefined,
-      } satisfies TrustInfoDetailItem : undefined,
+      trustDetails.isPublicSector
+        ? ({
+            title: labels.isPublicSector,
+            type: 'item',
+            value: trustDetails.isPublicSector ? labels.true : undefined,
+          } satisfies TrustInfoDetailItem)
+        : undefined,
       {
         title: labels.serviceDescription,
         type: 'item',
         value: trustDetails.serviceDescription[0]?.[language],
       } satisfies TrustInfoDetailItem,
-      trustDetails.infoUrl ? {
-        action: { icon: LinkIcon, onPress: linkHandler(trustDetails.infoUrl) },
-        title: labels.website,
-        type: 'item',
-        value: trustDetails.infoUrl,
-      } satisfies TrustInfoDetailItem : undefined,
-      trustDetails.privacyPolicyUrl ? {
-        action: { icon: LinkIcon, onPress: linkHandler(trustDetails.privacyPolicyUrl) },
-        title: labels.privacyPolicy,
-        type: 'item',
-        value: trustDetails.privacyPolicyUrl,
-      } satisfies TrustInfoDetailItem : undefined,
+      trustDetails.infoUrl
+        ? ({
+            action: {
+              icon: LinkIcon,
+              onPress: linkHandler(trustDetails.infoUrl),
+            },
+            title: labels.website,
+            type: 'item',
+            value: trustDetails.infoUrl,
+          } satisfies TrustInfoDetailItem)
+        : undefined,
+      trustDetails.privacyPolicyUrl
+        ? ({
+            action: {
+              icon: LinkIcon,
+              onPress: linkHandler(trustDetails.privacyPolicyUrl),
+            },
+            title: labels.privacyPolicy,
+            type: 'item',
+            value: trustDetails.privacyPolicyUrl,
+          } satisfies TrustInfoDetailItem)
+        : undefined,
     ].filter(nonEmptyFilter);
 
-    const expandItem: TrustInfoDetailItem[] = !expanded ? [{ type: 'expand' }] : [];
-
-    const supervisoryAuthority: TrustInfoDetailItem[] = trustDetails.supervisoryAuthority
-      ? [
-          {
-            title: labels.supervisoryAuthority,
-            type: 'subsection',
-          },
-          {
-            email: trustDetails.supervisoryAuthority.email,
-            phone: trustDetails.supervisoryAuthority.phone,
-            type: 'contact',
-            website: trustDetails.supervisoryAuthority.uri,
-          },
-        ]
+    const expandItem: TrustInfoDetailItem[] = !expanded
+      ? [{ type: 'expand' }]
       : [];
+
+    const supervisoryAuthority: TrustInfoDetailItem[] =
+      trustDetails.supervisoryAuthority
+        ? [
+            {
+              title: labels.supervisoryAuthority,
+              type: 'subsection',
+            },
+            {
+              email: trustDetails.supervisoryAuthority.email,
+              phone: trustDetails.supervisoryAuthority.phone,
+              type: 'contact',
+              website: trustDetails.supervisoryAuthority.uri,
+            },
+          ]
+        : [];
 
     const extraInfo: TrustInfoDetailItem[] = expanded
       ? [
@@ -318,10 +400,14 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
         ]
       : [];
 
-    trustDetailsSection = trustDetailsSection.concat(baseInfo).concat(expandItem).concat(extraInfo);
+    trustDetailsSection = trustDetailsSection
+      .concat(baseInfo)
+      .concat(expandItem)
+      .concat(extraInfo);
   }
 
-  const intermediaryName: TrustInfoDetailItem[] = trustDetails?.intermediary?.name
+  const intermediaryName: TrustInfoDetailItem[] = trustDetails?.intermediary
+    ?.name
     ? [
         {
           identifier: trustDetails.intermediary.identifier,
@@ -356,7 +442,10 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
       ]
     : [];
 
-  const sections: SectionListData<TrustInfoDetailItem, TrustInfoDetailSection>[] = [
+  const sections: SectionListData<
+    TrustInfoDetailItem,
+    TrustInfoDetailSection
+  >[] = [
     {
       ItemSeparatorComponent: Separator,
       data: trustDetailsSection,
@@ -373,7 +462,9 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
   return (
     <View style={styles.container}>
       <NavigationHeader
-        leftItem={<BackButton onPress={onClose} />}
+        leftItem={
+          <BackButton onPress={onClose} testID={concatTestID(testID, 'back')} />
+        }
         style={{
           paddingTop: insets.top,
         }}
@@ -386,8 +477,12 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
             case 'subsection':
               return (
                 <View
-                  style={[styles.subsection, { backgroundColor: colorScheme.white }]}
-                  testID={concatTestID(testID, section.title)}>
+                  style={[
+                    styles.subsection,
+                    { backgroundColor: colorScheme.white },
+                  ]}
+                  testID={concatTestID(testID, section.title)}
+                >
                   <Typography color={colorScheme.text} preset="m/heading">
                     {item.title}
                   </Typography>
@@ -395,7 +490,13 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
               );
             case 'trustInfo':
               return (
-                <View style={[styles.trustInfoItem, styles.firstItem, { backgroundColor: colorScheme.white }]}>
+                <View
+                  style={[
+                    styles.trustInfoItem,
+                    styles.firstItem,
+                    { backgroundColor: colorScheme.white },
+                  ]}
+                >
                   <TrustInfo
                     labels={labels}
                     language={language}
@@ -408,30 +509,54 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
               if (!item.value) {
                 return <View style={styles.emptyItem} />;
               }
-              return <ListItem {...item} testID={concatTestID(testID, 'item')} value={item.value} />;
+              return (
+                <ListItem
+                  {...item}
+                  testID={concatTestID(testID, 'item')}
+                  value={item.value}
+                />
+              );
             case 'contact':
               if (!item.website && !item.phone && !item.email) {
                 return <View style={styles.emptyItem} />;
               }
-              return <ContactItem labels={labels} onPress={linkHandler} testID={testID} {...item} />;
+              return (
+                <ContactItem
+                  labels={labels}
+                  onPress={linkHandler}
+                  testID={concatTestID(testID, 'contact')}
+                  {...item}
+                />
+              );
             case 'expand':
-              return <ListButton 
-                label={labels.expand} 
-                onPress={() => setExpanded(true)} 
-                testID={concatTestID(testID, 'expandButton')}
-              />;
+              return (
+                <ListButton
+                  label={labels.expand}
+                  onPress={() => setExpanded(true)}
+                  testID={concatTestID(testID, 'expandButton')}
+                />
+              );
             case 'collapse':
-              return <ListButton 
-                label={labels.collapse} 
-                onPress={() => setExpanded(false)} 
-                testID={concatTestID(testID, 'collapseButton')}
-              />;
+              return (
+                <ListButton
+                  label={labels.collapse}
+                  onPress={() => setExpanded(false)}
+                  testID={concatTestID(testID, 'collapseButton')}
+                />
+              );
           }
         }}
         renderSectionHeader={({ section }) => {
           return section.title ? (
-            <View style={styles.sectionHeaderContainer} testID={concatTestID(testID, section.title)}>
-              <Typography color={colorScheme.text} preset="m/heading" style={styles.sectionHeaderText}>
+            <View
+              style={styles.sectionHeaderContainer}
+              testID={concatTestID(testID, section.title)}
+            >
+              <Typography
+                color={colorScheme.text}
+                preset="m/heading"
+                style={styles.sectionHeaderText}
+              >
                 {section.title}
               </Typography>
             </View>

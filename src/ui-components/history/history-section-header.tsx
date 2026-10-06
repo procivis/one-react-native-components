@@ -17,11 +17,20 @@ const HistorySectionHeaderView: FC<{
 
   return (
     <View style={styles.header}>
-      <Typography accessibilityRole="header" color={colorScheme.text} preset="m" testID={concatTestID(testID, 'title')}>
+      <Typography
+        accessibilityRole="header"
+        color={colorScheme.text}
+        preset="m"
+        testID={concatTestID(testID, 'title')}
+      >
         {day}
       </Typography>
       {year && (
-        <Typography color={colorScheme.accent} preset="s/line-height-small" style={styles.year}>
+        <Typography
+          color={colorScheme.accent}
+          preset="s/line-height-small"
+          style={styles.year}
+        >
           {year}
         </Typography>
       )}

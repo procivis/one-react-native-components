@@ -1,4 +1,8 @@
-import { HistoryAction, HistoryEntityType, HistoryListItem } from '@procivis/react-native-one-core';
+import {
+  HistoryAction,
+  HistoryEntityType,
+  HistoryListItem,
+} from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
 import { validate as isUuid } from 'uuid';
 
@@ -32,7 +36,9 @@ export const HistoryListItemView: FC<HistoryListItemViewProps> = ({
   onPress,
   testID,
 }) => {
-  const label = `${labels.entityTypes[item.entityType]} ${labels.actions[item.action]}`;
+  const label = `${labels.entityTypes[item.entityType]} ${
+    labels.actions[item.action]
+  }`;
 
   const info = useMemo(() => {
     switch (infoLabelMode) {

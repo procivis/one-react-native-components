@@ -1,4 +1,7 @@
-import { HistoryListItem, HistoryListQuery } from '@procivis/react-native-one-core';
+import {
+  HistoryListItem,
+  HistoryListQuery,
+} from '@procivis/react-native-one-core';
 import { useIsFocused } from '@react-navigation/native';
 import React, { FC, useCallback, useMemo } from 'react';
 import { Animated, SectionListProps, StyleSheet } from 'react-native';
@@ -6,9 +9,19 @@ import { Animated, SectionListProps, StyleSheet } from 'react-native';
 import { ActivityIndicator, useAppColorScheme } from '../../ui-components';
 import ListPageLoadingIndicator from '../../ui-components/list/list-page-loading-indicator';
 import { concatTestID, useHistory } from '../../utils';
-import { groupEntriesByDay, HistoryGroupByDaySection } from '../../utils/history';
-import { HistoryListItemLabels, HistoryListItemView, HistoryListItemViewProps } from './history-list-item';
-import { HistoryListSectionHeaderLabels, HistoryListSectionHeaderView } from './history-list-section-header';
+import {
+  groupEntriesByDay,
+  HistoryGroupByDaySection,
+} from '../../utils/history';
+import {
+  HistoryListItemLabels,
+  HistoryListItemView,
+  HistoryListItemViewProps,
+} from './history-list-item';
+import {
+  HistoryListSectionHeaderLabels,
+  HistoryListSectionHeaderView,
+} from './history-list-section-header';
 
 export type HistoryListLabels = {
   item: HistoryListItemLabels;
@@ -16,9 +29,14 @@ export type HistoryListLabels = {
 };
 
 export interface HistoryListViewProps
-  extends Omit<SectionListProps<HistoryListItem, HistoryGroupByDaySection>, 'sections'> {
+  extends Omit<
+    SectionListProps<HistoryListItem, HistoryGroupByDaySection>,
+    'sections'
+  > {
   // optional customization of item props
-  getItemProps?: (item: HistoryListItem) => Partial<HistoryListItemViewProps> | undefined;
+  getItemProps?: (
+    item: HistoryListItem,
+  ) => Partial<HistoryListItemViewProps> | undefined;
   groupItems?: (entries: HistoryListItem[]) => HistoryGroupByDaySection[];
   itemProps?: Partial<HistoryListItemViewProps>;
   labels: HistoryListLabels;
@@ -74,7 +92,12 @@ export const HistoryListView: FC<HistoryListViewProps> = ({
   return (
     <Animated.SectionList<HistoryListItem, HistoryGroupByDaySection>
       ListFooterComponent={
-        isLoading ? <ListPageLoadingIndicator color={colorScheme.accent} style={styles.footer} /> : undefined
+        isLoading ? (
+          <ListPageLoadingIndicator
+            color={colorScheme.accent}
+            style={styles.footer}
+          />
+        ) : undefined
       }
       contentContainerStyle={[styles.listContent, contentContainerStyle]}
       keyExtractor={(item) => item.id}

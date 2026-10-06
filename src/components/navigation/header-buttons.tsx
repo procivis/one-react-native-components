@@ -2,14 +2,23 @@ import { useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
-import { BackButton, BackButtonIcon, GhostButton, InfoIcon, OptionsIcon } from '../../ui-components';
+import {
+  BackButton,
+  BackButtonIcon,
+  GhostButton,
+  InfoIcon,
+  OptionsIcon,
+} from '../../ui-components';
 
 export type HeaderButtonProps = {
   onPress?: () => void;
   testID: string;
 };
 
-export const HeaderBackButton: FC<HeaderButtonProps> = ({ onPress, testID }) => {
+export const HeaderBackButton: FC<HeaderButtonProps> = ({
+  onPress,
+  testID,
+}) => {
   const navigation = useNavigation();
   const handleBackButtonPress = useCallback(() => {
     if (onPress) {
@@ -23,7 +32,10 @@ export const HeaderBackButton: FC<HeaderButtonProps> = ({ onPress, testID }) => 
   return <BackButton onPress={handleBackButtonPress} testID={testID} />;
 };
 
-export const HeaderCloseButton: FC<HeaderButtonProps> = ({ onPress, testID }) => {
+export const HeaderCloseButton: FC<HeaderButtonProps> = ({
+  onPress,
+  testID,
+}) => {
   const navigation = useNavigation();
   const handleCloseButtonPress = useCallback(() => {
     if (onPress) {
@@ -31,7 +43,13 @@ export const HeaderCloseButton: FC<HeaderButtonProps> = ({ onPress, testID }) =>
     }
     navigation.goBack();
   }, [onPress, navigation]);
-  return <BackButton icon={BackButtonIcon.Close} onPress={handleCloseButtonPress} testID={testID} />;
+  return (
+    <BackButton
+      icon={BackButtonIcon.Close}
+      onPress={handleCloseButtonPress}
+      testID={testID}
+    />
+  );
 };
 
 export type HeaderInfoButtonProps = {
@@ -40,8 +58,19 @@ export type HeaderInfoButtonProps = {
   testID: string;
 };
 
-export const HeaderInfoButton: FC<HeaderInfoButtonProps> = ({ accessibilityLabel, onPress, testID }) => {
-  return <GhostButton accessibilityLabel={accessibilityLabel} icon={InfoIcon} onPress={onPress} testID={testID} />;
+export const HeaderInfoButton: FC<HeaderInfoButtonProps> = ({
+  accessibilityLabel,
+  onPress,
+  testID,
+}) => {
+  return (
+    <GhostButton
+      accessibilityLabel={accessibilityLabel}
+      icon={InfoIcon}
+      onPress={onPress}
+      testID={testID}
+    />
+  );
 };
 
 export type HeaderOptionsButtonProps = {
@@ -51,7 +80,12 @@ export type HeaderOptionsButtonProps = {
   testID: string;
 };
 
-export const HeaderOptionsButton: FC<HeaderOptionsButtonProps> = ({ onPress, testID, style, accessibilityLabel }) => {
+export const HeaderOptionsButton: FC<HeaderOptionsButtonProps> = ({
+  onPress,
+  testID,
+  style,
+  accessibilityLabel,
+}) => {
   return (
     <GhostButton
       accessibilityLabel={accessibilityLabel}

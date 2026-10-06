@@ -1,9 +1,30 @@
-import React, { ComponentType, FC, ReactElement, useEffect, useMemo } from 'react';
-import { ColorValue, Dimensions, ImageSourcePropType, StyleSheet, View } from 'react-native';
+import React, {
+  ComponentType,
+  FC,
+  ReactElement,
+  useEffect,
+  useMemo,
+} from 'react';
+import {
+  ColorValue,
+  Dimensions,
+  ImageSourcePropType,
+  StyleSheet,
+  View,
+} from 'react-native';
 
-import { CredentialDetails, CredentialDetailsProps, TrustInfo, TrustInfoProps } from '../../components';
+import {
+  CredentialDetails,
+  CredentialDetailsProps,
+  TrustInfo,
+  TrustInfoProps,
+} from '../../components';
 import { HeaderInfoButton } from '../../components/navigation/header-buttons';
-import { CardLabels, concatTestID, useCredentialListExpandedCard } from '../../utils';
+import {
+  CardLabels,
+  concatTestID,
+  useCredentialListExpandedCard,
+} from '../../utils';
 import { TouchableOpacity } from '../accessibility';
 import { BackButton } from '../buttons';
 import {
@@ -91,7 +112,8 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
   testID,
 }) => {
   const colorScheme = useAppColorScheme();
-  const { expandedCredential, onHeaderPress, setInitialCredential } = useCredentialListExpandedCard();
+  const { expandedCredential, onHeaderPress, setInitialCredential } =
+    useCredentialListExpandedCard();
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   // Expand the first credential
@@ -130,7 +152,12 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
   return (
     <ScrollViewScreen
       header={{
-        leftItem: <BackButton onPress={onBackPressed} testID={concatTestID(testID, 'header', 'back')} />,
+        leftItem: (
+          <BackButton
+            onPress={onBackPressed}
+            testID={concatTestID(testID, 'back')}
+          />
+        ),
         rightItem: moreInfoHeaderButton,
         static: true,
         title: labels.title,
@@ -138,19 +165,28 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
       scrollView={{
         style: styles.content,
       }}
-      testID={testID}>
+      testID={testID}
+    >
       <View style={[styles.section, { backgroundColor: colorScheme.white }]}>
         {data.header && 'entity' in data.header && (
           <TrustInfo
             {...data.header.entity}
-            style={[styles.entity, { borderBottomColor: colorScheme.background }, data.header.entity.style]}
+            style={[
+              styles.entity,
+              { borderBottomColor: colorScheme.background },
+              data.header.entity.style,
+            ]}
           />
         )}
         {data.header && 'credentialHeader' in data.header && (
           <CredentialHeader
             {...data.header.credentialHeader}
             blur={false}
-            style={[styles.header, { borderColor: colorScheme.background }, data.header.credentialHeader.style]}
+            style={[
+              styles.header,
+              { borderColor: colorScheme.background },
+              data.header.credentialHeader.style,
+            ]}
           />
         )}
         <DataItem attribute={labels.data.date} value={data.date} />
@@ -165,16 +201,27 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
       </View>
 
       {hasAssets && (
-        <Typography color={colorScheme.text} preset="m" style={styles.sectionHeader}>
+        <Typography
+          color={colorScheme.text}
+          preset="m"
+          style={styles.sectionHeader}
+        >
           {labels.relatedAssets}
         </Typography>
       )}
 
       {assets?.header && (
-        <TouchableOpacity disabled={!assets.header.onPressed} onPress={assets.header.onPressed}>
+        <TouchableOpacity
+          disabled={!assets.header.onPressed}
+          onPress={assets.header.onPressed}
+        >
           <CredentialHeader
             {...assets.header}
-            accessory={assets.header.onPressed ? <NextIcon color={colorScheme.text} /> : undefined}
+            accessory={
+              assets.header.onPressed ? (
+                <NextIcon color={colorScheme.text} />
+              ) : undefined
+            }
             blur={false}
             style={[styles.assetsHeader, assets.header.style]}
           />
@@ -183,10 +230,15 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
       {assets?.cards?.map((props, index, { length }) => {
         if ('credentialDetails' in props) {
           return (
-            <View key={props.credentialDetails.credentialId} style={styles.credential}>
+            <View
+              key={props.credentialDetails.credentialId}
+              style={styles.credential}
+            >
               <CredentialDetails
                 {...props.credentialDetails}
-                expanded={expandedCredential === props.credentialDetails.credentialId}
+                expanded={
+                  expandedCredential === props.credentialDetails.credentialId
+                }
                 labels={labels.credentialCard}
                 lastItem={index === length - 1}
                 onHeaderPress={onHeaderPress}
@@ -199,7 +251,10 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
             ...props.credentialCard,
             card: {
               ...props.credentialCard.card,
-              onHeaderPress: props.credentialCard.headerPressable === false ? undefined : onHeaderPress,
+              onHeaderPress:
+                props.credentialCard.headerPressable === false
+                  ? undefined
+                  : onHeaderPress,
               width: cardWidth,
             },
           };
@@ -207,7 +262,9 @@ export const HistoryDetailsView: FC<HistoryDetailsViewProps> = ({
             <View key={index.toString()} style={styles.credential}>
               <CredentialDetailsCardListItem
                 {...itemProps}
-                expanded={expandedCredential === props.credentialCard.card.credentialId}
+                expanded={
+                  expandedCredential === props.credentialCard.card.credentialId
+                }
                 lastItem={index === length - 1}
                 onImagePreview={onImagePreview}
               />

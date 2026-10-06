@@ -1,4 +1,8 @@
-import { HistoryAction, HistoryEntityType, HistoryListItem } from '@procivis/react-native-one-core';
+import {
+  HistoryAction,
+  HistoryEntityType,
+  HistoryListItem,
+} from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { SvgProps } from 'react-native-svg';
 

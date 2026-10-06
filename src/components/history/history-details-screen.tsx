@@ -1,4 +1,7 @@
-import { HistoryAction, HistoryListItem } from '@procivis/react-native-one-core';
+import {
+  HistoryAction,
+  HistoryListItem,
+} from '@procivis/react-native-one-core';
 import React, { FC, ReactElement } from 'react';
 import { ImageSourcePropType } from 'react-native';
 
@@ -8,11 +11,18 @@ import {
   HistoryDetailsView,
   HistoryDetailsViewProps,
 } from '../../ui-components/history/history-details';
-import { capitalizeFirstLetter, concatTestID, formatDateTimeLocalized } from '../../utils';
+import {
+  capitalizeFirstLetter,
+  concatTestID,
+  formatDateTimeLocalized,
+} from '../../utils';
 import { HistoryListItemLabels } from './history-list-item';
 import { getHistoryItemActionIcon } from './history-list-item-icon';
 
-const getStatusTextColor = (action: HistoryAction, colorScheme: Readonly<ColorScheme>) => {
+const getStatusTextColor = (
+  action: HistoryAction,
+  colorScheme: Readonly<ColorScheme>,
+) => {
   switch (action) {
     case HistoryAction.CLAIMS_REMOVED:
     case HistoryAction.DEACTIVATED:

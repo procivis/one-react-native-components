@@ -11,14 +11,23 @@ export enum BackButtonIcon {
 
 export type BackButtonProps = Omit<GhostButtonProps, 'accessibilityLabel'>;
 
-const BackButton: FC<BackButtonProps> = ({ style, icon = BackButtonIcon.Back, onPress, ...props }) => {
+const BackButton: FC<BackButtonProps> = ({
+  style,
+  icon = BackButtonIcon.Back,
+  onPress,
+  ...props
+}) => {
   const t = useAccessibilityTranslation();
 
   const Icon = icon === BackButtonIcon.Close ? CloseIcon : BackIcon;
 
   return (
     <GhostButton
-      accessibilityLabel={t(icon === BackButtonIcon.Close ? 'accessibility.nav.close' : 'accessibility.nav.back')}
+      accessibilityLabel={t(
+        icon === BackButtonIcon.Close
+          ? 'accessibility.nav.close'
+          : 'accessibility.nav.back',
+      )}
       icon={Icon}
       onPress={onPress}
       style={style}

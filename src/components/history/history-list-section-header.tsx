@@ -18,12 +18,9 @@ export type HistoryListSectionHeaderViewProps = {
 // components used on the history section lists (Settings->History, CredentialDetail->History)
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?type=design&node-id=1246-51813&mode=dev
 
-export const HistoryListSectionHeaderView: FC<HistoryListSectionHeaderViewProps> = ({
-  date,
-  firstYearEntry,
-  labels,
-  testID,
-}) => {
+export const HistoryListSectionHeaderView: FC<
+  HistoryListSectionHeaderViewProps
+> = ({ date, firstYearEntry, labels, testID }) => {
   const day = useMemo(() => {
     const now = moment();
     const dateString = moment(date);
@@ -37,6 +34,10 @@ export const HistoryListSectionHeaderView: FC<HistoryListSectionHeaderViewProps>
   }, [date, labels]);
 
   return (
-    <HistorySectionHeaderView day={day} testID={testID} year={firstYearEntry ? date.year().toString() : undefined} />
+    <HistorySectionHeaderView
+      day={day}
+      testID={testID}
+      year={firstYearEntry ? date.year().toString() : undefined}
+    />
   );
 };
