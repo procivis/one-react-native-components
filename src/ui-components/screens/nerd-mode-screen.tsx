@@ -1,4 +1,4 @@
-import { TrustInformation, TrustInformationDetailInfo } from '@procivis/react-native-one-core';
+import { TrustInformation, TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -46,7 +46,7 @@ export type NerdModeScreenProps = {
   language: string;
   onClose: () => void;
   onCopyToClipboard: (value: string) => void;
-  onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetailInfo) => void;
+  onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetailInfo, result?: TrustResolutionResult) => void;
   sections: NerdModeSection[];
   testID: string;
   title: string;
@@ -109,7 +109,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         language={language}
         onPress={
           onOpenTrustInfoDetails && entityCluster.trustInformationDetail
-            ? () => onOpenTrustInfoDetails(entityCluster.trustInformationDetail!)
+            ? () => onOpenTrustInfoDetails(entityCluster.trustInformationDetail!, entityCluster.trustInformation?.result)
             : undefined
         }
         style={[
@@ -156,7 +156,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 language={language}
                 onPress={
                   onOpenTrustInfoDetails && item.trustInformationDetail
-                    ? () => onOpenTrustInfoDetails(item.trustInformationDetail!)
+                    ? () => onOpenTrustInfoDetails(item.trustInformationDetail!, item.trustInformation?.result)
                     : undefined
                 }
                 style={[

@@ -606,10 +606,12 @@ const styles = StyleSheet.create({
   item: {
     alignItems: 'center',
     flexDirection: 'row',
+    gap: 12,
     justifyContent: 'space-between',
     padding: 12,
   },
   itemLabels: {
+    flex: 1,
     flexDirection: 'column',
   },
   itemTitleLabel: {
