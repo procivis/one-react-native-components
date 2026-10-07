@@ -172,7 +172,6 @@ const ListItem: FC<ListItemProps> = ({
         </Typography>
         <Typography
           color={colorScheme.text}
-          numberOfLines={1}
           preset="s/line-height-capped"
           testID={concatTestID(testID, 'value')}
         >
@@ -471,7 +470,7 @@ const TrustInfoDetailsScreen: FC<TrustInfoDetailsScreenProps> = ({
         title={labels.title}
       />
       <SectionList<TrustInfoDetailItem, TrustInfoDetailSection>
-        contentInset={insets}
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
         renderItem={({ item, section }) => {
           switch (item.type) {
             case 'subsection':
@@ -577,6 +576,7 @@ const styles = StyleSheet.create({
   actionButton: {
     alignItems: 'center',
     borderRadius: 19,
+    flexShrink: 0,
     height: 38,
     justifyContent: 'center',
     width: 38,
