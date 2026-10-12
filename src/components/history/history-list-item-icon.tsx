@@ -37,6 +37,7 @@ const defaultIcons: {
     ACCEPTED: HistoryStatusAcceptedIcon,
     ACTIVATED: HistoryStatusAcceptedIcon,
     CLAIMS_REMOVED: HistoryStatusDeleteIcon,
+    CLIENT_SECRET_REGENERATED: HistoryStatusAcceptedIcon,
     CREATED: HistoryStatusAcceptedIcon,
     CSR_GENERATED: HistoryStatusAcceptedIcon,
     DEACTIVATED: HistoryStatusErrorIcon,
