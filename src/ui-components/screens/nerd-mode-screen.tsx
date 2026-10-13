@@ -1,4 +1,4 @@
-import { TrustInformation, TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
+import { IdentifierListItem, TrustInformation, TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
@@ -24,6 +24,7 @@ export interface AttributesLabels {
 }
 
 interface SectionEntityCluster {
+  identifier?: IdentifierListItem;
   testID?: string;
   translate: boolean;
   trustInfoLabels: TrustInfoLabels;
@@ -105,6 +106,7 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     }
     return (
       <TrustInfo
+        identifier={entityCluster.identifier}
         labels={entityCluster.trustInfoLabels}
         language={language}
         onPress={
@@ -123,7 +125,6 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         translate={entityCluster.translate}
         trustInformation={entityCluster.trustInformation ? {
           ...entityCluster.trustInformation,
-          identifier: entityCluster.trustInformationDetail?.value[0]?.identifier,
         } : undefined}
       />
     );
@@ -170,7 +171,6 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 translate={item.translate}
                 trustInformation={item.trustInformation ? {
                   ...item.trustInformation,
-                  identifier: item.trustInformationDetail?.value[0]?.identifier,
                 } : undefined}
               />
             );

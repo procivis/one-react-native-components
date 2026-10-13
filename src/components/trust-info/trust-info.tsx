@@ -1,18 +1,20 @@
-import { TrustResolutionResult } from '@procivis/react-native-one-core';
+import { IdentifierListItem, TrustResolutionResult } from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { AvatarProps, ImageOrComponentSource, TouchableOpacity, useAppColorScheme } from '../../ui-components';
 import EntityCluster from '../../ui-components/entity/entity-cluster';
 import { EntityNotTrustedIcon, EntityTrustedIcon, UpIcon } from '../../ui-components/icons';
-import { concatTestID, useCoreConfig, useIdentifierDetails } from '../../utils';
+import { concatTestID, useCoreConfig } from '../../utils';
 
 export type TrustInfoLabels = {
+  secondLine: string;
   unknown: string;
-  unknownSubline: string;
+  untrusted: string;
 };
 
 export type TrustInfoProps = {
+  identifier?: IdentifierListItem;
   labels: TrustInfoLabels;
   language: string;
   onPress?: () => void;
@@ -21,7 +23,6 @@ export type TrustInfoProps = {
   textColor?: string;
   translate: boolean;
   trustInformation?: {
-    identifier?: string;
     name?: string;
     result: TrustResolutionResult;
   };
@@ -34,21 +35,27 @@ const TrustInfo: FC<TrustInfoProps> = ({
   style,
   testID,
   textColor,
+  identifier,
   translate,
   trustInformation,
 }) => {
   const { data: config } = useCoreConfig();
-  const { data: identifier } = useIdentifierDetails(trustInformation?.identifier);
   const defaultLanguage = config?.globalSettings.defaultLanguage;
   const colorScheme = useAppColorScheme();
 
   const trustEntityName = useMemo(() => {
+    if (!translate) {
+      if (trustInformation?.result === TrustResolutionResult.TRUSTED) {
+        return trustInformation?.name ?? labels.unknown;
+      } else {
+        return labels.untrusted;
+      }
+    }
     const defaultLanguageName = identifier?.translations?.name[defaultLanguage ?? ''];
-    const translatedName = translate ? identifier?.translations?.name[language] ?? defaultLanguageName : undefined;
-    const ecosystemResolvedName = trustInformation?.result === TrustResolutionResult.TRUSTED ? trustInformation?.name ?? labels.unknown : labels.unknown;
-    return translatedName ?? ecosystemResolvedName;
-  }, [translate, identifier, language, defaultLanguage, trustInformation, labels.unknown]);
-  
+    const translatedName = identifier?.translations?.name[language] ?? defaultLanguageName ?? identifier?.name;
+    return trustInformation?.name ?? translatedName ?? labels.unknown;
+  }, [identifier, translate, trustInformation, defaultLanguage, language, labels.unknown, labels.untrusted]);
+
   const avatarProps: AvatarProps | undefined = useMemo(() => {
     const showLogo = translate || trustInformation?.result === TrustResolutionResult.TRUSTED;
     const avatar: ImageOrComponentSource | undefined = showLogo && identifier?.logo ? { imageSource: { uri: identifier.logo } } : undefined;
@@ -73,7 +80,7 @@ const TrustInfo: FC<TrustInfoProps> = ({
         avatar={avatarProps}
         entityName={trustEntityName}
         style={styles.cluster}
-        subline={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : labels.unknownSubline}
+        subline={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : labels.secondLine}
         sublineColor={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : colorScheme.errorText}
         testID={testID}
         textColor={textColor}
