@@ -45,7 +45,7 @@ const TrustInfo: FC<TrustInfoProps> = ({
 
   const trustEntityName = useMemo(() => {
     if (!translate) {
-      if (trustInformation?.result === TrustResolutionResult.TRUSTED) {
+      if (trustInformation?.result === TrustResolutionResult.TRUSTED || trustInformation?.result === TrustResolutionResult.COMPLIANT) {
         return trustInformation?.name ?? labels.unknown;
       } else {
         return labels.untrusted;
@@ -56,23 +56,27 @@ const TrustInfo: FC<TrustInfoProps> = ({
     return trustInformation?.name ?? translatedName ?? labels.unknown;
   }, [identifier, translate, trustInformation, defaultLanguage, language, labels.unknown, labels.untrusted]);
 
+  const statusIcon = useMemo(() => {
+    if (trustInformation?.result === TrustResolutionResult.TRUSTED) {
+      return <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />;
+    }
+    if (trustInformation?.result === TrustResolutionResult.COMPLIANT) {
+      return undefined;
+    }
+    return <EntityNotTrustedIcon testID={concatTestID(testID, 'statusIcon', 'notTrusted')} />;
+  }, [testID, trustInformation?.result]);
+
   const avatarProps: AvatarProps | undefined = useMemo(() => {
-    const showLogo = translate || trustInformation?.result === TrustResolutionResult.TRUSTED;
+    const showLogo = translate || (trustInformation?.result === TrustResolutionResult.TRUSTED || trustInformation?.result === TrustResolutionResult.COMPLIANT);
     const avatar: ImageOrComponentSource | undefined = showLogo && identifier?.logo ? { imageSource: { uri: identifier.logo } } : undefined;
     const placeholderText = trustEntityName.substring(0, 1);
-
-    const statusIcon = trustInformation?.result === TrustResolutionResult.TRUSTED ? (
-      <EntityTrustedIcon testID={concatTestID(testID, 'statusIcon', 'trusted')} />
-    ) : (
-      <EntityNotTrustedIcon testID={concatTestID(testID, 'statusIcon', 'notTrusted')} />
-    );
 
     return {
       avatar,
       placeholderText,
       statusIcon,
     };
-  }, [translate, identifier?.logo, trustEntityName, trustInformation?.result, testID]);
+  }, [translate, trustInformation?.result, identifier?.logo, trustEntityName, statusIcon]);
 
   return (
     <TouchableOpacity disabled={!onPress || !trustInformation} onPress={onPress} style={[styles.button, style]}>
@@ -80,8 +84,8 @@ const TrustInfo: FC<TrustInfoProps> = ({
         avatar={avatarProps}
         entityName={trustEntityName}
         style={styles.cluster}
-        subline={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : labels.secondLine}
-        sublineColor={trustInformation?.result === TrustResolutionResult.TRUSTED ? undefined : colorScheme.errorText}
+        subline={trustInformation?.result === TrustResolutionResult.TRUSTED || trustInformation?.result === TrustResolutionResult.COMPLIANT ? undefined : labels.secondLine}
+        sublineColor={trustInformation?.result === TrustResolutionResult.TRUSTED || trustInformation?.result === TrustResolutionResult.COMPLIANT ? undefined : colorScheme.errorText}
         testID={testID}
         textColor={textColor}
       />
