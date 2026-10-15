@@ -320,3 +320,14 @@ export const useCredentialsTrustInformation = (credentialIds: string[]) => {
     })),
   );
 };
+
+export const useCredentialRegistrySync = (language: string) => {
+  const { core, organisationId } = useONECore();
+
+  return useMutation(async () =>
+    core.runTask(
+      'CREDENTIAL_REGISTRY_SYNC',
+      JSON.stringify({ organisationId, language }),
+    ),
+  );
+};
