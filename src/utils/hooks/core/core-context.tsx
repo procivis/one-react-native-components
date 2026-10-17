@@ -26,6 +26,7 @@ const defaultContextValue: ContextValue = {
 
 export type ONECoreContextProviderProps = {
   config?: Record<string, unknown>;
+  databaseDirPath?: string;
   organisationId?: string;
 };
 
@@ -33,8 +34,9 @@ const ONECoreContext = createContext<ContextValue>(defaultContextValue);
 
 export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({
   children,
-  organisationId = defaultContextValue.organisationId,
   config,
+  databaseDirPath,
+  organisationId = defaultContextValue.organisationId,
 }) => {
   const [core, setCore] = useState<ONECore>();
 
@@ -45,7 +47,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
       }
 
       try {
-        const coreInstance = await initializeCore(config);
+        const coreInstance = await initializeCore(config, databaseDirPath);
         setCore(coreInstance);
         return coreInstance;
       } catch (e) {
@@ -53,7 +55,7 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
         throw e;
       }
     },
-    [core, config],
+    [core, config, databaseDirPath],
   );
 
   useEffect(
