@@ -1,4 +1,11 @@
-import React, { FC, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  FC,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   Animated,
   Insets,
@@ -29,12 +36,15 @@ const LABEL_SCALE_RATIO = 14 / 12;
 
 export enum TextInputAccessory {
   Clear = 'clear',
-  Dropdown = 'dropdown'
+  Dropdown = 'dropdown',
 }
 
 const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
 
-export type TextInputProps = Omit<RNTextInputProps, 'editable' | 'onSubmitEditing' | 'style'> & {
+export type TextInputProps = Omit<
+  RNTextInputProps,
+  'editable' | 'onSubmitEditing' | 'style'
+> & {
   accessory?: TextInputAccessory;
   accessoryAccessibilityLabel?: string;
   disabled?: boolean;
@@ -49,7 +59,10 @@ export type TextInputProps = Omit<RNTextInputProps, 'editable' | 'onSubmitEditin
  * Generic text input component
  * @see https://www.figma.com/file/Gd0Tj0234hxtl3HMcCJThW/App-Component-Library-(Design)?node-id=3%3A824&t=r7HhHF1rsNLmOBL2-4
  */
-const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputProps>(
+const TextInput: FC<TextInputProps> = forwardRef<
+  RNTextInputInstance,
+  TextInputProps
+>(
   (
     {
       value,
@@ -109,13 +122,16 @@ const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputP
         disabled={disabled}
         hitSlop={hitSlop}
         onPress={onAccessoryPress}
-        testID={concatTestID(props.testID, 'accessoryButton')}>
+        testID={concatTestID(props.testID, 'accessoryButton')}
+      >
         {accessoryIcon}
       </TouchableOpacity>
     ) : null;
 
     const labelPosition = focused || value ? 0 : 1;
-    const [labelAnimation] = useState<Animated.Value>(() => new Animated.Value(labelPosition));
+    const [labelAnimation] = useState<Animated.Value>(
+      () => new Animated.Value(labelPosition),
+    );
     useEffect(() => {
       Animated.timing(labelAnimation, {
         duration: 200,
@@ -125,7 +141,10 @@ const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputP
     }, [labelAnimation, labelPosition]);
 
     const [labelLayout, setLabelLayout] = useState<LayoutRectangle>();
-    const onLabelLayout = useCallback((event: LayoutChangeEvent) => setLabelLayout(event.nativeEvent.layout), []);
+    const onLabelLayout = useCallback(
+      (event: LayoutChangeEvent) => setLabelLayout(event.nativeEvent.layout),
+      [],
+    );
 
     const accessibilityLabel = disabled ? undefined : label;
     const inputStyle = { height: Math.min(2, fontScale) * 24 };
@@ -178,7 +197,10 @@ const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputP
                       // compensate scale position in X direction
                       translateX: labelAnimation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [0, (labelLayout.width * (LABEL_SCALE_RATIO - 1)) / 2],
+                        outputRange: [
+                          0,
+                          (labelLayout.width * (LABEL_SCALE_RATIO - 1)) / 2,
+                        ],
                       }),
                     },
                     {
@@ -191,8 +213,13 @@ const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputP
                   ],
                 }
               : undefined
-          }>
-          <Typography accessible={false} color={'rgba(0, 0, 0, 0.50)'} preset="s">
+          }
+        >
+          <Typography
+            accessible={false}
+            color={'rgba(0, 0, 0, 0.50)'}
+            preset="s"
+          >
             {label}
           </Typography>
         </Animated.View>
@@ -202,8 +229,15 @@ const TextInput: FC<TextInputProps> = forwardRef<RNTextInputInstance, TextInputP
             {
               borderColor: focused ? colorScheme.accent : colorScheme.grayDark,
             },
-          ]}>
-          {Platform.OS === 'android' ? <View style={[styles.inputWrapperAndroid, inputStyle]}>{input}</View> : input}
+          ]}
+        >
+          {Platform.OS === 'android' ? (
+            <View style={[styles.inputWrapperAndroid, inputStyle]}>
+              {input}
+            </View>
+          ) : (
+            input
+          )}
           {accessoryComponent}
         </View>
         {error ? (

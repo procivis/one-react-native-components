@@ -8,7 +8,9 @@ const DAY = 24 * 60 * MINUTE;
 
 // OS locale
 const systemLocale: string | undefined = (
-  Platform.OS === 'ios' ? Settings.get('AppleLocale') as string | undefined : I18nManager.getConstants().localeIdentifier
+  Platform.OS === 'ios'
+    ? (Settings.get('AppleLocale') as string | undefined)
+    : I18nManager.getConstants().localeIdentifier
 )
   ?.match(/[a-zA-Z]+_[a-zA-Z]+/)?.[0]
   ?.replaceAll('_', '-');
@@ -16,7 +18,11 @@ const systemLocale: string | undefined = (
 /**
  * Date only format
  */
-export const formatDate = (date: Date, locale?: string, options?: Intl.DateTimeFormatOptions) => {
+export const formatDate = (
+  date: Date,
+  locale?: string,
+  options?: Intl.DateTimeFormatOptions,
+) => {
   try {
     return date.toLocaleDateString(locale || systemLocale, options);
   } catch {
@@ -29,7 +35,10 @@ export const formatDate = (date: Date, locale?: string, options?: Intl.DateTimeF
  */
 export const formatTime = (date: Date, locale?: string) => {
   try {
-    return date.toLocaleTimeString(locale || systemLocale, { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString(locale || systemLocale, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   } catch {
     return undefined;
   }
@@ -72,7 +81,11 @@ export const formatTimeAgo = (date: Date, locale: string): string => {
 /**
  * Timestamp formatted for general use
  */
-export const formatTimestamp = (date: Date, locale: string, nowLabel: string): string => {
+export const formatTimestamp = (
+  date: Date,
+  locale: string,
+  nowLabel: string,
+): string => {
   const now = Date.now();
   const timestamp = date.getTime();
   if (now < timestamp) {
@@ -103,7 +116,9 @@ const pad = (x: number) => (x >= 0 && x < 10 ? `0${x}` : String(x));
  * @returns {number} the same day, but UTC timezone with midnight time
  */
 export const convertDateToUTCTimestamp = (date: Date): number =>
-  Date.parse(`${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`);
+  Date.parse(
+    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+  );
 
 /**
  * Utility function to deal with `date`-type attributes
@@ -126,12 +141,16 @@ export const convertDateStrToLocalDate = (date: string): Date =>
  * @param {number} utcTimestamp date timestamp represented as midnight UTC time
  * @returns {string} formatted date (based on locale settings, e.g. `21/02/2021`)
  */
-export const formatDateOnlyFromUTCTimestamp = (utcTimestamp: number): string => {
+export const formatDateOnlyFromUTCTimestamp = (
+  utcTimestamp: number,
+): string => {
   const utcDate = new Date(utcTimestamp);
   return (
     formatDate(
       convertDateStrToLocalDate(
-        `${utcDate.getUTCFullYear()}-${pad(utcDate.getUTCMonth() + 1)}-${pad(utcDate.getUTCDate())}`,
+        `${utcDate.getUTCFullYear()}-${pad(utcDate.getUTCMonth() + 1)}-${pad(
+          utcDate.getUTCDate(),
+        )}`,
       ),
     ) ?? ''
   );

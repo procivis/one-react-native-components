@@ -1,5 +1,10 @@
 import React, { FC, useMemo } from 'react';
-import { ColorValue, StatusBar, StatusBarProps, StatusBarStyle } from 'react-native';
+import {
+  ColorValue,
+  StatusBar,
+  StatusBarProps,
+  StatusBarStyle,
+} from 'react-native';
 
 import { getBrightness } from './color';
 
@@ -10,9 +15,13 @@ interface ContrastingStatusBarProps extends Omit<StatusBarProps, 'barStyle'> {
 /**
  * Defines transparent status bar with content contrasting to the background
  */
-const ContrastingStatusBar: FC<ContrastingStatusBarProps> = ({ backgroundColor, ...props }) => {
+const ContrastingStatusBar: FC<ContrastingStatusBarProps> = ({
+  backgroundColor,
+  ...props
+}) => {
   const barStyle = useMemo<StatusBarStyle>(
-    () => (getBrightness(backgroundColor) > 0.5 ? 'dark-content' : 'light-content'),
+    () =>
+      getBrightness(backgroundColor) > 0.5 ? 'dark-content' : 'light-content',
     [backgroundColor],
   );
   return <StatusBar barStyle={barStyle} {...props} />;

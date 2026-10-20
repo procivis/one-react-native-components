@@ -1,6 +1,8 @@
 import parseUrl from 'parse-url';
 
-export const parseUniversalLink = (universalLink: string): string | undefined => {
+export const parseUniversalLink = (
+  universalLink: string,
+): string | undefined => {
   let parsedUrl: parseUrl.ParsedUrl;
   try {
     parsedUrl = parseUrl(universalLink);

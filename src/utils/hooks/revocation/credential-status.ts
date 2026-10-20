@@ -3,7 +3,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useRef } from 'react';
 
 import { reportException } from '../../reporting';
-import { useCredentialRevocationCheck, useCredentials } from '../core/credentials';
+import {
+  useCredentialRevocationCheck,
+  useCredentials,
+} from '../core/credentials';
 
 /**
  * Runs revocation check on background for all potential updates
@@ -12,7 +15,10 @@ import { useCredentialRevocationCheck, useCredentials } from '../core/credential
  * @param {string[]} credentialIds if specified only those credentials get checked, otherwise all potentially eligible credentials
  * @param {boolean} forceRefresh revocation check forces cache refresh
  */
-export const useCredentialStatusCheck = (credentialIds?: string[], forceRefresh = false) => {
+export const useCredentialStatusCheck = (
+  credentialIds?: string[],
+  forceRefresh = false,
+) => {
   const isFocused = useIsFocused();
   const checkDone = useRef(false);
   const { mutateAsync: check } = useCredentialRevocationCheck(forceRefresh);
@@ -22,7 +28,12 @@ export const useCredentialStatusCheck = (credentialIds?: string[], forceRefresh 
   });
 
   const checkCredentialsStatus = useCallback(async () => {
-    if (!credentials || !credentials.length || checkDone.current || !isFocused) {
+    if (
+      !credentials ||
+      !credentials.length ||
+      checkDone.current ||
+      !isFocused
+    ) {
       return [];
     }
 
@@ -34,7 +45,9 @@ export const useCredentialStatusCheck = (credentialIds?: string[], forceRefresh 
     const updatedCredentialIds = results
       .filter(
         ({ credentialId, status: newStatus, success }) =>
-          success && credentials.find(({ id }) => id === credentialId)?.state !== newStatus,
+          success &&
+          credentials.find(({ id }) => id === credentialId)?.state !==
+            newStatus,
       )
       .map(({ credentialId }) => credentialId);
 

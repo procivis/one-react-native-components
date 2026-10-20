@@ -24,27 +24,44 @@ interface NFCProcessProps {
   testID: string;
 }
 
-const NFCProcess: FC<NFCProcessProps> = ({ testID, processState, labels, handleButtonClick }) => {
+const NFCProcess: FC<NFCProcessProps> = ({
+  testID,
+  processState,
+  labels,
+  handleButtonClick,
+}) => {
   const colorScheme = useAppColorScheme();
 
   return (
     <ScrollViewScreen
       header={{
-        leftItem: <HeaderCloseButton testID={concatTestID(testID, 'header.back')} />,
+        leftItem: (
+          <HeaderCloseButton testID={concatTestID(testID, 'header.back')} />
+        ),
         modalHandleVisible: Platform.OS === 'ios',
         static: true,
         testID: concatTestID(testID, 'header'),
-        title: processState === LoaderViewState.InProgress ? labels.share : labels.connectivity,
+        title:
+          processState === LoaderViewState.InProgress
+            ? labels.share
+            : labels.connectivity,
       }}
       scrollView={{
         testID: concatTestID(testID, 'scroll'),
       }}
-      testID={testID}>
+      testID={testID}
+    >
       <View style={styles.content} testID={concatTestID(testID, 'content')}>
         <View style={styles.info}>
-          {processState === LoaderViewState.InProgress ? <NFCIcon height={50} width={50} /> : <StatusWarningIcon />}
+          {processState === LoaderViewState.InProgress ? (
+            <NFCIcon height={50} width={50} />
+          ) : (
+            <StatusWarningIcon />
+          )}
           <Typography align="center" color={colorScheme.black}>
-            {processState === LoaderViewState.InProgress ? labels.shareInfo : labels.conectivityInfo}
+            {processState === LoaderViewState.InProgress
+              ? labels.shareInfo
+              : labels.conectivityInfo}
           </Typography>
         </View>
       </View>
@@ -52,8 +69,16 @@ const NFCProcess: FC<NFCProcessProps> = ({ testID, processState, labels, handleB
         <Button
           onPress={handleButtonClick}
           testID={concatTestID(testID, 'button')}
-          title={processState === LoaderViewState.InProgress ? labels.close : labels.tryAgain}
-          type={processState === LoaderViewState.InProgress ? ButtonType.Secondary : ButtonType.Primary}
+          title={
+            processState === LoaderViewState.InProgress
+              ? labels.close
+              : labels.tryAgain
+          }
+          type={
+            processState === LoaderViewState.InProgress
+              ? ButtonType.Secondary
+              : ButtonType.Primary
+          }
         />
       </View>
     </ScrollViewScreen>

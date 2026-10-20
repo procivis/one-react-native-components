@@ -16,7 +16,13 @@ type WalletEmptyListProps = {
   title: string;
 };
 
-const WalletEmptyList: FC<WalletEmptyListProps> = ({ onScanPress, scanButtonTitle, subtitle, testID, title }) => {
+const WalletEmptyList: FC<WalletEmptyListProps> = ({
+  onScanPress,
+  scanButtonTitle,
+  subtitle,
+  testID,
+  title,
+}) => {
   const safeAreaInsets = useSafeAreaInsets();
   const colorScheme = useAppColorScheme();
   const showButton = Boolean(onScanPress && scanButtonTitle);
@@ -28,21 +34,26 @@ const WalletEmptyList: FC<WalletEmptyListProps> = ({ onScanPress, scanButtonTitl
         color={colorScheme.text}
         preset="l/line-height-large"
         style={styles.emptyTitle}
-        testID={concatTestID(testID, 'title')}>
+        testID={concatTestID(testID, 'title')}
+      >
         {title}
       </Typography>
       <Typography
         align="center"
         color={colorScheme.text}
         style={styles.emptySubtitle}
-        testID={concatTestID(testID, 'subtitle')}>
+        testID={concatTestID(testID, 'subtitle')}
+      >
         {subtitle}
       </Typography>
       <NoCredentialsIcon style={styles.emptyIcon} />
       {showButton && (
         <Button
           onPress={onScanPress}
-          style={[styles.emptyButton, { bottom: Math.max(24, safeAreaInsets.bottom) }]}
+          style={[
+            styles.emptyButton,
+            { bottom: Math.max(24, safeAreaInsets.bottom) },
+          ]}
           testID={concatTestID(testID, 'scanQrCode')}
           title={scanButtonTitle!}
         />

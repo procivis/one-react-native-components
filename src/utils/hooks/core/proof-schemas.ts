@@ -4,7 +4,12 @@ import {
   ProofSchemaListItem,
   ProofSchemaListQuery,
 } from '@procivis/react-native-one-core';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 
 import { getQueryKeyFromProofSchemaListQueryParams } from '../../parsers/query';
 import { useHTTPClient } from '../http/client';
@@ -18,11 +23,17 @@ export const PROOF_SCHEMA_IMPORT_DETAIL_QUERY_KEY = 'proof-schema-import';
 export const PROOF_SCHEMA_DETAIL_QUERY_KEY = 'proof-schema-detail';
 export const PROOF_SCHEMA_SHARE_QUERY_KEY = 'proof-schema-share';
 
-export const useProofSchemas = (queryParams?: Partial<ProofSchemaListQuery>, keepPreviousData = true) => {
+export const useProofSchemas = (
+  queryParams?: Partial<ProofSchemaListQuery>,
+  keepPreviousData = true,
+) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
-    [PROOF_SCHEMA_LIST_QUERY_KEY, ...getQueryKeyFromProofSchemaListQueryParams(queryParams)],
+    [
+      PROOF_SCHEMA_LIST_QUERY_KEY,
+      ...getQueryKeyFromProofSchemaListQueryParams(queryParams),
+    ],
     ({ pageParam = 0 }: { pageParam?: number }) =>
       core
         .listProofSchemas({
@@ -33,13 +44,17 @@ export const useProofSchemas = (queryParams?: Partial<ProofSchemaListQuery>, kee
         })
         .then(({ values }) => values),
     {
-      getNextPageParam: (lastPage, allPages) => (lastPage.length === PAGE_SIZE ? allPages.length : undefined),
+      getNextPageParam: (lastPage, allPages) =>
+        lastPage.length === PAGE_SIZE ? allPages.length : undefined,
       keepPreviousData,
     },
   );
 };
 
-export const useProofSchemaDetail = (proofSchemaId: ProofSchemaListItem['id'] | undefined, active = true) => {
+export const useProofSchemaDetail = (
+  proofSchemaId: ProofSchemaListItem['id'] | undefined,
+  active = true,
+) => {
   const { core } = useONECore();
 
   return useQuery(
@@ -94,25 +109,36 @@ export const useProofSchemaCreate = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (proofSchema: CreateProofSchemaRequest) => core.createProofSchema(proofSchema), {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+  return useMutation(
+    async (proofSchema: CreateProofSchemaRequest) =>
+      core.createProofSchema(proofSchema),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
     },
-  });
+  );
 };
 
 export const useProofSchemaDelete = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (proofSchemaId: ProofSchemaListItem['id']) => core.deleteProofSchema(proofSchemaId), {
-    onSuccess: async (_, proofSchemaId) => {
-      await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
-      queryClient.removeQueries([PROOF_SCHEMA_DETAIL_QUERY_KEY, proofSchemaId]);
+  return useMutation(
+    async (proofSchemaId: ProofSchemaListItem['id']) =>
+      core.deleteProofSchema(proofSchemaId),
+    {
+      onSuccess: async (_, proofSchemaId) => {
+        await queryClient.invalidateQueries(PROOF_SCHEMA_LIST_QUERY_KEY);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+        queryClient.removeQueries([
+          PROOF_SCHEMA_DETAIL_QUERY_KEY,
+          proofSchemaId,
+        ]);
+      },
     },
-  });
+  );
 };
 
 export const useShareProofSchema = (schemaId?: string) => {
@@ -120,7 +146,8 @@ export const useShareProofSchema = (schemaId?: string) => {
 
   return useQuery(
     [PROOF_SCHEMA_SHARE_QUERY_KEY, schemaId],
-    () => (schemaId ? core.shareProofSchema(schemaId) : Promise.reject(new Error())),
+    () =>
+      schemaId ? core.shareProofSchema(schemaId) : Promise.reject(new Error()),
     {
       enabled: Boolean(schemaId),
       keepPreviousData: true,

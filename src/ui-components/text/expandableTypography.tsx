@@ -41,7 +41,10 @@ const ExpandableTypography: React.FC<ExpandableTypographyProps> = ({
         }}
         style={styles.hiddenTypography}
       />
-      <Typography {...props} numberOfLines={expanded ? undefined : numberOfLines} />
+      <Typography
+        {...props}
+        numberOfLines={expanded ? undefined : numberOfLines}
+      />
       {(isTruncated || expanded) && !hideExpandButton && (
         <Button
           onPress={handlePress}

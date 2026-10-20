@@ -1,8 +1,18 @@
-import { Claim, CredentialSchemaCodeType, CredentialSchemaLayoutProperties } from '@procivis/react-native-one-core';
+import {
+  Claim,
+  CredentialSchemaCodeType,
+  CredentialSchemaLayoutProperties,
+} from '@procivis/react-native-one-core';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Barcode, CarouselImage, CarouselImageType, Mrz, QrCode } from '../../ui-components/credential';
+import {
+  Barcode,
+  CarouselImage,
+  CarouselImageType,
+  Mrz,
+  QrCode,
+} from '../../ui-components/credential';
 import { ImageOrComponent } from '../../ui-components/image';
 import { isASCII } from '../string';
 import { concatTestID } from '../testID';
@@ -35,7 +45,9 @@ export const getCarouselImagesFromClaims = (
       result.push({
         element: (
           <ImageOrComponent
-            source={{ imageSource: { uri: pictureClaim.value.value as string } }}
+            source={{
+              imageSource: { uri: pictureClaim.value.value as string },
+            }}
             style={styles.container}
             testID={concatTestID(testID, CarouselImageType.Photo)}
           />
@@ -50,7 +62,12 @@ export const getCarouselImagesFromClaims = (
 
     let claimValue = '';
 
-    if (claim && (claim.value.type_ === 'FLOAT' || claim.value.type_ === 'INTEGER' || claim.value.type_ === 'STRING')) {
+    if (
+      claim &&
+      (claim.value.type_ === 'FLOAT' ||
+        claim.value.type_ === 'INTEGER' ||
+        claim.value.type_ === 'STRING')
+    ) {
       claimValue = String(claim.value.value);
     }
 
@@ -60,17 +77,35 @@ export const getCarouselImagesFromClaims = (
 
     if (code.type === CredentialSchemaCodeType.QR_CODE) {
       result.push({
-        element: <QrCode content={claimValue} testID={concatTestID(testID, CarouselImageType.QrCode)} />,
+        element: (
+          <QrCode
+            content={claimValue}
+            testID={concatTestID(testID, CarouselImageType.QrCode)}
+          />
+        ),
         type: CarouselImageType.QrCode,
       });
-    } else if (code.type === CredentialSchemaCodeType.BARCODE && isASCII(claimValue)) {
+    } else if (
+      code.type === CredentialSchemaCodeType.BARCODE &&
+      isASCII(claimValue)
+    ) {
       result.push({
-        element: <Barcode content={claimValue} testID={concatTestID(testID, CarouselImageType.Barcode)} />,
+        element: (
+          <Barcode
+            content={claimValue}
+            testID={concatTestID(testID, CarouselImageType.Barcode)}
+          />
+        ),
         type: CarouselImageType.Barcode,
       });
     } else if (code.type === CredentialSchemaCodeType.MRZ) {
       result.push({
-        element: <Mrz content={claimValue} testID={concatTestID(testID, CarouselImageType.MRZ)} />,
+        element: (
+          <Mrz
+            content={claimValue}
+            testID={concatTestID(testID, CarouselImageType.MRZ)}
+          />
+        ),
         type: CarouselImageType.MRZ,
       });
     }

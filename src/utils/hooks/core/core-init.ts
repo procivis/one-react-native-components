@@ -9,7 +9,10 @@ export const SW_DID_NAME_PREFIX = 'holder-did-sw-key';
 export const HW_DID_NAME_PREFIX = 'holder-did-hw-key';
 export const ATTESTATION_DID_NAME_PREFIX = 'holder-did-attestation-key';
 
-export const generateHwIdentifier = async (core: ONECore, organisationId: string) => {
+export const generateHwIdentifier = async (
+  core: ONECore,
+  organisationId: string,
+) => {
   const hwKeyId = await core
     .generateKey({
       keyParams: {},
@@ -21,7 +24,10 @@ export const generateHwIdentifier = async (core: ONECore, organisationId: string
     })
     .catch((e) => {
       // ignore if HW keys not supported by device
-      if (e instanceof OneError && e.code === OneErrorCode.KeyStorageNotSupported.toString()) {
+      if (
+        e instanceof OneError &&
+        e.code === OneErrorCode.KeyStorageNotSupported.toString()
+      ) {
         return null;
       }
       throw e;
@@ -50,7 +56,10 @@ export const generateHwIdentifier = async (core: ONECore, organisationId: string
   return null;
 };
 
-export const generateSwIdentifier = async (core: ONECore, organisationId: string) => {
+export const generateSwIdentifier = async (
+  core: ONECore,
+  organisationId: string,
+) => {
   const swKeyId = await core.generateKey({
     keyParams: {},
     keyType: 'ECDSA',
@@ -89,14 +98,20 @@ export interface IdentifiersInitializationConfig {
  * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be created
  * @returns [hwIdentifierId, swIdentifierId]
  */
-export const useInitializeONECoreIdentifiers = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
+export const useInitializeONECoreIdentifiers = ({
+  generateHwKey,
+  generateSwKey,
+}: IdentifiersInitializationConfig) => {
   const { core, organisationId } = useONECore();
 
   return useCallback(async () => {
     return await core
       .createOrganisation({ id: organisationId })
       .catch((e) => {
-        if (e instanceof OneError && e.code === OneErrorCode.OrganisationAlreadyExists.toString()) {
+        if (
+          e instanceof OneError &&
+          e.code === OneErrorCode.OrganisationAlreadyExists.toString()
+        ) {
           return;
         }
         throw e;

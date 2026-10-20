@@ -14,24 +14,47 @@ export interface CheckboxProps extends TouchableOpacityProps {
   value: boolean;
 }
 
-export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onValueChanged, ...props }) => {
+export const Checkbox: FC<CheckboxProps> = ({
+  style,
+  text,
+  value,
+  disabled,
+  onValueChanged,
+  ...props
+}) => {
   const t = useAccessibilityTranslation();
   const colorScheme = useAppColorScheme();
 
-  const onPress = useCallback(() => onValueChanged(!value), [onValueChanged, value]);
+  const onPress = useCallback(
+    () => onValueChanged(!value),
+    [onValueChanged, value],
+  );
 
   return (
     <TouchableOpacity
       accessibilityRole="checkbox"
       accessibilityState={{ checked: value, disabled }}
       accessibilityValue={
-        disabled ? undefined : { text: t(value ? 'accessibility.control.checked' : 'accessibility.control.unchecked') }
+        disabled
+          ? undefined
+          : {
+              text: t(
+                value
+                  ? 'accessibility.control.checked'
+                  : 'accessibility.control.unchecked',
+              ),
+            }
       }
       activeOpacity={0.8}
       disabled={disabled}
       onPress={onPress}
-      style={[styles.container, { backgroundColor: colorScheme.background }, style]}
-      {...props}>
+      style={[
+        styles.container,
+        { backgroundColor: colorScheme.background },
+        style,
+      ]}
+      {...props}
+    >
       {value ? (
         <CheckedIcon style={disabled && styles.disabled} />
       ) : (
@@ -39,7 +62,9 @@ export const Checkbox: FC<CheckboxProps> = ({ style, text, value, disabled, onVa
           style={[
             styles.unchecked,
             {
-              backgroundColor: disabled ? colorScheme.background : colorScheme.white,
+              backgroundColor: disabled
+                ? colorScheme.background
+                : colorScheme.white,
               borderColor: colorScheme.grayDark,
             },
           ]}

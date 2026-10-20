@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import ColorSchemes from '../../../../storybook/colorScheme';
-import { CredentialWarningIcon, RequiredAttributeIcon } from '../../icons/credential';
+import {
+  CredentialWarningIcon,
+  RequiredAttributeIcon,
+} from '../../icons/credential';
 import CredentialHeader from './credential-header';
 
 const Basic: StoryObj<typeof CredentialHeader> = {

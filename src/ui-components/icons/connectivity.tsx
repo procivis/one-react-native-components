@@ -12,7 +12,10 @@ export type ConnectivityStatusIconProps = ConnectivityIconProps & {
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=415-5402&node-type=frame&t=KNaBp0XLna0p48rq-0
-export const ConnectivityStatusIcon: FC<ConnectivityStatusIconProps> = ({ status, testID }) => {
+export const ConnectivityStatusIcon: FC<ConnectivityStatusIconProps> = ({
+  status,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   const color = status ? colorScheme.success : colorScheme.error;
   return (
@@ -56,7 +59,9 @@ export const ConnectivityStatusIcon: FC<ConnectivityStatusIconProps> = ({ status
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31963&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityInternetOnIcon: FC<ConnectivityIconProps> = ({ testID }) => {
+export const ConnectivityInternetOnIcon: FC<ConnectivityIconProps> = ({
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height={20} testID={testID} viewBox="0 0 20 20" width={20}>
@@ -69,7 +74,9 @@ export const ConnectivityInternetOnIcon: FC<ConnectivityIconProps> = ({ testID }
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31963&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityInternetOffIcon: FC<ConnectivityIconProps> = ({ testID }) => {
+export const ConnectivityInternetOffIcon: FC<ConnectivityIconProps> = ({
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height={20} testID={testID} viewBox="0 0 20 20" width={20}>
@@ -82,7 +89,9 @@ export const ConnectivityInternetOffIcon: FC<ConnectivityIconProps> = ({ testID 
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31968&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityBluetoothOnIcon: FC<ConnectivityIconProps> = ({ testID }) => {
+export const ConnectivityBluetoothOnIcon: FC<ConnectivityIconProps> = ({
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height={20} testID={testID} viewBox="0 0 20 20" width={20}>
@@ -95,7 +104,9 @@ export const ConnectivityBluetoothOnIcon: FC<ConnectivityIconProps> = ({ testID 
 };
 
 // https://www.figma.com/design/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=4236-31968&node-type=frame&t=YdbLaKqcnnWN4fBV-0
-export const ConnectivityBluetoothOffIcon: FC<ConnectivityIconProps> = ({ testID }) => {
+export const ConnectivityBluetoothOffIcon: FC<ConnectivityIconProps> = ({
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height={20} testID={testID} viewBox="0 0 20 20" width={20}>

@@ -1,5 +1,11 @@
 import React, { FunctionComponent, memo, ReactElement, useMemo } from 'react';
-import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  Dimensions,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCameraDevice } from 'react-native-vision-camera';
 
@@ -68,7 +74,11 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
       <BlurView
         blurStyle="soft"
         darkMode={true}
-        style={[styles.topBlurView, { backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5) }]}>
+        style={[
+          styles.topBlurView,
+          { backgroundColor: colorWithAlphaComponent(colorScheme.black, 0.5) },
+        ]}
+      >
         <View style={[styles.headerSection, { top: insets.top }]}>
           <GhostButton
             accessibilityLabel={t('accessibility.nav.close')}
@@ -87,8 +97,13 @@ const QRCodeScannerScreen: FunctionComponent<QRCodeScannerScreenProps> = ({
             minHeight: minBottomBlurViewHeight,
             paddingBottom: Math.max(insets.bottom, 32),
           },
-        ]}>
-        <Typography align="center" color={colorScheme.white} style={styles.title}>
+        ]}
+      >
+        <Typography
+          align="center"
+          color={colorScheme.white}
+          style={styles.title}
+        >
           {title}
         </Typography>
         {footerView}

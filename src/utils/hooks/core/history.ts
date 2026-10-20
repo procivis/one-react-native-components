@@ -11,7 +11,10 @@ export const useHistory = (queryParams?: Partial<HistoryListQuery>) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
-    [HISTORY_LIST_QUERY_KEY, ...getQueryKeyFromHistoryListQueryParams(queryParams)],
+    [
+      HISTORY_LIST_QUERY_KEY,
+      ...getQueryKeyFromHistoryListQueryParams(queryParams),
+    ],
     async ({ pageParam = 0 }: { pageParam?: number }) => {
       const historyPage = await core.listHistory({
         organisationId,
@@ -23,7 +26,8 @@ export const useHistory = (queryParams?: Partial<HistoryListQuery>) => {
       return historyPage;
     },
     {
-      getNextPageParam: (lastPage, allPages) => (allPages.length < lastPage.totalPages ? allPages.length : undefined),
+      getNextPageParam: (lastPage, allPages) =>
+        allPages.length < lastPage.totalPages ? allPages.length : undefined,
       keepPreviousData: true,
     },
   );

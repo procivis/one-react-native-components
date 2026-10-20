@@ -9,12 +9,20 @@ type WalletEmptySearchResultProps = {
   title: string;
 };
 
-const WalletEmptySearchResult: FC<WalletEmptySearchResultProps> = ({ subtitle, title }) => {
+const WalletEmptySearchResult: FC<WalletEmptySearchResultProps> = ({
+  subtitle,
+  title,
+}) => {
   const colorScheme = useAppColorScheme();
 
   return (
     <View style={styles.emptySearch}>
-      <Typography align="center" color={colorScheme.text} preset="l/line-height-large" style={styles.emptyTitle}>
+      <Typography
+        align="center"
+        color={colorScheme.text}
+        preset="l/line-height-large"
+        style={styles.emptyTitle}
+      >
         {title}
       </Typography>
       <Typography align="center" color={colorScheme.text}>

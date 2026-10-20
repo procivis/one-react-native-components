@@ -7,7 +7,7 @@ export enum CacheType {
   JSON_SCHEMA = 'JSON_SCHEMA',
   STATUS_LIST_CREDENTIAL = 'STATUS_LIST_CREDENTIAL',
   TRUST_LIST = 'TRUST_LIST',
-  VCT_METADATA = 'VCT_METADATA'
+  VCT_METADATA = 'VCT_METADATA',
 }
 
 export class OneError extends Error {
@@ -16,7 +16,13 @@ export class OneError extends Error {
   readonly cause?: string;
   readonly originalError: Error;
 
-  constructor(params: { cause?: string; code: string; message: string; operation: string; originalError: Error }) {
+  constructor(params: {
+    cause?: string;
+    code: string;
+    message: string;
+    operation: string;
+    originalError: Error;
+  }) {
     super();
     this.operation = params.operation;
     this.code = params.code;
@@ -33,7 +39,7 @@ export enum HistoryEntityType {
   KEY = 'KEY',
   ORGANISATION = 'ORGANISATION',
   PROOF = 'PROOF',
-  PROOF_SCHEMA = 'PROOF_SCHEMA'
+  PROOF_SCHEMA = 'PROOF_SCHEMA',
 }
 
 export enum HistoryAction {
@@ -60,7 +66,7 @@ export enum HistoryAction {
   SHARED = 'SHARED',
   SUSPENDED = 'SUSPENDED',
   UPDATED = 'UPDATED',
-  WITHDRAWN = 'WITHDRAWN'
+  WITHDRAWN = 'WITHDRAWN',
 }
 
 export enum DidType {
@@ -76,7 +82,7 @@ export enum CredentialState {
   PENDING = 'PENDING',
   REJECTED = 'REJECTED',
   REVOKED = 'REVOKED',
-  SUSPENDED = 'SUSPENDED'
+  SUSPENDED = 'SUSPENDED',
 }
 
 export enum ProofState {
@@ -86,7 +92,7 @@ export enum ProofState {
   PENDING = 'PENDING',
   REJECTED = 'REJECTED',
   REQUESTED = 'REQUESTED',
-  RETRACTED = 'RETRACTED'
+  RETRACTED = 'RETRACTED',
 }
 
 export enum CredentialSchemaCodeType {
@@ -101,32 +107,32 @@ export enum DataType {
   File = 'FILE',
   Number = 'NUMBER',
   Object = 'OBJECT',
-  String = 'STRING'
+  String = 'STRING',
 }
 
 export enum FormatFeature {
   RequiresSchemaId = 'REQUIRES_SCHEMA_ID',
   SelectiveDisclosure = 'SELECTIVE_DISCLOSURE',
-  SupportsCredentialDesign = 'SUPPORTS_CREDENTIAL_DESIGN'
+  SupportsCredentialDesign = 'SUPPORTS_CREDENTIAL_DESIGN',
 }
 
 export enum TrustEntityRole {
   BOTH = 'BOTH',
   ISSUER = 'ISSUER',
-  VERIFIER = 'VERIFIER'
+  VERIFIER = 'VERIFIER',
 }
 
 export enum TrustEntityState {
   ACTIVE = 'ACTIVE',
   REMOVED = 'REMOVED',
   REMOVED_AND_WITHDRAWN = 'REMOVED_AND_WITHDRAWN',
-  WITHDRAWN = 'WITHDRAWN'
+  WITHDRAWN = 'WITHDRAWN',
 }
 
 export enum IdentifierType {
   CERTIFICATE = 'CERTIFICATE',
   DID = 'DID',
-  KEY = 'KEY'
+  KEY = 'KEY',
 }
 
 export enum IdentifierState {
@@ -138,7 +144,7 @@ export enum InstanceStatus {
   ACTIVE = 'ACTIVE',
   ERROR = 'ERROR',
   PENDING = 'PENDING',
-  REVOKED = 'REVOKED'
+  REVOKED = 'REVOKED',
 }
 
 export const initializeCore = () => {};
@@ -146,11 +152,11 @@ export const initializeCore = () => {};
 export enum CredentialType {
   BATCH_ITEM = 'BATCH_ITEM',
   BATCH_PARENT = 'BATCH_PARENT',
-  SINGLE = 'SINGLE'
+  SINGLE = 'SINGLE',
 }
 
 export enum TrustResolutionResult {
-    TRUSTED = "TRUSTED",
-    UNKNOWN = "UNKNOWN",
-    UNTRUSTED = "UNTRUSTED",
+  TRUSTED = 'TRUSTED',
+  UNKNOWN = 'UNKNOWN',
+  UNTRUSTED = 'UNTRUSTED',
 }

@@ -1,7 +1,15 @@
-import { IdentifierListItem, TrustInformation, TrustInformationDetailInfo, TrustResolutionResult } from '@procivis/react-native-one-core';
+import {
+  IdentifierListItem,
+  TrustInformation,
+  TrustInformationDetailInfo,
+  TrustResolutionResult,
+} from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TrustInfo, TrustInfoLabels } from '../../components';
@@ -47,7 +55,10 @@ export type NerdModeScreenProps = {
   language: string;
   onClose: () => void;
   onCopyToClipboard: (value: string) => void;
-  onOpenTrustInfoDetails?: (trustInformation: TrustInformationDetailInfo, result?: TrustResolutionResult) => void;
+  onOpenTrustInfoDetails?: (
+    trustInformation: TrustInformationDetailInfo,
+    result?: TrustResolutionResult,
+  ) => void;
   sections: NerdModeSection[];
   testID: string;
   title: string;
@@ -58,11 +69,15 @@ export enum EntityType {
   ProofEntity,
 }
 
-function isSectionEntityCluster(item: NerdModeSectionItem): item is SectionEntityCluster {
+function isSectionEntityCluster(
+  item: NerdModeSectionItem,
+): item is SectionEntityCluster {
   return (item as SectionEntityCluster).trustInfoLabels !== undefined;
 }
 
-const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<NerdModeSectionItem, NerdModeSection>);
+const AnimatedSectionList = Animated.createAnimatedComponent(
+  SectionList<NerdModeSectionItem, NerdModeSection>,
+);
 
 const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
   sections,
@@ -92,13 +107,19 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
     },
   });
 
-  const lastElementsForSection = sections.reduce((acc, { title: sectionTitle = '', data }) => {
-    const lastElement = data[data.length - 1];
-    return {
-      ...acc,
-      [sectionTitle]: lastElement && !isSectionEntityCluster(lastElement) ? lastElement.attributeKey : '',
-    };
-  }, {} as Record<string, string>);
+  const lastElementsForSection = sections.reduce(
+    (acc, { title: sectionTitle = '', data }) => {
+      const lastElement = data[data.length - 1];
+      return {
+        ...acc,
+        [sectionTitle]:
+          lastElement && !isSectionEntityCluster(lastElement)
+            ? lastElement.attributeKey
+            : '',
+      };
+    },
+    {} as Record<string, string>,
+  );
 
   const listHeader = useMemo(() => {
     if (!entityCluster) {
@@ -111,7 +132,11 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         language={language}
         onPress={
           onOpenTrustInfoDetails && entityCluster.trustInformationDetail
-            ? () => onOpenTrustInfoDetails(entityCluster.trustInformationDetail!, entityCluster.trustInformation?.result)
+            ? () =>
+                onOpenTrustInfoDetails(
+                  entityCluster.trustInformationDetail!,
+                  entityCluster.trustInformation?.result,
+                )
             : undefined
         }
         style={[
@@ -123,19 +148,33 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         testID={entityCluster.testID ?? concatTestID(testID, 'trustInfo')}
         textColor={colorScheme.white}
         translate={entityCluster.translate}
-        trustInformation={entityCluster.trustInformation ? {
-          ...entityCluster.trustInformation,
-        } : undefined}
+        trustInformation={
+          entityCluster.trustInformation
+            ? {
+                ...entityCluster.trustInformation,
+              }
+            : undefined
+        }
       />
     );
-  }, [entityCluster, language, onOpenTrustInfoDetails, colorScheme.nerdView.background, colorScheme.white, testID]);
+  }, [
+    entityCluster,
+    language,
+    onOpenTrustInfoDetails,
+    colorScheme.nerdView.background,
+    colorScheme.white,
+    testID,
+  ]);
 
   return (
     <>
       <ContrastingStatusBar backgroundColor={colorScheme.nerdView.background} />
       <NavigationHeader
         leftItem={
-          <TouchableOpacity onPress={onClose} testID={concatTestID(testID, 'closeIcon')}>
+          <TouchableOpacity
+            onPress={onClose}
+            testID={concatTestID(testID, 'closeIcon')}
+          >
             <CloseIcon color={colorScheme.white} />
           </TouchableOpacity>
         }
@@ -157,7 +196,11 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 language={language}
                 onPress={
                   onOpenTrustInfoDetails && item.trustInformationDetail
-                    ? () => onOpenTrustInfoDetails(item.trustInformationDetail!, item.trustInformation?.result)
+                    ? () =>
+                        onOpenTrustInfoDetails(
+                          item.trustInformationDetail!,
+                          item.trustInformation?.result,
+                        )
                     : undefined
                 }
                 style={[
@@ -169,9 +212,13 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 testID={item.testID ?? concatTestID(testID, 'trustInfo')}
                 textColor={colorScheme.white}
                 translate={item.translate}
-                trustInformation={item.trustInformation ? {
-                  ...item.trustInformation,
-                } : undefined}
+                trustInformation={
+                  item.trustInformation
+                    ? {
+                        ...item.trustInformation,
+                      }
+                    : undefined
+                }
               />
             );
           } else {
@@ -180,7 +227,12 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
                 {...item}
                 expandedAttributes={expandedAttributes}
                 labels={labels}
-                last={section.title ? lastElementsForSection[section.title] === item.attributeKey : false}
+                last={
+                  section.title
+                    ? lastElementsForSection[section.title] ===
+                      item.attributeKey
+                    : false
+                }
                 onCopyToClipboard={onCopyToClipboard}
                 onExpand={onExpand}
                 scrollOffset={scrollOffset}
@@ -191,8 +243,14 @@ const NerdModeScreen: FunctionComponent<NerdModeScreenProps> = ({
         }}
         renderSectionHeader={({ section }) => {
           return section.title ? (
-            <View style={styles.sectionHeaderContainer} testID={concatTestID(testID, section.title)}>
-              <Typography color={colorScheme.white} style={styles.sectionHeaderText}>
+            <View
+              style={styles.sectionHeaderContainer}
+              testID={concatTestID(testID, section.title)}
+            >
+              <Typography
+                color={colorScheme.white}
+                style={styles.sectionHeaderText}
+              >
                 {section.title}
               </Typography>
             </View>

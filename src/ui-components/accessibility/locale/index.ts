@@ -14,8 +14,8 @@ export const getAccessibilityLanguageFile = (
   language: SupportedAccessibilityLanguage,
   overrides?: Partial<AccessibilityLanguageFile>,
 ): AccessibilityLanguageFile =>
-  Object.assign<{}, AccessibilityLanguageFile, Partial<AccessibilityLanguageFile> | undefined>(
+  Object.assign<
     {},
-    defaultLanguageFiles[language],
-    overrides,
-  );
+    AccessibilityLanguageFile,
+    Partial<AccessibilityLanguageFile> | undefined
+  >({}, defaultLanguageFiles[language], overrides);

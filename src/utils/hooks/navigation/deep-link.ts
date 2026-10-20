@@ -3,7 +3,10 @@ import { Linking } from 'react-native';
 
 import { reportException, reportTraceInfo } from '../../reporting';
 
-export const useRuntimeDeepLinkHandling = (enabled: boolean, handleInvitationUrl: (invitationUrl: string) => void) => {
+export const useRuntimeDeepLinkHandling = (
+  enabled: boolean,
+  handleInvitationUrl: (invitationUrl: string) => void,
+) => {
   const [deepLinkURL, setDeepLinkURL] = useState<string>();
   useEffect(() => {
     const subscription = Linking.addEventListener('url', ({ url }) => {
@@ -23,7 +26,9 @@ export const useRuntimeDeepLinkHandling = (enabled: boolean, handleInvitationUrl
 };
 
 let initialDeepLinkHandled = false;
-export const useInitialDeepLinkHandling = (handleInvitationUrl: (invitationUrl: string) => void) => {
+export const useInitialDeepLinkHandling = (
+  handleInvitationUrl: (invitationUrl: string) => void,
+) => {
   return useCallback(() => {
     if (!initialDeepLinkHandled) {
       Linking.getInitialURL()

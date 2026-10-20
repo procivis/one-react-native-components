@@ -6,10 +6,15 @@ import { fn } from 'storybook/test';
 import CredentialDetailsCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import { ExtendedContext } from '../../../../storybook/context';
 import { Placeholder } from '../../../../storybook/placeholder';
-import { CredentialNoticeWarningIcon, CredentialWarningIcon } from '../../icons/credential';
+import {
+  CredentialNoticeWarningIcon,
+  CredentialWarningIcon,
+} from '../../icons/credential';
 import Selector from '../selector';
 import { SelectorStatus } from '../selector-status';
-import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
+import CredentialDetailsCard, {
+  CredentialDetailsCardProps,
+} from './credential-details-card';
 import { CarouselImageType } from './credential-image-carousel';
 
 const style = StyleSheet.create({
@@ -24,9 +29,17 @@ const style = StyleSheet.create({
   },
 });
 
-const Render = (args: CredentialDetailsCardProps, context: StoryContext<CredentialDetailsCardProps>) => {
-  const extendedContext = context as ExtendedContext<CredentialDetailsCardProps>;
-  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value ?? extendedContext.initialGlobals.viewport.value];
+const Render = (
+  args: CredentialDetailsCardProps,
+  context: StoryContext<CredentialDetailsCardProps>,
+) => {
+  const extendedContext =
+    context as ExtendedContext<CredentialDetailsCardProps>;
+  const viewport =
+    extendedContext.parameters.viewport.options[
+      extendedContext.userGlobals.viewport.value ??
+        extendedContext.initialGlobals.viewport.value
+    ];
   const width = parseInt(viewport.styles.width.replace('px', ''), 10) - 32;
   const props = {
     ...args,
@@ -284,7 +297,7 @@ const Basic: StoryObj<typeof CredentialDetailsCard> = {
         noticeIcon: CredentialNoticeWarningIcon,
         text: 'Notice related to the credential',
       },
-       
+
       onHeaderPress: fn(),
       width: Dimensions.get('screen').width - 32,
     },

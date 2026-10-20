@@ -2,7 +2,9 @@ import React, { RefCallback, useMemo, useRef } from 'react';
 
 const isWritable = <T extends object>(obj: T, key: keyof T) => {
   const desc =
-    Object.getOwnPropertyDescriptor(obj, key) || Object.getOwnPropertyDescriptor(Object.getPrototypeOf(obj), key) || {};
+    Object.getOwnPropertyDescriptor(obj, key) ||
+    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(obj), key) ||
+    {};
   return Boolean(desc.writable);
 };
 

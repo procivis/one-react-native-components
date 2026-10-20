@@ -66,7 +66,9 @@ export const NavigationContainer: FC<PropsWithChildren> = ({ children }) => {
   return <>{children}</>;
 };
 
-export const NavigationIndependentTree: FC<PropsWithChildren> = ({ children }) => {
+export const NavigationIndependentTree: FC<PropsWithChildren> = ({
+  children,
+}) => {
   return <>{children}</>;
 };
 

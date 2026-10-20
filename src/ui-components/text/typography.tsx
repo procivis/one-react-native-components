@@ -93,19 +93,20 @@ export type TypographyProps = BaseTextProps & {
  * General text component
  * @see https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1045-30326
  */
-const Typography: FC<TypographyProps> = React.forwardRef<TextInstance, TypographyProps>(
-  ({ preset = 'regular', color, caps, style, ...props }, ref) => {
-    const colorScheme = useAppColorScheme();
-    return (
-      <BaseText
-        color={color ?? colorScheme.text}
-        ref={ref}
-        style={[presets[preset], caps && styles.caps, style]}
-        {...props}
-      />
-    );
-  },
-);
+const Typography: FC<TypographyProps> = React.forwardRef<
+  TextInstance,
+  TypographyProps
+>(({ preset = 'regular', color, caps, style, ...props }, ref) => {
+  const colorScheme = useAppColorScheme();
+  return (
+    <BaseText
+      color={color ?? colorScheme.text}
+      ref={ref}
+      style={[presets[preset], caps && styles.caps, style]}
+      {...props}
+    />
+  );
+});
 
 Typography.displayName = 'Typography';
 

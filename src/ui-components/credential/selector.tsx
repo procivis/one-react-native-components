@@ -23,24 +23,49 @@ const Selector: FC<SelectorProps> = ({ status, style, testID }) => {
   const statusStyle = useMemo<StyleProp<ViewStyle>>(() => {
     switch (status) {
       case SelectorStatus.Empty:
-        return [styles.bordered, { backgroundColor: colorScheme.white, borderColor: colorScheme.grayDark }];
+        return [
+          styles.bordered,
+          {
+            backgroundColor: colorScheme.white,
+            borderColor: colorScheme.grayDark,
+          },
+        ];
       case SelectorStatus.SelectedRadio:
-        return [styles.selectedRadio, { backgroundColor: colorScheme.white, borderColor: colorScheme.accent }];
+        return [
+          styles.selectedRadio,
+          {
+            backgroundColor: colorScheme.white,
+            borderColor: colorScheme.accent,
+          },
+        ];
       case SelectorStatus.SelectedCheckmark:
         return { backgroundColor: colorScheme.accent };
       case SelectorStatus.Disabled:
-        return [styles.bordered, { backgroundColor: colorScheme.background, borderColor: colorScheme.grayDark }];
+        return [
+          styles.bordered,
+          {
+            backgroundColor: colorScheme.background,
+            borderColor: colorScheme.grayDark,
+          },
+        ];
       default:
         return undefined;
     }
   }, [colorScheme, status]);
 
-  const checked = status === SelectorStatus.SelectedCheckmark || status === SelectorStatus.Required;
+  const checked =
+    status === SelectorStatus.SelectedCheckmark ||
+    status === SelectorStatus.Required;
   const rejected = status === SelectorStatus.Rejected;
 
   return (
     <View style={[styles.wrapper, statusStyle, style]} testID={testID}>
-      {(checked || rejected) && <SelectorIcon status={status} testID={concatTestID(testID, 'status', status)} />}
+      {(checked || rejected) && (
+        <SelectorIcon
+          status={status}
+          testID={concatTestID(testID, 'status', status)}
+        />
+      )}
     </View>
   );
 };

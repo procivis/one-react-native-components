@@ -34,9 +34,26 @@ const ActionModal: FunctionComponent<PropsWithChildren<Props>> = ({
   const overlay = 'rgba(0, 0, 0, 0.5)';
 
   return (
-    <Modal animationType="fade" statusBarTranslucent style={style} transparent visible={visible}>
-      <View style={[styles.background, { backgroundColor: overlay }]} testID={testID}>
-        <View style={[styles.contentContainer, { backgroundColor: colorScheme.white }, contentStyle]}>{children}</View>
+    <Modal
+      animationType="fade"
+      statusBarTranslucent
+      style={style}
+      transparent
+      visible={visible}
+    >
+      <View
+        style={[styles.background, { backgroundColor: overlay }]}
+        testID={testID}
+      >
+        <View
+          style={[
+            styles.contentContainer,
+            { backgroundColor: colorScheme.white },
+            contentStyle,
+          ]}
+        >
+          {children}
+        </View>
       </View>
     </Modal>
   );

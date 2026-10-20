@@ -32,7 +32,12 @@ type BarcodeProps = {
   width?: number;
 };
 
-export const Barcode: FC<BarcodeProps> = ({ content, width = 220, height = 80, testID }) => {
+export const Barcode: FC<BarcodeProps> = ({
+  content,
+  width = 220,
+  height = 80,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   const barcodeXml = useMemo(
     () =>
@@ -53,7 +58,11 @@ export const Barcode: FC<BarcodeProps> = ({ content, width = 220, height = 80, t
       <View style={[styles.barcodeBackground, whiteBgStyle]}>
         <SvgXml
           height={height}
-          style={[styles.barcodeBackground, whiteBgStyle, styles.barcodeContent]}
+          style={[
+            styles.barcodeBackground,
+            whiteBgStyle,
+            styles.barcodeContent,
+          ]}
           testID={testID}
           width={width}
           xml={barcodeXml}
@@ -70,7 +79,12 @@ type QrCodeProps = {
   testID?: string;
 };
 
-export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) => {
+export const QrCode: FC<QrCodeProps> = ({
+  content,
+  padding,
+  testID,
+  onError,
+}) => {
   const qrCodeXml = useMemo(() => {
     try {
       return new QRCode({
@@ -85,10 +99,15 @@ export const QrCode: FC<QrCodeProps> = ({ content, padding, testID, onError }) =
       return null;
     }
   }, [content, onError, padding]);
-  return <SvgXml height={'100%'} testID={testID} width={'100%'} xml={qrCodeXml} />;
+  return (
+    <SvgXml height={'100%'} testID={testID} width={'100%'} xml={qrCodeXml} />
+  );
 };
 
-export const Mrz: FC<{ content: string; testID?: string }> = ({ content, testID }) => {
+export const Mrz: FC<{ content: string; testID?: string }> = ({
+  content,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   const whiteBgStyle: ViewStyle = {
     backgroundColor: 'white',

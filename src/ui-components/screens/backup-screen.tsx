@@ -39,14 +39,17 @@ const BackupScreen: FC<BackupScreenProps> = ({
     <ScrollViewScreen
       header={{
         backgroundColor: colorScheme.white,
-        leftItem: <BackButton onPress={onBack} testID={concatTestID(testID, 'back')} />,
+        leftItem: (
+          <BackButton onPress={onBack} testID={concatTestID(testID, 'back')} />
+        ),
         title,
       }}
       scrollView={{
         testID: concatTestID(testID, 'scroll'),
       }}
       style={{ backgroundColor: colorScheme.white }}
-      testID={testID}>
+      testID={testID}
+    >
       <View style={styles.contentWrapper}>
         <View style={styles.content}>
           <Typography color={colorScheme.text} style={styles.description}>

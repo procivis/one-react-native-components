@@ -29,7 +29,11 @@ import {
   getCredentialCardPropsFromCredential,
   supportsSelectiveDisclosure,
 } from '.';
-import { AttributesLabels, CardLabels, credentialDetailFromPresentationV2Credential } from './credential';
+import {
+  AttributesLabels,
+  CardLabels,
+  credentialDetailFromPresentationV2Credential,
+} from './credential';
 
 export type ShareCredentialCardLabels = CardLabels & {
   disclosurePolicyViolation: string;
@@ -49,7 +53,10 @@ export const validityCheckedCardFromCredential = (
   testID: string,
   labels: ShareCredentialCardLabels,
   language: string | undefined,
-): Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'testID' | 'width'> => {
+): Omit<
+  CredentialCardProps,
+  'onHeaderPress' | 'style' | 'testID' | 'width'
+> => {
   let credentialHeaderDetail:
     | Pick<
         CredentialHeaderProps,
@@ -63,13 +70,19 @@ export const validityCheckedCardFromCredential = (
   if (selectiveDisclosureSupported === false) {
     credentialHeaderDetail = {
       credentialDetailPrimary: labels.selectiveDisclosure,
-      credentialDetailTestID: concatTestID(testID, 'header.nonSelectiveDisclosure'),
+      credentialDetailTestID: concatTestID(
+        testID,
+        'header.nonSelectiveDisclosure',
+      ),
       statusIcon: CredentialWarningIcon,
     };
   } else if ('embeddedDisclosurePolicyViolation' in credential) {
     credentialHeaderDetail = {
       credentialDetailPrimary: labels.disclosurePolicyViolation,
-      credentialDetailTestID: concatTestID(testID, 'header.dislosurePolicyViolation'),
+      credentialDetailTestID: concatTestID(
+        testID,
+        'header.dislosurePolicyViolation',
+      ),
       statusIcon: CredentialWarningIcon,
     };
   } else if (!expanded && multipleCredentialsAvailable) {
@@ -98,7 +111,9 @@ export const validityCheckedCardFromCredential = (
   };
 };
 
-const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): ClaimValue => {
+const v2ClaimValueToClaimValue = (
+  value: PresentationDefinitionV2ClaimValue,
+): ClaimValue => {
   if (value.type_ !== 'NESTED') {
     return value;
   }
@@ -108,7 +123,9 @@ const v2ClaimValueToClaimValue = (value: PresentationDefinitionV2ClaimValue): Cl
   };
 };
 
-const v2PresentationClaimToClaim = (claim: PresentationDefinitionV2Claim): Claim => {
+const v2PresentationClaimToClaim = (
+  claim: PresentationDefinitionV2Claim,
+): Claim => {
   return {
     path: claim.path,
     schema: claim.schema,
@@ -149,15 +166,32 @@ export const shareCredentialCardAttributeFromV2Claim = (
   listValue?: boolean,
 ): CredentialAttribute => {
   const attributeShared =
-    Boolean(selection?.some((path) => path.startsWith(claim.path))) || (parentShared && claim.required);
-  const userSelected = parentUserSelected || Boolean(selection?.includes(claim.path));
+    Boolean(selection?.some((path) => path.startsWith(claim.path))) ||
+    (parentShared && claim.required);
+  const userSelected =
+    parentUserSelected || Boolean(selection?.includes(claim.path));
   const selected = !claim.required && attributeShared;
   const status = selection
-    ? getAttributeSelectorStatus(claim, attributeShared, parentUserSelected || (attributeShared && !userSelected))
+    ? getAttributeSelectorStatus(
+        claim,
+        attributeShared,
+        parentUserSelected || (attributeShared && !userSelected),
+      )
     : undefined;
-  const attribute = detailsCardAttributeFromClaim(v2PresentationClaimToClaim(claim), config, testID, labels, language);
-  const disabledStatus = [SelectorStatus.Disabled, SelectorStatus.Rejected, SelectorStatus.Required];
-  const disabled = attribute.disabled || !status || disabledStatus.includes(status);
+  const attribute = detailsCardAttributeFromClaim(
+    v2PresentationClaimToClaim(claim),
+    config,
+    testID,
+    labels,
+    language,
+  );
+  const disabledStatus = [
+    SelectorStatus.Disabled,
+    SelectorStatus.Rejected,
+    SelectorStatus.Required,
+  ];
+  const disabled =
+    attribute.disabled || !status || disabledStatus.includes(status);
   const credentialAttribute: CredentialAttribute = {
     ...attribute,
     disabled,
@@ -251,22 +285,27 @@ export const shareCredentialCardFromV2PresentationCredential = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? {
-      ...credential,
-      issuer: credential.issuer?.id,
-      schema: {
-        ...credential.schema,
-        formats: [{
-          ecosystemSchemaId: credential.schema.schemaId,
-          format: credential.schema.format,
-        }],
-        walletAttestation: {
-          keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
-          requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
-        },
-      },
-      type: CredentialType.SINGLE
-    } : undefined,
+    credential
+      ? {
+          ...credential,
+          issuer: credential.issuer?.id,
+          schema: {
+            ...credential.schema,
+            formats: [
+              {
+                ecosystemSchemaId: credential.schema.schemaId,
+                format: credential.schema.format,
+              },
+            ],
+            walletAttestation: {
+              keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
+              requireInstanceAttestation:
+                credential.schema.requiresWalletInstanceAttestation,
+            },
+          },
+          type: CredentialType.SINGLE,
+        }
+      : undefined,
     config,
   );
   const notice: CredentialCardNotice | undefined = purpose
@@ -288,12 +327,26 @@ export const shareCredentialCardFromV2PresentationCredential = (
         labels,
         language,
       )
-    : missingCredentialCardFromFailureHint(failureHint, notice, cardTestId, labels);
+    : missingCredentialCardFromFailureHint(
+        failureHint,
+        notice,
+        cardTestId,
+        labels,
+      );
 
   return {
     attributes:
       credential?.claims.map((v) =>
-        shareCredentialCardAttributeFromV2Claim(v, selectedFields ?? [], true, false, config, testID, labels, language),
+        shareCredentialCardAttributeFromV2Claim(
+          v,
+          selectedFields ?? [],
+          true,
+          false,
+          config,
+          testID,
+          labels,
+          language,
+        ),
       ) ?? [],
     card,
   };
@@ -309,26 +362,35 @@ export const selectCredentialCardFromV2Credential = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const selectiveDisclosureSupported = supportsSelectiveDisclosure(
-    credential ? {
-      ...credential,
-      issuer: credential.issuer?.id,
-      schema: {
-        ...credential.schema,
-        formats: [{
-          ecosystemSchemaId: credential.schema.schemaId,
-          format: credential.schema.format,
-        }],
-        walletAttestation: {
-          keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
-          requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
-        },
-      },
-      type: CredentialType.SINGLE
-    } : undefined,
+    credential
+      ? {
+          ...credential,
+          issuer: credential.issuer?.id,
+          schema: {
+            ...credential.schema,
+            formats: [
+              {
+                ecosystemSchemaId: credential.schema.schemaId,
+                format: credential.schema.format,
+              },
+            ],
+            walletAttestation: {
+              keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
+              requireInstanceAttestation:
+                credential.schema.requiresWalletInstanceAttestation,
+            },
+          },
+          type: CredentialType.SINGLE,
+        }
+      : undefined,
     config,
   );
-  const selectedStatus = multiple ? SelectorStatus.SelectedCheckmark : SelectorStatus.SelectedRadio;
-  const rightAccessory = <Selector status={selected ? selectedStatus : SelectorStatus.Empty} />;
+  const selectedStatus = multiple
+    ? SelectorStatus.SelectedCheckmark
+    : SelectorStatus.SelectedRadio;
+  const rightAccessory = (
+    <Selector status={selected ? selectedStatus : SelectorStatus.Empty} />
+  );
   const notice: CredentialCardNotice | undefined =
     selectiveDisclosureSupported === false
       ? {
@@ -342,13 +404,16 @@ export const selectCredentialCardFromV2Credential = (
       claims: credential.claims.map(v2PresentationClaimToClaim),
       schema: {
         ...credential.schema,
-        formats: [{
-          ecosystemSchemaId: credential.schema.schemaId,
-          format: credential.schema.format,
-        }],
+        formats: [
+          {
+            ecosystemSchemaId: credential.schema.schemaId,
+            format: credential.schema.format,
+          },
+        ],
         walletAttestation: {
           keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
-          requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
+          requireInstanceAttestation:
+            credential.schema.requiresWalletInstanceAttestation,
         },
       },
       type: CredentialType.SINGLE,
@@ -370,19 +435,35 @@ export const selectCredentialCardFromV2Credential = (
   return {
     attributes:
       credential?.claims.map((v) =>
-        shareCredentialCardAttributeFromV2Claim(v, undefined, false, false, config, testID, labels, language),
+        shareCredentialCardAttributeFromV2Claim(
+          v,
+          undefined,
+          false,
+          false,
+          config,
+          testID,
+          labels,
+          language,
+        ),
       ) ?? [],
     card,
   };
 };
 
-export const getV2CredentialClaimAllSubpaths = (claim: PresentationDefinitionV2Claim): string[] => {
+export const getV2CredentialClaimAllSubpaths = (
+  claim: PresentationDefinitionV2Claim,
+): string[] => {
   if (claim.value.type_ !== 'NESTED') {
     return [claim.path];
   }
-  return [claim.path, ...claim.value.value.flatMap(getV2CredentialClaimAllSubpaths)];
+  return [
+    claim.path,
+    ...claim.value.value.flatMap(getV2CredentialClaimAllSubpaths),
+  ];
 };
 
-export const getV2CredentialAvailablePaths = (credential: PresentationDefinitionV2Credential): string[] => {
+export const getV2CredentialAvailablePaths = (
+  credential: PresentationDefinitionV2Credential,
+): string[] => {
   return credential.claims.flatMap(getV2CredentialClaimAllSubpaths);
 };

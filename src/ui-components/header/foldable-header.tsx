@@ -1,9 +1,23 @@
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from 'react';
-import { Animated, LayoutChangeEvent, StyleSheet, View, ViewStyle } from 'react-native';
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  Animated,
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import BlurView from '../blur/blur-view';
-import AnimatedSearchBar, { AnimatedSearchBarProps } from '../searchbar/animated-search-bar';
+import AnimatedSearchBar, {
+  AnimatedSearchBarProps,
+} from '../searchbar/animated-search-bar';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export type FoldableHeaderProps = {
@@ -51,7 +65,9 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
 
   const playHeaderFoldAnimation = !staticHeader && headerHeight;
 
-  const scrollHeaderAnimatedStyle: Animated.WithAnimatedValue<ViewStyle> | undefined = playHeaderFoldAnimation
+  const scrollHeaderAnimatedStyle:
+    | Animated.WithAnimatedValue<ViewStyle>
+    | undefined = playHeaderFoldAnimation
     ? {
         transform: [
           {
@@ -65,7 +81,9 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
       }
     : undefined;
 
-  const fadeHeaderOutAnimatedStyle: Animated.WithAnimatedValue<ViewStyle> | undefined = playHeaderFoldAnimation
+  const fadeHeaderOutAnimatedStyle:
+    | Animated.WithAnimatedValue<ViewStyle>
+    | undefined = playHeaderFoldAnimation
     ? {
         opacity: scrollOffset.interpolate({
           extrapolate: 'clamp',
@@ -84,21 +102,34 @@ const FoldableSearchHeader: FunctionComponent<FoldableHeaderProps> = ({
 
   return (
     <Animated.View
-      style={[styles.headerContainer, containerPaddingStyle, withNotice ? styles.noticeBorderRadius : undefined]}>
+      style={[
+        styles.headerContainer,
+        containerPaddingStyle,
+        withNotice ? styles.noticeBorderRadius : undefined,
+      ]}
+    >
       <Animated.View style={scrollHeaderAnimatedStyle}>
         <View style={[styles.blurFill, { top: -containerPaddingTop }]}>
           <BlurView
             blurStyle={'header'}
             color={colorScheme.background}
-            style={[StyleSheet.absoluteFill, withNotice ? styles.noticeBorderRadius : undefined]}
+            style={[
+              StyleSheet.absoluteFill,
+              withNotice ? styles.noticeBorderRadius : undefined,
+            ]}
           />
         </View>
         {header && (
-          <Animated.View onLayout={onHeaderLayout} style={fadeHeaderOutAnimatedStyle}>
+          <Animated.View
+            onLayout={onHeaderLayout}
+            style={fadeHeaderOutAnimatedStyle}
+          >
             {header}
           </Animated.View>
         )}
-        {searchBar && <AnimatedSearchBar {...searchBar} collapsed={collapsed} />}
+        {searchBar && (
+          <AnimatedSearchBar {...searchBar} collapsed={collapsed} />
+        )}
       </Animated.View>
     </Animated.View>
   );

@@ -18,7 +18,17 @@ export type ListItemViewProps = {
   testID?: string;
 };
 
-const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, info, last, style, onPress, testID }) => {
+const ListItemView: FC<ListItemViewProps> = ({
+  accessory,
+  first,
+  icon,
+  label,
+  info,
+  last,
+  style,
+  onPress,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
 
   const accessoryView: ReactElement | undefined = useMemo(() => {
@@ -29,7 +39,8 @@ const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, in
           numberOfLines={1}
           preset="xs/line-height-small"
           style={styles.time}
-          testID={concatTestID(testID, 'timeLabel')}>
+          testID={concatTestID(testID, 'timeLabel')}
+        >
           {accessory}
         </Typography>
       );
@@ -63,7 +74,8 @@ const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, in
         last && styles.containerLast,
         style,
       ]}
-      testID={testID}>
+      testID={testID}
+    >
       <View
         style={[
           styles.listItemWrapper,
@@ -72,7 +84,8 @@ const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, in
             borderColor: colorScheme.background,
           },
           last && styles.wrapperLast,
-        ]}>
+        ]}
+      >
         {iconView}
         <View style={styles.labelAndInfo}>
           <Typography
@@ -80,7 +93,8 @@ const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, in
             numberOfLines={1}
             preset="s"
             style={styles.label}
-            testID={concatTestID(testID, 'label')}>
+            testID={concatTestID(testID, 'label')}
+          >
             {label}
           </Typography>
           {Boolean(info) && (
@@ -89,7 +103,8 @@ const ListItemView: FC<ListItemViewProps> = ({ accessory, first, icon, label, in
               numberOfLines={1}
               preset="s/line-height-small"
               style={styles.shaded}
-              testID={concatTestID(testID, 'info')}>
+              testID={concatTestID(testID, 'info')}
+            >
               {info}
             </Typography>
           )}

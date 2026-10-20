@@ -1,9 +1,26 @@
-import React, { ComponentType, FC, PropsWithChildren, ReactElement, useCallback, useMemo } from 'react';
-import { Image, ImageSourcePropType, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, {
+  ComponentType,
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  useCallback,
+  useMemo,
+} from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { colorWithAlphaComponent } from '../../utils/color';
 import { concatTestID } from '../../utils/testID';
-import { TouchableHighlight, TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from '../accessibility/accessibilityHistoryWrappers';
 import ExpandableTypography from '../text/expandableTypography';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
@@ -15,13 +32,9 @@ type CredentialAttributeItemButtonProps = {
   selected?: boolean;
 };
 
-const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeItemButtonProps>> = ({
-  children,
-  disabled,
-  id,
-  onPress,
-  selected,
-}) => {
+const CredentialAttributeItemButton: FC<
+  PropsWithChildren<CredentialAttributeItemButtonProps>
+> = ({ children, disabled, id, onPress, selected }) => {
   const colorScheme = useAppColorScheme();
 
   const pressHandler = useCallback(() => {
@@ -41,7 +54,11 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
         activeOpacity={0.8}
         disabled={disabled}
         onPress={pressHandler}
-        style={[styles.touchableAttribute, { backgroundColor: colorScheme.background }]}>
+        style={[
+          styles.touchableAttribute,
+          { backgroundColor: colorScheme.background },
+        ]}
+      >
         {children}
       </TouchableOpacity>
     );
@@ -52,7 +69,8 @@ const CredentialAttributeItemButton: FC<PropsWithChildren<CredentialAttributeIte
       disabled={disabled}
       onPress={pressHandler}
       style={styles.touchableAttribute}
-      underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}>
+      underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}
+    >
       {children}
     </TouchableHighlight>
   );
@@ -153,7 +171,8 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
     if (React.isValidElement(rightAccessory)) {
       return rightAccessory;
     } else {
-      const RightAccessoryComponent = rightAccessory as React.ComponentType<any>;
+      const RightAccessoryComponent =
+        rightAccessory as React.ComponentType<any>;
       return <RightAccessoryComponent />;
     }
   }, [rightAccessory]);
@@ -166,9 +185,17 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   };
 
   return (
-    <View style={[!nested && styles.attributeItemContainer, style]} testID={testID}>
+    <View
+      style={[!nested && styles.attributeItemContainer, style]}
+      testID={testID}
+    >
       <View style={styles.attributeItemRow}>
-        <CredentialAttributeItemButton disabled={disabled} id={id} onPress={onPress} selected={selected}>
+        <CredentialAttributeItemButton
+          disabled={disabled}
+          id={id}
+          onPress={onPress}
+          selected={selected}
+        >
           <View style={styles.dataItemButtonChildren}>
             {(isObject || isArray || listValue) && (
               <View style={styles.decorator}>
@@ -176,13 +203,19 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   style={[
                     styles.decoratorCircle,
                     listValue ? styles.listDecoratorCircle : undefined,
-                    listValue && image ? styles.listImageDecoratorCircle : undefined,
+                    listValue && image
+                      ? styles.listImageDecoratorCircle
+                      : undefined,
                     { backgroundColor: colorScheme.text },
-                  ]}>
+                  ]}
+                >
                   <View
                     style={[
                       styles.decoratorCircleInner,
-                      { backgroundColor: colorScheme.text, borderColor: colorScheme.background },
+                      {
+                        backgroundColor: colorScheme.text,
+                        borderColor: colorScheme.background,
+                      },
                     ]}
                   />
                 </View>
@@ -190,8 +223,12 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   style={[
                     styles.decoratorLine,
                     listValue ? styles.listDecoratorLine : undefined,
-                    listValue && value ? styles.listStringValueDecoratorLine : undefined,
-                    listValue && image ? styles.listImageDecoratorLine : undefined,
+                    listValue && value
+                      ? styles.listStringValueDecoratorLine
+                      : undefined,
+                    listValue && image
+                      ? styles.listImageDecoratorLine
+                      : undefined,
                     { backgroundColor: colorScheme.text },
                   ]}
                 />
@@ -199,15 +236,23 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
             )}
             <View
               style={[
-                isObject || isArray || listValue ? styles.objectAttributeItem : styles.attributeItem,
+                isObject || isArray || listValue
+                  ? styles.objectAttributeItem
+                  : styles.attributeItem,
                 nested && styles.nestedAttributeItem,
-              ]}>
+              ]}
+            >
               {name && (
                 <Typography
                   color={colorScheme.text}
                   preset={image ? 'xs' : 'xs/line-height-small'}
-                  style={isObject || isArray ? styles.nestedObjectLabel : styles.dataItemLabel}
-                  testID={concatTestID(testID, 'title')}>
+                  style={
+                    isObject || isArray
+                      ? styles.nestedObjectLabel
+                      : styles.dataItemLabel
+                  }
+                  testID={concatTestID(testID, 'title')}
+                >
                   {name}
                 </Typography>
               )}
@@ -215,7 +260,12 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                 <TouchableOpacity
                   disabled={!onImagePreview}
                   onPress={imagePreviewHandler}
-                  style={[styles.dataItemImageWrapper, dataItemBorderStyle, listValue ? styles.listValue : undefined]}>
+                  style={[
+                    styles.dataItemImageWrapper,
+                    dataItemBorderStyle,
+                    listValue ? styles.listValue : undefined,
+                  ]}
+                >
                   <Image
                     resizeMode="cover"
                     source={image}
@@ -234,7 +284,8 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                   numberOfLines={3}
                   preset="s"
                   style={listValue ? styles.listValue : undefined}
-                  testID={concatTestID(testID, 'value')}>
+                  testID={concatTestID(testID, 'value')}
+                >
                   {value}
                 </ExpandableTypography>
               )}
@@ -264,12 +315,26 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
               <View />
             </View>
             {rightAccessoryView && (
-              <View style={[styles.rightAccessory, isObject && styles.objectAccessory]}>{rightAccessoryView}</View>
+              <View
+                style={[
+                  styles.rightAccessory,
+                  isObject && styles.objectAccessory,
+                ]}
+              >
+                {rightAccessoryView}
+              </View>
             )}
           </View>
         </CredentialAttributeItemButton>
       </View>
-      {!last && !nested && <View style={[styles.separator, { backgroundColor: colorScheme.background }]} />}
+      {!last && !nested && (
+        <View
+          style={[
+            styles.separator,
+            { backgroundColor: colorScheme.background },
+          ]}
+        />
+      )}
     </View>
   );
 };

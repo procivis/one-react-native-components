@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
@@ -12,7 +19,12 @@ import Animated, {
 
 import { concatTestID } from '../../utils';
 import { useRunAfterTransition } from '../../utils/hooks/navigation/run-after-transition';
-import { LoaderError, LoaderProgressSpinner, LoaderSuccess, LoaderWarning } from '../icons/loader';
+import {
+  LoaderError,
+  LoaderProgressSpinner,
+  LoaderSuccess,
+  LoaderWarning,
+} from '../icons/loader';
 
 export enum LoaderViewState {
   Error = 'error',
@@ -115,7 +127,14 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
       opacity.value = toValue;
       stopRotationAnimation();
     }
-  }, [opacity, finished, initialDelayPassed, animate, stopRotationAnimation, startRotationAnimation]);
+  }, [
+    opacity,
+    finished,
+    initialDelayPassed,
+    animate,
+    stopRotationAnimation,
+    startRotationAnimation,
+  ]);
 
   const spinnerAnimatedStyle = useAnimatedStyle(
     () => ({
@@ -154,7 +173,9 @@ const LoaderView: FC<LoaderViewProps> = ({ animate, state, testID }) => {
       <Animated.View style={[styles.loaderElement, spinnerAnimatedStyle]}>
         <LoaderProgressSpinner />
       </Animated.View>
-      <Animated.View style={[styles.loaderElement, resultAnimatedStyle]}>{finishedIcon}</Animated.View>
+      <Animated.View style={[styles.loaderElement, resultAnimatedStyle]}>
+        {finishedIcon}
+      </Animated.View>
     </View>
   );
 };

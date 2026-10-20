@@ -13,7 +13,13 @@ const ListTitleHeader: FC<ListTitleHeaderProps> = ({ title, testID }) => {
   const colorScheme = useAppColorScheme();
 
   return (
-    <Typography accessibilityRole="header" color={colorScheme.text} preset="l" style={styles.listTitle} testID={testID}>
+    <Typography
+      accessibilityRole="header"
+      color={colorScheme.text}
+      preset="l"
+      style={styles.listTitle}
+      testID={testID}
+    >
       {title}
     </Typography>
   );

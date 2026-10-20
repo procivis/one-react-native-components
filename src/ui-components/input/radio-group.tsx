@@ -1,5 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { FlatList, FlatListProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  FlatList,
+  FlatListProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../utils';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
@@ -62,7 +69,10 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
               accessibilityValue={
                 items.length > 1 && onGetItemAccessibilityLabel
                   ? {
-                      text: onGetItemAccessibilityLabel(index + 1, items.length),
+                      text: onGetItemAccessibilityLabel(
+                        index + 1,
+                        items.length,
+                      ),
                     }
                   : undefined
               }
@@ -71,17 +81,29 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({
                 onSelected(item, index);
               }}
               style={[styles.item, item.style]}
-              testID={item.testID}>
-              <Typography color={colorScheme.text} numberOfLines={2} style={styles.label}>
+              testID={item.testID}
+            >
+              <Typography
+                color={colorScheme.text}
+                numberOfLines={2}
+                style={styles.label}
+              >
                 {item.label}
               </Typography>
               <Selector
-                status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty}
+                status={
+                  selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty
+                }
                 style={styles.selector}
                 testID={concatTestID(item.testID, 'selector')}
               />
             </TouchableOpacity>
-            <View style={[styles.divider, { backgroundColor: colorScheme.background }]} />
+            <View
+              style={[
+                styles.divider,
+                { backgroundColor: colorScheme.background },
+              ]}
+            />
           </React.Fragment>
         );
       }}

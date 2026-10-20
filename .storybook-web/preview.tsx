@@ -1,6 +1,10 @@
 import type { Parameters, Preview } from '@storybook/react';
 import ColorSchemes from '../storybook/colorScheme';
-import { withCommonLibs, FullScreen, withColorScheme } from '../storybook/decorator';
+import {
+  withCommonLibs,
+  FullScreen,
+  withColorScheme,
+} from '../storybook/decorator';
 import { INITIAL_VIEWPORTS } from 'storybook/viewport';
 import { GlobalTypes } from 'storybook/internal/csf';
 
@@ -11,7 +15,7 @@ type StorybookViewport = {
   styles: {
     width: string;
     height: string;
-  }
+  };
 };
 
 const viewports = {
@@ -63,8 +67,8 @@ const viewports = {
 export type StoryContextParameters = {
   viewport: {
     options: typeof viewports;
-  }
-}
+  };
+};
 
 const parameters: Parameters & StoryContextParameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

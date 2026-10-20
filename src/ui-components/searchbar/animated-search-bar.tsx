@@ -20,7 +20,8 @@ const AnimatedSearchBar = ({
   rightButtons = [],
 }: AnimatedSearchBarProps) => {
   const [rightIconFadeAnimation] = useState(
-    () => new Animated.Value(rightButtons && rightButtonAlwaysVisible ? 1.5 : 0),
+    () =>
+      new Animated.Value(rightButtons && rightButtonAlwaysVisible ? 1.5 : 0),
   );
   const [searchPaddingAnimation] = useState(() => new Animated.Value(0));
 
@@ -42,7 +43,12 @@ const AnimatedSearchBar = ({
       toValue: collapsed && rightButtons ? 1.5 : 0,
       useNativeDriver: false,
     }).start();
-  }, [rightButtonAlwaysVisible, rightIconFadeAnimation, rightButtons, collapsed]);
+  }, [
+    rightButtonAlwaysVisible,
+    rightIconFadeAnimation,
+    rightButtons,
+    collapsed,
+  ]);
 
   const searchBarContainerAnimatedStyle = {
     paddingHorizontal: searchPaddingAnimation.interpolate({
@@ -70,12 +76,22 @@ const AnimatedSearchBar = ({
 
   const { style: searchBarStyle, ...searchProps } = searchBarProps;
   return (
-    <Animated.View style={[styles.searchBarContainer, searchBarContainerAnimatedStyle, searchBarStyle]}>
+    <Animated.View
+      style={[
+        styles.searchBarContainer,
+        searchBarContainerAnimatedStyle,
+        searchBarStyle,
+      ]}
+    >
       <Animated.View style={searchBarAnimatedStyle}>
         <SearchBar {...searchProps} />
       </Animated.View>
       {rightButtons && (
-        <Animated.View style={[styles.rightButtonWrapper, optionsIconAnimatedStyle]}>{rightButtons}</Animated.View>
+        <Animated.View
+          style={[styles.rightButtonWrapper, optionsIconAnimatedStyle]}
+        >
+          {rightButtons}
+        </Animated.View>
       )}
     </Animated.View>
   );

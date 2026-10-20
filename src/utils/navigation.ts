@@ -1,4 +1,8 @@
-import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
+import {
+  NavigationProp,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
@@ -10,7 +14,10 @@ import { BackHandler } from 'react-native';
  * @param onAndroidBack (Android only) Custom callback triggered when OS back button is pressed while blocked
  *   * return `false` to allow back navigation, return `true` to block back navigation
  */
-export const useBlockOSBackNavigation = (block: boolean = true, onAndroidBack?: () => boolean) => {
+export const useBlockOSBackNavigation = (
+  block: boolean = true,
+  onAndroidBack?: () => boolean,
+) => {
   const navigation = useNavigation<NavigationProp<{}>>();
   const isFocused = useIsFocused();
 
@@ -29,7 +36,10 @@ export const useBlockOSBackNavigation = (block: boolean = true, onAndroidBack?: 
       const handler = () => {
         return onAndroidBack?.() ?? true;
       };
-      const subscription = BackHandler.addEventListener('hardwareBackPress', handler);
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handler,
+      );
       return () => {
         subscription.remove();
       };

@@ -23,13 +23,16 @@ export const useTrustListSubscriptionUpdate = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async () => core.runTask('TRUST_LIST_SUBSCRIPTION_UPDATE', undefined), {
-    onError: async (err) => {
-      reportException(err, 'TRUST_LIST_SUBSCRIPTION_UPDATE error');
-      await queryClient.invalidateQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+  return useMutation(
+    async () => core.runTask('TRUST_LIST_SUBSCRIPTION_UPDATE', undefined),
+    {
+      onError: async (err) => {
+        reportException(err, 'TRUST_LIST_SUBSCRIPTION_UPDATE error');
+        await queryClient.invalidateQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
+      },
     },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(ORGANISATION_ECOSYSTEMS_QUERY_KEY);
-    },
-  });
+  );
 };

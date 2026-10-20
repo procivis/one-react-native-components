@@ -9,23 +9,37 @@ export interface PinsProps extends ViewProps {
   maxLength: number;
 }
 
-export const Pins: FC<PinsProps> = ({ enteredLength, maxLength, style, ...props }) => {
+export const Pins: FC<PinsProps> = ({
+  enteredLength,
+  maxLength,
+  style,
+  ...props
+}) => {
   const t = useAccessibilityTranslation();
   const colorScheme = useAppColorScheme();
   return (
     <View
       accessibilityRole="progressbar"
-      accessibilityValue={{ text: t('accessibility.control.progress', { current: enteredLength, length: maxLength }) }}
+      accessibilityValue={{
+        text: t('accessibility.control.progress', {
+          current: enteredLength,
+          length: maxLength,
+        }),
+      }}
       accessible={true}
       style={[styles.pinsWrapper, style]}
-      {...props}>
+      {...props}
+    >
       {Array.from({ length: maxLength }).map((_, index) => (
         <View
           key={`pin${index}`}
           style={[
             styles.pin,
             {
-              backgroundColor: enteredLength > index ? colorScheme.black : colorScheme.background,
+              backgroundColor:
+                enteredLength > index
+                  ? colorScheme.black
+                  : colorScheme.background,
             },
           ]}
         />

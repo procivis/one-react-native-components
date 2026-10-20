@@ -39,7 +39,10 @@ export type PinCodeScreenProps = {
 );
 
 export interface PinCodeScreenActions {
-  shakeKeypad: (params?: { amount?: number; duration?: number }) => Promise<{ finished: boolean }>;
+  shakeKeypad: (params?: {
+    amount?: number;
+    duration?: number;
+  }) => Promise<{ finished: boolean }>;
 }
 const SHAKE_ITERATIONS = 4;
 const animationConfig = {
@@ -47,7 +50,10 @@ const animationConfig = {
   useNativeDriver: true,
 };
 
-export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps>(
+export const PinCodeScreen = forwardRef<
+  PinCodeScreenActions,
+  PinCodeScreenProps
+>(
   (
     {
       testID,
@@ -78,13 +84,21 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
           return new Promise((resolve) =>
             Animated.loop(
               Animated.sequence([
-                Animated.timing(shakePosition, { ...animationConfig, duration: partialDuration, toValue: -amount }),
+                Animated.timing(shakePosition, {
+                  ...animationConfig,
+                  duration: partialDuration,
+                  toValue: -amount,
+                }),
                 Animated.timing(shakePosition, {
                   ...animationConfig,
                   duration: 2 * partialDuration,
                   toValue: amount,
                 }),
-                Animated.timing(shakePosition, { ...animationConfig, duration: partialDuration, toValue: 0 }),
+                Animated.timing(shakePosition, {
+                  ...animationConfig,
+                  duration: partialDuration,
+                  toValue: 0,
+                }),
               ]),
               { iterations: SHAKE_ITERATIONS },
             ).start(resolve),
@@ -95,10 +109,18 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
     );
 
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colorScheme.white }]} testID={testID}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: colorScheme.white }]}
+        testID={testID}
+      >
         <ContrastingStatusBar backgroundColor={colorScheme.white} />
         <View style={styles.backButton}>
-          {onBack && <BackButton onPress={onBack} testID={concatTestID(testID, 'back')} />}
+          {onBack && (
+            <BackButton
+              onPress={onBack}
+              testID={concatTestID(testID, 'back')}
+            />
+          )}
         </View>
         <View style={styles.content}>
           <View style={styles.upperContent}>
@@ -108,10 +130,15 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
               color={colorScheme.text}
               preset="l"
               style={styles.title}
-              testID={concatTestID(testID, 'title')}>
+              testID={concatTestID(testID, 'title')}
+            >
               {title}
             </Typography>
-            <Pins enteredLength={enteredLength} maxLength={length} style={styles.pins} />
+            <Pins
+              enteredLength={enteredLength}
+              maxLength={length}
+              style={styles.pins}
+            />
             {instruction ? (
               <Typography
                 align="center"
@@ -119,7 +146,8 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
                 color={colorScheme.text}
                 onAnnouncementFinished={props.onAccessibilityAnnounced}
                 style={styles.instruction}
-                testID={concatTestID(testID, 'instruction')}>
+                testID={concatTestID(testID, 'instruction')}
+              >
                 {instruction}
               </Typography>
             ) : null}
@@ -127,7 +155,8 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
               accessible={Boolean(error)}
               announcementActive={true}
               color={colorScheme.error}
-              testID={concatTestID(testID, 'error')}>
+              testID={concatTestID(testID, 'error')}
+            >
               {error ?? '' /* always displayed to keep the same layout */}
             </Typography>
           </View>
@@ -137,12 +166,21 @@ export const PinCodeScreen = forwardRef<PinCodeScreenActions, PinCodeScreenProps
               {
                 transform: [{ translateX: shakePosition }],
               },
-            ]}>
+            ]}
+          >
             <Keypad
               biometry={!enteredLength ? biometry : undefined}
               onBiometricPress={onBiometricPress}
-              onDeleteAll={enteredLength && enteredLength < length ? onDeleteAll : undefined}
-              onPressDelete={enteredLength && enteredLength < length ? onPressDelete : undefined}
+              onDeleteAll={
+                enteredLength && enteredLength < length
+                  ? onDeleteAll
+                  : undefined
+              }
+              onPressDelete={
+                enteredLength && enteredLength < length
+                  ? onPressDelete
+                  : undefined
+              }
               onPressDigit={enteredLength < length ? onPressDigit : undefined}
               ref={keypadRef}
               testID={concatTestID(testID, 'keypad')}

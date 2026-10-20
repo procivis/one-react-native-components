@@ -8,7 +8,11 @@ type ActivityIndicatorProps = ViewProps & {
   animate?: boolean;
 };
 
-const ActivityIndicator: FC<ActivityIndicatorProps> = ({ animate = true, style, ...props }) => {
+const ActivityIndicator: FC<ActivityIndicatorProps> = ({
+  animate = true,
+  style,
+  ...props
+}) => {
   return (
     <View {...props} style={[styles.wrapper, style]}>
       <LoaderView animate={animate} state={LoaderViewState.InProgress} />

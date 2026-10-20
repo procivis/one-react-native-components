@@ -9,10 +9,19 @@ import {
   useAccessibleAfterTransition,
   useIsOutsideTransition,
 } from './accessibility';
-import { AccessibilityFocusHistoryProvider, useAccessibilityFocusHistory } from './accessibilityHistory';
-import { AccessibilityLanguageProvider, type AccessibilityLanguageProviderProps } from './accessibilityLanguage';
+import {
+  AccessibilityFocusHistoryProvider,
+  useAccessibilityFocusHistory,
+} from './accessibilityHistory';
+import {
+  AccessibilityLanguageProvider,
+  type AccessibilityLanguageProviderProps,
+} from './accessibilityLanguage';
 // @ts-ignore
-import type { AccessibilityLanguageFile, SupportedAccessibilityLanguage } from './locale';
+import type {
+  AccessibilityLanguageFile,
+  SupportedAccessibilityLanguage,
+} from './locale';
 
 export * from './accessibilityHistoryWrappers';
 

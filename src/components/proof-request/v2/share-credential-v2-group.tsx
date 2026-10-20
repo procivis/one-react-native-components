@@ -5,7 +5,12 @@ import {
   PresentationSubmitV2CredentialRequest,
 } from '@procivis/react-native-one-core';
 import React, { FC, useCallback, useMemo } from 'react';
-import { ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import {
+  ImageSourcePropType,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import {
@@ -18,12 +23,20 @@ import {
   UpIcon,
 } from '../../../ui-components';
 import CredentialGroupHeader from '../../../ui-components/credential/group/credential-group-header';
-import { concatTestID, ShareCredentialCardLabels, useCredentialListExpandedCard } from '../../../utils';
-import { GroupedShareCredentialV2Padding, ShareCredentialV2 } from './share-credential-v2';
+import {
+  concatTestID,
+  ShareCredentialCardLabels,
+  useCredentialListExpandedCard,
+} from '../../../utils';
+import {
+  GroupedShareCredentialV2Padding,
+  ShareCredentialV2,
+} from './share-credential-v2';
 
 export type CredentialQuerySelection = Record<
   string,
-  PresentationSubmitV2CredentialRequest | PresentationSubmitV2CredentialRequest[]
+  | PresentationSubmitV2CredentialRequest
+  | PresentationSubmitV2CredentialRequest[]
 >;
 
 export type ShareCredentialLabels = ShareCredentialCardLabels & {
@@ -69,7 +82,7 @@ const multipleCredentialsSelected = (
     selectedCredentials &&
     selectedCredentials[credentialRequestId] &&
     Array.isArray(selectedCredentials[credentialRequestId]) &&
-    (selectedCredentials[credentialRequestId]).length > 1
+    selectedCredentials[credentialRequestId].length > 1
   );
 };
 
@@ -87,7 +100,8 @@ const numberOfCardsForRequest = (
   return 1;
 };
 
-const heightForNumberOfCards = (numberOfCards: number) => 60 * (numberOfCards + 1) + 12 * numberOfCards;
+const heightForNumberOfCards = (numberOfCards: number) =>
+  60 * (numberOfCards + 1) + 12 * numberOfCards;
 
 export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
   labels,
@@ -107,11 +121,13 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
 }) => {
   const { expandedCredential, onHeaderPress } = useCredentialListExpandedCard();
   const numberOfCards = requestGroup.reduce(
-    (acc, groupId) => acc + numberOfCardsForRequest(selectedCredentials, groupId),
+    (acc, groupId) =>
+      acc + numberOfCardsForRequest(selectedCredentials, groupId),
     0,
   );
   const singleCredentialGroup =
-    requestGroup.length === 1 && !multipleCredentialsSelected(selectedCredentials, requestGroup[0]);
+    requestGroup.length === 1 &&
+    !multipleCredentialsSelected(selectedCredentials, requestGroup[0]);
 
   const headerPressHandler = useCallback(() => {
     onGroupSelect?.(!selected);
@@ -128,69 +144,105 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
   );
 
   const credentialCards = useMemo(() => {
-    return requestGroup.flatMap((credentialRequestId, credentialRequestIndex, { length: credentialRequestsLength }) => {
-      const lastQuery = credentialRequestIndex === credentialRequestsLength - 1;
+    return requestGroup.flatMap(
+      (
+        credentialRequestId,
+        credentialRequestIndex,
+        { length: credentialRequestsLength },
+      ) => {
+        const lastQuery =
+          credentialRequestIndex === credentialRequestsLength - 1;
 
-      const credentialQuery = presentationDefinition.credentialQueries[credentialRequestId].credentialOrFailureHint;
-      let defaultSelection: PresentationSubmitV2CredentialRequest;
-      if (credentialQuery.type_ === 'APPLICABLE_CREDENTIALS') {
-        defaultSelection = credentialQuery.applicableCredentials?.[0]
-          ? {
-              credentialId: credentialQuery.applicableCredentials[0].id,
-              transactionDataIds: [],
-              userSelections: [],
-            }
-          : {
-              credentialId: '',
-              transactionDataIds: [],
-              userSelections: [],
-            };
-      } else {
-        defaultSelection = {
-          credentialId: '',
-          transactionDataIds: [],
-          userSelections: [],
-        };
-      }
-      const request = selectedCredentials[credentialRequestId];
-      const credentialSelections = request ? (Array.isArray(request) ? request : [request]) : [defaultSelection];
+        const credentialQuery =
+          presentationDefinition.credentialQueries[credentialRequestId]
+            .credentialOrFailureHint;
+        let defaultSelection: PresentationSubmitV2CredentialRequest;
+        if (credentialQuery.type_ === 'APPLICABLE_CREDENTIALS') {
+          defaultSelection = credentialQuery.applicableCredentials?.[0]
+            ? {
+                credentialId: credentialQuery.applicableCredentials[0].id,
+                transactionDataIds: [],
+                userSelections: [],
+              }
+            : {
+                credentialId: '',
+                transactionDataIds: [],
+                userSelections: [],
+              };
+        } else {
+          defaultSelection = {
+            credentialId: '',
+            transactionDataIds: [],
+            userSelections: [],
+          };
+        }
+        const request = selectedCredentials[credentialRequestId];
+        const credentialSelections = request
+          ? Array.isArray(request)
+            ? request
+            : [request]
+          : [defaultSelection];
 
-      return credentialSelections?.flatMap((credentialRequest, credentialIndex, { length: credentialsLength }) => {
-        const selectedFields = credentialRequest.userSelections;
-        const cardId = `${credentialRequestId}-${credentialRequest.credentialId}`;
-        const lastItem = singleCredentialGroup ? lastGroup : lastQuery && credentialIndex === credentialsLength - 1;
-        const cardExpanded = selected && (singleCredentialGroup || expandedCredential === cardId);
-        const headerAccessory =
-          singleCredentialGroup && valid ? (
-            <Selector status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty} />
-          ) : cardExpanded ? (
-            UpIcon
-          ) : (
-            DownIcon
-          );
-        return (
-          <ShareCredentialV2
-            credentialQuery={credentialQuery}
-            credentialRequestId={credentialRequestId}
-            expanded={cardExpanded}
-            grouped={!singleCredentialGroup}
-            headerAccessory={headerAccessory}
-            key={credentialRequestId}
-            labels={labels}
-            language={language}
-            lastItem={lastItem}
-            onHeaderPress={singleCredentialGroup ? headerPressHandler : onNestedCardHeaderPress(cardId)}
-            onImagePreview={onImagePreview}
-            onSelectCredential={onSelectCredential?.(credentialRequestId)}
-            onSelectField={onSelectField(credentialRequestId)}
-            selectedCredentialId={credentialRequest.credentialId}
-            selectedFields={selectedFields}
-            style={[!singleCredentialGroup && styles.requestedCredential, lastItem && styles.requestedCredentialLast]}
-            testID={concatTestID(testID, credentialRequestId)}
-          />
+        return credentialSelections?.flatMap(
+          (
+            credentialRequest,
+            credentialIndex,
+            { length: credentialsLength },
+          ) => {
+            const selectedFields = credentialRequest.userSelections;
+            const cardId = `${credentialRequestId}-${credentialRequest.credentialId}`;
+            const lastItem = singleCredentialGroup
+              ? lastGroup
+              : lastQuery && credentialIndex === credentialsLength - 1;
+            const cardExpanded =
+              selected &&
+              (singleCredentialGroup || expandedCredential === cardId);
+            const headerAccessory =
+              singleCredentialGroup && valid ? (
+                <Selector
+                  status={
+                    selected
+                      ? SelectorStatus.SelectedRadio
+                      : SelectorStatus.Empty
+                  }
+                />
+              ) : cardExpanded ? (
+                UpIcon
+              ) : (
+                DownIcon
+              );
+            return (
+              <ShareCredentialV2
+                credentialQuery={credentialQuery}
+                credentialRequestId={credentialRequestId}
+                expanded={cardExpanded}
+                grouped={!singleCredentialGroup}
+                headerAccessory={headerAccessory}
+                key={credentialRequestId}
+                labels={labels}
+                language={language}
+                lastItem={lastItem}
+                onHeaderPress={
+                  singleCredentialGroup
+                    ? headerPressHandler
+                    : onNestedCardHeaderPress(cardId)
+                }
+                onImagePreview={onImagePreview}
+                onSelectCredential={onSelectCredential?.(credentialRequestId)}
+                onSelectField={onSelectField(credentialRequestId)}
+                selectedCredentialId={credentialRequest.credentialId}
+                selectedFields={selectedFields}
+                style={[
+                  !singleCredentialGroup && styles.requestedCredential,
+                  lastItem && styles.requestedCredentialLast,
+                ]}
+                testID={concatTestID(testID, credentialRequestId)}
+              />
+            );
+          },
         );
-      });
-    });
+      },
+    );
   }, [
     expandedCredential,
     labels,
@@ -215,7 +267,9 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
   }
 
   const groupHeaderAccessory = valid ? (
-    <Selector status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty} />
+    <Selector
+      status={selected ? SelectorStatus.SelectedRadio : SelectorStatus.Empty}
+    />
   ) : selected ? (
     UpIcon
   ) : (
@@ -229,10 +283,14 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
         styles.animatedWrapper,
         // eslint-disable-next-line react-native/no-inline-styles
         {
-          height: selected || lastGroup ? 'auto' : heightForNumberOfCards(numberOfCards),
+          height:
+            selected || lastGroup
+              ? 'auto'
+              : heightForNumberOfCards(numberOfCards),
         },
         style,
-      ]}>
+      ]}
+    >
       <Animated.View
         layout={LinearTransition}
         style={[
@@ -240,10 +298,19 @@ export const ShareCredentialV2Group: FC<ShareCredentialV2GroupProps> = ({
           !singleCredentialGroup && styles.requestedCredential,
           lastGroup && styles.requestedCredentialLast,
           style,
-        ]}>
-        <BlurView blurStyle="strong" darkMode={true} style={StyleSheet.absoluteFill} />
+        ]}
+      >
+        <BlurView
+          blurStyle="strong"
+          darkMode={true}
+          style={StyleSheet.absoluteFill}
+        />
         <TouchableOpacity onPress={headerPressHandler}>
-          <CredentialGroupHeader accessory={groupHeaderAccessory} name={labels.groupHeader} style={styles.header} />
+          <CredentialGroupHeader
+            accessory={groupHeaderAccessory}
+            name={labels.groupHeader}
+            style={styles.header}
+          />
         </TouchableOpacity>
         {credentialCards}
       </Animated.View>

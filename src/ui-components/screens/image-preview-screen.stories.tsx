@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import * as profileImage from '../../../storybook/assets/ProfileImage.png';
-import ImagePreviewScreen, { ImagePreviewScreenProps } from './image-preview-screen';
+import ImagePreviewScreen, {
+  ImagePreviewScreenProps,
+} from './image-preview-screen';
 
 const Render = ({ ...args }: ImagePreviewScreenProps) => {
   return <ImagePreviewScreen {...args} image={profileImage} />;

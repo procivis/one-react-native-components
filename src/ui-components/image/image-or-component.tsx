@@ -1,5 +1,13 @@
 import React, { FC, ReactElement, useMemo } from 'react';
-import { Image, ImageProps, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  ImageProps,
+  ImageSourcePropType,
+  ImageStyle,
+  StyleProp,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   imageWrapper: {
@@ -46,14 +54,26 @@ const ImageSourceComponent: FC<ImageSourceComponentProps> = ({
     };
 
     return {
-      height: typeof height === 'number' ? height - borderWidths.top - borderWidths.bottom : height,
-      width: typeof width === 'number' ? width - borderWidths.left - borderWidths.right : width,
+      height:
+        typeof height === 'number'
+          ? height - borderWidths.top - borderWidths.bottom
+          : height,
+      width:
+        typeof width === 'number'
+          ? width - borderWidths.left - borderWidths.right
+          : width,
     };
   }, [style]);
 
   return (
     <View style={[styles.imageWrapper, style]}>
-      <Image resizeMethod={resizeMethod} resizeMode={resizeMode} source={source} style={imageStyle} testID={testID} />
+      <Image
+        resizeMethod={resizeMethod}
+        resizeMode={resizeMode}
+        source={source}
+        style={imageStyle}
+        testID={testID}
+      />
     </View>
   );
 };
@@ -72,7 +92,11 @@ interface ImageOrComponentProps {
   testID?: string;
 }
 
-const ImageOrComponent: FC<ImageOrComponentProps> = ({ source, style, testID }) => {
+const ImageOrComponent: FC<ImageOrComponentProps> = ({
+  source,
+  style,
+  testID,
+}) => {
   if ('imageSource' in source) {
     return (
       <ImageSourceComponent

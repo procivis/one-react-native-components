@@ -82,7 +82,10 @@ export const useAvailableTransports = (
       }, true);
     }
     let netSubscription: NetInfoSubscription | undefined;
-    if (supportedTransports.includes(Transport.HTTP) || supportedTransports.includes(Transport.MQTT)) {
+    if (
+      supportedTransports.includes(Transport.HTTP) ||
+      supportedTransports.includes(Transport.MQTT)
+    ) {
       netSubscription = onNetworkStateChange((state) => {
         if (state.type === NetInfoStateType.none) {
           setInternetState(InternetState.Disabled);
@@ -113,9 +116,12 @@ export const useAvailableTransports = (
     }
 
     const waitingForInternetState =
-      (supportedTransports.includes(Transport.HTTP) || supportedTransports.includes(Transport.MQTT)) &&
+      (supportedTransports.includes(Transport.HTTP) ||
+        supportedTransports.includes(Transport.MQTT)) &&
       internetState === undefined;
-    const waitingForBluetoothState = supportedTransports.includes(Transport.Bluetooth) && bluetoothState === undefined;
+    const waitingForBluetoothState =
+      supportedTransports.includes(Transport.Bluetooth) &&
+      bluetoothState === undefined;
     if (waitingForInternetState || waitingForBluetoothState) {
       return {
         availableTransport: undefined,
@@ -145,7 +151,10 @@ export const useAvailableTransports = (
   return transportStatus;
 };
 
-export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: string): Transport[] => {
+export const getInvitationUrlTransports = (
+  url: string,
+  customOpenIdUrlScheme?: string,
+): Transport[] => {
   let parsedUrl: parseUrl.ParsedUrl;
   try {
     parsedUrl = parseUrl(url);
@@ -157,7 +166,10 @@ export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: 
     return [];
   }
   const protocol = parsedUrl.protocol;
-  if (protocol !== 'openid4vp' && protocol !== customOpenIdUrlScheme?.toLowerCase()) {
+  if (
+    protocol !== 'openid4vp' &&
+    protocol !== customOpenIdUrlScheme?.toLowerCase()
+  ) {
     return [Transport.HTTP];
   }
 
@@ -180,7 +192,12 @@ export const getInvitationUrlTransports = (url: string, customOpenIdUrlScheme?: 
   }
   // HTTP
   if (
-    hasAllParameters('response_type', 'state', 'nonce', 'presentation_definition_uri') ||
+    hasAllParameters(
+      'response_type',
+      'state',
+      'nonce',
+      'presentation_definition_uri',
+    ) ||
     hasAllParameters('client_id', 'request_uri')
   ) {
     transports.push(Transport.HTTP);

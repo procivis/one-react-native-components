@@ -8,7 +8,16 @@ export type SettingsButtonProps = ButtonSettingProps;
 
 const SettingsButton: FC<SettingsButtonProps> = ({ style, ...props }) => {
   const colorScheme = useAppColorScheme();
-  return <ButtonSetting style={[styles.button, { backgroundColor: colorScheme.background }, style]} {...props} />;
+  return (
+    <ButtonSetting
+      style={[
+        styles.button,
+        { backgroundColor: colorScheme.background },
+        style,
+      ]}
+      {...props}
+    />
+  );
 };
 
 const styles = StyleSheet.create({

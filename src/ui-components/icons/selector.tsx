@@ -5,7 +5,10 @@ import { SelectorStatus } from '../credential/selector-status';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 interface SelectorIconProps {
-  status: SelectorStatus.SelectedCheckmark | SelectorStatus.Rejected | SelectorStatus.Required;
+  status:
+    | SelectorStatus.SelectedCheckmark
+    | SelectorStatus.Rejected
+    | SelectorStatus.Required;
   testID?: string;
 }
 
@@ -21,7 +24,11 @@ export const SelectorIcon: FC<SelectorIconProps> = ({ status, testID }) => {
       ) : (
         <Path
           d="M16.767 8.11a.432.432 0 0 0-.576 0l-6.013 5.941-3.109-3.149-.001-.001a.411.411 0 0 0-.576 0l-.375.364-.007.008a.432.432 0 0 0 0 .576l4.065 4.098 6.963-6.878.005-.005a.421.421 0 0 0 0-.568l-.368-.38-.008-.006Z"
-          fill={status === SelectorStatus.SelectedCheckmark ? colorScheme.accentText : colorScheme.text}
+          fill={
+            status === SelectorStatus.SelectedCheckmark
+              ? colorScheme.accentText
+              : colorScheme.text
+          }
         />
       )}
     </Svg>

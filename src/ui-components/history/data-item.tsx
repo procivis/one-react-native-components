@@ -38,14 +38,21 @@ const DataItem: FC<DataItemProps> = ({
 
   return (
     <View
-      style={[styles.dataItem, { borderColor: colorScheme.background }, last && styles.last, style]}
+      style={[
+        styles.dataItem,
+        { borderColor: colorScheme.background },
+        last && styles.last,
+        style,
+      ]}
       testID={testID}
-      {...props}>
+      {...props}
+    >
       <Typography
         color={colorScheme.text}
         preset="xs/line-height-small"
         style={styles.dataItemLabel}
-        testID={concatTestID(testID, 'title')}>
+        testID={concatTestID(testID, 'title')}
+      >
         {attribute}
       </Typography>
 
@@ -56,7 +63,8 @@ const DataItem: FC<DataItemProps> = ({
           numberOfLines={multiline ? undefined : 1}
           preset="s"
           style={valueIcon ? styles.valueLabel : undefined}
-          testID={concatTestID(testID, 'value')}>
+          testID={concatTestID(testID, 'value')}
+        >
           {value}
         </Typography>
       </View>

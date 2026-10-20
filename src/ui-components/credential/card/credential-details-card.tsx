@@ -1,13 +1,36 @@
-import React, { ComponentType, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
-import { ImageSourcePropType, LayoutChangeEvent, StyleSheet, View, ViewProps } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, {
+  ComponentType,
+  FC,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  ImageSourcePropType,
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+  ViewProps,
+} from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { concatTestID } from '../../../utils/testID';
 import { Button, ButtonType } from '../../buttons/button';
 import { DownIcon, UpIcon } from '../../icons/credential';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
-import CredentialAttributeItem, { CredentialAttribute } from '../credential-attribute-item';
-import CredentialCard, { CredentialCardProps, CredentialCardRatio } from './credential-card';
+import CredentialAttributeItem, {
+  CredentialAttribute,
+} from '../credential-attribute-item';
+import CredentialCard, {
+  CredentialCardProps,
+  CredentialCardRatio,
+} from './credential-card';
 
 export type CredentialDetailsCardProps = ViewProps & {
   animate?: boolean;
@@ -45,18 +68,25 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   ...viewProps
 }) => {
   const colorScheme = useAppColorScheme();
-  const [previewAttributesHeight, setPreviewAttributesHeight] = useState<number>();
+  const [previewAttributesHeight, setPreviewAttributesHeight] =
+    useState<number>();
   const [fullAttributesHeight, setFullAttributesHeight] = useState<number>();
 
   const [allAttributesRendered, setAllAttributesRendered] = useState<boolean>(
-    (attributes && attributes.length <= PREVIEW_ATTRIBUTES_COUNT) || !showAllButtonLabel,
+    (attributes && attributes.length <= PREVIEW_ATTRIBUTES_COUNT) ||
+      !showAllButtonLabel,
   );
   const CaretIcon = expanded ? UpIcon : DownIcon;
   const cardHeight = Math.ceil(card.width / CredentialCardRatio);
   const currentHeight = useSharedValue<number | undefined>(undefined);
   const [animatedHeightSet, setAnimatedHeightSet] = useState(false);
-  const previewAttributes = attributes ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT) : [];
-  const extraAttributes = useMemo(() => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []), [attributes]);
+  const previewAttributes = attributes
+    ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT)
+    : [];
+  const extraAttributes = useMemo(
+    () => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []),
+    [attributes],
+  );
   const showSeeAllButton = extraAttributes.length > 0;
   const isExpanded = allAttributesRendered;
 
@@ -81,7 +111,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
     const buttonViewHeight = showSeeAllButton ? SEE_ALL_BUTTON_HEIGHT : 0;
     const additionalAttributesHeight = fullAttributesHeight ?? 0;
-    const additionalHeight = allAttributesRendered ? additionalAttributesHeight + buttonViewHeight : buttonViewHeight;
+    const additionalHeight = allAttributesRendered
+      ? additionalAttributesHeight + buttonViewHeight
+      : buttonViewHeight;
     const fullHeight = previewAttributesHeight + additionalHeight;
 
     setAnimatedHeightSet(true);
@@ -142,7 +174,8 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
     if (React.isValidElement(attributesExtra)) {
       return attributesExtra;
     } else {
-      const AttributesExtraComponent = attributesExtra as React.ComponentType<any>;
+      const AttributesExtraComponent =
+        attributesExtra as React.ComponentType<any>;
       return <AttributesExtraComponent />;
     }
   }, [attributesExtra]);
@@ -161,16 +194,29 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
 
   const { header, ...cardProps } = card;
 
-  const renderExtraAttributes = allAttributesRendered || (previewAttributesHeight !== undefined && animatedHeightSet);
+  const renderExtraAttributes =
+    allAttributesRendered ||
+    (previewAttributesHeight !== undefined && animatedHeightSet);
 
   return (
     <Animated.View
-      style={[styles.detailsCard, { backgroundColor: colorScheme.white }, animate ? animatedStyle : undefined, style]}
+      style={[
+        styles.detailsCard,
+        { backgroundColor: colorScheme.white },
+        animate ? animatedStyle : undefined,
+        style,
+      ]}
       {...viewProps}
-      testID={concatTestID(card.testID, expanded ? 'expanded' : 'collapsed')}>
+      testID={concatTestID(card.testID, expanded ? 'expanded' : 'collapsed')}
+    >
       <CredentialCard
         {...cardProps}
-        header={{ ...header, accessory: header.accessory ?? (cardProps.onHeaderPress ? CaretIcon : undefined) }}
+        header={{
+          ...header,
+          accessory:
+            header.accessory ??
+            (cardProps.onHeaderPress ? CaretIcon : undefined),
+        }}
         style={[styles.card, cardProps.style]}
       />
       {previewAttributes.length > 0 && (
@@ -178,12 +224,19 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
           <View style={styles.attributesWrapper}>
             {attributesExtraView}
 
-            <View onLayout={onPreviewAttrContentLayout} style={styles.previewAttributesWrapper}>
+            <View
+              onLayout={onPreviewAttrContentLayout}
+              style={styles.previewAttributesWrapper}
+            >
               {previewAttributes.map((attribute, idx) => (
                 <CredentialAttributeItem
                   isExpanded={isExpanded}
                   key={attribute.id}
-                  last={!footerView && !showSeeAllButton && idx === previewAttributes.length - 1}
+                  last={
+                    !footerView &&
+                    !showSeeAllButton &&
+                    idx === previewAttributes.length - 1
+                  }
                   lessLabel={lessLabel}
                   moreLabel={moreLabel}
                   onImagePreview={onImagePreview}
@@ -202,12 +255,15 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                   footerView && styles.allAttributesWrapperWithFooter,
                   showSeeAllButton && styles.allAttributesWrapperWithButton,
                   !allAttributesRendered && styles.hidden,
-                ]}>
+                ]}
+              >
                 {extraAttributes.map((attribute, index, { length }) => (
                   <CredentialAttributeItem
                     isExpanded={isExpanded}
                     key={attribute.id}
-                    last={!footerView && !showSeeAllButton && index === length - 1}
+                    last={
+                      !footerView && !showSeeAllButton && index === length - 1
+                    }
                     lessLabel={lessLabel}
                     moreLabel={moreLabel}
                     onImagePreview={onImagePreview}

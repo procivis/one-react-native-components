@@ -23,11 +23,19 @@ const ShareButton: FC<ShareButtonProps> = ({
   const colorScheme = useAppColorScheme();
 
   return (
-    <TouchableHighlight onPress={onPress} style={[styles.button, style]} testID={testID}>
+    <TouchableHighlight
+      onPress={onPress}
+      style={[styles.button, style]}
+      testID={testID}
+    >
       <View style={[styles.container, { backgroundColor: colorScheme.white }]}>
         <LinkIcon color={colorScheme.text} />
         {title && (
-          <Typography color={colorScheme.text} preset="s" testID={concatTestID(testID, 'title')}>
+          <Typography
+            color={colorScheme.text}
+            preset="s"
+            testID={concatTestID(testID, 'title')}
+          >
             {title}
           </Typography>
         )}

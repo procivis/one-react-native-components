@@ -1,5 +1,14 @@
 import React, { FC } from 'react';
-import Svg, { Circle, Defs, G, LinearGradient, Path, RadialGradient, Stop, SvgProps } from 'react-native-svg';
+import Svg, {
+  Circle,
+  Defs,
+  G,
+  LinearGradient,
+  Path,
+  RadialGradient,
+  Stop,
+  SvgProps,
+} from 'react-native-svg';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
@@ -7,21 +16,40 @@ import { useAppColorScheme } from '../theme/color-scheme-context';
 export const LoaderProgressSpinner: FC<SvgProps> = (props) => {
   const colorScheme = useAppColorScheme();
   return (
-    <Svg color={colorScheme.accent} fill="none" height={64} viewBox="0 0 64 64" width={64} {...props}>
+    <Svg
+      color={colorScheme.accent}
+      fill="none"
+      height={64}
+      viewBox="0 0 64 64"
+      width={64}
+      {...props}
+    >
       <Defs>
         <LinearGradient id="a">
           <Stop offset="0%" stopColor={colorScheme.accent} stopOpacity={0} />
-          <Stop offset="100%" stopColor={colorScheme.accent} stopOpacity={0.5} />
+          <Stop
+            offset="100%"
+            stopColor={colorScheme.accent}
+            stopOpacity={0.5}
+          />
         </LinearGradient>
         <LinearGradient id="b">
           <Stop offset="0%" stopColor={colorScheme.accent} />
-          <Stop offset="100%" stopColor={colorScheme.accent} stopOpacity={0.5} />
+          <Stop
+            offset="100%"
+            stopColor={colorScheme.accent}
+            stopOpacity={0.5}
+          />
         </LinearGradient>
       </Defs>
       <G strokeWidth={6}>
         <Path d="M3 32a29 29 0 0158 0" stroke="url(#a)" />
         <Path d="M61 32a29 29 0 01-58 0" stroke="url(#b)" />
-        <Path d="M4 100a96 96 0 010-2" stroke={colorScheme.accent} strokeLinecap="round" />
+        <Path
+          d="M4 100a96 96 0 010-2"
+          stroke={colorScheme.accent}
+          strokeLinecap="round"
+        />
       </G>
     </Svg>
   );
@@ -46,12 +74,20 @@ export const LoaderSuccess: FC<SvgProps> = (props) => (
         gradientTransform="matrix(0 -26 26 0 32.5 32)"
         gradientUnits="userSpaceOnUse"
         id="paint0_angular_1381_17086"
-        r={1}>
+        r={1}
+      >
         <Stop stopColor="#0F151A" />
         <Stop offset={0.715} stopColor="#3F7BA6" stopOpacity={0.11} />
         <Stop offset={1} stopColor="#3F7BA6" stopOpacity={0} />
       </RadialGradient>
-      <LinearGradient gradientUnits="userSpaceOnUse" id="paint1_linear_1381_17086" x1={32.5} x2={32.5} y1={0} y2={64}>
+      <LinearGradient
+        gradientUnits="userSpaceOnUse"
+        id="paint1_linear_1381_17086"
+        x1={32.5}
+        x2={32.5}
+        y1={0}
+        y2={64}
+      >
         <Stop stopColor="#00D066" />
         <Stop offset={1} stopColor="#2EEF8D" />
       </LinearGradient>
@@ -102,12 +138,20 @@ export const LoaderError: FC<SvgProps> = (props) => {
           gradientTransform="matrix(0 -26 26 0 32.5 32)"
           gradientUnits="userSpaceOnUse"
           id="paint0_angular_2140_7619"
-          r={1}>
+          r={1}
+        >
           <Stop stopColor="#0F151A" />
           <Stop offset={0.715} stopColor="#3F7BA6" stopOpacity={0.11} />
           <Stop offset={1} stopColor="#3F7BA6" stopOpacity={0} />
         </RadialGradient>
-        <LinearGradient gradientUnits="userSpaceOnUse" id="paint1_linear_2140_7619" x1={32.5} x2={32.5} y1={0} y2={64}>
+        <LinearGradient
+          gradientUnits="userSpaceOnUse"
+          id="paint1_linear_2140_7619"
+          x1={32.5}
+          x2={32.5}
+          y1={0}
+          y2={64}
+        >
           <Stop stopColor="red" />
           <Stop offset={1} stopColor="#C60505" />
         </LinearGradient>

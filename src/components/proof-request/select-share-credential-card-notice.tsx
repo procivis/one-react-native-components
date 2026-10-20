@@ -3,19 +3,20 @@ import { StyleSheet } from 'react-native';
 
 import { Button, ButtonType } from '../../ui-components';
 import { concatTestID } from '../../utils';
-import { ShareCredentialCardNotice, ShareCredentialCardNoticeProps } from './share-credential-card-notice';
+import {
+  ShareCredentialCardNotice,
+  ShareCredentialCardNoticeProps,
+} from './share-credential-card-notice';
 
-export type SelectShareCredentialCardNoticeProps = ShareCredentialCardNoticeProps & {
-  buttonTitle: string;
-  onPress?: () => void;
-};
+export type SelectShareCredentialCardNoticeProps =
+  ShareCredentialCardNoticeProps & {
+    buttonTitle: string;
+    onPress?: () => void;
+  };
 
-export const SelectShareCredentialCardNotice: FC<SelectShareCredentialCardNoticeProps> = ({
-  buttonTitle,
-  onPress,
-  testID,
-  text,
-}) => {
+export const SelectShareCredentialCardNotice: FC<
+  SelectShareCredentialCardNoticeProps
+> = ({ buttonTitle, onPress, testID, text }) => {
   return (
     <ShareCredentialCardNotice testID={testID} text={text}>
       <Button

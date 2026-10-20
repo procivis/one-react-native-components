@@ -1,6 +1,10 @@
 import React, { FC, PropsWithChildren, useContext, useMemo } from 'react';
 
-import { AccessibilityLanguageFile, getAccessibilityLanguageFile, SupportedAccessibilityLanguage } from './locale';
+import {
+  AccessibilityLanguageFile,
+  getAccessibilityLanguageFile,
+  SupportedAccessibilityLanguage,
+} from './locale';
 
 export type AccessibilityLanguageFileEntryKey = keyof AccessibilityLanguageFile;
 type AccessibilityLanguageTranslate = (
@@ -8,11 +12,15 @@ type AccessibilityLanguageTranslate = (
   params?: Record<string, string | number>,
 ) => string;
 
-const AccessibilityLanguageContext = React.createContext<AccessibilityLanguageTranslate | undefined>(undefined);
+const AccessibilityLanguageContext = React.createContext<
+  AccessibilityLanguageTranslate | undefined
+>(undefined);
 
 export interface AccessibilityLanguageProviderProps {
   language: SupportedAccessibilityLanguage;
-  overrides?: Partial<AccessibilityLanguageFile> | AccessibilityLanguageTranslate;
+  overrides?:
+    | Partial<AccessibilityLanguageFile>
+    | AccessibilityLanguageTranslate;
 }
 
 const Provider = AccessibilityLanguageContext.Provider;
@@ -22,11 +30,9 @@ const Provider = AccessibilityLanguageContext.Provider;
  * @param {SupportedAccessibilityLanguage} language Currenty selected language of the app
  * @param {Object} overrides _(optional)_ Custom overrides for specific entries
  */
-export const AccessibilityLanguageProvider: FC<PropsWithChildren<AccessibilityLanguageProviderProps>> = ({
-  language,
-  overrides,
-  children,
-}) => {
+export const AccessibilityLanguageProvider: FC<
+  PropsWithChildren<AccessibilityLanguageProviderProps>
+> = ({ language, overrides, children }) => {
   const translate = useMemo<AccessibilityLanguageTranslate>(() => {
     if (typeof overrides === 'function') {
       return overrides;
@@ -39,7 +45,10 @@ export const AccessibilityLanguageProvider: FC<PropsWithChildren<AccessibilityLa
       // replace params
       if (translation && params) {
         Object.entries(params).forEach(([key, value]) => {
-          translation = translation.replace(new RegExp(`{${key}}`, 'g'), String(value));
+          translation = translation.replace(
+            new RegExp(`{${key}}`, 'g'),
+            String(value),
+          );
         });
       }
 
@@ -59,7 +68,9 @@ export const useAccessibilityTranslation = () => {
 
   // check context provided
   if (!translate) {
-    throw new Error('Accessibility Language not provided!, wrap your components in the AccessibilityLanguageProvider');
+    throw new Error(
+      'Accessibility Language not provided!, wrap your components in the AccessibilityLanguageProvider',
+    );
   }
 
   return translate;

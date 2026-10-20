@@ -9,7 +9,7 @@ export enum CarouselImageType {
   Barcode = 'Barcode',
   MRZ = 'MRZ',
   Photo = 'Photo',
-  QrCode = 'QrCode'
+  QrCode = 'QrCode',
 }
 
 export type CarouselImage = {
@@ -18,7 +18,7 @@ export type CarouselImage = {
 };
 
 type CarouselProps = {
-  carouselSize: { height: number, width: number; };
+  carouselSize: { height: number; width: number };
   imagesToRender: CarouselImage[];
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -33,15 +33,20 @@ const itemStyle = (type: CarouselImageType): StyleProp<ViewStyle> => {
     case CarouselImageType.Photo: {
       const borderStyle = {
         borderColor: '#FFFFFF',
-      }
+      };
       return [styles.Photo, borderStyle];
     }
     case CarouselImageType.QrCode:
       return styles.QrCode;
-  };
-}
+  }
+};
 
-const CarouselComponent: FC<CarouselProps> = ({ carouselSize, imagesToRender, style, testID }) => {
+const CarouselComponent: FC<CarouselProps> = ({
+  carouselSize,
+  imagesToRender,
+  style,
+  testID,
+}) => {
   const [selectedDot, setSelectedDot] = useState(0);
 
   if (!carouselSize.width || !carouselSize.height) {

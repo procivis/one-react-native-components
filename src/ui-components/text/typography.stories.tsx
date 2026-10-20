@@ -11,7 +11,12 @@ type ColorSchemeKey = keyof Omit<ColorScheme, 'darkMode'>;
 
 const Render = ({ color, ...args }: TypographyProps) => {
   const colorScheme = useAppColorScheme();
-  return <Typography {...args} color={colorScheme[color as ColorSchemeKey] as ColorValue} />;
+  return (
+    <Typography
+      {...args}
+      color={colorScheme[color as ColorSchemeKey] as ColorValue}
+    />
+  );
 };
 
 const Basic: StoryObj<typeof Typography> = {
@@ -64,7 +69,6 @@ export default {
     },
   },
   args: {
-     
     onAnnouncementFinished: fn(),
   },
   component: Typography,

@@ -1,8 +1,16 @@
 import React, { FC } from 'react';
-import { ColorValue, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  ColorValue,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../../utils/testID';
-import ImageOrComponent, { ImageOrComponentSource } from '../../image/image-or-component';
+import ImageOrComponent, {
+  ImageOrComponentSource,
+} from '../../image/image-or-component';
 import Typography from '../../text/typography';
 
 export enum CredentialLogoSize {
@@ -36,20 +44,32 @@ const CredentialLogo: FC<CredentialLogoProps> = ({
     width: size,
   };
   return (
-    <View style={[styles.logo, sizeStyle, { backgroundColor: color }, style]} testID={testID}>
+    <View
+      style={[styles.logo, sizeStyle, { backgroundColor: color }, style]}
+      testID={testID}
+    >
       {icon ? (
-        <ImageOrComponent source={icon} style={sizeStyle} testID={concatTestID(testID, 'icon')} />
+        <ImageOrComponent
+          source={icon}
+          style={sizeStyle}
+          testID={concatTestID(testID, 'icon')}
+        />
       ) : (
         <View testID={concatTestID(testID, 'backgroundColor', String(color))}>
-          <View testID={concatTestID(testID, 'textColor', String(iconLabelColor))}>
+          <View
+            testID={concatTestID(testID, 'textColor', String(iconLabelColor))}
+          >
             <Typography
               color={iconLabelColor}
               preset={size === CredentialLogoSize.Regular ? 'm' : 'xs'}
               style={[
                 styles.imagePlaceholder,
-                size === CredentialLogoSize.Regular ? styles.imagePlaceholderRegular : styles.imagePlaceholderSmall,
+                size === CredentialLogoSize.Regular
+                  ? styles.imagePlaceholderRegular
+                  : styles.imagePlaceholderSmall,
               ]}
-              testID={concatTestID(testID, 'name')}>
+              testID={concatTestID(testID, 'name')}
+            >
               {showFullName ? credentialName : credentialName.substring(0, 1)}
             </Typography>
           </View>

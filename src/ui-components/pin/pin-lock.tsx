@@ -33,7 +33,12 @@ interface PinLockModalProps {
   seconds: number;
 }
 
-const PinLockModal: FC<PinLockModalProps> = ({ attempts, labels, seconds, open }) => {
+const PinLockModal: FC<PinLockModalProps> = ({
+  attempts,
+  labels,
+  seconds,
+  open,
+}) => {
   const colorScheme = useAppColorScheme();
   const lottie = useRef<LottieView>(null);
   const isFocused = useIsFocused();
@@ -69,14 +74,21 @@ const PinLockModal: FC<PinLockModalProps> = ({ attempts, labels, seconds, open }
   };
 
   return (
-    <Modal animationType="slide" statusBarTranslucent={true} transparent={true} visible={open}>
+    <Modal
+      animationType="slide"
+      statusBarTranslucent={true}
+      transparent={true}
+      visible={open}
+    >
       <View style={[styles.overlay, overlayColorStyle]}>
         <StatusBar barStyle={'dark-content'} />
         {content}
         <Typography color={colorScheme.text} preset="m/heading">
           {labels.title(attempts)}
         </Typography>
-        <Typography color={colorScheme.text}>{labels.subtitle(Math.floor(seconds / 60), seconds % 60)}</Typography>
+        <Typography color={colorScheme.text}>
+          {labels.subtitle(Math.floor(seconds / 60), seconds % 60)}
+        </Typography>
       </View>
     </Modal>
   );

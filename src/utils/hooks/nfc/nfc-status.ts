@@ -18,12 +18,10 @@ export const useNFCStatus = () => {
   }, []);
 
   useEffect(() => {
-     
     checkNFCStatus();
   }, [checkNFCStatus]);
 
   const recheck = useCallback(() => {
-     
     checkNFCStatus();
   }, [checkNFCStatus]);
 

@@ -5,12 +5,23 @@ import { fn } from 'storybook/test';
 import CredentialCardBackground from '../../../../storybook/assets/CredentialCardBackground.png';
 import ColorSchemes from '../../../../storybook/colorScheme';
 import { ExtendedContext } from '../../../../storybook/context';
-import { CredentialNoticeWarningIcon, CredentialWarningIcon, RequiredAttributeIcon } from '../../icons/credential';
+import {
+  CredentialNoticeWarningIcon,
+  CredentialWarningIcon,
+  RequiredAttributeIcon,
+} from '../../icons/credential';
 import CredentialCard, { CredentialCardProps } from './credential-card';
 
-const Render = (args: CredentialCardProps, context: StoryContext<CredentialCardProps>) => {
+const Render = (
+  args: CredentialCardProps,
+  context: StoryContext<CredentialCardProps>,
+) => {
   const extendedContext = context as ExtendedContext<CredentialCardProps>;
-  const viewport = extendedContext.parameters.viewport.options[extendedContext.userGlobals.viewport.value ?? extendedContext.initialGlobals.viewport.value];
+  const viewport =
+    extendedContext.parameters.viewport.options[
+      extendedContext.userGlobals.viewport.value ??
+        extendedContext.initialGlobals.viewport.value
+    ];
   const width = parseInt(viewport.styles.width.replace('px', ''), 10);
   const props = {
     ...args,

@@ -1,5 +1,18 @@
-import React, { FunctionComponent, PropsWithChildren, useCallback, useState } from 'react';
-import { LayoutChangeEvent, ScrollView, ScrollViewProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  useCallback,
+  useState,
+} from 'react';
+import {
+  LayoutChangeEvent,
+  ScrollView,
+  ScrollViewProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { concatTestID } from '../../utils/testID';
@@ -44,20 +57,33 @@ const DetailScreen: FunctionComponent<PropsWithChildren<DetailScreenProps>> = ({
     setHeaderHeight(event.nativeEvent.layout.height);
   }, []);
 
-  const contentHeight = layoutHeight && headerHeight ? layoutHeight - headerHeight - insets.top : undefined;
+  const contentHeight =
+    layoutHeight && headerHeight
+      ? layoutHeight - headerHeight - insets.top
+      : undefined;
 
   return (
     <View
       onAccessibilityEscape={() => {}}
       onLayout={layoutHandler}
-      style={[styles.container, { backgroundColor: colorScheme.background, paddingTop: insets.top }]}
-      testID={testID}>
+      style={[
+        styles.container,
+        { backgroundColor: colorScheme.background, paddingTop: insets.top },
+      ]}
+      testID={testID}
+    >
       <Header onLayout={headerLayoutHandler} {...headerProps} />
       {contentHeight ? (
         staticContent ? (
           <View
-            style={[styles.contentWrapper, styles.staticContent, { height: contentHeight }, style]}
-            testID={concatTestID(testID, 'content')}>
+            style={[
+              styles.contentWrapper,
+              styles.staticContent,
+              { height: contentHeight },
+              style,
+            ]}
+            testID={concatTestID(testID, 'content')}
+          >
             {children}
           </View>
         ) : (
@@ -66,9 +92,16 @@ const DetailScreen: FunctionComponent<PropsWithChildren<DetailScreenProps>> = ({
             contentContainerStyle={{ minHeight: contentHeight }}
             showsVerticalScrollIndicator={false}
             style={style}
-            testID={concatTestID(testID, 'content')}>
+            testID={concatTestID(testID, 'content')}
+          >
             <View
-              style={[styles.contentWrapper, styles.scrollableContent, { paddingBottom: bottomPadding }, contentStyle]}>
+              style={[
+                styles.contentWrapper,
+                styles.scrollableContent,
+                { paddingBottom: bottomPadding },
+                contentStyle,
+              ]}
+            >
               {children}
             </View>
           </ScrollView>

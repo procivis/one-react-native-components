@@ -1,5 +1,19 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dimensions, LayoutChangeEvent, Linking, StyleSheet, View, ViewInstance, ViewStyle } from 'react-native';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  Dimensions,
+  LayoutChangeEvent,
+  Linking,
+  StyleSheet,
+  View,
+  ViewInstance,
+  ViewStyle,
+} from 'react-native';
 import Animated, {
   clamp,
   SharedValue,
@@ -133,8 +147,12 @@ const TextWithHighlight: FunctionComponent<{
       onLayout={onLayout}
       preset="s/code"
       style={styles.attributeValue}
-      testID={testID}>
-      <Typography color={colorScheme.nerdView.codeHighlightText} preset="s/code">
+      testID={testID}
+    >
+      <Typography
+        color={colorScheme.nerdView.codeHighlightText}
+        preset="s/code"
+      >
         {highlightedText}
       </Typography>
       {text}
@@ -181,20 +199,34 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
       return expandedView.value.viewHeight / 2 - iconHeight / 2;
     }
 
-    const viewEnd = expandedView.value.viewStart + expandedView.value.viewHeight;
+    const viewEnd =
+      expandedView.value.viewStart + expandedView.value.viewHeight;
     let zeroedOffset = scrollOffset.value - expandedView.value.expandedAtOffset;
 
     if (expandedView.value.viewStart > screenMiddle) {
-      zeroedOffset = zeroedOffset - (expandedView.value.viewStart - screenMiddle + ICON_HEIGHT / 2);
+      zeroedOffset =
+        zeroedOffset -
+        (expandedView.value.viewStart - screenMiddle + ICON_HEIGHT / 2);
     } else {
       if (viewEnd < screenMiddle + ICON_HEIGHT) {
-        zeroedOffset = zeroedOffset + (screenMiddle - expandedView.value.viewStart - ICON_HEIGHT / 2);
-      } else if (expandedView.value.viewStart < screenMiddle && viewEnd > screenMiddle) {
-        zeroedOffset = zeroedOffset + (screenMiddle - expandedView.value.viewStart - ICON_HEIGHT / 2);
+        zeroedOffset =
+          zeroedOffset +
+          (screenMiddle - expandedView.value.viewStart - ICON_HEIGHT / 2);
+      } else if (
+        expandedView.value.viewStart < screenMiddle &&
+        viewEnd > screenMiddle
+      ) {
+        zeroedOffset =
+          zeroedOffset +
+          (screenMiddle - expandedView.value.viewStart - ICON_HEIGHT / 2);
       }
     }
 
-    return clamp(zeroedOffset, 0, expandedView.value.viewHeight - ICON_HEIGHT - 8);
+    return clamp(
+      zeroedOffset,
+      0,
+      expandedView.value.viewHeight - ICON_HEIGHT - 8,
+    );
   });
 
   const iconStyle = useAnimatedStyle(() => {
@@ -207,7 +239,9 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
     };
   }, [iconTopPosition]);
 
-  const previewText = expanded ? attributeText : attributeText.slice(0, VALUE_PREVIEW_LENGTH) + '...';
+  const previewText = expanded
+    ? attributeText
+    : attributeText.slice(0, VALUE_PREVIEW_LENGTH) + '...';
 
   useEffect(() => {
     if (!scrollOffset || isSingleLine === undefined) {
@@ -239,12 +273,14 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
         { backgroundColor: colorScheme.nerdView.attributeSectionBackground },
         last ? styles.lastAttribute : {},
       ]}
-      testID={testID}>
+      testID={testID}
+    >
       <Typography
         color={colorScheme.nerdView.attributeLabel}
         preset="s/code"
         style={styles.attributeLabel}
-        testID={concatTestID(testID, 'attributeLabel')}>
+        testID={concatTestID(testID, 'attributeLabel')}
+      >
         {attributeKey}
       </Typography>
       <View
@@ -255,7 +291,8 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
             backgroundColor: colorScheme.nerdView.attributeValueBackground,
             borderColor: colorScheme.nerdView.attributeValueBorder,
           },
-        ]}>
+        ]}
+      >
         {element ? (
           element
         ) : (
@@ -267,7 +304,13 @@ const NerdModeItem: FunctionComponent<NerdModeItemProps> = ({
           />
         )}
         {(canBeCopied || link) && isSingleLine !== undefined ? (
-          <Animated.View style={[styles.actionIcon, isSingleLine ? styles.actionIconSingleLine : undefined, iconStyle]}>
+          <Animated.View
+            style={[
+              styles.actionIcon,
+              isSingleLine ? styles.actionIconSingleLine : undefined,
+              iconStyle,
+            ]}
+          >
             {
               <ActionIcon
                 copy={canBeCopied}

@@ -8,15 +8,20 @@ export type ShareCredentialCardNoticeProps = {
   text: string;
 };
 
-export const ShareCredentialCardNotice: FC<PropsWithChildren<ShareCredentialCardNoticeProps>> = ({
-  children,
-  testID,
-  text,
-}) => {
+export const ShareCredentialCardNotice: FC<
+  PropsWithChildren<ShareCredentialCardNoticeProps>
+> = ({ children, testID, text }) => {
   const colorScheme = useAppColorScheme();
   return (
-    <View style={[styles.notice, { backgroundColor: colorScheme.background }]} testID={testID}>
-      <Typography align="center" color={colorScheme.text} preset="s/line-height-capped">
+    <View
+      style={[styles.notice, { backgroundColor: colorScheme.background }]}
+      testID={testID}
+    >
+      <Typography
+        align="center"
+        color={colorScheme.text}
+        preset="s/line-height-capped"
+      >
         {text}
       </Typography>
       {children}

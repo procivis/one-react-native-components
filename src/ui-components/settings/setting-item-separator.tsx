@@ -1,5 +1,11 @@
 import React, { FC } from 'react';
-import { ColorValue, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  ColorValue,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
@@ -8,11 +14,21 @@ export type SettingItemSeparatorProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-const SettingItemSeparator: FC<SettingItemSeparatorProps> = ({ color, style }) => {
+const SettingItemSeparator: FC<SettingItemSeparatorProps> = ({
+  color,
+  style,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
-    <View style={[styles.wrapper, { backgroundColor: colorScheme.white }, style]}>
-      <View style={[styles.separator, { backgroundColor: color ?? colorScheme.background }]} />
+    <View
+      style={[styles.wrapper, { backgroundColor: colorScheme.white }, style]}
+    >
+      <View
+        style={[
+          styles.separator,
+          { backgroundColor: color ?? colorScheme.background },
+        ]}
+      />
     </View>
   );
 };

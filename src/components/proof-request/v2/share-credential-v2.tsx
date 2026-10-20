@@ -5,10 +5,24 @@ import {
   PresentationDefinitionV2Claim,
 } from '@procivis/react-native-one-core';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Dimensions, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import {
+  Dimensions,
+  ImageSourcePropType,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 
-import { CredentialDetailsCardListItem, useAppColorScheme } from '../../../ui-components';
-import { concatTestID, getValidityState, useCoreConfig, ValidityState } from '../../../utils';
+import {
+  CredentialDetailsCardListItem,
+  useAppColorScheme,
+} from '../../../ui-components';
+import {
+  concatTestID,
+  getValidityState,
+  useCoreConfig,
+  ValidityState,
+} from '../../../utils';
 import { shareCredentialCardFromV2PresentationCredential } from '../../../utils/parsers/credential-sharing-v2';
 import { SelectShareCredentialCardNotice } from '../select-share-credential-card-notice';
 import { ShareCredentialCardNotice } from '../share-credential-card-notice';
@@ -59,17 +73,32 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
 }) => {
   const colorScheme = useAppColorScheme();
   const applicableCredentials =
-    credentialQuery.type_ === 'APPLICABLE_CREDENTIALS' ? credentialQuery.applicableCredentials : undefined;
-  const failureHint = credentialQuery.type_ === 'FAILURE_HINT' ? credentialQuery.failureHint : undefined;
-  const credential = applicableCredentials?.find((c) => c.id === selectedCredentialId) ?? applicableCredentials?.[0];
+    credentialQuery.type_ === 'APPLICABLE_CREDENTIALS'
+      ? credentialQuery.applicableCredentials
+      : undefined;
+  const failureHint =
+    credentialQuery.type_ === 'FAILURE_HINT'
+      ? credentialQuery.failureHint
+      : undefined;
+  const credential =
+    applicableCredentials?.find((c) => c.id === selectedCredentialId) ??
+    applicableCredentials?.[0];
   const { data: config } = useCoreConfig();
   const cardWidth = useMemo(
-    () => Dimensions.get('window').width - 32 - (grouped ? GroupedShareCredentialV2Padding * 2 : 0),
+    () =>
+      Dimensions.get('window').width -
+      32 -
+      (grouped ? GroupedShareCredentialV2Padding * 2 : 0),
     [grouped],
   );
-  const purpose = credentialQuery.type_ === 'APPLICABLE_CREDENTIALS' ? credentialQuery.purpose?.[language] : undefined;
+  const purpose =
+    credentialQuery.type_ === 'APPLICABLE_CREDENTIALS'
+      ? credentialQuery.purpose?.[language]
+      : undefined;
 
-  const multipleCredentialsAvailable = Boolean(applicableCredentials?.length && applicableCredentials.length > 1);
+  const multipleCredentialsAvailable = Boolean(
+    applicableCredentials?.length && applicableCredentials.length > 1,
+  );
 
   const validityState = getValidityState(
     credential
@@ -78,13 +107,16 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
           issuer: credential?.issuer?.id,
           schema: {
             ...credential.schema,
-            formats: [{
-              ecosystemSchemaId: credential.schema.schemaId,
-              format: credential.schema.format,
-            }],
+            formats: [
+              {
+                ecosystemSchemaId: credential.schema.schemaId,
+                format: credential.schema.format,
+              },
+            ],
             walletAttestation: {
               keyStorageSecurityLevel: credential.schema.keyStorageSecurity,
-              requireInstanceAttestation: credential.schema.requiresWalletInstanceAttestation,
+              requireInstanceAttestation:
+                credential.schema.requiresWalletInstanceAttestation,
             },
           },
           type: CredentialType.SINGLE,

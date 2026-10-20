@@ -1,19 +1,35 @@
 import React, { useMemo } from 'react';
-import { Platform, SectionList, SectionListProps, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  Platform,
+  SectionList,
+  SectionListProps,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useOnScrollHeaderState } from '../../utils/hooks/header/on-scroll-header-state';
 import { useListContentInset } from '../../utils/hooks/list/list-content-inset';
-import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
+import NavigationHeader, {
+  NavigationHeaderProps,
+} from '../header/navigation-header';
 import ListTitleHeader from '../list/list-title-header';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export type SectionListScreenProps<ItemT, SectionT> = ViewProps & {
-  header: Omit<NavigationHeaderProps, 'animate' | 'blurred' | 'style' | 'title' | 'titleVisible'> & {
+  header: Omit<
+    NavigationHeaderProps,
+    'animate' | 'blurred' | 'style' | 'title' | 'titleVisible'
+  > & {
     static?: boolean;
     title: string;
   };
-  list: Omit<SectionListProps<ItemT, SectionT>, 'ListHeaderComponent' | 'onScroll'> & {
+  list: Omit<
+    SectionListProps<ItemT, SectionT>,
+    'ListHeaderComponent' | 'onScroll'
+  > & {
     header?: React.ComponentType<any> | React.ReactElement;
   };
   modalPresentation?: boolean;
@@ -21,7 +37,12 @@ export type SectionListScreenProps<ItemT, SectionT> = ViewProps & {
 
 const SectionListScreen = <ItemT, SectionT>({
   header,
-  list: { contentContainerStyle, header: listHeader, stickySectionHeadersEnabled, ...listProps },
+  list: {
+    contentContainerStyle,
+    header: listHeader,
+    stickySectionHeadersEnabled,
+    ...listProps
+  },
   modalPresentation,
   style,
   ...viewProps
@@ -39,7 +60,11 @@ const SectionListScreen = <ItemT, SectionT>({
     headerPaddingStyle = {
       paddingTop: top,
     };
-  } else if (modalPresentation && !header.modalHandleVisible && Platform.OS === 'ios') {
+  } else if (
+    modalPresentation &&
+    !header.modalHandleVisible &&
+    Platform.OS === 'ios'
+  ) {
     headerPaddingStyle = styles.modalHeaderWithoutHandle;
   }
 
@@ -56,7 +81,14 @@ const SectionListScreen = <ItemT, SectionT>({
   }, [listHeader]);
 
   return (
-    <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colorScheme.background },
+        style,
+      ]}
+      {...viewProps}
+    >
       <SectionList<ItemT, SectionT>
         ListHeaderComponent={
           !header.static ? (

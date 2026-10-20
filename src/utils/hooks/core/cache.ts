@@ -2,11 +2,25 @@ import { CacheType } from '@procivis/react-native-one-core';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { useONECore } from './core-context';
-import { CREDENTIAL_DETAIL_QUERY_KEY, CREDENTIAL_LIST_PAGED_QUERY_KEY, CREDENTIAL_LIST_QUERY_KEY } from './credentials';
-import { ORGANISATION_DETAIL_QUERY_KEY, ORGANISATION_ECOSYSTEMS_QUERY_KEY } from './organisation';
+import {
+  CREDENTIAL_DETAIL_QUERY_KEY,
+  CREDENTIAL_LIST_PAGED_QUERY_KEY,
+  CREDENTIAL_LIST_QUERY_KEY,
+} from './credentials';
+import {
+  ORGANISATION_DETAIL_QUERY_KEY,
+  ORGANISATION_ECOSYSTEMS_QUERY_KEY,
+} from './organisation';
 
-const CREDENTIAL_QUERY_KEYS = [CREDENTIAL_LIST_QUERY_KEY, CREDENTIAL_LIST_PAGED_QUERY_KEY, CREDENTIAL_DETAIL_QUERY_KEY];
-const HOLDER_INSTANCE_QUERY_KEYS = [ORGANISATION_ECOSYSTEMS_QUERY_KEY, ORGANISATION_DETAIL_QUERY_KEY];
+const CREDENTIAL_QUERY_KEYS = [
+  CREDENTIAL_LIST_QUERY_KEY,
+  CREDENTIAL_LIST_PAGED_QUERY_KEY,
+  CREDENTIAL_DETAIL_QUERY_KEY,
+];
+const HOLDER_INSTANCE_QUERY_KEYS = [
+  ORGANISATION_ECOSYSTEMS_QUERY_KEY,
+  ORGANISATION_DETAIL_QUERY_KEY,
+];
 
 // Map each CacheType to the query keys that should be invalidated when that cache is cleared.
 const cacheTypeToQueryKeys: Record<CacheType, string[]> = {
@@ -42,7 +56,11 @@ export const useCacheClear = () => {
           keys.forEach((key) => queryKeysToInvalidate.add(key));
         });
 
-        await Promise.all([...queryKeysToInvalidate].map((queryKey) => queryClient.invalidateQueries(queryKey)));
+        await Promise.all(
+          [...queryKeysToInvalidate].map((queryKey) =>
+            queryClient.invalidateQueries(queryKey),
+          ),
+        );
       },
     },
   );

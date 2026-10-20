@@ -1,4 +1,10 @@
-import React, { ComponentType, FunctionComponent, PropsWithChildren, ReactElement, useMemo } from 'react';
+import React, {
+  ComponentType,
+  FunctionComponent,
+  PropsWithChildren,
+  ReactElement,
+  useMemo,
+} from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import Typography from '../text/typography';
@@ -61,10 +67,24 @@ const SettingItem: FunctionComponent<PropsWithChildren<SettingItemProps>> = ({
   }, [icon]);
 
   return (
-    <View style={[styles.wrapper, { backgroundColor: colorScheme.white }, style]}>
+    <View
+      style={[styles.wrapper, { backgroundColor: colorScheme.white }, style]}
+    >
       <View style={styles.container}>
-        {iconView && <View style={[styles.icon, { backgroundColor: colorScheme.background }]}>{iconView}</View>}
-        <Typography accessible={false} color={colorScheme.text} preset="s" style={styles.label} testID={testID}>
+        {iconView && (
+          <View
+            style={[styles.icon, { backgroundColor: colorScheme.background }]}
+          >
+            {iconView}
+          </View>
+        )}
+        <Typography
+          accessible={false}
+          color={colorScheme.text}
+          preset="s"
+          style={styles.label}
+          testID={testID}
+        >
           {title}
         </Typography>
         {children}

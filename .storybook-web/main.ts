@@ -6,7 +6,10 @@ type ServerStorybookConfig = StorybookConfig & {
 };
 
 const main: ServerStorybookConfig = {
-  stories: ['../src/**/*.stories.?(ts|tsx|js|jsx)', '../storybook/web/*.stories.?(ts|tsx|js|jsx)'],
+  stories: [
+    '../src/**/*.stories.?(ts|tsx|js|jsx)',
+    '../storybook/web/*.stories.?(ts|tsx|js|jsx)',
+  ],
 
   addons: [
     '@storybook/addon-links',
@@ -37,19 +40,28 @@ const main: ServerStorybookConfig = {
         '../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '../../Utilities/Platform': 'react-native-web/src/exports/Platform',
         '@react-native-community/blur': '/storybook/modules/blur',
-        'react-native-vision-camera': '/storybook/modules/react-native-vision-camera',
+        'react-native-vision-camera':
+          '/storybook/modules/react-native-vision-camera',
         'react-native-share': '/storybook/modules/react-native-share',
-        '@procivis/react-native-one-core': '/storybook/modules/react-native-one-core',
+        '@procivis/react-native-one-core':
+          '/storybook/modules/react-native-one-core',
         'lottie-react-native': 'react-native-web/src/exports/View',
-        'react-native-bluetooth-state-manager': '/storybook/modules/react-native-bluetooth-state-manager',
+        'react-native-bluetooth-state-manager':
+          '/storybook/modules/react-native-bluetooth-state-manager',
         'qrcode-svg': '/storybook/modules/qrcode-svg',
-        '@react-navigation/native': '/storybook/modules/react-navigation-native',
-        '@quidone/react-native-wheel-picker': 'react-native-web/src/exports/View',
-        'react-native-nitro-modules': '/storybook/modules/react-native-nitro-modules',
-        'react-native-vision-camera-barcode-scanner': '/storybook/modules/react-native-vision-camera-barcode-scanner',
-        'react-native-reanimated-carousel': '/storybook/modules/react-native-reanimated-carousel',
+        '@react-navigation/native':
+          '/storybook/modules/react-navigation-native',
+        '@quidone/react-native-wheel-picker':
+          'react-native-web/src/exports/View',
+        'react-native-nitro-modules':
+          '/storybook/modules/react-native-nitro-modules',
+        'react-native-vision-camera-barcode-scanner':
+          '/storybook/modules/react-native-vision-camera-barcode-scanner',
+        'react-native-reanimated-carousel':
+          '/storybook/modules/react-native-reanimated-carousel',
         '@sentry/react-native': '/storybook/modules/react-native-sentry',
-        '@react-native/assets-registry/registry': 'react-native-web/dist/modules/AssetRegistry',
+        '@react-native/assets-registry/registry':
+          'react-native-web/dist/modules/AssetRegistry',
       },
     },
     optimizeDeps: {
@@ -73,7 +85,7 @@ const main: ServerStorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },
-  
+
   core: {
     builder: '@storybook/builder-vite',
   },

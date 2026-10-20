@@ -1,5 +1,14 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Animated, ColorValue, Easing, LayoutChangeEvent, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  Animated,
+  ColorValue,
+  Easing,
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../utils';
 import BlurView from '../blur/blur-view';
@@ -33,11 +42,14 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   ...props
 }) => {
   const colorScheme = useAppColorScheme();
-  const [titleOpacity] = useState(() => new Animated.Value(titleVisible ? 1 : 0));
+  const [titleOpacity] = useState(
+    () => new Animated.Value(titleVisible ? 1 : 0),
+  );
 
   const [sideItemWidth, setSideItemWidth] = useState<number>();
   const onSideItemLayout = useCallback(
-    ({ nativeEvent: { layout } }: LayoutChangeEvent) => setSideItemWidth((prev) => Math.max(layout.width, prev ?? 0)),
+    ({ nativeEvent: { layout } }: LayoutChangeEvent) =>
+      setSideItemWidth((prev) => Math.max(layout.width, prev ?? 0)),
     [],
   );
 
@@ -87,14 +99,34 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   return (
     <View
       {...props}
-      style={[styles.headerContainer, !blurred ? { backgroundColor } : undefined, style]}
-      testID={testID}>
+      style={[
+        styles.headerContainer,
+        !blurred ? { backgroundColor } : undefined,
+        style,
+      ]}
+      testID={testID}
+    >
       {blurred && (
-        <BlurView blurAmount={10} blurStyle="header" color={backgroundColor} style={StyleSheet.absoluteFill} />
+        <BlurView
+          blurAmount={10}
+          blurStyle="header"
+          color={backgroundColor}
+          style={StyleSheet.absoluteFill}
+        />
       )}
-      {modalHandleVisible && <View style={[styles.modalHandle, { backgroundColor: colorScheme.grayDark }]} />}
+      {modalHandleVisible && (
+        <View
+          style={[
+            styles.modalHandle,
+            { backgroundColor: colorScheme.grayDark },
+          ]}
+        />
+      )}
       <View style={styles.header}>
-        <View onLayout={onSideItemLayout} style={[styles.sideItem, { minWidth: sideItemWidth }]}>
+        <View
+          onLayout={onSideItemLayout}
+          style={[styles.sideItem, { minWidth: sideItemWidth }]}
+        >
           {leftItemView}
         </View>
         <Animated.View style={[styles.title, titleAnimatedStyle]}>
@@ -103,11 +135,19 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
             color={titleColor ?? colorScheme.text}
             numberOfLines={1}
             preset="m/heading"
-            testID={concatTestID(testID, 'title')}>
+            testID={concatTestID(testID, 'title')}
+          >
             {title}
           </Typography>
         </Animated.View>
-        <View onLayout={onSideItemLayout} style={[styles.sideItem, styles.rightSideItem, { minWidth: sideItemWidth }]}>
+        <View
+          onLayout={onSideItemLayout}
+          style={[
+            styles.sideItem,
+            styles.rightSideItem,
+            { minWidth: sideItemWidth },
+          ]}
+        >
           {rightItemView}
         </View>
       </View>

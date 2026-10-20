@@ -32,7 +32,9 @@ export type ONECoreContextProviderProps = {
 
 const ONECoreContext = createContext<ContextValue>(defaultContextValue);
 
-export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProviderProps>> = ({
+export const ONECoreContextProvider: FC<
+  PropsWithChildren<ONECoreContextProviderProps>
+> = ({
   children,
   config,
   databaseDirPath,
@@ -86,7 +88,11 @@ export const ONECoreContextProvider: FC<PropsWithChildren<ONECoreContextProvider
     return null;
   }
 
-  return <ONECoreContext.Provider value={contextValue}>{children}</ONECoreContext.Provider>;
+  return (
+    <ONECoreContext.Provider value={contextValue}>
+      {children}
+    </ONECoreContext.Provider>
+  );
 };
 
 export const useONECore = () => useContext(ONECoreContext);

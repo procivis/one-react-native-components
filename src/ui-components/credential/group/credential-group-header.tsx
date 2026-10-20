@@ -1,5 +1,11 @@
 import React, { FC, useMemo } from 'react';
-import { AccessibilityProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  AccessibilityProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../../utils';
 import { Typography } from '../../text';
@@ -12,7 +18,13 @@ export interface CredentialGroupHeaderProps extends AccessibilityProps {
   testID?: string;
 }
 
-const CredentialGroupHeader: FC<CredentialGroupHeaderProps> = ({ accessory, name, style, testID, ...props }) => {
+const CredentialGroupHeader: FC<CredentialGroupHeaderProps> = ({
+  accessory,
+  name,
+  style,
+  testID,
+  ...props
+}) => {
   const colorScheme = useAppColorScheme();
 
   const accessoryView: React.ReactElement | undefined = useMemo(() => {
@@ -36,7 +48,8 @@ const CredentialGroupHeader: FC<CredentialGroupHeaderProps> = ({ accessory, name
           numberOfLines={1}
           preset="regular"
           style={styles.nameText}
-          testID={concatTestID(testID, 'name')}>
+          testID={concatTestID(testID, 'name')}
+        >
           {name}
         </Typography>
       </View>

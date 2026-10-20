@@ -4,7 +4,11 @@ import { StyleSheet } from 'react-native';
 
 import { Button } from '../buttons';
 import { Biometry } from './keypad';
-import { PinCodeScreen, PinCodeScreenActions, PinCodeScreenProps } from './pin-code-screen';
+import {
+  PinCodeScreen,
+  PinCodeScreenActions,
+  PinCodeScreenProps,
+} from './pin-code-screen';
 
 type Props = PinCodeScreenProps & {
   showActions: boolean;
@@ -37,7 +41,11 @@ const Render = ({
         {...args}
       />
       {showActions && (
-        <Button onPress={() => actionsRef.current?.shakeKeypad()} style={styles.actionButton} title="shake" />
+        <Button
+          onPress={() => actionsRef.current?.shakeKeypad()}
+          style={styles.actionButton}
+          title="shake"
+        />
       )}
     </>
   );

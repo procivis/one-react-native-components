@@ -1,11 +1,21 @@
 import React, { FC, useCallback, useState } from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import {
+  LayoutChangeEvent,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { CredentialCardRatio, CredentialCardShadow } from './credential-card';
-import CredentialDetailsCard, { CredentialDetailsCardProps } from './credential-details-card';
+import CredentialDetailsCard, {
+  CredentialDetailsCardProps,
+} from './credential-details-card';
 
-export type CredentialDetailsCardListItemProps = Omit<CredentialDetailsCardProps, 'animate'> & {
+export type CredentialDetailsCardListItemProps = Omit<
+  CredentialDetailsCardProps,
+  'animate'
+> & {
   detailsCardStyle?: StyleProp<ViewStyle>;
   lastItem?: boolean;
 };
@@ -44,16 +54,20 @@ const CredentialDetailsCardListItem: FC<CredentialDetailsCardListItemProps> = ({
           height: expanded ? 'auto' : minHeight,
         },
         style,
-      ]}>
+      ]}
+    >
       <Animated.View
         layout={LinearTransition}
         style={[
           styles.cardWrapper,
           // eslint-disable-next-line react-native/no-inline-styles
           {
-            height: expanded ? 'auto' : Math.ceil(cardWidth / CredentialCardRatio),
+            height: expanded
+              ? 'auto'
+              : Math.ceil(cardWidth / CredentialCardRatio),
           },
-        ]}>
+        ]}
+      >
         <CredentialDetailsCard
           animate={false}
           expanded={true}

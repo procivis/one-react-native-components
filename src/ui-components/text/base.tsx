@@ -25,10 +25,9 @@ export type BaseTextProps = TextProps & {
   style?: StyleProp<TextStyle>;
 };
 
-export const BaseText: FC<PropsWithChildren<BaseTextProps> & React.RefAttributes<HostInstance>> = React.forwardRef<
-  TextInstance,
-  PropsWithChildren<BaseTextProps>
->(
+export const BaseText: FC<
+  PropsWithChildren<BaseTextProps> & React.RefAttributes<HostInstance>
+> = React.forwardRef<TextInstance, PropsWithChildren<BaseTextProps>>(
   (
     {
       align = 'left',
@@ -43,7 +42,7 @@ export const BaseText: FC<PropsWithChildren<BaseTextProps> & React.RefAttributes
     ref,
   ) => {
     const announcementFinished = useAccessibilityAnnouncementCumulative(
-      announcementActive && typeof children === 'string' ? (children) : undefined,
+      announcementActive && typeof children === 'string' ? children : undefined,
       announcementCumulative,
     );
     useEffect(() => {
@@ -56,7 +55,12 @@ export const BaseText: FC<PropsWithChildren<BaseTextProps> & React.RefAttributes
     };
 
     return (
-      <Text maxFontSizeMultiplier={2} ref={ref} style={[baseStyle, style]} {...props}>
+      <Text
+        maxFontSizeMultiplier={2}
+        ref={ref}
+        style={[baseStyle, style]}
+        {...props}
+      >
         {children}
       </Text>
     );

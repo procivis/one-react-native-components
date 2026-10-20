@@ -1,4 +1,10 @@
-import React, { ComponentType, FunctionComponent, JSXElementConstructor, ReactElement, useMemo } from 'react';
+import React, {
+  ComponentType,
+  FunctionComponent,
+  JSXElementConstructor,
+  ReactElement,
+  useMemo,
+} from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../utils';
@@ -17,7 +23,13 @@ export type WalletNoticeProps = {
 
 const testID = 'WalletNotice';
 
-const WalletNotice: FunctionComponent<WalletNoticeProps> = ({ accessory, icon, style, text, onClose }) => {
+const WalletNotice: FunctionComponent<WalletNoticeProps> = ({
+  accessory,
+  icon,
+  style,
+  text,
+  onClose,
+}) => {
   const colorScheme = useAppColorScheme();
 
   const iconView: React.ReactElement | undefined = useMemo(() => {
@@ -48,13 +60,20 @@ const WalletNotice: FunctionComponent<WalletNoticeProps> = ({ accessory, icon, s
     <View style={[styles.noticeContainer, style]} testID={testID}>
       <View style={styles.title}>
         {iconView}
-        <Typography color={colorScheme.white} testID={concatTestID(testID, 'label')}>
+        <Typography
+          color={colorScheme.white}
+          testID={concatTestID(testID, 'label')}
+        >
           {text}
         </Typography>
         {accessoryView}
       </View>
       {onClose && (
-        <TouchableOpacity onPress={onClose} style={styles.closeIcon} testID={concatTestID(testID, 'close')}>
+        <TouchableOpacity
+          onPress={onClose}
+          style={styles.closeIcon}
+          testID={concatTestID(testID, 'close')}
+        >
           <CloseIcon color="white" />
         </TouchableOpacity>
       )}

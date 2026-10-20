@@ -14,7 +14,12 @@ export default {
   argTypes: {
     state: {
       control: { type: 'radio' },
-      options: [LoaderViewState.InProgress, LoaderViewState.Success, LoaderViewState.Warning, LoaderViewState.Error],
+      options: [
+        LoaderViewState.InProgress,
+        LoaderViewState.Success,
+        LoaderViewState.Warning,
+        LoaderViewState.Error,
+      ],
     },
   },
   component: LoaderView,

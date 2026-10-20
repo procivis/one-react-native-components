@@ -8,7 +8,15 @@ export const EntityTrustedIcon: FC<SvgProps> = ({ ...props }) => {
   const colorScheme = useAppColorScheme();
   return (
     <Svg fill="none" height={19} viewBox="0 0 16 19" width={16} {...props}>
-      <Mask fill={colorScheme.black} height={21} id="a" maskUnits="userSpaceOnUse" width={18} x={0} y={0.0496979}>
+      <Mask
+        fill={colorScheme.black}
+        height={21}
+        id="a"
+        maskUnits="userSpaceOnUse"
+        width={18}
+        x={0}
+        y={0.0496979}
+      >
         <Path d="M0 0.0496979H18V21.0496979H0z" fill={colorScheme.white} />
         <Path d="M10.265 2.255a4 4 0 00-2.53 0l-3 1A4 4 0 002 7.05v4.117a7 7 0 007 7 7 7 0 007-7V7.05a4 4 0 00-2.735-3.795l-3-1z" />
       </Mask>

@@ -7,15 +7,22 @@ type ListContentInsetProps = {
   modalPresentation?: boolean;
 };
 
-export const useListContentInset: (props: ListContentInsetProps) => ViewStyle = (
-  { additionalBottomPadding = 54, headerHeight = 48, modalPresentation = false }: ListContentInsetProps = {
+export const useListContentInset: (
+  props: ListContentInsetProps,
+) => ViewStyle = (
+  {
+    additionalBottomPadding = 54,
+    headerHeight = 48,
+    modalPresentation = false,
+  }: ListContentInsetProps = {
     additionalBottomPadding: 54,
     headerHeight: 48,
     modalPresentation: false,
   },
 ) => {
   const { top, bottom } = useSafeAreaInsets();
-  const topSafeAreaInset = !modalPresentation || Platform.OS === 'android' ? top : 0;
+  const topSafeAreaInset =
+    !modalPresentation || Platform.OS === 'android' ? top : 0;
   const contentInsetsStyle: ViewStyle = {
     paddingBottom: bottom + additionalBottomPadding,
     paddingTop: topSafeAreaInset + headerHeight,

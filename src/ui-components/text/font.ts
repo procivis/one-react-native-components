@@ -24,13 +24,16 @@ export interface FontFactoryProps {
 // generate styles for a font with given weight and style
 export const fontFactory = ({ face, weight }: FontFactoryProps): FontStyle => {
   if (Platform.OS === 'android') {
-    const filePrefix = Object.values(FontFace)[Object.values(FontFace).indexOf(face)]?.replace(' ', '');
+    const filePrefix = Object.values(FontFace)[
+      Object.values(FontFace).indexOf(face)
+    ]?.replace(' ', '');
     if (!weight) {
       return {
         fontFamily: filePrefix,
       };
     }
-    const fileSuffix = Object.keys(FontWeight)[Object.values(FontWeight).indexOf(weight)];
+    const fileSuffix =
+      Object.keys(FontWeight)[Object.values(FontWeight).indexOf(weight)];
     return {
       fontFamily: `${filePrefix}-${fileSuffix}`,
     };

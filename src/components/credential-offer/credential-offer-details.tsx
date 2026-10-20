@@ -2,8 +2,20 @@ import { ClaimSchema } from '@procivis/react-native-one-core';
 import React, { FC, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { CredentialAttribute, CredentialDetailsCardListItem,Selector, SelectorStatus } from '../../ui-components';
-import { CardLabels, concatTestID, detailsCardFromCredential,useCoreConfig, useCredentialDetail, useCredentialSchemaDetail } from '../../utils';
+import {
+  CredentialAttribute,
+  CredentialDetailsCardListItem,
+  Selector,
+  SelectorStatus,
+} from '../../ui-components';
+import {
+  CardLabels,
+  concatTestID,
+  detailsCardFromCredential,
+  useCoreConfig,
+  useCredentialDetail,
+  useCredentialSchemaDetail,
+} from '../../utils';
 
 const getDummyAttributes = (
   claimSchemas: ClaimSchema[],
@@ -20,7 +32,7 @@ export type OfferCardLabels = CardLabels & {
   more: string;
   showAll: string;
   showLess: string;
-}
+};
 
 export interface CredentialOfferDetailsProps {
   credentialId: string;
@@ -52,7 +64,7 @@ export const CredentialOfferDetails: FC<CredentialOfferDetailsProps> = ({
   const cardWidth = useMemo(() => Dimensions.get('window').width - 32, []);
 
   const testID = concatTestID('Credential.credential', credential?.id);
-  
+
   const { card, attributes } =
     credential && config
       ? detailsCardFromCredential(
@@ -76,7 +88,13 @@ export const CredentialOfferDetails: FC<CredentialOfferDetailsProps> = ({
   }
 
   if (!hideHeaderAccessory) {
-    card.header.accessory = <Selector status={selected ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty} />;
+    card.header.accessory = (
+      <Selector
+        status={
+          selected ? SelectorStatus.SelectedCheckmark : SelectorStatus.Empty
+        }
+      />
+    );
   }
 
   return (
@@ -84,7 +102,8 @@ export const CredentialOfferDetails: FC<CredentialOfferDetailsProps> = ({
       attributes={displayedAttributes}
       card={{
         ...card,
-        count: parentCredential?.remainingBatchItemCount?.[credential.format ?? ''],
+        count:
+          parentCredential?.remainingBatchItemCount?.[credential.format ?? ''],
         credentialId,
         onHeaderPress,
         width: cardWidth,

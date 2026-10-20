@@ -6,14 +6,19 @@ import ScanButton, { ScanButtonProps } from './scan-button';
 
 const Render = ({ style, ...args }: ScanButtonProps) => {
   const insets = useSafeAreaInsets();
-  return <ScanButton {...args} style={[{ marginVertical: Math.max(24, insets.top) }, style]} />;
+  return (
+    <ScanButton
+      {...args}
+      style={[{ marginVertical: Math.max(24, insets.top) }, style]}
+    />
+  );
 };
 
 const Basic: StoryObj<typeof ScanButton> = {
   args: {
     labels: {
       issue: 'Issue',
-      sign: 'Sign'
+      sign: 'Sign',
     },
   },
   render: Render,

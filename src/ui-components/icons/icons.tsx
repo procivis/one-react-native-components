@@ -8,7 +8,15 @@ export const ScanIcon: FC<SvgProps> = ({ color, ...props }) => {
   return (
     <Svg fill="none" height="24" viewBox="0 0 24 24" width="24" {...props}>
       <Rect fill={color} height="2" rx="0.5" width="14" x="5" y="11" />
-      <Rect fill={color} height="2" rx="0.5" transform="rotate(90 13 5)" width="14" x="13" y="5" />
+      <Rect
+        fill={color}
+        height="2"
+        rx="0.5"
+        transform="rotate(90 13 5)"
+        width="14"
+        x="13"
+        y="5"
+      />
       <Path
         d="M3.2207 8.61914C2.69987 8.61914 2.43945 8.35221 2.43945 7.81836V5.42578C2.43945 4.42318 2.69336 3.67122 3.20117 3.16992C3.71549 2.66211 4.48372 2.4082 5.50586 2.4082H7.88867C8.42253 2.4082 8.68945 2.66862 8.68945 3.18945C8.68945 3.7168 8.42253 3.98047 7.88867 3.98047H5.52539C5.03711 3.98047 4.66276 4.11068 4.40234 4.37109C4.14193 4.625 4.01172 5.00586 4.01172 5.51367V7.81836C4.01172 8.35221 3.74805 8.61914 3.2207 8.61914ZM20.7695 8.61914C20.2487 8.61914 19.9883 8.35221 19.9883 7.81836V5.51367C19.9883 5.00586 19.8548 4.625 19.5879 4.37109C19.321 4.11068 18.9466 3.98047 18.4648 3.98047H16.1016C15.5742 3.98047 15.3105 3.7168 15.3105 3.18945C15.3105 2.66862 15.5742 2.4082 16.1016 2.4082H18.4941C19.5163 2.4082 20.2812 2.66211 20.7891 3.16992C21.3034 3.67122 21.5605 4.42318 21.5605 5.42578V7.81836C21.5605 8.35221 21.2969 8.61914 20.7695 8.61914ZM5.50586 21.5195C4.48372 21.5195 3.71549 21.2656 3.20117 20.7578C2.69336 20.2565 2.43945 19.5013 2.43945 18.4922V16.1094C2.43945 15.5755 2.69987 15.3086 3.2207 15.3086C3.74805 15.3086 4.01172 15.5755 4.01172 16.1094V18.4141C4.01172 18.9219 4.14193 19.3027 4.40234 19.5566C4.66276 19.8171 5.03711 19.9473 5.52539 19.9473H7.88867C8.42253 19.9473 8.68945 20.2109 8.68945 20.7383C8.68945 21.2591 8.42253 21.5195 7.88867 21.5195H5.50586ZM16.1016 21.5195C15.5742 21.5195 15.3105 21.2591 15.3105 20.7383C15.3105 20.2109 15.5742 19.9473 16.1016 19.9473H18.4648C18.9466 19.9473 19.321 19.8171 19.5879 19.5566C19.8548 19.3027 19.9883 18.9219 19.9883 18.4141V16.1094C19.9883 15.5755 20.2487 15.3086 20.7695 15.3086C21.2969 15.3086 21.5605 15.5755 21.5605 16.1094V18.4922C21.5605 19.5013 21.3034 20.2565 20.7891 20.7578C20.2812 21.2656 19.5163 21.5195 18.4941 21.5195H16.1016Z"
         fill={color}
@@ -150,9 +158,33 @@ export const FilterIcon: FC<SvgProps> = ({ color, ...props }) => {
   const iconColor = color ?? colorScheme.text;
   return (
     <Svg fill="none" height={24} viewBox="0 0 24 24" width={24} {...props}>
-      <Rect fill={iconColor} height={1} stroke={iconColor} strokeWidth={0.5} width={14} x={5} y={6} />
-      <Rect fill={iconColor} height={1} stroke={iconColor} strokeWidth={0.5} width={10} x={7} y={11} />
-      <Rect fill={iconColor} height={1} stroke={iconColor} strokeWidth={0.5} width={4} x={10} y={16} />
+      <Rect
+        fill={iconColor}
+        height={1}
+        stroke={iconColor}
+        strokeWidth={0.5}
+        width={14}
+        x={5}
+        y={6}
+      />
+      <Rect
+        fill={iconColor}
+        height={1}
+        stroke={iconColor}
+        strokeWidth={0.5}
+        width={10}
+        x={7}
+        y={11}
+      />
+      <Rect
+        fill={iconColor}
+        height={1}
+        stroke={iconColor}
+        strokeWidth={0.5}
+        width={4}
+        x={10}
+        y={16}
+      />
     </Svg>
   );
 };
@@ -165,13 +197,24 @@ export const PlusIcon: FC<SvgProps> = ({ color, ...props }) => {
   return (
     <Svg fill="none" height={24} viewBox="0 0 24 24" width={24} {...props}>
       <Rect fill={iconColor} height={2} rx={0.5} width={14} x={5} y={11} />
-      <Rect fill={iconColor} height={2} rx={0.5} transform="rotate(90 13 5)" width={14} x={13} y={5} />
+      <Rect
+        fill={iconColor}
+        height={2}
+        rx={0.5}
+        transform="rotate(90 13 5)"
+        width={14}
+        x={13}
+        y={5}
+      />
     </Svg>
   );
 };
 
 // https://www.figma.com/design/S3WwgTMHuqxAsfu5zElCzq/App-Icon-Library--Design-?node-id=660-148&t=vEKCP9Mq209PFHFX-0
-export const WalletUnitAttestationIcon: FC<SvgProps> = ({ color, ...props }) => {
+export const WalletUnitAttestationIcon: FC<SvgProps> = ({
+  color,
+  ...props
+}) => {
   const colorScheme = useAppColorScheme();
   const iconColor = color ?? colorScheme.text;
 

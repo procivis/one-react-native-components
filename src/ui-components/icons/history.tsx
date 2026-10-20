@@ -169,11 +169,23 @@ export const HistoryStatusDeleteIcon: FC<SvgProps> = (props) => {
         strokeOpacity={0.2}
         strokeWidth={2}
       />
-      <Path d="M7.28577 8.42859H13.71434V16.142879999999998H7.28577z" fill={colorScheme.white} />
+      <Path
+        d="M7.28577 8.42859H13.71434V16.142879999999998H7.28577z"
+        fill={colorScheme.white}
+      />
       <Path d="M6 7.14294H15V8.428650000000001H6z" fill={colorScheme.white} />
-      <Path d="M9.85718 5.85718H11.14289V7.1428899999999995H9.85718z" fill={colorScheme.white} />
-      <Path d="M8.57141 9.71436H9.85712V14.857219999999998H8.57141z" fill={colorScheme.error} />
-      <Path d="M11.1428 9.71436H12.42851V14.857219999999998H11.1428z" fill={colorScheme.error} />
+      <Path
+        d="M9.85718 5.85718H11.14289V7.1428899999999995H9.85718z"
+        fill={colorScheme.white}
+      />
+      <Path
+        d="M8.57141 9.71436H9.85712V14.857219999999998H8.57141z"
+        fill={colorScheme.error}
+      />
+      <Path
+        d="M11.1428 9.71436H12.42851V14.857219999999998H11.1428z"
+        fill={colorScheme.error}
+      />
     </Svg>
   );
 };

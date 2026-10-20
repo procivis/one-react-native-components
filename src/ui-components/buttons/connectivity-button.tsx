@@ -16,7 +16,7 @@ import { useAppColorScheme } from '../theme';
 export enum ConnectivityTransport {
   All = 'All',
   Bluetooth = 'Bluetooth',
-  Internet = 'Internet'
+  Internet = 'Internet',
 }
 
 export type ConnectivityButtonProps = {
@@ -40,21 +40,30 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
 }) => {
   const colorScheme = useAppColorScheme();
 
-  const backgroundColor = status === undefined ? colorScheme.grayDark : colorScheme.white;
+  const backgroundColor =
+    status === undefined ? colorScheme.grayDark : colorScheme.white;
   const opacity = disabled ? 0.7 : 1.0;
   const icons = (
     <View style={styles.icons}>
       {transport !== ConnectivityTransport.Bluetooth &&
         (available ? (
-          <ConnectivityInternetOnIcon testID={concatTestID(testID, 'icon.on')} />
+          <ConnectivityInternetOnIcon
+            testID={concatTestID(testID, 'icon.on')}
+          />
         ) : (
-          <ConnectivityInternetOffIcon testID={concatTestID(testID, 'icon.off')} />
+          <ConnectivityInternetOffIcon
+            testID={concatTestID(testID, 'icon.off')}
+          />
         ))}
       {transport !== ConnectivityTransport.Internet &&
         (available ? (
-          <ConnectivityBluetoothOnIcon testID={concatTestID(testID, 'icon.on')} />
+          <ConnectivityBluetoothOnIcon
+            testID={concatTestID(testID, 'icon.on')}
+          />
         ) : (
-          <ConnectivityBluetoothOffIcon testID={concatTestID(testID, 'icon.off')} />
+          <ConnectivityBluetoothOffIcon
+            testID={concatTestID(testID, 'icon.off')}
+          />
         ))}
     </View>
   );
@@ -63,7 +72,11 @@ const ConnectivityButton: FC<ConnectivityButtonProps> = ({
       <View style={[styles.container, { backgroundColor, opacity }]}>
         {icons}
         {title && (
-          <Typography color={colorScheme.text} preset="s" testID={concatTestID(testID, 'title')}>
+          <Typography
+            color={colorScheme.text}
+            preset="s"
+            testID={concatTestID(testID, 'title')}
+          >
             {title}
           </Typography>
         )}

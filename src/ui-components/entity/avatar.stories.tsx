@@ -13,7 +13,11 @@ const Render = ({ withStatusIcon, withImage, ...args }: Args) => {
   return (
     <Avatar
       {...args}
-      avatar={withImage ? { imageSource: { uri: 'https://i.pravatar.cc/72' } } : undefined}
+      avatar={
+        withImage
+          ? { imageSource: { uri: 'https://i.pravatar.cc/72' } }
+          : undefined
+      }
       statusIcon={withStatusIcon ? EntityTrustedIcon : undefined}
     />
   );

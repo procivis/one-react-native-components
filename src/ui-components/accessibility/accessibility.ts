@@ -1,6 +1,16 @@
-import { NavigationProp, NavigationState, useIsFocused, useNavigation } from '@react-navigation/native';
+import {
+  NavigationProp,
+  NavigationState,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, EmitterSubscription, findNodeHandle, Platform } from 'react-native';
+import {
+  AccessibilityInfo,
+  EmitterSubscription,
+  findNodeHandle,
+  Platform,
+} from 'react-native';
 
 /**
  * Global transformer of text for Voice-Over
@@ -9,7 +19,9 @@ import { AccessibilityInfo, EmitterSubscription, findNodeHandle, Platform } from
  */
 export type AccessibilityTextTransformer = (text: string) => string;
 let textTransformer: AccessibilityTextTransformer | null = null;
-export function setAccessibilityTextTransformer(transformer: AccessibilityTextTransformer | null) {
+export function setAccessibilityTextTransformer(
+  transformer: AccessibilityTextTransformer | null,
+) {
   textTransformer = transformer;
 }
 export function transformAccessibilityText(text: string) {
@@ -39,7 +51,9 @@ export function useAccessibleAfterTransition<
       setAccessible(false);
       return undefined;
     }
-    const unsubscribe = navigation.addListener('transitionEnd', () => setAccessible(true));
+    const unsubscribe = navigation.addListener('transitionEnd', () =>
+      setAccessible(true),
+    );
     // fallback for cases when transition doesn't happen (e.g. forceful screen re-render)
     const timeout = setTimeout(() => setAccessible(true), 500);
     return () => {
@@ -62,7 +76,7 @@ export function useIsOutsideTransition<
     string | undefined,
     NavigationState<Record<string, any>>,
     {},
-    { transitionEnd: {}, transitionStart: {}; }
+    { transitionEnd: {}; transitionStart: {} }
   >,
 >() {
   const navigation = useNavigation<TNavigationProp>();
@@ -73,7 +87,9 @@ export function useIsOutsideTransition<
   focused.current = isFocused;
 
   useEffect(() => {
-    const unsubscribeStart = navigation.addListener('transitionStart', () => setInTransition(true));
+    const unsubscribeStart = navigation.addListener('transitionStart', () =>
+      setInTransition(true),
+    );
     const unsubscribeEnd = navigation.addListener('transitionEnd', () => {
       if (focused.current) {
         setInTransition(false);
@@ -120,7 +136,9 @@ export const focusAccessibility = (component?: React.ElementType | null) => {
  * @param {boolean} focused Focusing happens when this changes to `true`
  * @returns reference to be used with the target element
  */
-export const useAccessibilityFocus = <T extends React.ElementType>(focused: boolean = true) => {
+export const useAccessibilityFocus = <T extends React.ElementType>(
+  focused: boolean = true,
+) => {
   const ref = useRef<T>(null);
 
   useEffect(() => {
@@ -139,7 +157,9 @@ export const useAccessibilityFocus = <T extends React.ElementType>(focused: bool
  * @returns {boolean} When the announcement is successfully finished (only supported on iOS), false otherwise
  * @note Use {@link setAccessibilityTextTransformer} to apply text transformation for the read-out text
  */
-export const useAccessibilityAnnouncement = (message?: string | null): boolean => {
+export const useAccessibilityAnnouncement = (
+  message?: string | null,
+): boolean => {
   const announcement = message ? transformAccessibilityText(message) : message;
   const [announcementFinished, setAnnouncementFinished] = useState<string>();
   useEffect(() => {

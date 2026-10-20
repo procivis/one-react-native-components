@@ -18,8 +18,13 @@ const FilterButton: FC<FilterButtonProps> = ({ active, style, ...props }) => {
       accessibilityRole="button"
       accessibilityState={{ selected: active }}
       hitSlop={hitslop}
-      style={[styles.button, { backgroundColor: active ? colorScheme.accent : undefined }, style]}
-      {...props}>
+      style={[
+        styles.button,
+        { backgroundColor: active ? colorScheme.accent : undefined },
+        style,
+      ]}
+      {...props}
+    >
       <FilterIcon color={active ? colorScheme.white : colorScheme.accent} />
     </TouchableOpacity>
   );

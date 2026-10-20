@@ -1,10 +1,22 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { LayoutChangeEvent, LayoutRectangle, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  LayoutChangeEvent,
+  LayoutRectangle,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../utils/testID';
 import { TouchableOpacity, TouchableOpacityRef } from '../accessibility';
 import { useAccessibilityTranslation } from '../accessibility/accessibilityLanguage';
-import { FaceIDIcon, FingerprintIcon, KeypadBackspaceIcon, KeypadClearIcon } from '../icons/keypad';
+import {
+  FaceIDIcon,
+  FingerprintIcon,
+  KeypadBackspaceIcon,
+  KeypadClearIcon,
+} from '../icons/keypad';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
@@ -14,22 +26,29 @@ interface DigitKeyProps {
   testID: string | undefined;
 }
 
-const DigitKey = React.forwardRef<TouchableOpacityRef, DigitKeyProps>(({ onPress, testID, digit }, ref) => {
-  const colorScheme = useAppColorScheme();
-  return (
-    <TouchableOpacity
-      accessibilityRole="button"
-      disabled={!onPress}
-      onPress={() => onPress?.(digit)}
-      ref={ref}
-      style={[styles.key, { backgroundColor: colorScheme.background }]}
-      testID={concatTestID(testID, String(digit))}>
-      <Typography color={colorScheme.text} maxFontSizeMultiplier={1.5} preset="xl">
-        {digit}
-      </Typography>
-    </TouchableOpacity>
-  );
-});
+const DigitKey = React.forwardRef<TouchableOpacityRef, DigitKeyProps>(
+  ({ onPress, testID, digit }, ref) => {
+    const colorScheme = useAppColorScheme();
+    return (
+      <TouchableOpacity
+        accessibilityRole="button"
+        disabled={!onPress}
+        onPress={() => onPress?.(digit)}
+        ref={ref}
+        style={[styles.key, { backgroundColor: colorScheme.background }]}
+        testID={concatTestID(testID, String(digit))}
+      >
+        <Typography
+          color={colorScheme.text}
+          maxFontSizeMultiplier={1.5}
+          preset="xl"
+        >
+          {digit}
+        </Typography>
+      </TouchableOpacity>
+    );
+  },
+);
 
 DigitKey.displayName = 'DigitKey';
 
@@ -53,12 +72,26 @@ const MIN_WIDTH = 264;
 const KEY_SIZE = 72;
 
 export const Keypad = React.forwardRef<TouchableOpacityRef, KeypadProps>(
-  ({ testID, onPressDigit, onPressDelete, biometry, onBiometricPress, style, onDeleteAll }, ref) => {
+  (
+    {
+      testID,
+      onPressDigit,
+      onPressDelete,
+      biometry,
+      onBiometricPress,
+      style,
+      onDeleteAll,
+    },
+    ref,
+  ) => {
     const t = useAccessibilityTranslation();
     const colorScheme = useAppColorScheme();
 
     const [layout, setLayout] = useState<LayoutRectangle>();
-    const onLayout = useCallback((event: LayoutChangeEvent) => setLayout(event.nativeEvent.layout), []);
+    const onLayout = useCallback(
+      (event: LayoutChangeEvent) => setLayout(event.nativeEvent.layout),
+      [],
+    );
 
     const { width, height } = useMemo(() => {
       if (!layout) {
@@ -80,7 +113,12 @@ export const Keypad = React.forwardRef<TouchableOpacityRef, KeypadProps>(
       <View onLayout={onLayout} style={[styles.cover, style]} testID={testID}>
         <View style={{ height }}>
           <View style={lineStyles}>
-            <DigitKey digit={1} onPress={onPressDigit} ref={ref} testID={testID} />
+            <DigitKey
+              digit={1}
+              onPress={onPressDigit}
+              ref={ref}
+              testID={testID}
+            />
             <DigitKey digit={2} onPress={onPressDigit} testID={testID} />
             <DigitKey digit={3} onPress={onPressDigit} testID={testID} />
           </View>
@@ -101,20 +139,26 @@ export const Keypad = React.forwardRef<TouchableOpacityRef, KeypadProps>(
               disabled={!onDeleteAll}
               onPress={onDeleteAll}
               style={styles.key}
-              testID={concatTestID(testID, 'delete-all')}>
-              {onDeleteAll ? <KeypadClearIcon color={colorScheme.text} /> : null}
+              testID={concatTestID(testID, 'delete-all')}
+            >
+              {onDeleteAll ? (
+                <KeypadClearIcon color={colorScheme.text} />
+              ) : null}
             </TouchableOpacity>
             <DigitKey digit={0} onPress={onPressDigit} testID={testID} />
             {biometry ? (
               <TouchableOpacity
                 accessibilityLabel={t(
-                  biometry === Biometry.FaceID ? 'accessibility.key.faceId' : 'accessibility.key.fingerprint',
+                  biometry === Biometry.FaceID
+                    ? 'accessibility.key.faceId'
+                    : 'accessibility.key.fingerprint',
                 )}
                 accessibilityRole="button"
                 disabled={!onBiometricPress}
                 onPress={onBiometricPress}
                 style={styles.key}
-                testID={concatTestID(testID, 'biometry')}>
+                testID={concatTestID(testID, 'biometry')}
+              >
                 {biometry === Biometry.FaceID ? (
                   <FaceIDIcon color={colorScheme.text} />
                 ) : (
@@ -128,8 +172,11 @@ export const Keypad = React.forwardRef<TouchableOpacityRef, KeypadProps>(
                 disabled={!onPressDelete}
                 onPress={onPressDelete}
                 style={styles.key}
-                testID={concatTestID(testID, 'delete')}>
-                {onPressDelete ? <KeypadBackspaceIcon color={colorScheme.text} /> : null}
+                testID={concatTestID(testID, 'delete')}
+              >
+                {onPressDelete ? (
+                  <KeypadBackspaceIcon color={colorScheme.text} />
+                ) : null}
               </TouchableOpacity>
             )}
           </View>

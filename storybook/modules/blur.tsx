@@ -37,11 +37,17 @@ export type BlurViewProps = {
 /**
  * Replacement for `@react-native-community/blur` which is not available in web storybook.
  */
-export const BlurView: FunctionComponent<PropsWithChildren<BlurViewProps>> = ({ children, style, testID }) => {
+export const BlurView: FunctionComponent<PropsWithChildren<BlurViewProps>> = ({
+  children,
+  style,
+  testID,
+}) => {
   const colorScheme = useAppColorScheme();
   return (
     <View style={[styles.container, style]} testID={testID}>
-      <View style={[styles.background, { backgroundColor: colorScheme.white }]} />
+      <View
+        style={[styles.background, { backgroundColor: colorScheme.white }]}
+      />
       {children}
     </View>
   );

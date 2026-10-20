@@ -21,7 +21,8 @@ const ListSectionHeader: FC<ListSectionHeaderProps> = ({
       accessibilityRole={accessibilityRole ?? 'header'}
       color={color ?? colorScheme.text}
       style={[styles.sectionHeader, style]}
-      {...typographyProps}>
+      {...typographyProps}
+    >
       {title}
     </Typography>
   );

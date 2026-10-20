@@ -21,7 +21,12 @@ export interface ErrorScreenProps {
   title: string;
 }
 
-const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({ testID, title, subtitle, button }) => {
+const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({
+  testID,
+  title,
+  subtitle,
+  button,
+}) => {
   const colorScheme = useAppColorScheme();
 
   return (
@@ -33,17 +38,29 @@ const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({ testID, title, subti
       modalPresentation
       scrollView={{
         testID,
-      }}>
-      <View style={[styles.wrapper, { backgroundColor: colorScheme.background }]}>
+      }}
+    >
+      <View
+        style={[styles.wrapper, { backgroundColor: colorScheme.background }]}
+      >
         <View style={styles.warning}>
           <CredentialWarningIcon height={42} width={42} />
-          <Typography color={colorScheme.text} preset="regular" style={styles.message}>
+          <Typography
+            color={colorScheme.text}
+            preset="regular"
+            style={styles.message}
+          >
             {subtitle}
           </Typography>
         </View>
 
         {button ? (
-          <Button disabled={button.disabled} onPress={button.onPress} testID={button.testID} title={button.label} />
+          <Button
+            disabled={button.disabled}
+            onPress={button.onPress}
+            testID={button.testID}
+            title={button.label}
+          />
         ) : undefined}
       </View>
     </ScrollViewScreen>

@@ -24,8 +24,12 @@ const Render = ({ onRightAction, contentHeight, headerProps }: Args) => {
             <Placeholder id="R" style={styles.rightButton} />
           </TouchableOpacity>,
         ],
-      }}>
-      <Placeholder id="Content" style={contentHeight ? { height: contentHeight } : styles.content} />
+      }}
+    >
+      <Placeholder
+        id="Content"
+        style={contentHeight ? { height: contentHeight } : styles.content}
+      />
     </DetailScreen>
   );
 };
@@ -34,7 +38,6 @@ const Basic: StoryObj<Args> = {
   args: {
     contentHeight: 0,
     headerProps: {
-       
       onBack: fn(),
       title: 'Title',
     },

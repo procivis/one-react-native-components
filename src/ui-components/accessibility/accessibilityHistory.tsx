@@ -1,8 +1,19 @@
 import { useRoute } from '@react-navigation/native';
-import React, { FC, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 
 import { useForwardedRef } from '../../utils/ref';
-import { focusAccessibility, useAccessibleAfterTransition } from './accessibility';
+import {
+  focusAccessibility,
+  useAccessibleAfterTransition,
+} from './accessibility';
 
 type AccessibilityRefComponent = React.ElementType | null;
 interface AccessibilityRefContextValue {
@@ -10,20 +21,26 @@ interface AccessibilityRefContextValue {
   setRef: (route: string, ref: AccessibilityRefComponent) => void;
 }
 
-const accessibilityFocusHistoryContext = React.createContext<AccessibilityRefContextValue>({
-  getRef: () => null,
-  setRef: () => {},
-});
+const accessibilityFocusHistoryContext =
+  React.createContext<AccessibilityRefContextValue>({
+    getRef: () => null,
+    setRef: () => {},
+  });
 
 /**
  * Adds app support for accessibility focus history
  */
-export const AccessibilityFocusHistoryProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+export const AccessibilityFocusHistoryProvider: FC<PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const Provider = accessibilityFocusHistoryContext.Provider;
   const refs = useRef<Record<string, AccessibilityRefComponent>>({});
-  const setRef = useCallback((route: string, ref: AccessibilityRefComponent) => {
-    refs.current[route] = ref;
-  }, []);
+  const setRef = useCallback(
+    (route: string, ref: AccessibilityRefComponent) => {
+      refs.current[route] = ref;
+    },
+    [],
+  );
   const getRef = useCallback((route: string) => {
     return refs.current[route] ?? null;
   }, []);
@@ -51,7 +68,8 @@ export const useAccessibilityFocusHistory = <
   const outsideTransition = useAccessibleAfterTransition();
 
   useEffect(() => {
-    const isStoredInHistory = historyContext.getRef(routeKey) === refObject.current;
+    const isStoredInHistory =
+      historyContext.getRef(routeKey) === refObject.current;
     if (outsideTransition && isStoredInHistory && previouslyPressed.current) {
       focusAccessibility(refObject.current);
     }

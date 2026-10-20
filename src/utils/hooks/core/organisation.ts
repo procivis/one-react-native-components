@@ -1,4 +1,4 @@
-import { UpsertOrganisationRequest } from '@procivis/react-native-one-core';
+import { UpdateOrganisationRequest } from '@procivis/react-native-one-core';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { reportException } from '../../reporting';
@@ -12,19 +12,28 @@ export const WALLET_INSTANCE_QUERY_KEY = 'wallet-instance';
 export const useOrganisationDetail = (active = true) => {
   const { core, organisationId } = useONECore();
 
-  return useQuery([ORGANISATION_DETAIL_QUERY_KEY], () => core.getOrganisation(organisationId), {
-    enabled: active,
-    keepPreviousData: true,
-  });
+  return useQuery(
+    [ORGANISATION_DETAIL_QUERY_KEY],
+    () => core.getOrganisation(organisationId),
+    {
+      enabled: active,
+      keepPreviousData: true,
+    },
+  );
 };
 
-export const useOrganisationEcosystems = (enabled = true, keepPreviousData = false) => {
+export const useOrganisationEcosystems = (
+  enabled = true,
+  keepPreviousData = false,
+) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
     [ORGANISATION_ECOSYSTEMS_QUERY_KEY],
     async () => {
-      const ecosystems = await core.getOrganisation(organisationId).then((organisation) => organisation.ecosystems);
+      const ecosystems = await core
+        .getOrganisation(organisationId)
+        .then((organisation) => organisation.ecosystems);
       return ecosystems;
     },
     {
@@ -39,8 +48,8 @@ export const useOrganisationUpdate = () => {
   const { core, organisationId } = useONECore();
 
   return useMutation(
-    async (request: Omit<UpsertOrganisationRequest, 'id'>) =>
-      core.upsertOrganisation({ id: organisationId, ...request }),
+    async (request: Omit<UpdateOrganisationRequest, 'id'>) =>
+      core.updateOrganisation({ id: organisationId, ...request }),
     {
       onError: async (err) => {
         reportException(err, 'Update organisation failure');
@@ -64,7 +73,8 @@ export const useVerifierInstance = (active = true) => {
 
   return useQuery(
     [VERIFIER_INSTANCE_QUERY_KEY],
-    () => core.getOrganisation(organisationId).then((org) => org.verifierInstance),
+    () =>
+      core.getOrganisation(organisationId).then((org) => org.verifierInstance),
     {
       enabled: active,
       keepPreviousData: true,
@@ -77,7 +87,8 @@ export const useWalletInstance = (active = true) => {
 
   return useQuery(
     [WALLET_INSTANCE_QUERY_KEY],
-    () => core.getOrganisation(organisationId).then((org) => org.walletInstance),
+    () =>
+      core.getOrganisation(organisationId).then((org) => org.walletInstance),
     {
       enabled: active,
       keepPreviousData: true,

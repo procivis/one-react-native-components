@@ -51,7 +51,9 @@ describe('parseUniversalLink', () => {
     expect(parsedLink).toStrictEqual(undefined);
   });
   test('Schema universal link url with invalid params', () => {
-    const parsedLink = parseUniversalLink('https://desk.dev.procivis-one.com/app-link/schema?key=value');
+    const parsedLink = parseUniversalLink(
+      'https://desk.dev.procivis-one.com/app-link/schema?key=value',
+    );
     expect(parsedLink).toStrictEqual(undefined);
   });
 });

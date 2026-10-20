@@ -19,9 +19,10 @@ export const getEnabledTransports = (config: CoreConfig): string[] => {
     .map((transport) => transport.type);
 };
 
-export const getEnabledExchangeProtocols = (exchangeProtocol: ConfigEntities<any>): string[] => {
+export const getEnabledExchangeProtocols = (
+  exchangeProtocol: ConfigEntities<any>,
+): string[] => {
   return Object.values(exchangeProtocol ?? {})
     .filter((t) => t.enabled !== false)
     .map((exchange) => exchange.type);
 };
-

@@ -1,4 +1,9 @@
-import React, { ComponentType, FunctionComponent, ReactElement, useMemo } from 'react';
+import React, {
+  ComponentType,
+  FunctionComponent,
+  ReactElement,
+  useMemo,
+} from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../utils';
@@ -50,8 +55,14 @@ const ButtonSetting: FunctionComponent<ButtonSettingProps> = ({
       disabled={disabled}
       onPress={onPress}
       style={styles.container}
-      testID={testID}>
-      <SettingItem icon={icon} style={style} testID={concatTestID(testID, 'text')} title={title}>
+      testID={testID}
+    >
+      <SettingItem
+        icon={icon}
+        style={style}
+        testID={concatTestID(testID, 'text')}
+        title={title}
+      >
         {accessoryView}
       </SettingItem>
     </TouchableOpacity>

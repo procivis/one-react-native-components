@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ColorValue, LayoutChangeEvent, StyleSheet, TouchableWithoutFeedbackProps, View } from 'react-native';
+import {
+  ColorValue,
+  LayoutChangeEvent,
+  StyleSheet,
+  TouchableWithoutFeedbackProps,
+  View,
+} from 'react-native';
 import Animated, {
   cancelAnimation,
   Easing,
@@ -11,14 +17,22 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { TouchableOpacity, TouchableOpacityRef } from '../accessibility/accessibilityHistoryWrappers';
+import {
+  TouchableOpacity,
+  TouchableOpacityRef,
+} from '../accessibility/accessibilityHistoryWrappers';
 import { Typography } from '../text';
 import { useAppColorScheme } from '../theme';
 
 export interface HoldButtonProps
   extends Omit<
     TouchableWithoutFeedbackProps,
-    'children' | 'onLayout' | 'onPress' | 'onLongPress' | 'onPressIn' | 'onPressOut'
+    | 'children'
+    | 'onLayout'
+    | 'onPress'
+    | 'onLongPress'
+    | 'onPressIn'
+    | 'onPressOut'
   > {
   holdTimeoutSecs?: number;
   onFinished: () => void;
@@ -51,7 +65,10 @@ const Content = ({
   disabled,
 }: ContentProps) => {
   const nums = useMemo(
-    () => Array.from({ length: holdTimeoutSecs + 1 }).map((_, index) => holdTimeoutSecs - index),
+    () =>
+      Array.from({ length: holdTimeoutSecs + 1 }).map(
+        (_, index) => holdTimeoutSecs - index,
+      ),
     [holdTimeoutSecs],
   );
 
@@ -64,30 +81,54 @@ const Content = ({
     () => progress.value * subtitleHeight * holdTimeoutSecs,
     [subtitleHeight, holdTimeoutSecs],
   );
-  const movingUpStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: -translateY.value }],
-  }), [translateY]);
+  const movingUpStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ translateY: -translateY.value }],
+    }),
+    [translateY],
+  );
 
   return (
-    <View pointerEvents="none" style={[styles.contentWrapper, disabled && styles.contentDisabled, { height, width }]}>
+    <View
+      pointerEvents="none"
+      style={[
+        styles.contentWrapper,
+        disabled && styles.contentDisabled,
+        { height, width },
+      ]}
+    >
       <Typography color={textColor} numberOfLines={1}>
         {title}
       </Typography>
 
       <View style={[styles.subtitle, disabled && styles.subtitleDisabled]}>
-        <Typography color={textColor} numberOfLines={1} onLayout={onSubtitleLayout} preset="s/line-height-capped">
+        <Typography
+          color={textColor}
+          numberOfLines={1}
+          onLayout={onSubtitleLayout}
+          preset="s/line-height-capped"
+        >
           {subtitlePrefix}
         </Typography>
         <View style={[styles.subtitleSecsWrapper, { height: subtitleHeight }]}>
           <Animated.View style={[styles.subtitleSecs, movingUpStyle]}>
             {nums.map((val) => (
-              <Typography color={textColor} key={val} numberOfLines={1} preset="s/line-height-capped">
+              <Typography
+                color={textColor}
+                key={val}
+                numberOfLines={1}
+                preset="s/line-height-capped"
+              >
                 {val}
               </Typography>
             ))}
           </Animated.View>
         </View>
-        <Typography color={textColor} numberOfLines={1} preset="s/line-height-capped">
+        <Typography
+          color={textColor}
+          numberOfLines={1}
+          preset="s/line-height-capped"
+        >
           {subtitleSuffix}
         </Typography>
       </View>
@@ -159,23 +200,55 @@ const HoldButtonLayouted = ({
   const onPressOut = useCallback(() => cancelAnimation(progress), [progress]);
 
   const translateX = useDerivedValue(() => progress.value * width, [width]);
-  const movingRightStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }), [translateX]);
-  const movingLeftStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: -translateX.value }],
-  }), [translateX]);
+  const movingRightStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ translateX: translateX.value }],
+    }),
+    [translateX],
+  );
+  const movingLeftStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ translateX: -translateX.value }],
+    }),
+    [translateX],
+  );
 
   const contentProps = useMemo(
-    () => ({ height, holdTimeoutSecs, progress, subtitlePrefix, subtitleSuffix, title, width }),
-    [title, subtitlePrefix, subtitleSuffix, progress, holdTimeoutSecs, width, height],
+    () => ({
+      height,
+      holdTimeoutSecs,
+      progress,
+      subtitlePrefix,
+      subtitleSuffix,
+      title,
+      width,
+    }),
+    [
+      title,
+      subtitlePrefix,
+      subtitleSuffix,
+      progress,
+      holdTimeoutSecs,
+      width,
+      height,
+    ],
   );
 
   return (
     <>
-      <Content disabled={disabled} textColor={colorScheme.accent} {...contentProps} />
+      <Content
+        disabled={disabled}
+        textColor={colorScheme.accent}
+        {...contentProps}
+      />
       {!disabled && (
-        <Animated.View style={[styles.movingLayer, { backgroundColor: colorScheme.accent }, movingRightStyle]}>
+        <Animated.View
+          style={[
+            styles.movingLayer,
+            { backgroundColor: colorScheme.accent },
+            movingRightStyle,
+          ]}
+        >
           <Animated.View style={movingLeftStyle}>
             <Content textColor={colorScheme.accentText} {...contentProps} />
           </Animated.View>
@@ -190,7 +263,8 @@ const HoldButtonLayouted = ({
           onPressIn={isFinished ? undefined : onPressIn}
           onPressOut={isFinished ? undefined : onPressOut}
           ref={ref}
-          {...props}>
+          {...props}
+        >
           <View style={{ height, width }} />
         </TouchableOpacity>
       </View>
@@ -207,10 +281,16 @@ const HoldButton = React.forwardRef<TouchableOpacityRef, HoldButtonProps>(
   ({ style, disabled, ...props }, ref) => {
     const colorScheme = useAppColorScheme();
 
-    const [layout, setLayout] = useState<{ height: number, width: number; }>();
-    const onContainerLayout = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
-      setLayout({ height: nativeEvent.layout.height, width: nativeEvent.layout.width });
-    }, []);
+    const [layout, setLayout] = useState<{ height: number; width: number }>();
+    const onContainerLayout = useCallback(
+      ({ nativeEvent }: LayoutChangeEvent) => {
+        setLayout({
+          height: nativeEvent.layout.height,
+          width: nativeEvent.layout.width,
+        });
+      },
+      [],
+    );
 
     return (
       <View
@@ -219,12 +299,22 @@ const HoldButton = React.forwardRef<TouchableOpacityRef, HoldButtonProps>(
           styles.container,
           disabled && styles.disabled,
           {
-            backgroundColor: disabled ? colorScheme.white : colorScheme.background,
+            backgroundColor: disabled
+              ? colorScheme.white
+              : colorScheme.background,
             borderColor: colorScheme.background,
           },
           style,
-        ]}>
-        {layout && <HoldButtonLayouted disabled={disabled} ref={ref} {...props} {...layout} />}
+        ]}
+      >
+        {layout && (
+          <HoldButtonLayouted
+            disabled={disabled}
+            ref={ref}
+            {...props}
+            {...layout}
+          />
+        )}
       </View>
     );
   },

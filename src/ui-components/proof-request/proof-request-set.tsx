@@ -10,18 +10,24 @@ export type ProofRequestSetProps = {
   showSeparator?: boolean;
 };
 
-export const ProofRequestSet: FunctionComponent<PropsWithChildren<ProofRequestSetProps>> = ({
-  children,
-  headerLabel,
-  showHeader = false,
-  showSeparator = true,
-}) => {
+export const ProofRequestSet: FunctionComponent<
+  PropsWithChildren<ProofRequestSetProps>
+> = ({ children, headerLabel, showHeader = false, showSeparator = true }) => {
   const colorScheme = useAppColorScheme();
   return (
     <View style={styles.set}>
-      {showSeparator && <View style={[styles.separator, { backgroundColor: colorScheme.grayDark }]} />}
+      {showSeparator && (
+        <View
+          style={[styles.separator, { backgroundColor: colorScheme.grayDark }]}
+        />
+      )}
       {showHeader && headerLabel && (
-        <Typography align="left" color={colorScheme.text} preset="m" style={styles.header}>
+        <Typography
+          align="left"
+          color={colorScheme.text}
+          preset="m"
+          style={styles.header}
+        >
           {headerLabel}
         </Typography>
       )}

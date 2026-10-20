@@ -11,12 +11,17 @@ const getSecureSystemTime = async () => {
 export const usePinCodeSecurity = (
   failedAttempts: number,
   lastAttemptTimestamp: number | undefined,
-  setPinCodeSecurity: (failedAttempts: number, lastAttemptTimestamp: number | undefined) => void,
+  setPinCodeSecurity: (
+    failedAttempts: number,
+    lastAttemptTimestamp: number | undefined,
+  ) => void,
   allowedAttempts = 3,
 ) => {
   const [attempts, setAttempts] = useState(failedAttempts);
   const [lastTimestamp, setLastTimestamp] = useState(lastAttemptTimestamp);
-  const [isBlocked, setIsBlocked] = useState(failedAttempts >= allowedAttempts && lastAttemptTimestamp !== undefined);
+  const [isBlocked, setIsBlocked] = useState(
+    failedAttempts >= allowedAttempts && lastAttemptTimestamp !== undefined,
+  );
   const [blockRemainingTime, setBlockRemainingTime] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval>>();
 
@@ -88,7 +93,13 @@ export const usePinCodeSecurity = (
     if (attempts >= allowedAttempts && lastAttemptTimestamp && !isBlocked) {
       calculateBlockTime();
     }
-  }, [allowedAttempts, attempts, calculateBlockTime, isBlocked, lastAttemptTimestamp]);
+  }, [
+    allowedAttempts,
+    attempts,
+    calculateBlockTime,
+    isBlocked,
+    lastAttemptTimestamp,
+  ]);
 
   return {
     addFailedAttempt,

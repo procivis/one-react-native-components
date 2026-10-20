@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-export const useCloseButtonTimeout = (active: boolean, closeButtonHandler: () => void) => {
+export const useCloseButtonTimeout = (
+  active: boolean,
+  closeButtonHandler: () => void,
+) => {
   const [closeTimeout, setCloseTimeout] = useState(5);
 
   useEffect(() => {

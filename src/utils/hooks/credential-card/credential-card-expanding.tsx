@@ -57,10 +57,7 @@ export const useCredentialOfferSelectedCards = () => {
       if (oldValue.includes(credentialId)) {
         return oldValue.filter((id) => id !== credentialId);
       }
-      return [
-        ...oldValue,
-        credentialId,
-      ];
+      return [...oldValue, credentialId];
     });
   }, []);
 

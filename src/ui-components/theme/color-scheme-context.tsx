@@ -37,13 +37,19 @@ ColorSchemeContext.displayName = 'ColorSchemeContext';
 export function ColorSchemeProvider<Scheme extends ColorScheme = ColorScheme>(
   props: PropsWithChildren<{ colorScheme: Scheme }>,
 ) {
-  return <ColorSchemeContext.Provider value={props.colorScheme}>{props.children}</ColorSchemeContext.Provider>;
+  return (
+    <ColorSchemeContext.Provider value={props.colorScheme}>
+      {props.children}
+    </ColorSchemeContext.Provider>
+  );
 }
 
 /**
  * A hook to gain access to the current `ColorScheme`
  * @note A custom superset of `ColorScheme` can be used (must also be passed to the `ColorSchemeProvider`)
  */
-export function useAppColorScheme<Scheme extends ColorScheme = ColorScheme>(): Readonly<Scheme> {
+export function useAppColorScheme<
+  Scheme extends ColorScheme = ColorScheme,
+>(): Readonly<Scheme> {
   return React.useContext(ColorSchemeContext) as Scheme;
 }

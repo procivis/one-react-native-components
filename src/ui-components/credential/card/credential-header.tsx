@@ -1,5 +1,12 @@
 import React, { FC, useMemo } from 'react';
-import { AccessibilityProps, ColorValue, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  AccessibilityProps,
+  ColorValue,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../../utils/testID';
 import BlurView from '../../blur/blur-view';
@@ -78,7 +85,12 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
     };
     return (
       <View style={styles.detailTextContainer}>
-        <Typography {...commonProps} testID={credentialDetailTestID ?? concatTestID(testID, 'primaryDetail')}>
+        <Typography
+          {...commonProps}
+          testID={
+            credentialDetailTestID ?? concatTestID(testID, 'primaryDetail')
+          }
+        >
           {credentialDetailPrimary}
         </Typography>
         {credentialDetailSecondary ? (
@@ -86,7 +98,10 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
             <Typography {...commonProps} style={styles.interpunct}>
               {'·'}
             </Typography>
-            <Typography {...commonProps} testID={concatTestID(testID, 'secondaryDetail')}>
+            <Typography
+              {...commonProps}
+              testID={concatTestID(testID, 'secondaryDetail')}
+            >
               {credentialDetailSecondary}
             </Typography>
           </>
@@ -103,7 +118,14 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
   ]);
 
   return (
-    <View style={[styles.container, { backgroundColor: blur ? undefined : colorScheme.white }, style]} testID={testID}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: blur ? undefined : colorScheme.white },
+        style,
+      ]}
+      testID={testID}
+    >
       {blur && <BlurView blurStyle="strong" style={StyleSheet.absoluteFill} />}
       <CredentialLogo
         color={color}
@@ -112,7 +134,9 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
         iconLabelColor={iconLabelColor}
         testID={concatTestID(testID, 'logo')}
       />
-      {statusIconView && <View style={styles.statusIconWrapper}>{statusIconView}</View>}
+      {statusIconView && (
+        <View style={styles.statusIconWrapper}>{statusIconView}</View>
+      )}
       <View style={styles.text}>
         <Typography
           color={colorScheme.text}
@@ -120,7 +144,8 @@ const CredentialHeader: FC<CredentialHeaderProps> = ({
           numberOfLines={1}
           preset="regular"
           style={styles.nameText}
-          testID={concatTestID(testID, 'name')}>
+          testID={concatTestID(testID, 'name')}
+        >
           {credentialName}
         </Typography>
         {DetailText}

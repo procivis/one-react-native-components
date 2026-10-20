@@ -1,5 +1,12 @@
 import React, { FC, ReactNode } from 'react';
-import { Insets, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  Insets,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../utils';
 import { BackButton, BackButtonIcon } from '../buttons';
@@ -56,21 +63,25 @@ const Header: FC<HeaderProps> = ({
           onBack ? styles.titleRow2nd : styles.titleRowNoBackButton,
           (onBack || !rightButtons) && styles.titleRowNoRightButton,
           titleRowStyle,
-        ]}>
+        ]}
+      >
         {typeof title === 'string' ? (
           <Typography
             accessibilityRole="header"
             color={colorScheme.text}
             preset="l"
             style={styles.title}
-            testID={concatTestID(testID, 'title')}>
+            testID={concatTestID(testID, 'title')}
+          >
             {title}
           </Typography>
         ) : (
           <View style={styles.title}>{title}</View>
         )}
 
-        {!onBack && rightButtons && <View style={styles.rightButtonWrapper}>{rightButtons}</View>}
+        {!onBack && rightButtons && (
+          <View style={styles.rightButtonWrapper}>{rightButtons}</View>
+        )}
       </View>
     </View>
   );

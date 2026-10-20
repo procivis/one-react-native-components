@@ -20,11 +20,41 @@ const pinLockAnimation = (color: ColorValue) => {
         ef: [
           {
             ef: [
-              { ix: 1, mn: 'ADBE Radial Wipe-0001', nm: 'Transition Completion', ty: 0, v: { a: 0, ix: 1, k: 0 } },
-              { ix: 2, mn: 'ADBE Radial Wipe-0002', nm: 'Start Angle', ty: 0, v: { a: 0, ix: 2, k: 0 } },
-              { ix: 3, mn: 'ADBE Radial Wipe-0003', nm: 'Wipe Center', ty: 3, v: { a: 0, ix: 3, k: [65, 65] } },
-              { ix: 4, mn: 'ADBE Radial Wipe-0004', nm: 'Wipe', ty: 7, v: { a: 0, ix: 4, k: 1 } },
-              { ix: 5, mn: 'ADBE Radial Wipe-0005', nm: 'Feather', ty: 0, v: { a: 0, ix: 5, k: 0 } },
+              {
+                ix: 1,
+                mn: 'ADBE Radial Wipe-0001',
+                nm: 'Transition Completion',
+                ty: 0,
+                v: { a: 0, ix: 1, k: 0 },
+              },
+              {
+                ix: 2,
+                mn: 'ADBE Radial Wipe-0002',
+                nm: 'Start Angle',
+                ty: 0,
+                v: { a: 0, ix: 2, k: 0 },
+              },
+              {
+                ix: 3,
+                mn: 'ADBE Radial Wipe-0003',
+                nm: 'Wipe Center',
+                ty: 3,
+                v: { a: 0, ix: 3, k: [65, 65] },
+              },
+              {
+                ix: 4,
+                mn: 'ADBE Radial Wipe-0004',
+                nm: 'Wipe',
+                ty: 7,
+                v: { a: 0, ix: 4, k: 1 },
+              },
+              {
+                ix: 5,
+                mn: 'ADBE Radial Wipe-0005',
+                nm: 'Feather',
+                ty: 0,
+                v: { a: 0, ix: 5, k: 0 },
+              },
             ],
             en: 1,
             ix: 1,
@@ -265,7 +295,12 @@ const pinLockAnimation = (color: ColorValue) => {
             a: 1,
             ix: 10,
             k: [
-              { i: { x: [0.833], y: [0.833] }, o: { x: [0.167], y: [0.167] }, s: [0], t: 0 },
+              {
+                i: { x: [0.833], y: [0.833] },
+                o: { x: [0.167], y: [0.167] },
+                s: [0],
+                t: 0,
+              },
               { s: [360], t: 1797.00007319331 },
             ],
           },
@@ -432,7 +467,12 @@ const pinLockAnimation = (color: ColorValue) => {
               a: 1,
               ix: 2,
               k: [
-                { i: { x: [0.833], y: [0.833] }, o: { x: [0.167], y: [0.167] }, s: [0], t: 0 },
+                {
+                  i: { x: [0.833], y: [0.833] },
+                  o: { x: [0.167], y: [0.167] },
+                  s: [0],
+                  t: 0,
+                },
                 { s: [100], t: 1797.00007319331 },
               ],
             },

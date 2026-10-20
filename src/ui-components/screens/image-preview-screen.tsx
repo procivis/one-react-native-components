@@ -1,5 +1,13 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Image, ImageSourcePropType, ImageStyle, LayoutChangeEvent, StyleSheet, View, ViewProps } from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  ImageStyle,
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+  ViewProps,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { concatTestID, ContrastingStatusBar } from '../../utils';
@@ -14,7 +22,14 @@ export type ImagePreviewScreenProps = ViewProps & {
   title: string;
 };
 
-const ImagePreviewScreen: FC<ImagePreviewScreenProps> = ({ image, onClose, title, testID, style, ...viewProps }) => {
+const ImagePreviewScreen: FC<ImagePreviewScreenProps> = ({
+  image,
+  onClose,
+  title,
+  testID,
+  style,
+  ...viewProps
+}) => {
   const colorScheme = useAppColorScheme();
   const insets = useSafeAreaInsets();
 
@@ -26,15 +41,23 @@ const ImagePreviewScreen: FC<ImagePreviewScreenProps> = ({ image, onClose, title
 
   return (
     <View
-      style={[styles.screen, { backgroundColor: colorScheme.nerdView.background }, style]}
+      style={[
+        styles.screen,
+        { backgroundColor: colorScheme.nerdView.background },
+        style,
+      ]}
       testID={testID}
-      {...viewProps}>
+      {...viewProps}
+    >
       <ContrastingStatusBar backgroundColor={colorScheme.nerdView.background} />
       <NavigationHeader
         backgroundColor="transparent"
         blurred={false}
         leftItem={
-          <TouchableOpacity onPress={onClose} testID={concatTestID(testID, 'close')}>
+          <TouchableOpacity
+            onPress={onClose}
+            testID={concatTestID(testID, 'close')}
+          >
             <CloseIcon color={colorScheme.white} />
           </TouchableOpacity>
         }

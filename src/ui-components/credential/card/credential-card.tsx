@@ -1,26 +1,43 @@
-import React, { ComponentType, FC, ReactElement, useCallback, useMemo } from 'react';
-import { ColorValue, Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, {
+  ComponentType,
+  FC,
+  ReactElement,
+  useCallback,
+  useMemo,
+} from 'react';
+import {
+  ColorValue,
+  Image,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { concatTestID } from '../../../utils/testID';
 import { TouchableOpacity } from '../../accessibility/accessibilityHistoryWrappers';
 import { Badge } from '../../badge';
 import BlurView from '../../blur/blur-view';
-import ImageOrComponent, { ImageOrComponentSource } from '../../image/image-or-component';
+import ImageOrComponent, {
+  ImageOrComponentSource,
+} from '../../image/image-or-component';
 import Typography from '../../text/typography';
 import { useAppColorScheme } from '../../theme/color-scheme-context';
 import CredentialHeader, { CredentialHeaderProps } from './credential-header';
 import CarouselComponent, { CarouselImage } from './credential-image-carousel';
 
-export const CredentialCardShadow: Pick<ViewStyle, 'shadowColor' | 'shadowOffset' | 'shadowOpacity' | 'shadowRadius'> =
-  {
-    shadowColor: '#10274226',
-    shadowOffset: {
-      height: 5,
-      width: 0,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 7,
-  };
+export const CredentialCardShadow: Pick<
+  ViewStyle,
+  'shadowColor' | 'shadowOffset' | 'shadowOpacity' | 'shadowRadius'
+> = {
+  shadowColor: '#10274226',
+  shadowOffset: {
+    height: 5,
+    width: 0,
+  },
+  shadowOpacity: 1,
+  shadowRadius: 7,
+};
 
 export const CredentialCardRatio = 18 / 11;
 
@@ -75,7 +92,7 @@ const CredentialCard: FC<CredentialCardProps> = ({
   const cardPressHandler = useCallback(() => {
     onCardPress?.(credentialId);
   }, [credentialId, onCardPress]);
-  
+
   const extraView: ReactElement | undefined = useMemo(() => {
     if (!extra) {
       return undefined;
@@ -106,10 +123,18 @@ const CredentialCard: FC<CredentialCardProps> = ({
       {cardImage ? (
         'imageSource' in cardImage ? (
           <View style={cardSize}>
-            <Image source={cardImage.imageSource} style={styles.image} testID={concatTestID(testID, 'imageSource')} />
+            <Image
+              source={cardImage.imageSource}
+              style={styles.image}
+              testID={concatTestID(testID, 'imageSource')}
+            />
           </View>
         ) : (
-          <ImageOrComponent source={cardImage} style={cardSize} testID={concatTestID(testID, 'cardImage')} />
+          <ImageOrComponent
+            source={cardImage}
+            style={cardSize}
+            testID={concatTestID(testID, 'cardImage')}
+          />
         )
       ) : (
         <View
@@ -117,7 +142,12 @@ const CredentialCard: FC<CredentialCardProps> = ({
           testID={concatTestID(testID, 'cardBackgroundColor', String(color))}
         />
       )}
-      {onCardPress && <TouchableOpacity onPress={cardPressHandler} style={styles.cardButton} />}
+      {onCardPress && (
+        <TouchableOpacity
+          onPress={cardPressHandler}
+          style={styles.cardButton}
+        />
+      )}
       {shouldShowCarousel ? (
         <CarouselComponent
           carouselSize={{
@@ -133,28 +163,42 @@ const CredentialCard: FC<CredentialCardProps> = ({
         activeOpacity={0.9}
         disabled={!onHeaderPress}
         onPress={headerPressHandler}
-        style={styles.header}>
-        <CredentialHeader {...header} color={header.color ?? color} testID={concatTestID(testID, 'header')} />
+        style={styles.header}
+      >
+        <CredentialHeader
+          {...header}
+          color={header.color ?? color}
+          testID={concatTestID(testID, 'header')}
+        />
       </TouchableOpacity>
       <View style={styles.accessories}>
         {extraView}
-        {count || tags?.length ? <View style={styles.tagsAndCount}>
-          <View style={styles.tags}>
-            {tags?.map((t) => (
-              <Badge key={t} type='rect' value={t} />
-            ))}
+        {count || tags?.length ? (
+          <View style={styles.tagsAndCount}>
+            <View style={styles.tags}>
+              {tags?.map((t) => (
+                <Badge key={t} type="rect" value={t} />
+              ))}
+            </View>
+            {count ? <Badge type="pill" value={count.toString()} /> : undefined}
           </View>
-          {count ? <Badge type="pill" value={count.toString()} /> : undefined}
-        </View> : undefined}
+        ) : undefined}
         {notice && (
-          <BlurView blurStyle="soft" style={styles.notice} testID={concatTestID(testID, 'notice')}>
-            {noticeIconView && <View style={styles.noticeIcon}>{noticeIconView}</View>}
+          <BlurView
+            blurStyle="soft"
+            style={styles.notice}
+            testID={concatTestID(testID, 'notice')}
+          >
+            {noticeIconView && (
+              <View style={styles.noticeIcon}>{noticeIconView}</View>
+            )}
             <View style={styles.noticeTextWrapper}>
               <Typography
                 color={colorScheme.text}
                 preset="xs/line-height-small"
                 style={styles.noticeText}
-                testID={concatTestID(testID, 'notice.text')}>
+                testID={concatTestID(testID, 'notice.text')}
+              >
                 {notice.text}
               </Typography>
             </View>

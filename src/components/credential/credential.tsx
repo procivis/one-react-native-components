@@ -2,11 +2,17 @@ import { Claim } from '@procivis/react-native-one-core';
 import React, { ComponentType, FC, ReactElement, useMemo } from 'react';
 import { Dimensions, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { CredentialDetailsCardListItem, CredentialHeaderProps } from '../../ui-components/credential/card';
+import {
+  CredentialDetailsCardListItem,
+  CredentialHeaderProps,
+} from '../../ui-components/credential/card';
 import { concatTestID } from '../../utils';
 import { useCoreConfig } from '../../utils/hooks/core/core-config';
 import { useCredentialDetail } from '../../utils/hooks/core/credentials';
-import { CardLabels, detailsCardFromCredentialWithClaims } from '../../utils/parsers/credential';
+import {
+  CardLabels,
+  detailsCardFromCredentialWithClaims,
+} from '../../utils/parsers/credential';
 
 export interface CredentialDetailsProps {
   attributesExtra?: ComponentType<any> | ReactElement;

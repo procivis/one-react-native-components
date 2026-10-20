@@ -5,7 +5,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { concatTestID } from '../../utils';
 import { Button, ButtonProps } from '../buttons/button';
 import ShareButton, { ShareButtonProps } from '../buttons/share-button';
-import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
+import NavigationHeader, {
+  NavigationHeaderProps,
+} from '../header/navigation-header';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 import LoaderView, { LoaderViewProps } from './loader';
@@ -48,7 +50,14 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colorScheme.background }, style]} {...viewProps}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colorScheme.background },
+        style,
+      ]}
+      {...viewProps}
+    >
       <View style={[styles.headerWrapper, headerPaddingStyle]}>
         <NavigationHeader {...header} />
       </View>
@@ -59,12 +68,15 @@ const LoadingResultScreen: FC<LoadingResultScreenProps> = ({
           color={colorScheme.text}
           preset="regular"
           style={styles.label}
-          testID={concatTestID(viewProps.testID, 'label')}>
+          testID={concatTestID(viewProps.testID, 'label')}
+        >
           {label}
         </Typography>
       </View>
       <View style={[styles.buttonWrapper, buttonsWrapperMarginStyle]}>
-        {shareButton && <ShareButton {...shareButton} style={styles.shareButton} />}
+        {shareButton && (
+          <ShareButton {...shareButton} style={styles.shareButton} />
+        )}
         {button && <Button {...button}>{button.title}</Button>}
         {button2 && <Button {...button2}>{button2.title}</Button>}
         {button3 && <Button {...button3}>{button3.title}</Button>}

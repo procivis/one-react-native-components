@@ -1,8 +1,15 @@
-import React, { ComponentType, FunctionComponent, ReactElement, useMemo } from 'react';
+import React, {
+  ComponentType,
+  FunctionComponent,
+  ReactElement,
+  useMemo,
+} from 'react';
 import { StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
 import { concatTestID } from '../../utils';
-import ImageOrComponent, { ImageOrComponentSource } from '../image/image-or-component';
+import ImageOrComponent, {
+  ImageOrComponentSource,
+} from '../image/image-or-component';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
@@ -43,8 +50,16 @@ const Avatar: FunctionComponent<AvatarProps> = ({
 
     return {
       component: (
-        <View style={[styles.avatarPlaceholder, { backgroundColor: colorScheme.accent }]}>
-          <Typography color={colorScheme.accentText} style={styles.avatarPlaceholderText}>
+        <View
+          style={[
+            styles.avatarPlaceholder,
+            { backgroundColor: colorScheme.accent },
+          ]}
+        >
+          <Typography
+            color={colorScheme.accentText}
+            style={styles.avatarPlaceholderText}
+          >
             {placeholderText}
           </Typography>
         </View>
@@ -52,14 +67,34 @@ const Avatar: FunctionComponent<AvatarProps> = ({
     };
   }, [colorScheme, avatar, placeholderText]);
 
-  const { borderRadius, ...avatarStyle } = StyleSheet.flatten([styles.avatar, style]) as ViewStyle;
+  const { borderRadius, ...avatarStyle } = StyleSheet.flatten([
+    styles.avatar,
+    style,
+  ]) as ViewStyle;
   return (
-    <View accessibilityElementsHidden={true} style={avatarStyle} testID={testID} {...viewProps}>
-      <View style={[styles.imageWrapper, borderRadius ? { borderRadius } : undefined]}>
-        <ImageOrComponent source={imageSource} style={styles.image} testID={concatTestID(testID, 'logo')} />
+    <View
+      accessibilityElementsHidden={true}
+      style={avatarStyle}
+      testID={testID}
+      {...viewProps}
+    >
+      <View
+        style={[
+          styles.imageWrapper,
+          borderRadius ? { borderRadius } : undefined,
+        ]}
+      >
+        <ImageOrComponent
+          source={imageSource}
+          style={styles.image}
+          testID={concatTestID(testID, 'logo')}
+        />
       </View>
       {statusIconView && (
-        <View style={styles.statusIcon} testID={concatTestID(testID, 'statusIcon')}>
+        <View
+          style={styles.statusIcon}
+          testID={concatTestID(testID, 'statusIcon')}
+        >
           {statusIconView}
         </View>
       )}

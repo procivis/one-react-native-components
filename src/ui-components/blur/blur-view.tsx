@@ -1,6 +1,16 @@
-import { BlurView as RNBlurView, BlurViewProps as RNBlurViewProps } from '@react-native-community/blur';
+import {
+  BlurView as RNBlurView,
+  BlurViewProps as RNBlurViewProps,
+} from '@react-native-community/blur';
 import React, { FC, PropsWithChildren, useMemo } from 'react';
-import { ColorValue, Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  ColorValue,
+  Platform,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 
 import { colorWithAlphaComponent } from '../../utils/color';
 import { useAppColorScheme } from '../theme';
@@ -64,7 +74,9 @@ const BlurView: FC<PropsWithChildren<BlurViewProps>> = ({
     );
   }
 
-  const backgroundColor = color ? colorWithAlphaComponent(color, 0.9) : BACKGROUND_COLOR[blurType];
+  const backgroundColor = color
+    ? colorWithAlphaComponent(color, 0.9)
+    : BACKGROUND_COLOR[blurType];
 
   return (
     <View style={[{ backgroundColor }, style]} {...props}>

@@ -6,7 +6,13 @@ import RadioGroup, { RadioGroupProps } from './radio-group';
 
 const Render = ({ ...args }: RadioGroupProps) => {
   const [selectedItem, setSelectedItem] = useState<React.Key>();
-  return <RadioGroup {...args} onSelected={({ key }) => setSelectedItem(key)} selectedItem={selectedItem} />;
+  return (
+    <RadioGroup
+      {...args}
+      onSelected={({ key }) => setSelectedItem(key)}
+      selectedItem={selectedItem}
+    />
+  );
 };
 
 const Basic: StoryObj<typeof RadioGroup> = {
@@ -16,7 +22,7 @@ const Basic: StoryObj<typeof RadioGroup> = {
       { key: 2, label: 'Item2' },
       { key: 3, label: 'Item3' },
     ],
-     
+
     onGetItemAccessibilityLabel: fn(),
     style: { margin: 24 },
   },

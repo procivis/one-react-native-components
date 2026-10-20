@@ -23,7 +23,10 @@ export function useMemoAsync<Value, FallbackValue = Value | undefined>(
   initialValue: FallbackValue,
   fallbackValue?: FallbackValue,
 ): Value | FallbackValue;
-export function useMemoAsync<Value>(factory: FactoryFn<Value>, deps: DependencyList): Value | undefined;
+export function useMemoAsync<Value>(
+  factory: FactoryFn<Value>,
+  deps: DependencyList,
+): Value | undefined;
 
 export function useMemoAsync<Value, FallbackValue = Value | undefined>(
   factory: FactoryFn<Value>,
@@ -31,7 +34,9 @@ export function useMemoAsync<Value, FallbackValue = Value | undefined>(
   initialValue?: FallbackValue,
   fallbackValue?: FallbackValue,
 ): Value | FallbackValue | undefined {
-  const [value, setValue] = useState<Value | FallbackValue | undefined>(initialValue);
+  const [value, setValue] = useState<Value | FallbackValue | undefined>(
+    initialValue,
+  );
   useEffect(() => {
     const abortCtrl = new AbortController();
     const update = async () => {

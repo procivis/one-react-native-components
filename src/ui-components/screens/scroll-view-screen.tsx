@@ -1,16 +1,29 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { Platform, ScrollView, ScrollViewProps, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  ScrollViewProps,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useOnScrollHeaderState } from '../../utils/hooks/header/on-scroll-header-state';
 import { useListContentInset } from '../../utils/hooks/list/list-content-inset';
 import { concatTestID } from '../../utils/testID';
-import NavigationHeader, { NavigationHeaderProps } from '../header/navigation-header';
+import NavigationHeader, {
+  NavigationHeaderProps,
+} from '../header/navigation-header';
 import ListTitleHeader from '../list/list-title-header';
 import { useAppColorScheme } from '../theme/color-scheme-context';
 
 export type ScrollViewScreenProps = ViewProps & {
-  header: Omit<NavigationHeaderProps, 'animate' | 'blurred' | 'style' | 'title' | 'titleVisible'> & {
+  header: Omit<
+    NavigationHeaderProps,
+    'animate' | 'blurred' | 'style' | 'title' | 'titleVisible'
+  > & {
     static?: boolean;
     title: string;
   };
@@ -42,21 +55,35 @@ const ScrollViewScreen: FC<PropsWithChildren<ScrollViewScreenProps>> = ({
     headerPaddingStyle = {
       paddingTop: top,
     };
-  } else if (modalPresentation && !header.modalHandleVisible && Platform.OS === 'ios') {
+  } else if (
+    modalPresentation &&
+    !header.modalHandleVisible &&
+    Platform.OS === 'ios'
+  ) {
     headerPaddingStyle = styles.modalHeaderWithoutHandle;
   }
 
   return (
     <View
       collapsable={false} // ONE-10889: avoid view flattening which can cause issues with form sheets
-      style={[styles.container, { backgroundColor: colorScheme.background }, style]}
+      style={[
+        styles.container,
+        { backgroundColor: colorScheme.background },
+        style,
+      ]}
       testID={testID}
-      {...viewProps}>
+      {...viewProps}
+    >
       <ScrollView
-        contentContainerStyle={[styles.contentContainer, contentInsetsStyle, contentContainerStyle]}
+        contentContainerStyle={[
+          styles.contentContainer,
+          contentInsetsStyle,
+          contentContainerStyle,
+        ]}
         onScroll={onScroll}
         scrollEventThrottle={100}
-        {...scrollViewProps}>
+        {...scrollViewProps}
+      >
         <View style={styles.content} testID={concatTestID(testID, 'content')}>
           {!header.static && <ListTitleHeader title={header.title} />}
           {children}

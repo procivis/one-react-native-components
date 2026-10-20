@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ConnectivityButton, { ConnectivityTransport } from './connectivity-button';
+import ConnectivityButton, {
+  ConnectivityTransport,
+} from './connectivity-button';
 
 const Basic: StoryObj<typeof ConnectivityButton> = {
   args: {
@@ -19,7 +21,11 @@ export default {
     onPress: { action: 'onPress' },
     transport: {
       control: { type: 'radio' },
-      options: [ConnectivityTransport.Internet, ConnectivityTransport.Bluetooth, ConnectivityTransport.All],
+      options: [
+        ConnectivityTransport.Internet,
+        ConnectivityTransport.Bluetooth,
+        ConnectivityTransport.All,
+      ],
     },
   },
   component: ConnectivityButton,

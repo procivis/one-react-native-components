@@ -1,6 +1,12 @@
 import WheelPicker from '@quidone/react-native-wheel-picker';
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Modal, StyleSheet, TouchableOpacityProps, View, ViewStyle } from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  TouchableOpacityProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { Typography } from '..';
 import { TouchableOpacity } from '../accessibility/accessibilityHistoryWrappers';
@@ -52,7 +58,10 @@ const SelectionInput: FC<SelectionInputProps> = ({
   const colorScheme = useAppColorScheme();
 
   const selectedChoice = useMemo(
-    () => (selectedValue !== undefined ? values.find(({ value }) => value === selectedValue) : undefined),
+    () =>
+      selectedValue !== undefined
+        ? values.find(({ value }) => value === selectedValue)
+        : undefined,
     [selectedValue, values],
   );
 
@@ -87,11 +96,16 @@ const SelectionInput: FC<SelectionInputProps> = ({
         backdropColor={'rgba(0,0,0,0.1)'}
         onDismiss={() => setModalVisible(false)}
         onRequestClose={onCancel}
-        visible={modalVisible}>
+        visible={modalVisible}
+      >
         <View style={[styles.modalContent, modalContentBgStyle]}>
           <WheelPicker
             data={values}
-            onValueChanged={({ item: { value } }: { item: { value?: string | number } }) => setWheelPickerValue(value)}
+            onValueChanged={({
+              item: { value },
+            }: {
+              item: { value?: string | number };
+            }) => setWheelPickerValue(value)}
             value={wheelPickerValue || ''}
             visibleItemCount={5}
           />

@@ -16,7 +16,15 @@ type Args = {
   withShareButton: boolean;
 };
 
-const Render = ({ label, state, withButton1, withButton2, withButton3, withHeader, withShareButton }: Args) => {
+const Render = ({
+  label,
+  state,
+  withButton1,
+  withButton2,
+  withButton3,
+  withHeader,
+  withShareButton,
+}: Args) => {
   return (
     <LoadingResultScreen
       button={withButton1 ? { title: 'Button 1' } : undefined}
@@ -33,9 +41,17 @@ const Render = ({ label, state, withButton1, withButton2, withButton3, withHeade
         label,
         state,
       }}
-      secondaryButton={withButton2 ? { title: 'Button 2', type: ButtonType.Secondary } : undefined}
+      secondaryButton={
+        withButton2
+          ? { title: 'Button 2', type: ButtonType.Secondary }
+          : undefined
+      }
       shareButton={withShareButton ? { title: 'qr-code-date.com' } : undefined}
-      tertiaryButton={withButton3 ? { title: 'Button 3', type: ButtonType.Secondary } : undefined}
+      tertiaryButton={
+        withButton3
+          ? { title: 'Button 3', type: ButtonType.Secondary }
+          : undefined
+      }
     />
   );
 };
@@ -59,7 +75,11 @@ export default {
   argTypes: {
     state: {
       control: { type: 'radio' },
-      options: [LoaderViewState.InProgress, LoaderViewState.Success, LoaderViewState.Warning],
+      options: [
+        LoaderViewState.InProgress,
+        LoaderViewState.Success,
+        LoaderViewState.Warning,
+      ],
     },
   },
   component: LoadingResultScreen,

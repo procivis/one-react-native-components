@@ -2,7 +2,11 @@ import { useIsFocused } from '@react-navigation/native';
 import React, { FunctionComponent, useMemo } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { useCameraDevice } from 'react-native-vision-camera';
-import { Barcode, CodeScanner, TargetBarcodeFormat } from 'react-native-vision-camera-barcode-scanner';
+import {
+  Barcode,
+  CodeScanner,
+  TargetBarcodeFormat,
+} from 'react-native-vision-camera-barcode-scanner';
 
 import { useIsAppActive } from '../../utils';
 import CameraOverlay from './camera-overlay';

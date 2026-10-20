@@ -3,7 +3,6 @@ import React from 'react';
 
 import { view } from '../.ondevice/storybook.requires';
 
- 
 const StorybookUIRoot = view.getStorybookUI({
   enableWebsockets: true,
   host: 'localhost',

@@ -1,4 +1,8 @@
-import { IdentifierListQuery, IdentifierState, IdentifierType } from '@procivis/react-native-one-core';
+import {
+  IdentifierListQuery,
+  IdentifierState,
+  IdentifierType,
+} from '@procivis/react-native-one-core';
 import { useQuery } from 'react-query';
 
 import { getQueryKeyFromIdentifierListQueryParams } from '../../parsers';
@@ -21,11 +25,16 @@ export const useIdentifierDetails = (identifierId: string | undefined) => {
   );
 };
 
-export const useIdentifiers = (identifierFilter?: Partial<IdentifierListQuery>) => {
+export const useIdentifiers = (
+  identifierFilter?: Partial<IdentifierListQuery>,
+) => {
   const { core, organisationId } = useONECore();
 
   return useQuery(
-    [IDENTIFIER_LIST_QUERY_KEY, ...getQueryKeyFromIdentifierListQueryParams(identifierFilter)],
+    [
+      IDENTIFIER_LIST_QUERY_KEY,
+      ...getQueryKeyFromIdentifierListQueryParams(identifierFilter),
+    ],
     ({ pageParam = 0 }: { pageParam?: number }) =>
       core.listIdentifiers({
         isRemote: false,

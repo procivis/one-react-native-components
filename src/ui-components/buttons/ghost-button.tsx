@@ -1,5 +1,11 @@
 import React, { FC, ReactNode, useMemo } from 'react';
-import { Insets, StyleProp, StyleSheet, TouchableOpacityProps, ViewStyle } from 'react-native';
+import {
+  Insets,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacityProps,
+  ViewStyle,
+} from 'react-native';
 import type { SvgProps } from 'react-native-svg';
 
 import { useAccessibleAfterTransition } from '../accessibility';
@@ -15,7 +21,13 @@ export type GhostButtonProps = TouchableOpacityProps & {
 
 const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
 
-const GhostButton: FC<GhostButtonProps> = ({ accessibilityLabel, icon, onPress, style, ...props }) => {
+const GhostButton: FC<GhostButtonProps> = ({
+  accessibilityLabel,
+  icon,
+  onPress,
+  style,
+  ...props
+}) => {
   const colorScheme = useAppColorScheme();
   const accessible = useAccessibleAfterTransition();
 
@@ -39,7 +51,8 @@ const GhostButton: FC<GhostButtonProps> = ({ accessibilityLabel, icon, onPress, 
       hitSlop={hitSlop}
       onPress={onPress}
       style={[styles.button, backgroundStyle, style]}
-      {...props}>
+      {...props}
+    >
       {iconElement}
     </TouchableOpacity>
   );

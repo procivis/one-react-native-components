@@ -25,7 +25,12 @@ const SwitchSetting: FunctionComponent<SwitchSettingProps> = ({
   testID,
 }) => {
   return (
-    <SettingItem icon={icon} style={style} testID={concatTestID(testID, 'text')} title={title}>
+    <SettingItem
+      icon={icon}
+      style={style}
+      testID={concatTestID(testID, 'text')}
+      title={title}
+    >
       <Switch
         accessibilityLabel={title}
         disabled={disabled}

@@ -1,4 +1,7 @@
-import { IdentifierState, IdentifierType } from '@procivis/react-native-one-core';
+import {
+  IdentifierState,
+  IdentifierType,
+} from '@procivis/react-native-one-core';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -27,8 +30,13 @@ export const useCreateBackup = () => {
   const { core } = useONECore();
 
   return useMutation(
-    async ({ password, outputPath }: { outputPath: string; password: string }) =>
-      core.createBackup(password, outputPath),
+    async ({
+      password,
+      outputPath,
+    }: {
+      outputPath: string;
+      password: string;
+    }) => core.createBackup(password, outputPath),
     {
       onSuccess: () => queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY),
     },
@@ -40,7 +48,8 @@ export const useUnpackBackup = () => {
   const { core } = useONECore();
 
   return useMutation(
-    async ({ password, inputPath }: { inputPath: string; password: string }) => core.unpackBackup(password, inputPath),
+    async ({ password, inputPath }: { inputPath: string; password: string }) =>
+      core.unpackBackup(password, inputPath),
     {
       onSuccess: () => queryClient.resetQueries(),
     },
@@ -70,7 +79,10 @@ export const useRollbackImport = () => {
  * @param {IdentifiersInitializationConfig} config Select desired keys/dids to be restored/created
  * @returns [hwIdentifierId, swIdentifierId]
  */
-export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey }: IdentifiersInitializationConfig) => {
+export const useBackupFinalizeImportProcedure = ({
+  generateHwKey,
+  generateSwKey,
+}: IdentifiersInitializationConfig) => {
   const { mutateAsync: finalizeImport } = useFinalizeImport();
   const { core, organisationId } = useONECore();
 
@@ -88,12 +100,16 @@ export const useBackupFinalizeImportProcedure = ({ generateHwKey, generateSwKey 
         states: [IdentifierState.ACTIVE],
         types: [IdentifierType.DID],
       });
-      swIdentifierId = identifiers.values.find((identifier) => identifier.name.startsWith(SW_DID_NAME_PREFIX))?.id;
+      swIdentifierId = identifiers.values.find((identifier) =>
+        identifier.name.startsWith(SW_DID_NAME_PREFIX),
+      )?.id;
     }
 
     return Promise.all([
       generateHwKey ? generateHwIdentifier(core, organisationId) : null,
-      !swIdentifierId && generateSwKey ? generateSwIdentifier(core, organisationId) : swIdentifierId,
+      !swIdentifierId && generateSwKey
+        ? generateSwIdentifier(core, organisationId)
+        : swIdentifierId,
     ]).catch((err) => {
       reportException(err, 'Failed to create base identifiers');
       throw err;

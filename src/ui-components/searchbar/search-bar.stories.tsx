@@ -3,12 +3,22 @@ import React, { useState } from 'react';
 
 import SearchBar, { SearchBarProps } from './search-bar';
 
-const Render = (args: Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChange'>) => {
+const Render = (
+  args: Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChange'>,
+) => {
   const [searchPhrase, setSearchPhrase] = useState('');
-  return <SearchBar {...args} onSearchPhraseChange={setSearchPhrase} searchPhrase={searchPhrase} />;
+  return (
+    <SearchBar
+      {...args}
+      onSearchPhraseChange={setSearchPhrase}
+      searchPhrase={searchPhrase}
+    />
+  );
 };
 
-const Basic: StoryObj<Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChange'>> = {
+const Basic: StoryObj<
+  Omit<SearchBarProps, 'searchPhrase' | 'onSearchPhraseChange'>
+> = {
   args: {
     placeholder: 'Search',
     style: { margin: 24 },

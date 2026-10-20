@@ -47,11 +47,7 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
     if (!isLoading) {
       return;
     }
-    opacity.value = withRepeat(
-      withTiming(0.3, { duration: 1000 }),
-      0,
-      true
-    );
+    opacity.value = withRepeat(withTiming(0.3, { duration: 1000 }), 0, true);
   }, [opacity, isLoading]);
 
   const avatarProps = useMemo<AvatarProps>(() => {
@@ -59,7 +55,12 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
       return {
         avatar: {
           component: (
-            <View style={[styles.loaderWrapper, { backgroundColor: colorScheme.grayDark }]}>
+            <View
+              style={[
+                styles.loaderWrapper,
+                { backgroundColor: colorScheme.grayDark },
+              ]}
+            >
               <View style={styles.loader}>
                 <LoaderView animate={true} state={LoaderViewState.InProgress} />
               </View>
@@ -81,7 +82,9 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
       <Avatar testID={concatTestID(testID, 'avatar')} {...avatarProps} />
       <View style={styles.labels}>
         {isLoading ? (
-          <Animated.View style={[{ backgroundColor: colorScheme.grayDark }, animatedStyle]}>
+          <Animated.View
+            style={[{ backgroundColor: colorScheme.grayDark }, animatedStyle]}
+          >
             <Typography color={colorScheme.grayDark} />
           </Animated.View>
         ) : (
@@ -90,7 +93,8 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
             numberOfLines={1}
             preset="m"
             style={styles.entityName}
-            testID={concatTestID(testID, 'entityName')}>
+            testID={concatTestID(testID, 'entityName')}
+          >
             {!isLoading ? entityName : undefined}
           </Typography>
         )}
@@ -100,7 +104,8 @@ const EntityCluster: FunctionComponent<EntityClusterProps> = ({
               color={sublineColor ?? colorScheme.text}
               numberOfLines={1}
               preset="xs"
-              testID={concatTestID(testID, 'subline')}>
+              testID={concatTestID(testID, 'subline')}
+            >
               {subline}
             </Typography>
           </View>

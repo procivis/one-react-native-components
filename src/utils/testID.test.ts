@@ -17,6 +17,8 @@ describe('concatTestID', () => {
     expect(concatTestID('something', '')).toBe(undefined);
     expect(concatTestID('something', undefined)).toBe(undefined);
     expect(concatTestID('something', '', 'somethingElse')).toBe(undefined);
-    expect(concatTestID('something', undefined, 'somethingElse')).toBe(undefined);
+    expect(concatTestID('something', undefined, 'somethingElse')).toBe(
+      undefined,
+    );
   });
 });

@@ -1,9 +1,14 @@
 {
   "extends": "./tsconfig",
   "include": ["src"],
-  "exclude": ["storybook", "storybook-static", "**/*.stories.tsx", "**/*.stories.mobile.tsx"],
+  "exclude": [
+    "storybook",
+    "storybook-static",
+    "**/*.stories.tsx",
+    "**/*.stories.mobile.tsx"
+  ],
   "compilerOptions": {
     "noEmit": false,
-    "rootDir": "./src",
+    "rootDir": "./src"
   }
 }

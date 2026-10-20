@@ -12,7 +12,11 @@ interface PreviewCredentialsProps {
   onImagePreview: (title: string, image: ImageSourcePropType) => void;
 }
 
-export const PreviewCredentials: FC<PreviewCredentialsProps> = ({ credentials, labels, onImagePreview }) => {
+export const PreviewCredentials: FC<PreviewCredentialsProps> = ({
+  credentials,
+  labels,
+  onImagePreview,
+}) => {
   const { expandedCredential, onHeaderPress } = useCredentialListExpandedCard();
 
   if (!credentials || credentials.length === 0) {

@@ -1,5 +1,13 @@
-import { CredentialSchemaListQuery, ImportCredentialSchemaRequestSchema } from '@procivis/react-native-one-core';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  CredentialSchemaListQuery,
+  ImportCredentialSchemaRequestSchema,
+} from '@procivis/react-native-one-core';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 
 import { getQueryKeyFromCredentialSchemaListQueryParams } from '../../parsers/query';
 import { useHTTPClient } from '../http/client';
@@ -12,11 +20,16 @@ export const CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY = 'credential-schema-detail';
 export const CREDENTIAL_SCHEMA_PREVIEW_QUERY_KEY = 'credential-schema-preview';
 export const CREDENTIAL_SCHEMA_SHARE_QUERY_KEY = 'credential-schema-share';
 
-export const useCredentialSchemas = (queryParams?: Partial<CredentialSchemaListQuery>) => {
+export const useCredentialSchemas = (
+  queryParams?: Partial<CredentialSchemaListQuery>,
+) => {
   const { core, organisationId } = useONECore();
 
   return useInfiniteQuery(
-    [CREDENTIAL_SCHEMA_LIST_QUERY_KEY, ...getQueryKeyFromCredentialSchemaListQueryParams(queryParams)],
+    [
+      CREDENTIAL_SCHEMA_LIST_QUERY_KEY,
+      ...getQueryKeyFromCredentialSchemaListQueryParams(queryParams),
+    ],
     ({ pageParam = 0 }: { pageParam?: number }) =>
       core
         .listCredentialSchemas({
@@ -27,7 +40,8 @@ export const useCredentialSchemas = (queryParams?: Partial<CredentialSchemaListQ
         })
         .then(({ values }) => values),
     {
-      getNextPageParam: (lastPage, allPages) => (lastPage.length === PAGE_SIZE ? allPages.length : undefined),
+      getNextPageParam: (lastPage, allPages) =>
+        lastPage.length === PAGE_SIZE ? allPages.length : undefined,
       keepPreviousData: true,
     },
   );
@@ -51,7 +65,9 @@ export const useCredentialSchemaPreview = (url: string) => {
   );
 };
 
-const prepareImportCredentialSchema = (data: unknown): ImportCredentialSchemaRequestSchema => {
+const prepareImportCredentialSchema = (
+  data: unknown,
+): ImportCredentialSchemaRequestSchema => {
   if (!data || typeof data !== 'object') {
     throw Error('Invalid credential schema data');
   }
@@ -92,7 +108,10 @@ export const useCredentialSchemaAccept = () => {
   );
 };
 
-export const useCredentialSchemaDetail = (credentialId: string | undefined, active = true) => {
+export const useCredentialSchemaDetail = (
+  credentialId: string | undefined,
+  active = true,
+) => {
   const { core } = useONECore();
 
   return useQuery(
@@ -109,13 +128,20 @@ export const useCredentialSchemaDelete = () => {
   const queryClient = useQueryClient();
   const { core } = useONECore();
 
-  return useMutation(async (credentialSchemaId: string) => core.deleteCredentialSchema(credentialSchemaId), {
-    onSuccess: async (_, credentialId) => {
-      await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
-      queryClient.removeQueries([CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY, credentialId]);
-      await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+  return useMutation(
+    async (credentialSchemaId: string) =>
+      core.deleteCredentialSchema(credentialSchemaId),
+    {
+      onSuccess: async (_, credentialId) => {
+        await queryClient.invalidateQueries(CREDENTIAL_SCHEMA_LIST_QUERY_KEY);
+        queryClient.removeQueries([
+          CREDENTIAL_SCHEMA_DETAIL_QUERY_KEY,
+          credentialId,
+        ]);
+        await queryClient.invalidateQueries(HISTORY_LIST_QUERY_KEY);
+      },
     },
-  });
+  );
 };
 
 export const useShareCredentialSchema = (schemaId?: string) => {
@@ -123,7 +149,10 @@ export const useShareCredentialSchema = (schemaId?: string) => {
 
   return useQuery(
     [CREDENTIAL_SCHEMA_SHARE_QUERY_KEY, schemaId],
-    () => (schemaId ? core.shareCredentialSchema(schemaId) : Promise.reject(new Error())),
+    () =>
+      schemaId
+        ? core.shareCredentialSchema(schemaId)
+        : Promise.reject(new Error()),
     {
       enabled: Boolean(schemaId),
       keepPreviousData: true,

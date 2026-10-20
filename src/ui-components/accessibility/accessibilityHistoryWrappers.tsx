@@ -1,5 +1,10 @@
- 
-import React, { FC, ForwardedRef, forwardRef, MutableRefObject, PropsWithoutRef } from 'react';
+import React, {
+  FC,
+  ForwardedRef,
+  forwardRef,
+  MutableRefObject,
+  PropsWithoutRef,
+} from 'react';
 import {
   GestureResponderEvent,
   Pressable as RNPressable,
@@ -56,28 +61,37 @@ const WithAccessibilityFocusHistory = <
  * Wrappers of RN touchable components with accessibilty focus history support
  */
 export const TouchableOpacity: React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<TouchableOpacityProps> & React.RefAttributes<typeof RNTouchableOpacity>
-> = WithAccessibilityFocusHistory<TouchableOpacityProps, typeof RNTouchableOpacity>(
-  RNTouchableOpacity,
-  'TouchableOpacity',
-);
+  React.PropsWithoutRef<TouchableOpacityProps> &
+    React.RefAttributes<typeof RNTouchableOpacity>
+> = WithAccessibilityFocusHistory<
+  TouchableOpacityProps,
+  typeof RNTouchableOpacity
+>(RNTouchableOpacity, 'TouchableOpacity');
 export const TouchableWithoutFeedback = WithAccessibilityFocusHistory<
   TouchableWithoutFeedbackProps,
   typeof RNTouchableWithoutFeedback
 >(RNTouchableWithoutFeedback, 'TouchableWithoutFeedback');
-export const TouchableHighlight = WithAccessibilityFocusHistory<TouchableHighlightProps, typeof RNTouchableHighlight>(
-  RNTouchableHighlight,
-  'TouchableHighlight',
+export const TouchableHighlight = WithAccessibilityFocusHistory<
+  TouchableHighlightProps,
+  typeof RNTouchableHighlight
+>(RNTouchableHighlight, 'TouchableHighlight');
+export const Pressable = WithAccessibilityFocusHistory<PressableProps, View>(
+  RNPressable,
+  'Pressable',
 );
-export const Pressable = WithAccessibilityFocusHistory<PressableProps, View>(RNPressable, 'Pressable');
 
-type WrapperRefType<C extends React.ForwardRefExoticComponent<React.RefAttributes<any>>> =
-  C extends React.ForwardRefExoticComponent<React.RefAttributes<infer Ref>> ? Ref : never;
+type WrapperRefType<
+  C extends React.ForwardRefExoticComponent<React.RefAttributes<any>>,
+> = C extends React.ForwardRefExoticComponent<React.RefAttributes<infer Ref>>
+  ? Ref
+  : never;
 
 /**
  * Ref types to be used in forwardRef for the wrappers
  */
 export type TouchableOpacityRef = WrapperRefType<typeof TouchableOpacity>;
-export type TouchableWithoutFeedbackRef = WrapperRefType<typeof TouchableWithoutFeedback>;
+export type TouchableWithoutFeedbackRef = WrapperRefType<
+  typeof TouchableWithoutFeedback
+>;
 export type TouchableHighlightRef = WrapperRefType<typeof TouchableHighlight>;
 export type PressableRef = WrapperRefType<typeof Pressable>;

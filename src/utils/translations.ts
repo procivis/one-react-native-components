@@ -1,8 +1,11 @@
-const primaryLanguageSubtag = (languageTag: string): string => languageTag.toLowerCase().split('-')[0];
+const primaryLanguageSubtag = (languageTag: string): string =>
+  languageTag.toLowerCase().split('-')[0];
 
-const isSameTag = (a: string, b: string): boolean => a.toLowerCase() === b.toLowerCase();
+const isSameTag = (a: string, b: string): boolean =>
+  a.toLowerCase() === b.toLowerCase();
 
-const isSameLanguage = (a: string, b: string): boolean => primaryLanguageSubtag(a) === primaryLanguageSubtag(b);
+const isSameLanguage = (a: string, b: string): boolean =>
+  primaryLanguageSubtag(a) === primaryLanguageSubtag(b);
 
 export const resolveLocalizedValue = (
   translations: Record<string, string> | undefined,
@@ -15,8 +18,12 @@ export const resolveLocalizedValue = (
       continue;
     }
 
-    const exactMatch = availableLanguages.find((available) => isSameTag(available, language));
-    const sameLanguageMatch = availableLanguages.find((available) => isSameLanguage(available, language));
+    const exactMatch = availableLanguages.find((available) =>
+      isSameTag(available, language),
+    );
+    const sameLanguageMatch = availableLanguages.find((available) =>
+      isSameLanguage(available, language),
+    );
 
     const bestMatch = exactMatch ?? sameLanguageMatch;
     if (bestMatch) {

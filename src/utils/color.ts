@@ -1,4 +1,3 @@
- 
 import normalizeColor from '@react-native/normalize-color';
 import type { ColorValue } from 'react-native';
 
@@ -13,7 +12,10 @@ export const colorArray = (color: ColorValue) => {
   return [r / 255, g / 255, b / 255, a / 255];
 };
 
-export const colorWithAlphaComponent = (color: ColorValue, alpha: number): ColorValue => {
+export const colorWithAlphaComponent = (
+  color: ColorValue,
+  alpha: number,
+): ColorValue => {
   alpha = Math.min(1, Math.max(0, alpha));
   const colorValues = colorArray(color);
   colorValues[3] = alpha;

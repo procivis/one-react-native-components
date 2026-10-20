@@ -39,7 +39,9 @@ export enum ValidityState {
   Valid = 'valid',
 }
 
-export const getValidityState = (credential: CredentialListItem | undefined) => {
+export const getValidityState = (
+  credential: CredentialListItem | undefined,
+) => {
   if (credential?.state === CredentialState.REVOKED) {
     return ValidityState.Revoked;
   }
@@ -53,13 +55,22 @@ export const supportsSelectiveDisclosure = (
   credential: CredentialListItem | undefined,
   config: CoreConfig | undefined,
 ) => {
-  const formatConfig = credential?.schema.formats[0] ? config?.format[credential.schema.formats[0].format] : undefined;
+  const formatConfig = credential?.schema.formats[0]
+    ? config?.format[credential.schema.formats[0].format]
+    : undefined;
   return formatConfig
-    ? Boolean(formatConfig.capabilities?.features?.includes(FormatFeature.SelectiveDisclosure))
+    ? Boolean(
+        formatConfig.capabilities?.features?.includes(
+          FormatFeature.SelectiveDisclosure,
+        ),
+      )
     : undefined;
 };
 
-export const findClaimByPath = (path: string | undefined, claims: Claim[]): Claim | undefined => {
+export const findClaimByPath = (
+  path: string | undefined,
+  claims: Claim[],
+): Claim | undefined => {
   if (!path) {
     return undefined;
   }
@@ -84,7 +95,13 @@ const formatCredentialDetail = (
   labels: AttributesLabels,
   language: string | undefined,
 ): string => {
-  const attributeValue = detailsCardAttributeValueFromClaim(claim, config, testID, labels, language);
+  const attributeValue = detailsCardAttributeValueFromClaim(
+    claim,
+    config,
+    testID,
+    labels,
+    language,
+  );
   return attributeValue.value ?? '';
 };
 
@@ -99,7 +116,11 @@ export const credentialLogoFromCredential = (
   return {
     color: layoutProperties?.logo?.backgroundColor,
     credentialName:
-      getTranslatedLabel(credential.schema.translations?.name, language, defaultLanguage) ?? credential.schema.name,
+      getTranslatedLabel(
+        credential.schema.translations?.name,
+        language,
+        defaultLanguage,
+      ) ?? credential.schema.name,
     icon: layoutProperties?.logo?.image
       ? {
           imageSource: {
@@ -114,7 +135,8 @@ export const credentialLogoFromCredential = (
 
 export const hasMsoValidityIssues = (credential: CredentialDetail): boolean => {
   const mdocMsoValidityIssue = Boolean(
-    credential.mdocMsoValidity?.nextUpdate && new Date(credential.mdocMsoValidity.nextUpdate) < new Date(),
+    credential.mdocMsoValidity?.nextUpdate &&
+      new Date(credential.mdocMsoValidity.nextUpdate) < new Date(),
   );
 
   return mdocMsoValidityIssue;
@@ -154,7 +176,9 @@ const credentialDetailFromCredential = (
     case CredentialState.SUSPENDED:
       return {
         credentialDetailPrimary: credential.suspendEndDate
-          ? labels.suspendedUntil(formatDateTimeLocalized(new Date(credential.suspendEndDate))!)
+          ? labels.suspendedUntil(
+              formatDateTimeLocalized(new Date(credential.suspendEndDate))!,
+            )
           : labels.suspended,
         credentialDetailTestID: concatTestID(testID, 'suspended'),
         statusIcon: CredentialWarningIcon,
@@ -184,7 +208,9 @@ const credentialDetailFromCredential = (
   }
 
   let credentialDetailPrimary =
-    formatDateTimeLocalized(new Date(credential.issuanceDate ?? credential.createdDate)) ?? '';
+    formatDateTimeLocalized(
+      new Date(credential.issuanceDate ?? credential.createdDate),
+    ) ?? '';
   let credentialDetailSecondary: string | undefined;
 
   const primary = findClaimByPath(layoutProperties?.primaryAttribute, claims);
@@ -199,7 +225,10 @@ const credentialDetailFromCredential = (
     );
   }
 
-  const secondary = findClaimByPath(layoutProperties?.secondaryAttribute, claims);
+  const secondary = findClaimByPath(
+    layoutProperties?.secondaryAttribute,
+    claims,
+  );
 
   if (secondary) {
     credentialDetailSecondary = formatCredentialDetail(
@@ -226,14 +255,26 @@ export const cardHeaderFromCredential = (
   labels: CardHeaderLabels,
   language: string | undefined,
 ): Omit<CredentialHeaderProps, 'style'> => {
-  const logoProps = credentialLogoFromCredential(credential, config, '', language);
+  const logoProps = credentialLogoFromCredential(
+    credential,
+    config,
+    '',
+    language,
+  );
   const {
     credentialDetailPrimary,
     credentialDetailSecondary,
     credentialDetailErrorColor,
     credentialDetailTestID,
     statusIcon,
-  } = credentialDetailFromCredential(credential, claims, config, testID, labels, language);
+  } = credentialDetailFromCredential(
+    credential,
+    claims,
+    config,
+    testID,
+    labels,
+    language,
+  );
 
   return {
     ...logoProps,
@@ -270,7 +311,11 @@ export const getCredentialCardPropsFromCredential = (
       text: labels.validityIssuesNotice,
     };
   } else if (!notice) {
-    const description = getTranslatedLabel(credential.schema.translations?.description, language, defaultLanguage);
+    const description = getTranslatedLabel(
+      credential.schema.translations?.description,
+      language,
+      defaultLanguage,
+    );
     if (description) {
       notice = {
         noticeIcon: CredentialNoticeInfoIcon,
@@ -286,18 +331,35 @@ export const getCredentialCardPropsFromCredential = (
     tags = credential.format ? [credential.format] : undefined;
   }
 
-  const result: Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> = {
-    cardCarouselImages: getCarouselImagesFromClaims(claims, layoutProperties, concatTestID(testID, 'carousel')),
-    cardImage: layoutProperties?.background?.image
-      ? { imageSource: { uri: layoutProperties.background.image } }
-      : undefined,
-    color: layoutProperties?.background?.color,
-    count: credential.remainingBatchItemCount ? Object.values(credential.remainingBatchItemCount).reduce((sum, a) => sum + a, 0) : undefined,
-    header: cardHeaderFromCredential(credential, claims, config, concatTestID(testID, 'header'), labels, language),
-    notice,
-    tags,
-    testID,
-  };
+  const result: Omit<CredentialCardProps, 'onHeaderPress' | 'style' | 'width'> =
+    {
+      cardCarouselImages: getCarouselImagesFromClaims(
+        claims,
+        layoutProperties,
+        concatTestID(testID, 'carousel'),
+      ),
+      cardImage: layoutProperties?.background?.image
+        ? { imageSource: { uri: layoutProperties.background.image } }
+        : undefined,
+      color: layoutProperties?.background?.color,
+      count: credential.remainingBatchItemCount
+        ? Object.values(credential.remainingBatchItemCount).reduce(
+            (sum, a) => sum + a,
+            0,
+          )
+        : undefined,
+      header: cardHeaderFromCredential(
+        credential,
+        claims,
+        config,
+        concatTestID(testID, 'header'),
+        labels,
+        language,
+      ),
+      notice,
+      tags,
+      testID,
+    };
 
   return result;
 };
@@ -309,11 +371,22 @@ export const detailsCardAttributeFromClaim = (
   labels: AttributesLabels,
   language: string | undefined,
 ): CredentialAttribute => {
-  const value = detailsCardAttributeValueFromClaim(claim, config, testID, labels, language);
+  const value = detailsCardAttributeValueFromClaim(
+    claim,
+    config,
+    testID,
+    labels,
+    language,
+  );
   const defaultLanguage = config.globalSettings.defaultLanguage;
   return {
     id: claim.path,
-    name: getTranslatedLabel(claim.schema.translations.name, language, defaultLanguage) ?? claim.path.split('/').pop(),
+    name:
+      getTranslatedLabel(
+        claim.schema.translations.name,
+        language,
+        defaultLanguage,
+      ) ?? claim.path.split('/').pop(),
     path: claim.path,
     ...value,
   };
@@ -330,15 +403,17 @@ const detailsCardAttributeValueFromClaim = (
 
   if (claim.schema.array) {
     return {
-      values: ((claim.value.value as Claim[]) || []).map((arrayValue, index) => {
-        return detailsCardAttributeFromClaim(
-          arrayValue,
-          config,
-          concatTestID(testID, index.toString()),
-          labels,
-          language,
-        );
-      }),
+      values: ((claim.value.value as Claim[]) || []).map(
+        (arrayValue, index) => {
+          return detailsCardAttributeFromClaim(
+            arrayValue,
+            config,
+            concatTestID(testID, index.toString()),
+            labels,
+            language,
+          );
+        },
+      ),
     };
   } else {
     switch (typeConfig?.type) {
@@ -372,20 +447,37 @@ const detailsCardAttributeValueFromClaim = (
       case DataType.Picture: // fallback
       case DataType.SwiyuPicture: {
         if (typeConfig.params?.showAs === 'IMAGE') {
-          return { image: { uri: claim.value.value as string }, testID: testID };
+          return {
+            image: { uri: claim.value.value as string },
+            testID: testID,
+          };
         } else {
           return { testID: testID, value: claim.value.value as string };
         }
       }
       case DataType.Boolean:
-        return { testID: testID, value: (claim.value.value === 'true' || claim.value.value === true) ? labels.true : labels.false };
+        return {
+          testID: testID,
+          value:
+            claim.value.value === 'true' || claim.value.value === true
+              ? labels.true
+              : labels.false,
+        };
       default:
-        return { testID: testID, value: Array.isArray(claim.value.value) ? '' : String(claim.value.value) };
+        return {
+          testID: testID,
+          value: Array.isArray(claim.value.value)
+            ? ''
+            : String(claim.value.value),
+        };
     }
   }
 };
 
-export type CredentialDetailsCardPropsWithoutWidth = Omit<CredentialDetailsCardProps, 'expanded' | 'card'> & {
+export type CredentialDetailsCardPropsWithoutWidth = Omit<
+  CredentialDetailsCardProps,
+  'expanded' | 'card'
+> & {
   card: Omit<CredentialCardProps, 'width'>;
 };
 
@@ -396,7 +488,14 @@ export const detailsCardFromCredential = (
   labels: CardLabels,
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
-  return detailsCardFromCredentialWithClaims(credential, credential.claims, config, testID, labels, language);
+  return detailsCardFromCredentialWithClaims(
+    credential,
+    credential.claims,
+    config,
+    testID,
+    labels,
+    language,
+  );
 };
 
 export const detailsCardFromCredentialWithClaims = (
@@ -408,7 +507,13 @@ export const detailsCardFromCredentialWithClaims = (
   language: string | undefined,
 ): CredentialDetailsCardPropsWithoutWidth => {
   const attributes: CredentialAttribute[] = claims.map((claim, index) =>
-    detailsCardAttributeFromClaim(claim, config, concatTestID(testID, 'attribute', index.toString()), labels, language),
+    detailsCardAttributeFromClaim(
+      claim,
+      config,
+      concatTestID(testID, 'attribute', index.toString()),
+      labels,
+      language,
+    ),
   );
 
   const card = getCredentialCardPropsFromCredential(
@@ -429,7 +534,9 @@ export const detailsCardFromCredentialWithClaims = (
 
 // Converts a flat list of attributes into a nested structure
 // modifies the names to not include slashes
-export const nestAttributes = (attributes: CredentialAttribute[]): CredentialAttribute[] => {
+export const nestAttributes = (
+  attributes: CredentialAttribute[],
+): CredentialAttribute[] => {
   const result: CredentialAttribute[] = [];
 
   for (const attribute of attributes) {
@@ -452,7 +559,9 @@ export const nestAttributes = (attributes: CredentialAttribute[]): CredentialAtt
 
 // We nest the leaf node in a (one or more) nested object(s)
 // to make sure the tree structure is correctly rendered in proof request screens.
-const nestAttributeInDummyParent = (attribute: CredentialAttribute): CredentialAttribute => {
+const nestAttributeInDummyParent = (
+  attribute: CredentialAttribute,
+): CredentialAttribute => {
   const pathParts = attribute.path.split('/');
   const [first, ...rest] = pathParts;
   if (!rest.length) {
@@ -467,11 +576,15 @@ const nestAttributeInDummyParent = (attribute: CredentialAttribute): CredentialA
       id: `${attribute.id}/${first}`,
       name: first,
       path: first,
-      values: [nestAttributeInDummyParent({ ...attribute, path: rest.join('/') })],
+      values: [
+        nestAttributeInDummyParent({ ...attribute, path: rest.join('/') }),
+      ],
     };
   } else {
     return {
-      attributes: [nestAttributeInDummyParent({ ...attribute, path: rest.join('/') })],
+      attributes: [
+        nestAttributeInDummyParent({ ...attribute, path: rest.join('/') }),
+      ],
       disabled: true,
       id: `${attribute.id}/${first}`,
       name: first,
@@ -482,7 +595,10 @@ const nestAttributeInDummyParent = (attribute: CredentialAttribute): CredentialA
 
 // Recursively insert an attribute into an parent
 // Will create nested parents if necessary
-const insertAttributeInParent = (attribute: CredentialAttribute, parent: CredentialAttribute) => {
+const insertAttributeInParent = (
+  attribute: CredentialAttribute,
+  parent: CredentialAttribute,
+) => {
   const pathParts = attribute.path.split('/');
   const [first, ...rest] = pathParts;
 
@@ -503,14 +619,18 @@ function parseBase64Image(image: string | undefined) {
   return image ? '__BASE64IMAGE__' : '';
 }
 
-export function getCredentialSchemaWithoutImages<T extends CredentialSchemaListItem>(credentialSchema: T): T {
+export function getCredentialSchemaWithoutImages<
+  T extends CredentialSchemaListItem,
+>(credentialSchema: T): T {
   return {
     ...credentialSchema,
     layoutProperties: {
       ...credentialSchema.layoutProperties,
       background: {
         ...credentialSchema.layoutProperties?.background,
-        image: parseBase64Image(credentialSchema.layoutProperties?.background?.image),
+        image: parseBase64Image(
+          credentialSchema.layoutProperties?.background?.image,
+        ),
       },
       logo: {
         ...credentialSchema.layoutProperties?.logo,
@@ -526,16 +646,23 @@ export function credentialDetailFromPresentationV2Credential(
   return {
     type: CredentialType.SINGLE,
     ...presentationCredential,
-    schema: 'formats' in presentationCredential.schema ? presentationCredential.schema : {
-      ...presentationCredential.schema,
-      formats: [{
-        ecosystemSchemaId: presentationCredential.schema.schemaId,
-        format: presentationCredential.schema.format,
-      }],
-      walletAttestation: {
-        keyStorageSecurityLevel: presentationCredential.schema.keyStorageSecurity,
-        requireInstanceAttestation: presentationCredential.schema.requiresWalletInstanceAttestation,
-      },
-    },
+    schema:
+      'formats' in presentationCredential.schema
+        ? presentationCredential.schema
+        : {
+            ...presentationCredential.schema,
+            formats: [
+              {
+                ecosystemSchemaId: presentationCredential.schema.schemaId,
+                format: presentationCredential.schema.format,
+              },
+            ],
+            walletAttestation: {
+              keyStorageSecurityLevel:
+                presentationCredential.schema.keyStorageSecurity,
+              requireInstanceAttestation:
+                presentationCredential.schema.requiresWalletInstanceAttestation,
+            },
+          },
   };
 }

@@ -27,8 +27,21 @@ export interface SearchBarProps extends TextInputProps {
 const hitSlop: Insets = { bottom: 10, left: 10, right: 10, top: 10 };
 
 // https://www.figma.com/file/52qDYWUMjXAGre1dcnz5bz/Procivis-One-Wallet?node-id=1143-40433&t=HY1KvobxOReLeC8Z-4
-const SearchBar: FC<SearchBarProps> = forwardRef<TextInputInstance, SearchBarProps>(
-  ({ style, placeholder, searchPhrase, onSearchPhraseChange, testID, ...textInputProps }, ref) => {
+const SearchBar: FC<SearchBarProps> = forwardRef<
+  TextInputInstance,
+  SearchBarProps
+>(
+  (
+    {
+      style,
+      placeholder,
+      searchPhrase,
+      onSearchPhraseChange,
+      testID,
+      ...textInputProps
+    },
+    ref,
+  ) => {
     const colorScheme = useAppColorScheme();
 
     const onClear = useCallback(() => {
@@ -43,7 +56,8 @@ const SearchBar: FC<SearchBarProps> = forwardRef<TextInputInstance, SearchBarPro
             backgroundColor: colorScheme.white,
           },
           style,
-        ]}>
+        ]}
+      >
         <SearchIcon color={colorScheme.text} style={styles.searchIcon} />
         <TextInput
           accessibilityRole="search"
@@ -63,7 +77,8 @@ const SearchBar: FC<SearchBarProps> = forwardRef<TextInputInstance, SearchBarPro
             hitSlop={hitSlop}
             onPress={onClear}
             style={styles.clearButton}
-            testID={concatTestID(testID, 'clear')}>
+            testID={concatTestID(testID, 'clear')}
+          >
             <CloseIcon color={colorScheme.text} height={12} width={12} />
           </TouchableOpacity>
         ) : null}
