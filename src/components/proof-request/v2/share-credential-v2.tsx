@@ -44,11 +44,13 @@ export type ShareCredentialV2Props = {
     credentialId: CredentialListItem['id'],
     fieldPath: PresentationDefinitionV2Claim['path'],
     selected: boolean,
+    allUserConsentAttributesSelected?: boolean,
   ) => void;
   selectedCredentialId?: CredentialListItem['id'];
   selectedFields?: Array<PresentationDefinitionV2Claim['path']>;
   style?: StyleProp<ViewStyle>;
   testID: string;
+  userConsentWarningLabel?: string;
 };
 
 export const GroupedShareCredentialV2Padding = 4;
@@ -70,6 +72,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
   selectedFields,
   style,
   testID,
+  userConsentWarningLabel,
 }) => {
   const colorScheme = useAppColorScheme();
   const applicableCredentials =
@@ -179,11 +182,20 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
   ]);
 
   const onAttributeSelected = useCallback(
-    (fieldPath: PresentationDefinitionV2Claim['path'], selected: boolean) => {
+    (
+      fieldPath: PresentationDefinitionV2Claim['path'],
+      selected: boolean,
+      allUserConsentAttributesSelected: boolean,
+    ) => {
       if (!selectedCredentialId) {
         return;
       }
-      onSelectField(selectedCredentialId, fieldPath, selected);
+      onSelectField(
+        selectedCredentialId,
+        fieldPath,
+        selected,
+        allUserConsentAttributesSelected,
+      );
     },
     [onSelectField, selectedCredentialId],
   );
@@ -234,6 +246,7 @@ export const ShareCredentialV2: FunctionComponent<ShareCredentialV2Props> = ({
         style,
       ]}
       testID={testID}
+      userConsentWarningLabel={userConsentWarningLabel}
     />
   );
 };

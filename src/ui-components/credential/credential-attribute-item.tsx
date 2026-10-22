@@ -21,20 +21,31 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from '../accessibility/accessibilityHistoryWrappers';
+import { CredentialNoticeWarningIcon } from '../icons/credential';
 import ExpandableTypography from '../text/expandableTypography';
 import Typography from '../text/typography';
 import { useAppColorScheme } from '../theme/color-scheme-context';
+import Selector from './selector';
+import { SelectorStatus } from './selector-status';
 
 type CredentialAttributeItemButtonProps = {
   disabled?: boolean;
   id: string;
   onPress?: (id: string, selected: boolean) => void;
   selected?: boolean;
+  showSelectedBackground?: boolean;
 };
 
 const CredentialAttributeItemButton: FC<
   PropsWithChildren<CredentialAttributeItemButtonProps>
-> = ({ children, disabled, id, onPress, selected }) => {
+> = ({
+  children,
+  disabled,
+  id,
+  onPress,
+  selected,
+  showSelectedBackground = true,
+}) => {
   const colorScheme = useAppColorScheme();
 
   const pressHandler = useCallback(() => {
@@ -56,7 +67,7 @@ const CredentialAttributeItemButton: FC<
         onPress={pressHandler}
         style={[
           styles.touchableAttribute,
-          { backgroundColor: colorScheme.background },
+          showSelectedBackground && { backgroundColor: colorScheme.background },
         ]}
       >
         {children}
@@ -119,6 +130,7 @@ export type CredentialAttribute = CredentialAttributeValue & {
   name?: string;
   nested?: boolean;
   path: string;
+  requireUserConsent?: boolean;
   rightAccessory?: ComponentType<any> | ReactElement;
   selected?: boolean;
 };
@@ -131,10 +143,12 @@ export type CredentialAttributeItemProps = CredentialAttribute & {
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   onPress?: (id: string, selected: boolean) => void;
   style?: StyleProp<ViewStyle>;
+  userConsentWarningLabel?: string;
 };
 
 const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   attributes,
+  userConsentWarningLabel = 'User consent required.',
   disabled,
   id,
   image,
@@ -145,6 +159,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
   rightAccessory,
   nested = false,
   listValue = false,
+  requireUserConsent = false,
   selected,
   style,
   testID,
@@ -179,6 +194,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
 
   const isObject = attributes && attributes.length > 0;
   const isArray = values && values.length > 0;
+  const isDisabled = requireUserConsent ? false : disabled;
 
   const dataItemBorderStyle: ViewStyle = {
     borderColor: '#0004',
@@ -191,10 +207,11 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
     >
       <View style={styles.attributeItemRow}>
         <CredentialAttributeItemButton
-          disabled={disabled}
+          disabled={isDisabled}
           id={id}
           onPress={onPress}
           selected={selected}
+          showSelectedBackground={!requireUserConsent}
         >
           <View style={styles.dataItemButtonChildren}>
             {(isObject || isArray || listValue) && (
@@ -297,6 +314,7 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                     nested={true}
                     onImagePreview={onImagePreview}
                     onPress={onPress}
+                    userConsentWarningLabel={userConsentWarningLabel}
                     {...attribute}
                   />
                 ))}
@@ -308,25 +326,55 @@ const CredentialAttributeItem: FC<CredentialAttributeItemProps> = ({
                     listValue={true}
                     onImagePreview={onImagePreview}
                     onPress={onPress}
+                    userConsentWarningLabel={userConsentWarningLabel}
                     {...arrayValue}
                     name={undefined}
                   />
                 ))}
               <View />
             </View>
-            {rightAccessoryView && (
+            {(requireUserConsent || rightAccessoryView) && (
               <View
                 style={[
                   styles.rightAccessory,
                   isObject && styles.objectAccessory,
                 ]}
               >
-                {rightAccessoryView}
+                {requireUserConsent ? (
+                  <Selector
+                    status={
+                      selected
+                        ? SelectorStatus.SelectedRadio
+                        : SelectorStatus.Empty
+                    }
+                    testID={concatTestID(testID, 'biometricSelector')}
+                  />
+                ) : (
+                  rightAccessoryView
+                )}
               </View>
             )}
           </View>
         </CredentialAttributeItemButton>
       </View>
+      {requireUserConsent && (
+        <View
+          style={[
+            styles.biometricWarningWrapper,
+            { backgroundColor: colorScheme.background },
+          ]}
+        >
+          <CredentialNoticeWarningIcon />
+          <Typography
+            color={colorScheme.text}
+            preset="xs"
+            style={styles.biometricWarningText}
+            testID={concatTestID(testID, 'biometricWarning')}
+          >
+            {userConsentWarningLabel}
+          </Typography>
+        </View>
+      )}
       {!last && !nested && (
         <View
           style={[
@@ -350,6 +398,16 @@ const styles = StyleSheet.create({
   },
   attributeItemRow: {
     flexDirection: 'row',
+  },
+  biometricWarningText: {
+    marginLeft: 4,
+  },
+  biometricWarningWrapper: {
+    borderRadius: 4,
+    flexDirection: 'row',
+    marginBottom: 8,
+    marginHorizontal: 8,
+    padding: 8,
   },
   dataItemButtonChildren: {
     alignItems: 'center',

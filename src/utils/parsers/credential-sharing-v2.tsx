@@ -199,6 +199,7 @@ export const shareCredentialCardAttributeFromV2Claim = (
     listValue,
     nested,
     path: claim.path,
+    requireUserConsent: claim.requireBiometricDataUserConsent,
     rightAccessory: status && <Selector status={status} />,
     selected,
     testID,

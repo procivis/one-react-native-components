@@ -41,19 +41,70 @@ export type CredentialDetailsCardProps = ViewProps & {
   footer?: ComponentType<any> | ReactElement;
   lessLabel?: string;
   moreLabel?: string;
-  onAttributeSelected?: (id: string, selected: boolean) => void;
+  onAttributeSelected?: (
+    id: string,
+    selected: boolean,
+    allUserConsentAttributesSelected: boolean,
+  ) => void;
   onImagePreview?: (name: string, image: ImageSourcePropType) => void;
   showAllButtonLabel?: string;
   showLessButtonLabel?: string;
+  userConsentWarningLabel?: string;
 };
 
 const PREVIEW_ATTRIBUTES_COUNT = 3;
 const SEE_ALL_BUTTON_HEIGHT = 78;
 
+const flattenAttributes = (
+  attributes: CredentialAttribute[],
+): CredentialAttribute[] =>
+  attributes.flatMap((attribute) => [
+    attribute,
+    ...flattenAttributes(attribute.attributes ?? []),
+    ...flattenAttributes(attribute.values ?? []),
+  ]);
+
+// recursively apply `selected` state to attributes requiring user consent
+const applyUserConsentSelection = (
+  attribute: CredentialAttribute,
+  userConsentSelection: Record<string, boolean>,
+): CredentialAttribute => {
+  const applyToChildren = (children: CredentialAttribute[]) =>
+    children.map((child) =>
+      applyUserConsentSelection(child, userConsentSelection),
+    );
+  if (attribute.requireUserConsent) {
+    const selected = Boolean(userConsentSelection[attribute.id]);
+    if (attribute.attributes) {
+      return {
+        ...attribute,
+        attributes: applyToChildren(attribute.attributes),
+        selected,
+      };
+    }
+    if (attribute.values) {
+      return {
+        ...attribute,
+        selected,
+        values: applyToChildren(attribute.values),
+      };
+    }
+    return { ...attribute, selected };
+  }
+  if (attribute.attributes) {
+    return { ...attribute, attributes: applyToChildren(attribute.attributes) };
+  }
+  if (attribute.values) {
+    return { ...attribute, values: applyToChildren(attribute.values) };
+  }
+  return attribute;
+};
+
 const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   animate = true,
   attributes,
   attributesExtra,
+  userConsentWarningLabel,
   card,
   expanded,
   footer,
@@ -80,15 +131,71 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   const cardHeight = Math.ceil(card.width / CredentialCardRatio);
   const currentHeight = useSharedValue<number | undefined>(undefined);
   const [animatedHeightSet, setAnimatedHeightSet] = useState(false);
-  const previewAttributes = attributes
-    ? attributes.slice(0, PREVIEW_ATTRIBUTES_COUNT)
-    : [];
-  const extraAttributes = useMemo(
-    () => (attributes ? attributes.slice(PREVIEW_ATTRIBUTES_COUNT) : []),
+  const [userConsentSelection, setUserConsentSelection] = useState<
+    Record<string, boolean>
+  >({});
+  const userConsentAttributes = useMemo(
+    () =>
+      flattenAttributes(attributes ? attributes : []).filter(
+        (attribute) => attribute.requireUserConsent,
+      ),
     [attributes],
+  );
+  const attributesWithUserConsent = useMemo(
+    () =>
+      (attributes ? attributes : []).map((attribute) =>
+        applyUserConsentSelection(attribute, userConsentSelection),
+      ),
+    [attributes, userConsentSelection],
+  );
+  const previewAttributes = attributesWithUserConsent.slice(
+    0,
+    PREVIEW_ATTRIBUTES_COUNT,
+  );
+  const extraAttributes = useMemo(
+    () => attributesWithUserConsent.slice(PREVIEW_ATTRIBUTES_COUNT),
+    [attributesWithUserConsent],
   );
   const showSeeAllButton = extraAttributes.length > 0;
   const isExpanded = allAttributesRendered;
+
+  const allUserConsentAttributesSelected = useMemo(
+    () =>
+      userConsentAttributes.every((attribute) =>
+        Boolean(userConsentSelection[attribute.id]),
+      ),
+    [userConsentAttributes, userConsentSelection],
+  );
+
+  const onAttributeItemSelected = useCallback(
+    (id: string, selected: boolean) => {
+      const userConsentAttribute = userConsentAttributes.find(
+        (attribute) => attribute.id === id,
+      );
+      if (!userConsentAttribute) {
+        onAttributeSelected?.(id, selected, allUserConsentAttributesSelected);
+        return;
+      }
+      const updatedUserConsentSelection = {
+        ...userConsentSelection,
+        [id]: selected,
+      };
+      setUserConsentSelection(updatedUserConsentSelection);
+      onAttributeSelected?.(
+        id,
+        Boolean(userConsentAttribute.selected),
+        userConsentAttributes.every((attribute) =>
+          Boolean(updatedUserConsentSelection[attribute.id]),
+        ),
+      );
+    },
+    [
+      allUserConsentAttributesSelected,
+      onAttributeSelected,
+      userConsentAttributes,
+      userConsentSelection,
+    ],
+  );
 
   useEffect(() => {
     if (extraAttributes.length === 0) {
@@ -240,8 +347,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                   lessLabel={lessLabel}
                   moreLabel={moreLabel}
                   onImagePreview={onImagePreview}
-                  onPress={onAttributeSelected}
+                  onPress={onAttributeItemSelected}
                   testID={concatTestID(testID, 'attribute', idx.toString())}
+                  userConsentWarningLabel={userConsentWarningLabel}
                   {...attribute}
                 />
               ))}
@@ -267,8 +375,9 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
                     lessLabel={lessLabel}
                     moreLabel={moreLabel}
                     onImagePreview={onImagePreview}
-                    onPress={onAttributeSelected}
+                    onPress={onAttributeItemSelected}
                     testID={concatTestID(testID, 'attribute', index.toString())}
+                    userConsentWarningLabel={userConsentWarningLabel}
                     {...attribute}
                   />
                 ))}
