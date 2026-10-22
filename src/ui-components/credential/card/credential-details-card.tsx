@@ -143,9 +143,15 @@ const CredentialDetailsCard: FC<CredentialDetailsCardProps> = ({
   );
   const attributesWithUserConsent = useMemo(
     () =>
-      (attributes ? attributes : []).map((attribute) =>
-        applyUserConsentSelection(attribute, userConsentSelection),
-      ),
+      (attributes ? attributes : [])
+        .map((attribute) =>
+          applyUserConsentSelection(attribute, userConsentSelection),
+        )
+        .sort(
+          (a, b) =>
+            Number(Boolean(b.requireUserConsent)) -
+            Number(Boolean(a.requireUserConsent)),
+        ),
     [attributes, userConsentSelection],
   );
   const previewAttributes = attributesWithUserConsent.slice(

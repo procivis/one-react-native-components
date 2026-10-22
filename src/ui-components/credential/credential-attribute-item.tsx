@@ -62,7 +62,7 @@ const CredentialAttributeItemButton: FC<
   if (selected) {
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
+        activeOpacity={showSelectedBackground ? 0.8 : 1}
         disabled={disabled}
         onPress={pressHandler}
         style={[
@@ -77,10 +77,15 @@ const CredentialAttributeItemButton: FC<
 
   return (
     <TouchableHighlight
+      activeOpacity={showSelectedBackground ? undefined : 1}
       disabled={disabled}
       onPress={pressHandler}
       style={styles.touchableAttribute}
-      underlayColor={colorWithAlphaComponent(colorScheme.background, 0.5)}
+      underlayColor={
+        showSelectedBackground
+          ? colorWithAlphaComponent(colorScheme.background, 0.5)
+          : 'transparent'
+      }
     >
       {children}
     </TouchableHighlight>
